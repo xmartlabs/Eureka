@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="61" id="piA-L5-eiN" customClass="WeekDayCell" customModule="Example" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="382" height="61"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="piA-L5-eiN" id="Yr6-3E-keb">
+                <rect key="frame" x="0.0" y="0.0" width="382" height="60"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZAg-Me-yKR">
+                        <rect key="frame" x="8" y="0.0" width="52" height="60"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <state key="normal" title="S">
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <state key="selected">
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                        </state>
+                        <connections>
+                            <action selector="dayTapped:" destination="piA-L5-eiN" eventType="touchUpInside" id="VSl-nH-cWo"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UjQ-Cw-7wH" userLabel="separator 1">
+                        <rect key="frame" x="59" y="10" width="1" height="40"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="1" id="K3N-3h-MZr"/>
+                            <constraint firstAttribute="height" constant="40" id="rqR-J5-JEQ"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N3w-qP-kRZ">
+                        <rect key="frame" x="60" y="0.0" width="52" height="60"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <state key="normal" title="M">
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="dayTapped:" destination="piA-L5-eiN" eventType="touchUpInside" id="FaQ-oB-Nkl"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kwc-0w-V51" userLabel="separator 2">
+                        <rect key="frame" x="112" y="10" width="1" height="40"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="1" id="3mE-sT-ql1"/>
+                            <constraint firstAttribute="height" constant="40" id="DIe-f7-hxR"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cPl-47-rS8">
+                        <rect key="frame" x="113" y="0.0" width="52" height="60"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <state key="normal" title="T">
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="dayTapped:" destination="piA-L5-eiN" eventType="touchUpInside" id="4vk-5n-jge"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EiN-2p-Oig" userLabel="separator 3">
+                        <rect key="frame" x="164" y="10" width="1" height="40"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="EqQ-Te-SQd"/>
+                            <constraint firstAttribute="width" constant="1" id="JyW-GC-0A7"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6iC-Cl-RyI">
+                        <rect key="frame" x="166" y="0.0" width="51" height="60"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <state key="normal" title="W">
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="dayTapped:" destination="piA-L5-eiN" eventType="touchUpInside" id="oO1-zj-XRv"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bRc-5e-QAH" userLabel="separator 4">
+                        <rect key="frame" x="216" y="10" width="1" height="40"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="Pxp-Ee-q5x"/>
+                            <constraint firstAttribute="width" constant="1" id="W9F-iR-Leh"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eTo-Ip-reh">
+                        <rect key="frame" x="217" y="0.0" width="52" height="60"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <state key="normal" title="T">
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="dayTapped:" destination="piA-L5-eiN" eventType="touchUpInside" id="SkQ-0a-9Fy"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dHj-rj-mjh" userLabel="separator 5">
+                        <rect key="frame" x="269" y="10" width="1" height="40"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="1" id="h5U-x0-9nJ"/>
+                            <constraint firstAttribute="height" constant="40" id="uKJ-Sn-OXS"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wjb-tu-QEo">
+                        <rect key="frame" x="270" y="0.0" width="52" height="60"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <state key="normal" title="F">
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="dayTapped:" destination="piA-L5-eiN" eventType="touchUpInside" id="9A8-9a-SGG"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L7g-lu-boa" userLabel="separator 6">
+                        <rect key="frame" x="321" y="10" width="1" height="40"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="1" id="81t-Xh-wZT"/>
+                            <constraint firstAttribute="height" constant="40" id="Qr7-X4-anj"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LNf-b4-GYP">
+                        <rect key="frame" x="322" y="0.0" width="52" height="60"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <state key="normal" title="S">
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="dayTapped:" destination="piA-L5-eiN" eventType="touchUpInside" id="I4k-Ho-KxE"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <animations/>
+                <constraints>
+                    <constraint firstItem="LNf-b4-GYP" firstAttribute="leading" secondItem="L7g-lu-boa" secondAttribute="trailing" id="0fo-jx-Csm"/>
+                    <constraint firstItem="6iC-Cl-RyI" firstAttribute="centerY" secondItem="eTo-Ip-reh" secondAttribute="centerY" id="0uH-JF-ybH"/>
+                    <constraint firstItem="eTo-Ip-reh" firstAttribute="centerY" secondItem="Wjb-tu-QEo" secondAttribute="centerY" id="1YJ-rb-OaE"/>
+                    <constraint firstAttribute="bottom" secondItem="ZAg-Me-yKR" secondAttribute="bottom" id="1k4-7I-heJ"/>
+                    <constraint firstItem="kwc-0w-V51" firstAttribute="centerY" secondItem="Yr6-3E-keb" secondAttribute="centerY" id="6Wt-56-rnK"/>
+                    <constraint firstItem="bRc-5e-QAH" firstAttribute="centerY" secondItem="Yr6-3E-keb" secondAttribute="centerY" id="6qd-rB-kSj"/>
+                    <constraint firstItem="cPl-47-rS8" firstAttribute="width" secondItem="6iC-Cl-RyI" secondAttribute="width" id="7FE-J3-Edw"/>
+                    <constraint firstItem="ZAg-Me-yKR" firstAttribute="leading" secondItem="Yr6-3E-keb" secondAttribute="leadingMargin" id="8Nq-Rj-q19"/>
+                    <constraint firstItem="6iC-Cl-RyI" firstAttribute="height" secondItem="eTo-Ip-reh" secondAttribute="height" id="8g1-v4-nx0"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="LNf-b4-GYP" secondAttribute="trailing" id="8ld-NW-TWG"/>
+                    <constraint firstItem="eTo-Ip-reh" firstAttribute="height" secondItem="Wjb-tu-QEo" secondAttribute="height" id="9sP-NP-Hr6"/>
+                    <constraint firstItem="kwc-0w-V51" firstAttribute="leading" secondItem="N3w-qP-kRZ" secondAttribute="trailing" id="ASB-hZ-lyM"/>
+                    <constraint firstItem="EiN-2p-Oig" firstAttribute="centerY" secondItem="Yr6-3E-keb" secondAttribute="centerY" id="Ahe-jK-GJV"/>
+                    <constraint firstItem="eTo-Ip-reh" firstAttribute="leading" secondItem="bRc-5e-QAH" secondAttribute="trailing" id="Epj-Rj-gWF"/>
+                    <constraint firstItem="Wjb-tu-QEo" firstAttribute="height" secondItem="LNf-b4-GYP" secondAttribute="height" id="Ff1-qP-IsO"/>
+                    <constraint firstItem="N3w-qP-kRZ" firstAttribute="height" secondItem="cPl-47-rS8" secondAttribute="height" id="I3w-At-X2i"/>
+                    <constraint firstItem="dHj-rj-mjh" firstAttribute="centerY" secondItem="Yr6-3E-keb" secondAttribute="centerY" id="JxY-fD-idN"/>
+                    <constraint firstItem="bRc-5e-QAH" firstAttribute="leading" secondItem="6iC-Cl-RyI" secondAttribute="trailing" id="TYV-f4-M6e"/>
+                    <constraint firstItem="UjQ-Cw-7wH" firstAttribute="leading" secondItem="ZAg-Me-yKR" secondAttribute="trailing" id="UJC-9V-Cd5"/>
+                    <constraint firstItem="L7g-lu-boa" firstAttribute="leading" secondItem="Wjb-tu-QEo" secondAttribute="trailing" id="VD9-6D-KvT"/>
+                    <constraint firstItem="Wjb-tu-QEo" firstAttribute="centerY" secondItem="LNf-b4-GYP" secondAttribute="centerY" id="WlU-5s-b4D"/>
+                    <constraint firstItem="Wjb-tu-QEo" firstAttribute="leading" secondItem="dHj-rj-mjh" secondAttribute="trailing" id="Yk2-Af-jOs"/>
+                    <constraint firstItem="ZAg-Me-yKR" firstAttribute="top" secondItem="Yr6-3E-keb" secondAttribute="top" id="aIH-xh-6EK"/>
+                    <constraint firstItem="cPl-47-rS8" firstAttribute="centerY" secondItem="6iC-Cl-RyI" secondAttribute="centerY" id="aqH-x8-tOF"/>
+                    <constraint firstItem="ZAg-Me-yKR" firstAttribute="width" secondItem="N3w-qP-kRZ" secondAttribute="width" id="bt9-yU-qnt"/>
+                    <constraint firstItem="N3w-qP-kRZ" firstAttribute="leading" secondItem="UjQ-Cw-7wH" secondAttribute="trailing" id="c66-Xu-mQL"/>
+                    <constraint firstItem="dHj-rj-mjh" firstAttribute="leading" secondItem="eTo-Ip-reh" secondAttribute="trailing" id="chy-b8-EdK"/>
+                    <constraint firstItem="6iC-Cl-RyI" firstAttribute="leading" secondItem="EiN-2p-Oig" secondAttribute="trailing" id="gUc-Sa-nVM"/>
+                    <constraint firstItem="L7g-lu-boa" firstAttribute="centerY" secondItem="Yr6-3E-keb" secondAttribute="centerY" id="hvJ-oj-w92"/>
+                    <constraint firstItem="Wjb-tu-QEo" firstAttribute="width" secondItem="LNf-b4-GYP" secondAttribute="width" id="ivo-7Y-SmP"/>
+                    <constraint firstItem="ZAg-Me-yKR" firstAttribute="height" secondItem="N3w-qP-kRZ" secondAttribute="height" id="mrw-x5-waX"/>
+                    <constraint firstItem="EiN-2p-Oig" firstAttribute="leading" secondItem="cPl-47-rS8" secondAttribute="trailing" id="oZ4-Px-RGe"/>
+                    <constraint firstItem="UjQ-Cw-7wH" firstAttribute="centerY" secondItem="Yr6-3E-keb" secondAttribute="centerY" id="qXM-7h-bDi"/>
+                    <constraint firstItem="ZAg-Me-yKR" firstAttribute="centerY" secondItem="N3w-qP-kRZ" secondAttribute="centerY" id="r9V-i5-aLY"/>
+                    <constraint firstItem="N3w-qP-kRZ" firstAttribute="width" secondItem="cPl-47-rS8" secondAttribute="width" id="rzb-2W-aN1"/>
+                    <constraint firstItem="cPl-47-rS8" firstAttribute="height" secondItem="6iC-Cl-RyI" secondAttribute="height" id="sWf-oo-N8w"/>
+                    <constraint firstItem="eTo-Ip-reh" firstAttribute="width" secondItem="Wjb-tu-QEo" secondAttribute="width" id="w7P-NJ-TWy"/>
+                    <constraint firstItem="cPl-47-rS8" firstAttribute="leading" secondItem="kwc-0w-V51" secondAttribute="trailing" id="wiy-6c-zng"/>
+                    <constraint firstItem="N3w-qP-kRZ" firstAttribute="centerY" secondItem="cPl-47-rS8" secondAttribute="centerY" id="xj5-Uv-mZj"/>
+                    <constraint firstItem="6iC-Cl-RyI" firstAttribute="width" secondItem="eTo-Ip-reh" secondAttribute="width" id="zRG-mE-VLw"/>
+                </constraints>
+            </tableViewCellContentView>
+            <animations/>
+            <connections>
+                <outlet property="fridayButton" destination="Wjb-tu-QEo" id="AcP-Qg-i9P"/>
+                <outlet property="mondayButton" destination="N3w-qP-kRZ" id="u3A-mt-EKd"/>
+                <outlet property="saturdayButton" destination="LNf-b4-GYP" id="TeM-3b-B1Z"/>
+                <outlet property="sundayButton" destination="ZAg-Me-yKR" id="6yQ-QG-SlK"/>
+                <outlet property="thursdayButton" destination="eTo-Ip-reh" id="Dxi-hi-oBK"/>
+                <outlet property="tuesdayButton" destination="cPl-47-rS8" id="wIn-mO-cUx"/>
+                <outlet property="wednesdayButton" destination="6iC-Cl-RyI" id="GQe-Oy-pcd"/>
+            </connections>
+            <point key="canvasLocation" x="296" y="222.5"/>
+        </tableViewCell>
+    </objects>
+</document>

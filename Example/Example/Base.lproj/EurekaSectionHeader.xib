@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A279b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="EurekaLogoViewNib" customModule="Example" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="365" height="130"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Eureka" translatesAutoresizingMaskIntoConstraints="NO" id="Bjs-Pe-yeM">
+                    <rect key="frame" x="0.0" y="0.0" width="365" height="130"/>
+                    <animations/>
+                </imageView>
+            </subviews>
+            <animations/>
+            <constraints>
+                <constraint firstItem="Bjs-Pe-yeM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="4fF-WE-lgN"/>
+                <constraint firstItem="Bjs-Pe-yeM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="BZC-rI-vHR"/>
+                <constraint firstAttribute="trailing" secondItem="Bjs-Pe-yeM" secondAttribute="trailing" id="Evo-0m-78o"/>
+                <constraint firstAttribute="bottom" secondItem="Bjs-Pe-yeM" secondAttribute="bottom" id="Jjg-Ri-jws"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="imageView" destination="Bjs-Pe-yeM" id="PfU-lb-bgw"/>
+            </connections>
+            <point key="canvasLocation" x="430.5" y="158"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Eureka" width="425" height="125"/>
+    </resources>
+</document>
