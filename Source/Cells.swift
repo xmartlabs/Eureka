@@ -205,29 +205,25 @@ public class _FieldCell<T where T: Equatable, T: FieldTypeInitiable> : Cell<T>, 
         }
         if let image = imageView?.image {
             views["image"] = image
-            if let text = titleLabel?.text {
-                if !text.isEmpty {
+            if let text = titleLabel?.text where !text.isEmpty {
                     views["label"] = titleLabel!
                     dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[image]-[label]-[textField]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-                }
+                    dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
             }
             else{
                 dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[image]-[textField]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
             }
         }
         else{
-            if let text = titleLabel?.text {
-                if !text.isEmpty {
+            if let text = titleLabel?.text where !text.isEmpty {
                     views["label"] = titleLabel!
                     dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|-[label]-[textField]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-                }
+                    dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
             }
             else{
                 dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textField]-|", options: .AlignAllLeft, metrics: nil, views: views)
             }
         }
-        dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
-        
         contentView.addConstraints(dynamicConstraints)
         super.updateConstraints()
     }
