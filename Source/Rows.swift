@@ -481,7 +481,7 @@ public class _MultipleSelectorRow<T: Hashable> : GenericMultipleSelectorRow<T, M
             if let t = $0 {
                 return t.map({ String($0) }).joinWithSeparator(", ")
             }
-            return ""
+            return nil
         }
     }
 }

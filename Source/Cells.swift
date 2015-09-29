@@ -181,12 +181,8 @@ public class _FieldCell<T where T: Equatable, T: FieldTypeInitiable> : Cell<T>, 
     }
     
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKindKey]{
-            if (obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image"){
-                if changeType.unsignedLongValue == NSKeyValueChange.Setting.rawValue{
-                    contentView.setNeedsUpdateConstraints()
-                }
-            }
+        if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKindKey] where ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && changeType.unsignedLongValue == NSKeyValueChange.Setting.rawValue {
+            contentView.setNeedsUpdateConstraints()
         }
     }
     
@@ -206,9 +202,9 @@ public class _FieldCell<T where T: Equatable, T: FieldTypeInitiable> : Cell<T>, 
         if let image = imageView?.image {
             views["image"] = image
             if let text = titleLabel?.text where !text.isEmpty {
-                    views["label"] = titleLabel!
-                    dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[image]-[label]-[textField]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-                    dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
+                views["label"] = titleLabel!
+                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[image]-[label]-[textField]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+                dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
             }
             else{
                 dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[image]-[textField]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
@@ -216,9 +212,9 @@ public class _FieldCell<T where T: Equatable, T: FieldTypeInitiable> : Cell<T>, 
         }
         else{
             if let text = titleLabel?.text where !text.isEmpty {
-                    views["label"] = titleLabel!
-                    dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|-[label]-[textField]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-                    dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
+                views["label"] = titleLabel!
+                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|-[label]-[textField]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+                dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
             }
             else{
                 dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textField]-|", options: .AlignAllLeft, metrics: nil, views: views)
@@ -233,22 +229,20 @@ public class _FieldCell<T where T: Equatable, T: FieldTypeInitiable> : Cell<T>, 
             row.value = nil
             return
         }
-        if let fieldRow = row as? FieldRowConformance, let formatter = fieldRow.formatter {
-            if fieldRow.useFormatterDuringInput {
-                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
-                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
-                if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                    row.value = value.memory as? T
-                    if var selStartPos = textField.selectedTextRange?.start {
-                        let oldVal = textField.text
-                        textField.text = row.displayValueFor?(row.value)
-                        if let f = formatter as? FormatterProtocol {
-                            selStartPos = f.getNewPosition(forPosition: selStartPos, inTextField: textField, oldValue: oldVal, newValue: textField.text)
-                        }
-                        textField.selectedTextRange = textField.textRangeFromPosition(selStartPos, toPosition: selStartPos)
+        if let fieldRow = row as? FieldRowConformance, let formatter = fieldRow.formatter where fieldRow.useFormatterDuringInput {
+            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
+            let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
+            if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
+                row.value = value.memory as? T
+                if var selStartPos = textField.selectedTextRange?.start {
+                    let oldVal = textField.text
+                    textField.text = row.displayValueFor?(row.value)
+                    if let f = formatter as? FormatterProtocol {
+                        selStartPos = f.getNewPosition(forPosition: selStartPos, inTextField: textField, oldValue: oldVal, newValue: textField.text)
                     }
-                    return
+                    textField.selectedTextRange = textField.textRangeFromPosition(selStartPos, toPosition: selStartPos)
                 }
+                return
             }
         }
         guard !textValue.isEmpty else {
@@ -266,20 +260,16 @@ public class _FieldCell<T where T: Equatable, T: FieldTypeInitiable> : Cell<T>, 
     
     public func textFieldDidBeginEditing(textField: UITextField) {
         formViewController()?.beginEditing(self)
-        if let _ = (row as? FieldRowConformance)?.formatter {
-            if (row as? FieldRowConformance)?.useFormatterDuringInput == false {
+        if let fieldRowConformance = (row as? FieldRowConformance), let _ = fieldRowConformance.formatter where !fieldRowConformance.useFormatterDuringInput {
                 textField.text = row.displayValueFor?(row.value)
-            }
         }
     }
     
     public func textFieldDidEndEditing(textField: UITextField) {
         textFieldDidChange(textField)
         formViewController()?.endEditing(self)
-        if let _ = (row as? FieldRowConformance)?.formatter {
-            if (row as? FieldRowConformance)?.useFormatterDuringInput == false {
-                textField.text = row.displayValueFor?(row.value)
-            }
+        if let fieldRowConformance = (row as? FieldRowConformance), let _ = fieldRowConformance.formatter where !fieldRowConformance.useFormatterDuringInput {
+            textField.text = row.displayValueFor?(row.value)
         }
     }
 }
@@ -588,15 +578,10 @@ public class _TextAreaCell<T: Equatable> : Cell<T>, UITextViewDelegate {
     }
     
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKindKey]{
-            if (obj === placeholderLabel && keyPathValue == "text"){
-                if changeType.unsignedLongValue == NSKeyValueChange.Setting.rawValue{
+        if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKindKey] where obj === placeholderLabel && keyPathValue == "text" && changeType.unsignedLongValue == NSKeyValueChange.Setting.rawValue{
                     contentView.setNeedsUpdateConstraints()
-                }
-            }
         }
     }
-
 }
 
 public class TextAreaCell : _TextAreaCell<String>, CellType {
@@ -726,10 +711,8 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     }
     
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if let obj = object, let changeType = change, let _ = keyPath {
-            if obj === titleLabel && keyPath == "text" && changeType[NSKeyValueChangeKindKey]?.unsignedLongValue == NSKeyValueChange.Setting.rawValue{
-                contentView.setNeedsUpdateConstraints()
-            }
+        if let obj = object, let changeType = change, let _ = keyPath where obj === titleLabel && keyPath == "text" && changeType[NSKeyValueChangeKindKey]?.unsignedLongValue == NSKeyValueChange.Setting.rawValue{
+            contentView.setNeedsUpdateConstraints()
         }
     }
     
@@ -742,7 +725,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     
     public override func updateConstraints() {
         if let dynConst = dynamicConstraints {
-            contentView .removeConstraints(dynConst)
+            contentView.removeConstraints(dynConst)
         }
         dynamicConstraints = []
         var views : [String: AnyObject] =  ["segmentedControl": segmentedControl]

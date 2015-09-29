@@ -150,11 +150,9 @@ import UIKit
 		title.alpha = 0.0
 		title.font = titleFont
 		title.textColor = titleTextColour
-		if let str = placeholder {
-			if !str.isEmpty {
-				title.text = str
-				title.sizeToFit()
-			}
+		if let str = placeholder where !str.isEmpty {
+            title.text = str
+            title.sizeToFit()
 		}
 		self.addSubview(title)
 	}
