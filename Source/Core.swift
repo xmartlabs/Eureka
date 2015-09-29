@@ -185,10 +185,10 @@ extension Form : MutableCollectionType {
     // MARK: MutableCollectionType
     
     public var startIndex: Int { return 0 }
-    public var endIndex: Int { return kvoWrapper.formSections.count }
+    public var endIndex: Int { return kvoWrapper.sections.count }
     public subscript (position: Int) -> Section {
-        get { return kvoWrapper.formSections[position] as! Section }
-        set { kvoWrapper.formSections[position] = newValue }
+        get { return kvoWrapper.sections[position] as! Section }
+        set { kvoWrapper.sections[position] = newValue }
     }
 }
 
@@ -197,13 +197,13 @@ extension Form : RangeReplaceableCollectionType {
     // MARK: RangeReplaceableCollectionType
     
     public func append(formSection: Section){
-        kvoWrapper.formSections.insertObject(formSection, atIndex: kvoWrapper.formSections.count)
+        kvoWrapper.sections.insertObject(formSection, atIndex: kvoWrapper.sections.count)
         kvoWrapper._allSections.append(formSection)
         formSection.wasAddedToForm(self)
     }
 
     public func appendContentsOf<S : SequenceType where S.Generator.Element == Section>(newElements: S) {
-        kvoWrapper.formSections.addObjectsFromArray(newElements.map { $0 })
+        kvoWrapper.sections.addObjectsFromArray(newElements.map { $0 })
         kvoWrapper._allSections.appendContentsOf(newElements)
         for section in newElements{
             section.wasAddedToForm(self)
@@ -214,12 +214,12 @@ extension Form : RangeReplaceableCollectionType {
 
     public func replaceRange<C : CollectionType where C.Generator.Element == Section>(subRange: Range<Int>, with newElements: C) {
         for (var i = subRange.startIndex; i < subRange.endIndex; i++) {
-            if let section = kvoWrapper.formSections.objectAtIndex(i) as? Section {
+            if let section = kvoWrapper.sections.objectAtIndex(i) as? Section {
                 section.willBeRemovedFromForm()
                 kvoWrapper._allSections.removeAtIndex(kvoWrapper._allSections.indexOf(section)!)
             }
         }
-        kvoWrapper.formSections.replaceObjectsInRange(NSMakeRange(subRange.startIndex, subRange.endIndex - subRange.startIndex), withObjectsFromArray: newElements.map { $0 })
+        kvoWrapper.sections.replaceObjectsInRange(NSMakeRange(subRange.startIndex, subRange.endIndex - subRange.startIndex), withObjectsFromArray: newElements.map { $0 })
         for section in newElements{
             section.wasAddedToForm(self)
         }
@@ -230,7 +230,7 @@ extension Form : RangeReplaceableCollectionType {
         for section in kvoWrapper._allSections{
             section.willBeRemovedFromForm()
         }
-        kvoWrapper.formSections.removeAllObjects()
+        kvoWrapper.sections.removeAllObjects()
         kvoWrapper._allSections.removeAll()
     }
 }
@@ -241,7 +241,7 @@ extension Form {
     
     private class KVOWrapper : NSObject {
         dynamic var _sections = NSMutableArray()
-        var formSections : NSMutableArray { return mutableArrayValueForKey("_sections") }
+        var sections : NSMutableArray { return mutableArrayValueForKey("_sections") }
         var _allSections = [Section]()
         weak var form: Form?
         
@@ -322,22 +322,22 @@ extension Form {
     }
     
     private func hideSection(section: Section){
-        kvoWrapper.formSections.removeObject(section)
+        kvoWrapper.sections.removeObject(section)
     }
     
     private func showSection(section: Section){
-        guard !kvoWrapper.formSections.containsObject(section) else { return }
+        guard !kvoWrapper.sections.containsObject(section) else { return }
         guard var index = kvoWrapper._allSections.indexOf(section) else { return }
         var formIndex = NSNotFound
         while (formIndex == NSNotFound && index > 0){
             let previous = kvoWrapper._allSections[--index]
-            formIndex = kvoWrapper.formSections.indexOfObject(previous)
+            formIndex = kvoWrapper.sections.indexOfObject(previous)
         }
         if formIndex == NSNotFound{
-            kvoWrapper.formSections.insertObject(section, atIndex: 0)
+            kvoWrapper.sections.insertObject(section, atIndex: 0)
         }
         else{
-            kvoWrapper.formSections.insertObject(section, atIndex: ++formIndex)
+            kvoWrapper.sections.insertObject(section, atIndex: ++formIndex)
         }
     }
 }
@@ -404,15 +404,15 @@ extension Section : MutableCollectionType {
 //MARK: MutableCollectionType
     
     public var startIndex: Int { return 0 }
-    public var endIndex: Int { return kvoWrapper.formRows.count }
+    public var endIndex: Int { return kvoWrapper.rows.count }
     public subscript (position: Int) -> BaseRow {
         get {
-            if position >= kvoWrapper.formRows.count{
+            if position >= kvoWrapper.rows.count{
                 assertionFailure("Section: Index out of bounds")
             }
-            return kvoWrapper.formRows[position] as! BaseRow
+            return kvoWrapper.rows[position] as! BaseRow
         }
-        set { kvoWrapper.formRows[position] = newValue }
+        set { kvoWrapper.rows[position] = newValue }
     }
 }
 
@@ -421,14 +421,14 @@ extension Section : RangeReplaceableCollectionType {
 // MARK: RangeReplaceableCollectionType
     
     public func append(formRow: BaseRow){
-        kvoWrapper.formRows.insertObject(formRow, atIndex: kvoWrapper.formRows.count)
+        kvoWrapper.rows.insertObject(formRow, atIndex: kvoWrapper.rows.count)
         kvoWrapper._allRows.append(formRow)
         
         formRow.wasAddedToFormInSection(self)
     }
     
     public func appendContentsOf<S : SequenceType where S.Generator.Element == BaseRow>(newElements: S) {
-        kvoWrapper.formRows.addObjectsFromArray(newElements.map { $0 })
+        kvoWrapper.rows.addObjectsFromArray(newElements.map { $0 })
         kvoWrapper._allRows.appendContentsOf(newElements)
         for row in newElements{
             row.wasAddedToFormInSection(self)
@@ -439,12 +439,12 @@ extension Section : RangeReplaceableCollectionType {
     
     public func replaceRange<C : CollectionType where C.Generator.Element == BaseRow>(subRange: Range<Int>, with newElements: C) {
         for (var i = subRange.startIndex; i < subRange.endIndex; i++) {
-            if let row = kvoWrapper.formRows.objectAtIndex(i) as? BaseRow {
+            if let row = kvoWrapper.rows.objectAtIndex(i) as? BaseRow {
                 row.willBeRemovedFromForm()
                 kvoWrapper._allRows.removeAtIndex(kvoWrapper._allRows.indexOf(row)!)
             }
         }
-        kvoWrapper.formRows.replaceObjectsInRange(NSMakeRange(subRange.startIndex, subRange.endIndex - subRange.startIndex), withObjectsFromArray: newElements.map { $0 })
+        kvoWrapper.rows.replaceObjectsInRange(NSMakeRange(subRange.startIndex, subRange.endIndex - subRange.startIndex), withObjectsFromArray: newElements.map { $0 })
         kvoWrapper._allRows.appendContentsOf(newElements)
         for row in newElements{
             row.wasAddedToFormInSection(self)
@@ -456,7 +456,7 @@ extension Section : RangeReplaceableCollectionType {
         for row in kvoWrapper._allRows{
             row.willBeRemovedFromForm()
         }
-        kvoWrapper.formRows.removeAllObjects()
+        kvoWrapper.rows.removeAllObjects()
         kvoWrapper._allRows.removeAll()
     }
 }
@@ -547,7 +547,7 @@ extension Section {
     private class KVOWrapper : NSObject{
         
         dynamic var _rows = NSMutableArray()
-        var formRows : NSMutableArray {
+        var rows : NSMutableArray {
             get {
                 return mutableArrayValueForKey("_rows")
             }
@@ -654,11 +654,11 @@ extension Section /* Condition */{
     }
     
     public func hideRow(row: BaseRow){
-        kvoWrapper.formRows.removeObject(row)
+        kvoWrapper.rows.removeObject(row)
     }
     
     public func showRow(row: BaseRow){
-        if kvoWrapper.formRows.containsObject(row){
+        if kvoWrapper.rows.containsObject(row){
             return
         }
         
@@ -667,20 +667,20 @@ extension Section /* Condition */{
         if var index = kvoWrapper._allRows.indexOf(row){
             while (formIndex == NSNotFound && index > 0){
                 let previous = kvoWrapper._allRows[--index]
-                formIndex = kvoWrapper.formRows.indexOfObject(previous)
+                formIndex = kvoWrapper.rows.indexOfObject(previous)
             }
             if formIndex == NSNotFound{
-                kvoWrapper.formRows.insertObject(row, atIndex: 0)
+                kvoWrapper.rows.insertObject(row, atIndex: 0)
             }
             else{
-                kvoWrapper.formRows.insertObject(row, atIndex: formIndex+1)
+                kvoWrapper.rows.insertObject(row, atIndex: formIndex+1)
             }
         }
     }
 }
 
 
-// MARK: FormRow
+// MARK: Row
 
 internal protocol Disableable : Taggable {
     func evaluateDisabled()
