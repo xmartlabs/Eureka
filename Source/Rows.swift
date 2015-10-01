@@ -211,6 +211,13 @@ public class _CountDownRow: _DateFieldRow {
 }
 
 
+public class _DatePickerRow : Row<NSDate, DatePickerCell> {
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        displayValueFor = nil
+    }
+}
+
 public class _TextAreaRow: AreaRow<String, TextAreaCell> {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -572,6 +579,12 @@ public final class CountDownRow: _CountDownRow, RowType {
             }
             cell.detailTextLabel?.textColor = cell.tintColor
         }
+    }
+}
+
+public final class DatePickerRow : _DatePickerRow, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
     }
 }
 

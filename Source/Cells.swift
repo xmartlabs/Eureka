@@ -475,6 +475,43 @@ public class DateCell : Cell<NSDate>, CellType {
     }
 }
 
+public class DatePickerCell : Cell<NSDate>, CellType {
+    
+    public lazy var datePicker: UIDatePicker = { [unowned self] in
+        let picker = UIDatePicker()
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.addSubview(picker)
+        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[picker]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["picker": picker]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[picker]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["picker": picker]))
+        picker.addTarget(self, action: "datePickerValueChanged:", forControlEvents: .ValueChanged)
+        return picker
+        }()
+    
+    public required init(style: UITableViewCellStyle, reuseIdentifier: String?){
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    public override func setup() {
+        super.setup()
+        height = { 213 }
+        datePicker.setDate(row.value ?? NSDate(), animated: false)
+        datePicker.datePickerMode = .Date
+        accessoryType = .None
+        editingAccessoryType =  .None
+        
+    }
+    public override func update() {
+        super.update()
+        selectionStyle = row.isDisabled ? .None : .Default
+        detailTextLabel?.text = nil
+        textLabel?.text = nil
+    }
+    
+    func datePickerValueChanged(sender: UIDatePicker){
+        row.value = sender.date
+    }
+}
+
 public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, UITextViewDelegate, AreaCell {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
