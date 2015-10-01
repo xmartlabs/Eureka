@@ -61,13 +61,7 @@ public protocol Taggable : AnyObject {
 }
 
 public protocol BaseRowType : Taggable {
-    
-    var callbackOnChange: Any? { get set }
-    var callbackCellOnSelection: Any? { get set }
-    var callbackCellUpdate: Any? { get set }
-    var callbackCellSetup: Any? { get set }
-    
-    
+
     var baseCell: BaseCell! { get }
     var section: Section? { get }
     
@@ -711,11 +705,12 @@ extension RowType where Cell : TypedCellType, Cell.Value == Self.Value {
     }
 }
 
-
 internal class RowDefaults {
     static let sharedInstance = RowDefaults()
     private var cellUpdate = Dictionary<String, Any>()
     private var cellSetup = Dictionary<String, Any>()
+    private var onCellHighlight = Dictionary<String, Any>()
+    private var onCellUnHighlight = Dictionary<String, Any>()
     private var rowInitialization = Dictionary<String, Any>()
     
     private static let _defaultCallback: ((BaseCell, BaseRow) -> ()) = { _, _ in }
@@ -731,7 +726,6 @@ internal class RowDefaults {
         cellUpdate[className] = callback
     }
     
-    
     private func defaultCellSetupForRow(type: Any.Type) -> Any{
         let className = "\(type)"
         return cellSetup[className] ?? (RowDefaults._defaultCallback as Any)
@@ -742,7 +736,7 @@ internal class RowDefaults {
         cellSetup[className] = callback
     }
     
-    func defaultRowInitializer(type: Any.Type) -> Any{
+    private func defaultRowInitializer(type: Any.Type) -> Any{
         let className = "\(type)"
         return rowInitialization[className] ?? (RowDefaults._defaultRowCallback as Any)
     }
@@ -751,9 +745,29 @@ internal class RowDefaults {
         let className = "\(type)"
         rowInitialization[className] = callback
     }
+    
+    private func defaultOnCellHighlightForRow(type: Any.Type) -> Any{
+        let className = "\(type)"
+        return onCellHighlight[className] ?? (RowDefaults._defaultCallback as Any)
+    }
+    
+    private func setDefaultOnCellHighlightForRow(type: Any.Type, callback: Any){
+        let className = "\(type)"
+        onCellHighlight[className] = callback
+    }
+    
+    private func defaultOnCellUnHighlightForRow(type: Any.Type) -> Any{
+        let className = "\(type)"
+        return onCellUnHighlight[className] ?? (RowDefaults._defaultCallback as Any)
+    }
+    
+    private func setDefaultOnCellUnHighlightForRow(type: Any.Type, callback: Any){
+        let className = "\(type)"
+        onCellUnHighlight[className] = callback
+    }
 }
 
-extension RowType where Cell : TypedCellType, Cell.Value == Value {
+extension RowType where Self : BaseRow, Cell : TypedCellType, Cell.Value == Value {
     
     public static  var defaultCellUpdate:((Cell, Self) -> ()) {
         set { RowDefaults.sharedInstance.setDefaultCellUpdateForRow(self, callback: newValue) }
@@ -768,6 +782,16 @@ extension RowType where Cell : TypedCellType, Cell.Value == Value {
     public static var defaultRowInitializer:(Self -> ()) {
         set { RowDefaults.sharedInstance.setDefaultRowInitializer(self, callback: newValue) }
         get { return RowDefaults.sharedInstance.defaultRowInitializer(self) as Any as! (Self -> ()) }
+    }
+    
+    public static var defaultOnCellHighlight:((Cell, Self) -> ()) {
+        set { RowDefaults.sharedInstance.setDefaultOnCellHighlightForRow(self, callback: newValue) }
+        get { return RowDefaults.sharedInstance.defaultOnCellHighlightForRow(self) as Any as! ((Cell, Self) -> ()) }
+    }
+    
+    public static var defaultOnCellUnHighlight:((Cell, Self) -> ()) {
+        set { RowDefaults.sharedInstance.setDefaultOnCellUnHighlightForRow(self, callback: newValue) }
+        get { return RowDefaults.sharedInstance.defaultOnCellUnHighlightForRow(self) as Any as! ((Cell, Self) -> ()) }
     }
     
     public var cellUpdateCallback: ((Cell, Self) -> ())? {
@@ -805,15 +829,27 @@ extension RowType where Cell : TypedCellType, Cell.Value == Value {
         callbackCellOnSelection = callback
         return self
     }
+    
+    public func onCellHighlight(callback: (Cell, Self)->()) -> Self {
+        callbackOnCellHighlight = callback
+        return self
+    }
+    
+    public func onCellUnHighlight(callback: (Cell, Self)->()) -> Self {
+        callbackOnCellUnHighlight = callback
+        return self
+    }
 }
 
 
 public class BaseRow : BaseRowType {
 
-    public var callbackOnChange: Any?
-    public var callbackCellUpdate: Any?
-    public var callbackCellSetup: Any?
-    public var callbackCellOnSelection: Any?
+    private var callbackOnChange: Any?
+    private var callbackCellUpdate: Any?
+    private var callbackCellSetup: Any?
+    private var callbackCellOnSelection: Any?
+    private var callbackOnCellHighlight: Any?
+    private var callbackOnCellUnHighlight: Any?
     
     public var title: String?
     public var cellStyle = UITableViewCellStyle.Value1
@@ -844,6 +880,10 @@ public class BaseRow : BaseRowType {
     }
     public func updateCell() {}
     public func didSelect() {}
+    
+    public func hightlightCell() {}
+    public func unhighlightCell() {}
+    
     public func prepareForSegue(segue: UIStoryboardSegue) {}
     
     public final func indexPath() -> NSIndexPath? {
@@ -1034,7 +1074,6 @@ public class Row<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value =
 
     override public func updateCell() {
         super.updateCell()
-        cell?.row = self
         cell?.update()
         customUpdateCell()
         let callback : ((Cell, Row<T, Cell>) -> ()) = (RowDefaults.sharedInstance.defaultCellUpdateForRow(self.dynamicType) as! (((Cell, Row<T, Cell>) -> ())))
@@ -1057,10 +1096,141 @@ public class Row<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value =
         }
     }
     
+    override public func hightlightCell() {
+        super.hightlightCell()
+        cell.highlight()
+        let callback : ((Cell, Row<T, Cell>) -> ()) = (RowDefaults.sharedInstance.defaultOnCellHighlightForRow(self.dynamicType) as! (((Cell, Row<T, Cell>) -> ())))
+        callback(cell!, self)
+        if let callback = callbackOnCellHighlight{
+            (callback as! ((Cell, Row<T, Cell>) -> ()))(cell!, self)
+        }
+    }
+    
+    public override func unhighlightCell() {
+        super.unhighlightCell()
+        cell.unhighlight()
+        let callback : ((Cell, Row<T, Cell>) -> ()) = (RowDefaults.sharedInstance.defaultOnCellUnHighlightForRow(self.dynamicType) as! (((Cell, Row<T, Cell>) -> ())))
+        callback(cell!, self)
+        if let callback = callbackOnCellUnHighlight{
+            (callback as! ((Cell, Row<T, Cell>) -> ()))(cell!, self)
+        }
+    }
+    
     public func customDidSelect(){}
     
     public func customUpdateCell(){}
     
+}
+
+public class SelectorRow<T: Equatable, VCType: TypedRowControllerType where VCType: UIViewController,  VCType.RowValue == T>: OptionsRow<T, PushSelectorCell<T>> {
+    
+    public var presentationMode: PresentationMode<VCType>?
+    public var onPresentCallback : ((FormViewController, VCType)->())?
+    
+    required public init(tag: String?) {
+        super.init(tag: tag)
+    }
+    
+    public required convenience init(_ tag: String, _ initializer: (SelectorRow<T, VCType> -> ()) = { _ in }) {
+        self.init(tag:tag)
+        let callback : (SelectorRow<T, VCType> -> ()) = RowDefaults.sharedInstance.defaultRowInitializer(self.dynamicType) as! SelectorRow<T, VCType> -> ()
+        callback(self)
+        initializer(self)
+    }
+    
+    public override func customDidSelect() {
+        super.customDidSelect()
+        if !isDisabled {
+            if let presentationMode = presentationMode {
+                if let controller = presentationMode.createController(){
+                    controller.row = self
+                    if let title = selectorTitle {
+                        controller.title = title
+                    }
+                    onPresentCallback?(cell.formViewController()!, controller)
+                    presentationMode.presentViewController(controller, row: self, presentingViewController: self.cell.formViewController()!)
+                }
+                else{
+                    presentationMode.presentViewController(nil, row: self, presentingViewController: self.cell.formViewController()!)
+                }
+            }
+        }
+    }
+    
+    public override func prepareForSegue(segue: UIStoryboardSegue) {
+        super.prepareForSegue(segue)
+        guard let rowVC = segue.destinationViewController as? VCType else {
+            return
+        }
+        if let title = selectorTitle {
+            rowVC.title = title
+        }
+        if let callback = self.presentationMode?.completionHandler{
+            rowVC.completionCallback = callback
+        }
+        onPresentCallback?(cell.formViewController()!, rowVC)
+        rowVC.row = self
+    }
+}
+
+public class GenericMultipleSelectorRow<T: Hashable, VCType: TypedRowControllerType where VCType: UIViewController,  VCType.RowValue == Set<T>>: Row<Set<T>, PushSelectorCell<Set<T>>> {
+    
+    public var presentationMode: PresentationMode<VCType>?
+    public var onPresentCallback : ((FormViewController, VCType)->())?
+    
+    public var selectorTitle: String?
+    
+    public var options: [T] {
+        get { return self.dataProvider?.arrayData?.map({ $0.first! }) ?? [] }
+        set { self.dataProvider = DataProvider(arrayData: newValue.map({ Set<T>(arrayLiteral: $0) })) }
+    }
+    
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        presentationMode = .Show(controllerProvider: ControllerProvider.Callback { return VCType() }, completionCallback: { vc in vc.navigationController?.popViewControllerAnimated(true) })
+    }
+    
+    public required convenience init(_ tag: String, _ initializer: (GenericMultipleSelectorRow<T, VCType> -> ()) = { _ in }) {
+        self.init(tag:tag)
+        let callback : (GenericMultipleSelectorRow<T, VCType> -> ()) = RowDefaults.sharedInstance.defaultRowInitializer(self.dynamicType) as! GenericMultipleSelectorRow<T, VCType> -> ()
+        callback(self)
+        initializer(self)
+    }
+    
+    public override func customDidSelect() {
+        super.customDidSelect()
+        if !isDisabled {
+            if let presentationMode = presentationMode {
+                if let controller = presentationMode.createController(){
+                    controller.row = self
+                    if let title = selectorTitle {
+                        controller.title = title
+                    }
+                    onPresentCallback?(cell.formViewController()!, controller)
+                    presentationMode.presentViewController(controller, row: self, presentingViewController: self.cell.formViewController()!)
+                }
+                else{
+                    presentationMode.presentViewController(nil, row: self, presentingViewController: self.cell.formViewController()!)
+                }
+            }
+        }
+    }
+    
+    public override func prepareForSegue(segue: UIStoryboardSegue) {
+        super.prepareForSegue(segue)
+        guard let rowVC = segue.destinationViewController as? VCType else {
+            return
+        }
+        if let title = selectorTitle {
+            rowVC.title = title
+        }
+        if let callback = self.presentationMode?.completionHandler{
+            rowVC.completionCallback = callback
+        }
+        onPresentCallback?(cell.formViewController()!, rowVC)
+        rowVC.row = self
+        
+    }
 }
 
 // MARK: Operators
@@ -1119,6 +1289,10 @@ public func +=< C : CollectionType where C.Generator.Element == Section>(inout l
 
 public protocol TextFieldCell {
     var textField : UITextField { get }
+}
+
+public protocol AreaCell {
+    var textView: UITextView { get }
 }
 
 extension CellType where Self: UITableViewCell {
@@ -1200,19 +1374,6 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
     }
     
     public override func didSelect() {}
-    
-    private var _titleColor: UIColor! = .blackColor()
-    public override func highlight(){
-        super.highlight()
-        _titleColor = textLabel?.textColor
-        textLabel?.textColor = tintColor
-    }
-    
-    public override func unhighlight(){
-        super.unhighlight()
-        textLabel?.textColor = _titleColor
-        row.updateCell()
-    }
     
     public override func canBecomeFirstResponder() -> Bool {
         return false
@@ -1344,7 +1505,7 @@ public enum PresentationMode<VCType: UIViewController> {
 }
 
 public protocol FormatterProtocol{
-    func getNewPosition(forPosition forPosition: UITextPosition, inTextField: UITextField, oldValue: String?, newValue: String?) -> UITextPosition
+    func getNewPosition(forPosition forPosition: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition
 }
 
 //MARK: Predicate Machine
@@ -1675,11 +1836,11 @@ extension FormViewController : FormViewControllerProtocol {
     //MARK: FormViewControllerProtocol
     
     public func beginEditing<T:Equatable>(cell: Cell<T>) {
-        cell.highlight()
+        cell.row.hightlightCell()
     }
     
     public func endEditing<T:Equatable>(cell: Cell<T>) {
-        cell.unhighlight()
+        cell.row.unhighlightCell()
     }
     
     public func insertAnimationForRows(rows: [BaseRow]) -> UITableViewRowAnimation {

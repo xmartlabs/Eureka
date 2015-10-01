@@ -809,8 +809,8 @@ class FormatterExample : FormViewController {
             return true
         }
         
-        func getNewPosition(forPosition position: UITextPosition, inTextField textField: UITextField, oldValue: String?, newValue: String?) -> UITextPosition {
-            return textField.positionFromPosition(position, offset:((newValue?.characters.count ?? 0) - (oldValue?.characters.count ?? 0))) ?? position
+        func getNewPosition(forPosition position: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition {
+            return textInput.positionFromPosition(position, offset:((newValue?.characters.count ?? 0) - (oldValue?.characters.count ?? 0))) ?? position
         }
     }
 }

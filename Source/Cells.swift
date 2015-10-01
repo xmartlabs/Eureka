@@ -75,29 +75,29 @@ public typealias ButtonCell = ButtonCellOf<String>
 
 // MARK: FieldCell
 
-public protocol FieldTypeInitiable {
+public protocol InputTypeInitiable {
     init?(string stringValue: String)
 }
 
-extension Int: FieldTypeInitiable {
+extension Int: InputTypeInitiable {
 
     public init?(string stringValue: String){
         self.init(stringValue, radix: 10)
     }
 }
-extension Float: FieldTypeInitiable {
+extension Float: InputTypeInitiable {
     public init?(string stringValue: String){
         self.init(stringValue)
     }
 }
-extension String: FieldTypeInitiable {
+extension String: InputTypeInitiable {
     public init?(string stringValue: String){
         self.init(stringValue)
     }
 }
-extension NSURL: FieldTypeInitiable {}
+extension NSURL: InputTypeInitiable {}
 
-public class _FieldCell<T where T: Equatable, T: FieldTypeInitiable> : Cell<T>, UITextFieldDelegate, TextFieldCell {
+public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, UITextFieldDelegate, TextFieldCell {
     lazy public var textField : UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -132,18 +132,6 @@ public class _FieldCell<T where T: Equatable, T: FieldTypeInitiable> : Cell<T>, 
         imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
         textField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
         
-    }
-    
-    public func valueFromString(string: String?) -> T? {
-        if let formatter = (row as? FieldRowConformance)?.formatter {
-            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = nil
-            let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
-            formatter.getObjectValue(value, forString: string!, errorDescription: errorDesc)
-            return value as? T
-        }
-        else{
-            return row.value
-        }
     }
     
     public override func update() {
@@ -238,7 +226,7 @@ public class _FieldCell<T where T: Equatable, T: FieldTypeInitiable> : Cell<T>, 
                     let oldVal = textField.text
                     textField.text = row.displayValueFor?(row.value)
                     if let f = formatter as? FormatterProtocol {
-                        selStartPos = f.getNewPosition(forPosition: selStartPos, inTextField: textField, oldValue: oldVal, newValue: textField.text)
+                        selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text)
                     }
                     textField.selectedTextRange = textField.textRangeFromPosition(selStartPos, toPosition: selStartPos)
                 }
@@ -266,7 +254,6 @@ public class _FieldCell<T where T: Equatable, T: FieldTypeInitiable> : Cell<T>, 
     }
     
     public func textFieldDidEndEditing(textField: UITextField) {
-        textFieldDidChange(textField)
         formViewController()?.endEditing(self)
         if let fieldRowConformance = (row as? FieldRowConformance), let _ = fieldRowConformance.formatter where !fieldRowConformance.useFormatterDuringInput {
             textField.text = row.displayValueFor?(row.value)
@@ -419,8 +406,6 @@ public class DateCell : Cell<NSDate>, CellType {
         return UIDatePicker()
     }()
     
-    private var _detailColor : UIColor!
-    
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
@@ -488,23 +473,9 @@ public class DateCell : Cell<NSDate>, CellType {
     public override func canBecomeFirstResponder() -> Bool {
         return !row.isDisabled;
     }
-    
-    public override func becomeFirstResponder() -> Bool {
-        _detailColor = detailTextLabel?.textColor
-        return super.becomeFirstResponder()
-    }
-    
-    public override func highlight() {
-        detailTextLabel?.textColor = tintColor
-    }
-    
-    public override func unhighlight() {
-        detailTextLabel?.textColor = _detailColor
-    }
-
 }
 
-public class _TextAreaCell<T: Equatable> : Cell<T>, UITextViewDelegate {
+public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, UITextViewDelegate, AreaCell {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -513,6 +484,8 @@ public class _TextAreaCell<T: Equatable> : Cell<T>, UITextViewDelegate {
     public lazy var placeholderLabel : UILabel = {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.numberOfLines = 0
+        v.textColor = UIColor(white: 0, alpha: 0.22)
         return v
     }()
     
@@ -524,27 +497,17 @@ public class _TextAreaCell<T: Equatable> : Cell<T>, UITextViewDelegate {
     
     private var dynamicConstraints = [NSLayoutConstraint]()
     
-    deinit {
-        placeholderLabel.removeObserver(self, forKeyPath: "text")
-    }
-    
     public override func setup() {
         super.setup()
         height = { 110 }
+        textView.keyboardType = .Default
         textView.delegate = self
         textLabel?.text = nil
         textView.font = .preferredFontForTextStyle(UIFontTextStyleBody)
-        placeholderLabel.text = (row as? TextAreaProtocol)?.placeholder
-        placeholderLabel.numberOfLines = 0
-        placeholderLabel.sizeToFit()
-        textView.addSubview(placeholderLabel)
-        placeholderLabel.font = .systemFontOfSize(textView.font!.pointSize)
-        placeholderLabel.textColor = UIColor(white: 0, alpha: 0.22)
-        
+        placeholderLabel.font = textView.font
         selectionStyle = .None
         contentView.addSubview(textView)
         contentView.addSubview(placeholderLabel)
-        placeholderLabel.addObserver(self, forKeyPath: "text", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
         
         let views : [String: AnyObject] =  ["textView": textView, "label": placeholderLabel]
         contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-8-[label]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
@@ -557,11 +520,12 @@ public class _TextAreaCell<T: Equatable> : Cell<T>, UITextViewDelegate {
     
     public override func update() {
         super.update()
-        placeholderLabel.hidden = textView.text.characters.count != 0
-        textView.keyboardType = .Default
         textView.editable = !row.isDisabled
         textView.textColor = row.isDisabled ? .grayColor() : .blackColor()
-
+        textView.text = row.displayValueFor?(row.value)
+        placeholderLabel.text = (row as? TextAreaConformance)?.placeholder
+        placeholderLabel.sizeToFit()
+        placeholderLabel.hidden = textView.text.characters.count != 0
     }
     
     public override func cellCanBecomeFirstResponder() -> Bool {
@@ -572,16 +536,53 @@ public class _TextAreaCell<T: Equatable> : Cell<T>, UITextViewDelegate {
         return textView.becomeFirstResponder()
     }
     
-    public func textViewDidChange(textView: UITextView) {
-        placeholderLabel.hidden = textView.text.characters.count != 0
-        row.value = textView.text as? T
-    }
-    
-    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKindKey] where obj === placeholderLabel && keyPathValue == "text" && changeType.unsignedLongValue == NSKeyValueChange.Setting.rawValue{
-                    contentView.setNeedsUpdateConstraints()
+    public func textViewDidBeginEditing(textView: UITextView) {
+        formViewController()?.beginEditing(self)
+        if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter where !textAreaConformance.useFormatterDuringInput {
+            textView.text = row.displayValueFor?(row.value)
         }
     }
+    
+    public func textViewDidEndEditing(textView: UITextView) {
+        formViewController()?.endEditing(self)
+        if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter where !textAreaConformance.useFormatterDuringInput {
+            textView.text = row.displayValueFor?(row.value)
+        }
+    }
+    
+    public func textViewDidChange(textView: UITextView) {
+        placeholderLabel.hidden = textView.text.characters.count != 0
+        guard let textValue = textView.text else {
+            row.value = nil
+            return
+        }
+        if let fieldRow = row as? TextAreaConformance, let formatter = fieldRow.formatter where fieldRow.useFormatterDuringInput {
+            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
+            let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
+            if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
+                row.value = value.memory as? T
+                if var selStartPos = textView.selectedTextRange?.start {
+                    let oldVal = textView.text
+                    textView.text = row.displayValueFor?(row.value)
+                    if let f = formatter as? FormatterProtocol {
+                        selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textView, oldValue: oldVal, newValue: textView.text)
+                    }
+                    textView.selectedTextRange = textView.textRangeFromPosition(selStartPos, toPosition: selStartPos)
+                }
+                return
+            }
+        }
+        guard !textValue.isEmpty else {
+            row.value = nil
+            return
+        }
+        guard let newValue = T.init(string: textValue) else {
+            row.updateCell()
+            return
+        }
+        row.value = newValue
+    }
+    
 }
 
 public class TextAreaCell : _TextAreaCell<String>, CellType {
@@ -589,12 +590,6 @@ public class TextAreaCell : _TextAreaCell<String>, CellType {
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
-    public override func update() {
-        super.update()
-        textView.text = row.value
-    }
-    
 }
 
 public class CheckCell : Cell<Bool>, CellType {
