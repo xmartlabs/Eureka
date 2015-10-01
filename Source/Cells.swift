@@ -136,6 +136,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     
     public override func update() {
         super.update()
+        detailTextLabel?.text = nil
         if let title = row.title {
             textField.textAlignment = title.isEmpty ? .Left : .Right
             textField.clearButtonMode = title.isEmpty ? .WhileEditing : .Never
@@ -145,7 +146,6 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
             textField.clearButtonMode =  .WhileEditing
         }
         textField.delegate = self
-        detailTextLabel?.text = nil
         textField.text = row.displayValueFor?(row.value)
         textField.enabled = !row.isDisabled
         textField.textColor = row.isDisabled ? .grayColor() : .blackColor()
@@ -502,7 +502,6 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         height = { 110 }
         textView.keyboardType = .Default
         textView.delegate = self
-        textLabel?.text = nil
         textView.font = .preferredFontForTextStyle(UIFontTextStyleBody)
         placeholderLabel.font = textView.font
         selectionStyle = .None
@@ -520,6 +519,8 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     
     public override func update() {
         super.update()
+        textLabel?.text = nil
+        detailTextLabel?.text = nil
         textView.editable = !row.isDisabled
         textView.textColor = row.isDisabled ? .grayColor() : .blackColor()
         textView.text = row.displayValueFor?(row.value)
