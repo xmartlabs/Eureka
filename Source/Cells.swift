@@ -187,8 +187,8 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
                 dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-11-[titleLabel]-11-|", options: .AlignAllBaseline, metrics: nil, views: ["titleLabel": label])
                 dynamicConstraints.append(NSLayoutConstraint(item: label, attribute: .CenterY, relatedBy: .Equal, toItem: textField, attribute: .CenterY, multiplier: 1, constant: 0))
         }
-        if let image = imageView?.image {
-            views["image"] = image
+        if let _ = imageView?.image {
+            views["image"] = imageView
             if let text = titleLabel?.text where !text.isEmpty {
                 views["label"] = titleLabel!
                 dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[image]-[label]-[textField]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
