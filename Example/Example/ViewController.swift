@@ -263,8 +263,14 @@ class CustomCellsController : FormViewController {
                 $0.header = header
             }
             +++ Section("WeekDay cell")
-            <<< WeekDayRow(){ $0.value = [.Monday, .Wednesday, .Friday] }
-            <<< FloatLabelRow() { $0.title = "Float Label Row, type something to see.." }
+            
+                <<< WeekDayRow(){
+                    $0.value = [.Monday, .Wednesday, .Friday]
+                }
+               
+                <<< FloatLabelRow() {
+                    $0.title = "Float Label Row, type something to see.."
+                }
     }
 }
 
