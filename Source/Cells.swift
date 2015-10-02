@@ -178,24 +178,23 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     
     public override func updateConstraints(){
         contentView.removeConstraints(dynamicConstraints)
+        dynamicConstraints = []
         var views : [String: AnyObject] =  ["textField": textField]
-        
-        
         dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-11-[textField]-11-|", options: .AlignAllBaseline, metrics: nil, views: ["textField": textField])
         
-        if let label = titleLabel, _ = label.text {
+        if let label = titleLabel, let text = label.text where !text.isEmpty {
                 dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-11-[titleLabel]-11-|", options: .AlignAllBaseline, metrics: nil, views: ["titleLabel": label])
                 dynamicConstraints.append(NSLayoutConstraint(item: label, attribute: .CenterY, relatedBy: .Equal, toItem: textField, attribute: .CenterY, multiplier: 1, constant: 0))
         }
-        if let image = imageView?.image {
-            views["image"] = image
+        if let imageView = imageView, let _ = imageView.image {
+            views["imageView"] = imageView
             if let text = titleLabel?.text where !text.isEmpty {
                 views["label"] = titleLabel!
-                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[image]-[label]-[textField]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[label]-[textField]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views)
                 dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
             }
             else{
-                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[image]-[textField]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[textField]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
             }
         }
         else{
@@ -709,10 +708,9 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         result.setContentHuggingPriority(500, forAxis: .Horizontal)
         return result
     }()
-    private var dynamicConstraints : [NSLayoutConstraint]?
+    private var dynamicConstraints = [NSLayoutConstraint]()
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        dynamicConstraints = nil
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
@@ -757,20 +755,18 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     }
     
     public override func updateConstraints() {
-        if let dynConst = dynamicConstraints {
-            contentView.removeConstraints(dynConst)
-        }
+        contentView.removeConstraints(dynamicConstraints)
         dynamicConstraints = []
         var views : [String: AnyObject] =  ["segmentedControl": segmentedControl]
         if (titleLabel?.text?.isEmpty == false) {
             views["titleLabel"] = titleLabel
             dynamicConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[titleLabel]-16-[segmentedControl]-|", options: .AlignAllCenterY, metrics: nil, views: views)
-            dynamicConstraints?.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("V:|-12-[titleLabel]-12-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
+            dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("V:|-12-[titleLabel]-12-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
         }
         else{
             dynamicConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[segmentedControl]-|", options: .AlignAllCenterY, metrics: nil, views: views)
         }
-        contentView.addConstraints(dynamicConstraints!)
+        contentView.addConstraints(dynamicConstraints)
         super.updateConstraints()
     }
     

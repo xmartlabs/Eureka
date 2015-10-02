@@ -176,7 +176,6 @@ class RowsExampleViewController: FormViewController {
                         $0.title = "MultipleSelectorRow"
                         $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
                         $0.value = [👦🏼, 🍐, 🐗]
-                        $0.selectorTitle = ""
                     }
                     .onPresent { from, to in
                         to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: from, action: "multipleSelectorDone:")
@@ -281,9 +280,15 @@ class FieldRowCustomizationController : FormViewController {
                         $0.title = "Your name:"
                         $0.placeholder = "(right alignment)"
                     }
+                    .cellSetup { cell, row in
+                        cell.imageView?.image = UIImage(named: "plus_image")
+                    }
             
                 <<< NameRow() {
                         $0.placeholder = "Name (left alignment)"
+                    }
+                    .cellSetup { cell, row in
+                        cell.imageView?.image = UIImage(named: "plus_image")
                     }
             
             +++ Section("Customized Alignment")
