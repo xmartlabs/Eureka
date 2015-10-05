@@ -1664,6 +1664,10 @@ public class FormViewController : UIViewController {
         baseRow?.prepareForSegue(segue)
     }
     
+    //MARK: FormDelegate
+    
+    public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any, newValue: Any) {}
+    
     //MARK: Private
     
     private var oldBottomInset : CGFloat = 0.0
@@ -1818,8 +1822,6 @@ extension FormViewController : FormDelegate {
         tableView?.reloadRowsAtIndexPaths(atIndexPaths, withRowAnimation: reloadAnimationOldRows(oldRows, newRows: newRows))
         tableView?.endUpdates()
     }
-    
-    public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any, newValue: Any) {}
 }
 
 extension FormViewController : UIScrollViewDelegate {
