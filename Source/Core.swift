@@ -163,6 +163,13 @@ public final class Form {
                     }
     }
     
+    public func setValues(values: [String: Any]){
+        for (key, value) in values{
+            let row: BaseRow? = rowByTag(key)
+            row?.baseValue = value
+        }
+    }
+    
     public var rows: [BaseRow] { return flatMap { $0 } }
     public var allRows: [BaseRow] { return kvoWrapper._allSections.map({ $0.kvoWrapper._allRows }).flatMap { $0 } }
     

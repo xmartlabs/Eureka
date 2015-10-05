@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		284729601BBA4C5E006F41DA /* FormValuesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2847295F1BBA4C5E006F41DA /* FormValuesTests.swift */; settings = {ASSET_TAGS = (); }; };
 		28B12FD51BA0E83C00F27A23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28B12FD41BA0E83C00F27A23 /* Assets.xcassets */; settings = {ASSET_TAGS = (); }; };
+		28B9B6901BC306F100CCA9B4 /* RowByTagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B9B68F1BC306F100CCA9B4 /* RowByTagTests.swift */; settings = {ASSET_TAGS = (); }; };
+		28B9B6921BC3191000CCA9B4 /* SetValuesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B9B6911BC3191000CCA9B4 /* SetValuesTests.swift */; settings = {ASSET_TAGS = (); }; };
 		28E855471B9EA321004E5189 /* BaseEurekaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E855461B9EA321004E5189 /* BaseEurekaTests.swift */; settings = {ASSET_TAGS = (); }; };
 		51729DF61B9A4F5E004A00EB /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51729DEB1B9A4F5E004A00EB /* Eureka.framework */; settings = {ASSET_TAGS = (); }; };
 		51729E0B1B9A50E7004A00EB /* Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51729E051B9A50E7004A00EB /* Cells.swift */; settings = {ASSET_TAGS = (); }; };
@@ -38,6 +40,8 @@
 /* Begin PBXFileReference section */
 		2847295F1BBA4C5E006F41DA /* FormValuesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FormValuesTests.swift; path = Tests/FormValuesTests.swift; sourceTree = SOURCE_ROOT; };
 		28B12FD41BA0E83C00F27A23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Source/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		28B9B68F1BC306F100CCA9B4 /* RowByTagTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RowByTagTests.swift; path = Tests/RowByTagTests.swift; sourceTree = SOURCE_ROOT; };
+		28B9B6911BC3191000CCA9B4 /* SetValuesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SetValuesTests.swift; path = Tests/SetValuesTests.swift; sourceTree = SOURCE_ROOT; };
 		28E855461B9EA321004E5189 /* BaseEurekaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseEurekaTests.swift; path = Tests/BaseEurekaTests.swift; sourceTree = SOURCE_ROOT; };
 		51729DEB1B9A4F5E004A00EB /* Eureka.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Eureka.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51729DF01B9A4F5E004A00EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Source/Info.plist; sourceTree = "<group>"; };
@@ -122,6 +126,8 @@
 				51729DFC1B9A4F5E004A00EB /* Info.plist */,
 				BF527EB31BAB3DF100BA63C2 /* HiddenRowsTests.swift */,
 				2847295F1BBA4C5E006F41DA /* FormValuesTests.swift */,
+				28B9B68F1BC306F100CCA9B4 /* RowByTagTests.swift */,
+				28B9B6911BC3191000CCA9B4 /* SetValuesTests.swift */,
 			);
 			name = Tests;
 			path = EurekaTests;
@@ -252,10 +258,12 @@
 				BF32F6551BA209C600440D03 /* DateTests.swift in Sources */,
 				28E855471B9EA321004E5189 /* BaseEurekaTests.swift in Sources */,
 				BF53E6111B9F727C006258EB /* OperatorsTest.swift in Sources */,
+				28B9B6921BC3191000CCA9B4 /* SetValuesTests.swift in Sources */,
 				BF32F6531BA204B300440D03 /* HelperMethodTests.swift in Sources */,
 				BF527EB41BAB3DF100BA63C2 /* HiddenRowsTests.swift in Sources */,
 				BF588EC41B9F5AC300BE426E /* CollectionTests.swift in Sources */,
 				284729601BBA4C5E006F41DA /* FormValuesTests.swift in Sources */,
+				28B9B6901BC306F100CCA9B4 /* RowByTagTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
