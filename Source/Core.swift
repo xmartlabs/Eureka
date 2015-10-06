@@ -51,7 +51,7 @@ public protocol FormDelegate : class {
 public protocol HeaderFooterViewRepresentable {
     func viewForSection(section: Section, type: HeaderFooterType, controller: FormViewController) -> UIView?
     var title: String? { get set }
-    var height: CGFloat? { get set }
+    var height: (()->CGFloat)? { get set }
 }
 
 //MARK: Row Protocols
@@ -96,7 +96,7 @@ public protocol PresenterRowType: TypedRowType {
 
 public protocol BaseCellType : class {
     
-    var height : (()-> CGFloat)? { get }
+    var height : (()->CGFloat)? { get }
     func setup()
     func update()
     func didSelect()
@@ -488,7 +488,7 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
     public var title: String?
     public var viewProvider: HeaderFooterProvider<ViewType>?
     public var onSetupView: ((view: ViewType, section: Section, form: FormViewController) -> ())?
-    public var height: CGFloat?
+    public var height: (()->CGFloat)?
 
     lazy internal var staticView : ViewType? = {
         guard let view = self.viewProvider?.createView() else { return nil }
@@ -1724,7 +1724,7 @@ extension FormViewController : UITableViewDelegate {
     
     public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if let height = form[section].header?.height {
-            return height
+            return height()
         }
         guard let view = form[section].header?.viewForSection(form[section], type: .Header, controller: self) else{
             return UITableViewAutomaticDimension
@@ -1737,7 +1737,7 @@ extension FormViewController : UITableViewDelegate {
     
     public func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if let height = form[section].footer?.height {
-            return height
+            return height()
         }
         guard let view = form[section].footer?.viewForSection(form[section], type: .Footer, controller: self) else{
             return UITableViewAutomaticDimension
