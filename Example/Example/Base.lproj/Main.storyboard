@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A279b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="6g3-M9-WkD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="6g3-M9-WkD">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -172,6 +172,7 @@
                         <segue destination="dNv-jC-9dj" kind="push" identifier="HiddenRowsControllerSegue" id="0ae-09-D0q"/>
                         <segue destination="pxw-b6-Gas" kind="push" identifier="FormattersControllerSegue" id="ge5-Vi-S0G"/>
                         <segue destination="WZQ-di-uNi" kind="push" identifier="DisabledRowsControllerSegue" id="eDe-eK-e8n"/>
+                        <segue destination="42E-0V-OKN" kind="push" identifier="InlineRowsControllerSegue" id="sMp-yV-Evw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Eoz-Jq-Zy9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -303,7 +304,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YUF-3z-UZS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="786" y="1058"/>
+            <point key="canvasLocation" x="813" y="1077"/>
         </scene>
         <!--Hidden Rows Example-->
         <scene sceneID="1aj-zH-uva">
@@ -376,6 +377,42 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oSy-Z6-fUt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-264" y="1058"/>
+        </scene>
+        <!--Inline Rows Controller-->
+        <scene sceneID="8X6-E2-OcV">
+            <objects>
+                <viewController id="42E-0V-OKN" customClass="InlineRowsController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="SRV-pK-PEN"/>
+                        <viewControllerLayoutGuide type="bottom" id="m0W-vb-AEG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fsw-zF-lOT">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="dbo-b8-KHY">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </tableView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="m0W-vb-AEG" firstAttribute="top" secondItem="dbo-b8-KHY" secondAttribute="bottom" id="7la-3W-uNs"/>
+                            <constraint firstAttribute="trailing" secondItem="dbo-b8-KHY" secondAttribute="trailing" id="BdD-5b-xpl"/>
+                            <constraint firstItem="dbo-b8-KHY" firstAttribute="top" secondItem="SRV-pK-PEN" secondAttribute="bottom" constant="-64" id="MuD-QK-LWW"/>
+                            <constraint firstItem="dbo-b8-KHY" firstAttribute="leading" secondItem="fsw-zF-lOT" secondAttribute="leading" id="TXh-mt-vGc"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="v8s-ob-kpd"/>
+                    <connections>
+                        <outlet property="tableView" destination="dbo-b8-KHY" id="IJn-wp-dj2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YKM-SH-UZU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="796" y="1738"/>
         </scene>
     </scenes>
 </document>

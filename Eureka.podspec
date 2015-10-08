@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.summary = 'Elegant iOS Forms in pure Swift 2'
   s.homepage = 'https://github.com/xmartlabs/Eureka'
   s.social_media_url = 'http://twitter.com/xmartlabs'
-  s.authors = { 'Martin Barreto' => 'martin@xmartlabs.com', 'Mathias Classen' => 'mathias@xmartlabs.com' }
+  s.authors = { 'Martin Barreto' => 'martin@xmartlabs.com', 'Mathias Claassen' => 'mathias@xmartlabs.com' }
   s.source = { :git => 'https://github.com/xmartlabs/Eureka.git', :tag => s.version }
   s.ios.deployment_target = '8.0'
   s.ios.frameworks = 'UIKit', 'Foundation'
