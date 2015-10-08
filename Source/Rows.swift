@@ -73,7 +73,13 @@ public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TextFie
     }
 }
 
-public class _DateFieldRow: Row<NSDate, DateCell> {
+public protocol _DatePickerRowProtocol {
+    var minimumDate : NSDate? { get set }
+    var maximumDate : NSDate? { get set }
+    var minuteInterval : Int? { get set }
+}
+
+public class _DateFieldRow: Row<NSDate, DateCell>, _DatePickerRowProtocol {
     
     public var minimumDate : NSDate?
     public var maximumDate : NSDate?
@@ -87,7 +93,97 @@ public class _DateFieldRow: Row<NSDate, DateCell> {
             return formatter.stringFromDate(val)
         }
     }
+}
+
+public class _DateInlineFieldRow: Row<NSDate, DateInlineCell>, _DatePickerRowProtocol {
     
+    public var minimumDate : NSDate?
+    public var maximumDate : NSDate?
+    public var minuteInterval : Int?
+    public var dateFormatter: NSDateFormatter?
+    
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        displayValueFor = { [unowned self] value in
+            guard let val = value, let formatter = self.dateFormatter else { return nil }
+            return formatter.stringFromDate(val)
+        }
+    }
+}
+
+public class _DateInlineRow: _DateInlineFieldRow, InlineRowType {
+    
+    public typealias InlineRow = DatePickerRow
+    
+    public required init(tag: String?) {
+        super.init(tag: tag)
+        dateFormatter = NSDateFormatter()
+        dateFormatter?.timeStyle = .NoStyle
+        dateFormatter?.dateStyle = .MediumStyle
+        dateFormatter?.locale = NSLocale.currentLocale()
+    }
+    
+    public override func customDidSelect() {
+        toggleInlineRow()
+    }
+}
+
+public class _DateTimeInlineRow: _DateInlineFieldRow, InlineRowType {
+
+    public typealias InlineRow = DateTimePickerRow
+    
+    public required init(tag: String?) {
+        super.init(tag: tag)
+        dateFormatter = NSDateFormatter()
+        dateFormatter?.timeStyle = .ShortStyle
+        dateFormatter?.dateStyle = .ShortStyle
+        dateFormatter?.locale = NSLocale.currentLocale()
+    }
+    
+    public override func customDidSelect() {
+        toggleInlineRow()
+    }
+}
+
+public class _TimeInlineRow: _DateInlineFieldRow, InlineRowType {
+    
+    public typealias InlineRow = TimePickerRow
+    
+    public required init(tag: String?) {
+        super.init(tag: tag)
+        dateFormatter = NSDateFormatter()
+        dateFormatter?.timeStyle = .ShortStyle
+        dateFormatter?.dateStyle = .NoStyle
+        dateFormatter?.locale = NSLocale.currentLocale()
+    }
+    
+    public override func customDidSelect() {
+        toggleInlineRow()
+    }
+}
+
+public class _CountDownInlineRow: _DateInlineFieldRow, InlineRowType {
+    
+    public typealias InlineRow = CountDownPickerRow
+    
+    public required init(tag: String?) {
+        super.init(tag: tag)
+        displayValueFor =  {
+            guard let date = $0 else {
+                return nil
+            }
+            let hour = NSCalendar.currentCalendar().component(.Hour, fromDate: date)
+            let min = NSCalendar.currentCalendar().component(.Minute, fromDate: date)
+            if hour == 1{
+                return "\(hour) hour \(min) min"
+            }
+            return "\(hour) hours \(min) min"
+        }
+    }
+    
+    public override func customDidSelect() {
+        toggleInlineRow()
+    }
 }
 
 public class _TextRow: FieldRow<String, TextCell> {
@@ -164,7 +260,7 @@ public class _TimeRow: _DateFieldRow {
     required public init(tag: String?) {
         super.init(tag: tag)
         dateFormatter = NSDateFormatter()
-        dateFormatter?.timeStyle = .MediumStyle
+        dateFormatter?.timeStyle = .ShortStyle
         dateFormatter?.dateStyle = .NoStyle
         dateFormatter?.locale = NSLocale.currentLocale()
     }
@@ -211,7 +307,12 @@ public class _CountDownRow: _DateFieldRow {
 }
 
 
-public class _DatePickerRow : Row<NSDate, DatePickerCell> {
+public class _DatePickerRow : Row<NSDate, DatePickerCell>, _DatePickerRowProtocol {
+    
+    public var minimumDate : NSDate?
+    public var maximumDate : NSDate?
+    public var minuteInterval : Int?
+    
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = nil
@@ -530,7 +631,7 @@ public final class LabelRow: _LabelRow, RowType {
     }
 }
 
-public final class TimeRow: _TimeRow, RowType {
+public final class DateRow: _DateRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
         onCellHighlight { cell, row in
@@ -543,13 +644,13 @@ public final class TimeRow: _TimeRow, RowType {
     }
 }
 
-public final class DateRow: _DateRow, RowType {
+public final class TimeRow: _TimeRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
         onCellHighlight { cell, row in
             let color = cell.detailTextLabel?.textColor
             row.onCellUnHighlight { cell, _ in
-               cell.detailTextLabel?.textColor = color
+                cell.detailTextLabel?.textColor = color
             }
             cell.detailTextLabel?.textColor = cell.tintColor
         }
@@ -582,11 +683,84 @@ public final class CountDownRow: _CountDownRow, RowType {
     }
 }
 
+public final class DateInlineRow: _DateInlineRow, RowType {
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        onShowInlineRow { cell, row, _ in
+            let color = cell.detailTextLabel?.textColor
+            row.onHideInlineRow { cell, _, _ in
+                cell.detailTextLabel?.textColor = color
+            }
+            cell.detailTextLabel?.textColor = cell.tintColor
+        }
+    }
+}
+
+public final class TimeInlineRow: _TimeInlineRow, RowType {
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        onShowInlineRow { cell, row, _ in
+            let color = cell.detailTextLabel?.textColor
+            row.onHideInlineRow { cell, _, _ in
+                cell.detailTextLabel?.textColor = color
+            }
+            cell.detailTextLabel?.textColor = cell.tintColor
+        }
+    }
+}
+
+public final class DateTimeInlineRow: _DateTimeInlineRow, RowType {
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        onShowInlineRow { cell, row, _ in
+            let color = cell.detailTextLabel?.textColor
+            row.onHideInlineRow { cell, _, _ in
+                cell.detailTextLabel?.textColor = color
+            }
+            cell.detailTextLabel?.textColor = cell.tintColor
+        }
+    }
+}
+
+public final class CountDownInlineRow: _CountDownInlineRow, RowType {
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        onShowInlineRow { cell, row, _ in
+            let color = cell.detailTextLabel?.textColor
+            row.onHideInlineRow { cell, _, _ in
+                cell.detailTextLabel?.textColor = color
+            }
+            cell.detailTextLabel?.textColor = cell.tintColor
+        }
+    }
+}
+
 public final class DatePickerRow : _DatePickerRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
+
+public final class TimePickerRow : _DatePickerRow, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+
+public final class DateTimePickerRow : _DatePickerRow, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+
+public final class CountDownPickerRow : _DatePickerRow, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+
+
+
 
 public final class TextRow: _TextRow, RowType {
     required public init(tag: String?) {

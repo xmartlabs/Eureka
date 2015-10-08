@@ -40,7 +40,7 @@ class HomeViewController : FormViewController {
         
         form  +++=
             
-            Section(footer: "These are 8 ButtonRow rows") {
+            Section(footer: "These are 9 ButtonRow rows") {
                 $0.header = HeaderFooterView<EurekaLogoView>(HeaderFooterProvider.Class)
             }
         
@@ -83,6 +83,11 @@ class HomeViewController : FormViewController {
                     row.title = row.tag
                     row.presentationMode = .SegueName(segueName: "FormattersControllerSegue", completionCallback:{  vc in vc.dismissViewControllerAnimated(true, completion: nil) })
                 }
+        
+                <<< ButtonRow("Inline rows") { (row: ButtonRow) -> Void in
+                    row.title = row.tag
+                    row.presentationMode = .SegueName(segueName: "InlineRowsControllerSegue", completionCallback:{  vc in vc.dismissViewControllerAnimated(true, completion: nil) })
+        }
     }
 }
 
@@ -453,8 +458,8 @@ class NativeEventFormViewController : FormViewController {
                 SwitchRow("All-day") {
                     $0.title = $0.tag
                 }.onChange { [weak self] row in
-                    let startDate: DateTimeRow! = self?.form.rowByTag("Starts")
-                    let endDate: DateTimeRow! = self?.form.rowByTag("Ends")
+                    let startDate: DateTimeInlineRow! = self?.form.rowByTag("Starts")
+                    let endDate: DateTimeInlineRow! = self?.form.rowByTag("Ends")
                     
                     if row.value ?? false {
                         startDate.dateFormatter?.dateStyle = .MediumStyle
@@ -468,52 +473,47 @@ class NativeEventFormViewController : FormViewController {
                         endDate.dateFormatter?.dateStyle = .ShortStyle
                         endDate.dateFormatter?.timeStyle = .ShortStyle
                     }
-                    
-                    
-                    startDate.cellUpdate { cell, dateRow in
-                        if row.value ?? false {
-                            cell.datePicker.datePickerMode = .Date
-                        }
-                        else {
-                            cell.datePicker.datePickerMode = .DateAndTime
-                        }
-                    }
-                    endDate.cellUpdate { cell, dateRow in
-                        if row.value ?? false {
-                            cell.datePicker.datePickerMode = .Date
-                            dateRow.dateFormatter?.dateStyle = .MediumStyle
-                            dateRow.dateFormatter?.timeStyle = .NoStyle
-                        }
-                        else {
-                            cell.datePicker.datePickerMode = .DateAndTime
-                            dateRow.dateFormatter?.dateStyle = .ShortStyle
-                            dateRow.dateFormatter?.timeStyle = .ShortStyle
-                        }
-                    }
-                    
                     startDate.updateCell()
                     endDate.updateCell()
+                    startDate.inlineRow?.updateCell()
+                    endDate.inlineRow?.updateCell()
                 }
             
-            <<< DateTimeRow("Starts") {
+            <<< DateTimeInlineRow("Starts") {
                     $0.title = $0.tag
                     $0.value = NSDate().dateByAddingTimeInterval(60*60*24)
                 }
                 .onChange { [weak self] row in
-                    let endRow: DateTimeRow! = self?.form.rowByTag("Ends")
+                    let endRow: DateTimeInlineRow! = self?.form.rowByTag("Ends")
                     if row.value?.compare(endRow.value!) == .OrderedDescending {
                         endRow.value = NSDate(timeInterval: 60*60*24, sinceDate: row.value!)
                         endRow.cell!.backgroundColor = .whiteColor()
                         endRow.updateCell()
                     }
                 }
+                .onShowInlineRow { cell, row, inlineRow in
+                    inlineRow.cellUpdate { [weak self] cell, dateRow in
+                        let allRow: SwitchRow! = self?.form.rowByTag("All-day")
+                        if allRow.value ?? false {
+                            cell.datePicker.datePickerMode = .Date
+                        }
+                        else {
+                            cell.datePicker.datePickerMode = .DateAndTime
+                        }
+                    }
+                    let color = cell.detailTextLabel?.textColor
+                    row.onHideInlineRow { cell, _, _ in
+                        cell.detailTextLabel?.textColor = color
+                    }
+                    cell.detailTextLabel?.textColor = cell.tintColor
+                }
             
-            <<< DateTimeRow("Ends"){
+            <<< DateTimeInlineRow("Ends"){
                     $0.title = $0.tag
                     $0.value = NSDate().dateByAddingTimeInterval(60*60*25)
                 }
                 .onChange { [weak self] row in
-                    let startRow: DateTimeRow! = self?.form.rowByTag("Starts")
+                    let startRow: DateTimeInlineRow! = self?.form.rowByTag("Starts")
                     if row.value?.compare(startRow.value!) == .OrderedAscending {
                         row.cell!.backgroundColor = .redColor()
                     }
@@ -521,6 +521,22 @@ class NativeEventFormViewController : FormViewController {
                         row.cell!.backgroundColor = .whiteColor()
                     }
                     row.updateCell()
+                }
+                .onShowInlineRow { cell, row, inlineRow in
+                    inlineRow.cellUpdate { [weak self] cell, dateRow in
+                        let allRow: SwitchRow! = self?.form.rowByTag("All-day")
+                        if allRow.value ?? false {
+                            cell.datePicker.datePickerMode = .Date
+                        }
+                        else {
+                            cell.datePicker.datePickerMode = .DateAndTime
+                        }
+                    }
+                    let color = cell.detailTextLabel?.textColor
+                    row.onHideInlineRow { cell, _, _ in
+                        cell.detailTextLabel?.textColor = color
+                    }
+                    cell.detailTextLabel?.textColor = cell.tintColor
                 }
         
         form +++=
@@ -823,6 +839,71 @@ class FormatterExample : FormViewController {
         func getNewPosition(forPosition position: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition {
             return textInput.positionFromPosition(position, offset:((newValue?.characters.count ?? 0) - (oldValue?.characters.count ?? 0))) ?? position
         }
+    }
+}
+
+class InlineRowsController: FormViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        form.inlineRowHideOptions = InlineRowHideOptions.AnotherInlineRowIsShown.union(.FirstResponderChanges)
+        
+        form
+        
+        +++ Section("Automatically Hide Inline Rows?")
+            
+            <<< SwitchRow() {
+                    $0.title = "Hides when another inline row is shown"
+                    $0.value = true
+                }
+                .onChange { [weak form] in
+                    if $0.value == true {
+                        form?.inlineRowHideOptions = form?.inlineRowHideOptions?.union(.AnotherInlineRowIsShown)
+                    }
+                    else {
+                        form?.inlineRowHideOptions = form?.inlineRowHideOptions?.subtract(.AnotherInlineRowIsShown)
+                    }
+                }
+            
+            <<< SwitchRow() {
+                    $0.title = "Hides when the First Responder changes"
+                    $0.value = true
+                }
+                .onChange { [weak form] in
+                    if $0.value == true {
+                        form?.inlineRowHideOptions = form?.inlineRowHideOptions?.union(.FirstResponderChanges)
+                    }
+                    else {
+                        form?.inlineRowHideOptions = form?.inlineRowHideOptions?.subtract(.FirstResponderChanges)
+                    }
+                }
+            
+        +++ Section()
+            
+            <<< DateInlineRow() {
+                    $0.title = "DateInlineRow"
+                    $0.value = NSDate()
+                }
+            
+            <<< TimeInlineRow(){
+                    $0.title = "TimeInlineRow"
+                    $0.value = NSDate()
+                }
+            
+            <<< DateTimeInlineRow(){
+                    $0.title = "DateTimeInlineRow"
+                    $0.value = NSDate()
+                }
+            
+            <<< CountDownInlineRow(){
+                    $0.title = "CountDownInlineRow"
+                    let dateComp = NSDateComponents()
+                    dateComp.hour = 18
+                    dateComp.minute = 33
+                    dateComp.timeZone = NSTimeZone.systemTimeZone()
+                    $0.value = NSCalendar.currentCalendar().dateFromComponents(dateComp)
+                }
     }
 }
 

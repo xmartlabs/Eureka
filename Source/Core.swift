@@ -69,8 +69,6 @@ public protocol BaseRowType : Taggable {
     var title: String? { get set }
     func updateCell()
     func didSelect()
-    
-    init(tag: String?)
 }
 
 public protocol TypedRowType : BaseRowType {
@@ -83,6 +81,84 @@ public protocol TypedRowType : BaseRowType {
 
 public protocol RowType : TypedRowType {
     init(_ tag: String?, _ initializer: (Self -> ()))
+}
+
+public protocol BaseInlineRowType {
+    func showInlineRow()
+    func hideInlineRow()
+    func toggleInlineRow()
+}
+
+public protocol InlineRowType: TypedRowType, BaseInlineRowType {
+    typealias InlineRow: RowType
+}
+
+extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell : TypedCellType, Self.Cell.Value == Self.Value, Self.InlineRow.Cell.Value == Self.InlineRow.Value, Self.InlineRow.Value == Self.Value {
+    
+    public var inlineRow : Self.InlineRow? { return _inlineRow as? Self.InlineRow }
+    
+    public func showInlineRow() {
+        guard inlineRow == nil else { return }
+        let inline = InlineRow.init() { _ in }
+        inline.value = value
+        inline.onChange { [weak self] in
+            self?.value = $0.value
+            self?.updateCell()
+        }
+        if var section = section, let form = section.form {
+            if (form.inlineRowHideOptions ?? Form.defaultInlineRowHideOptions).contains(.AnotherInlineRowIsShown) {
+                for row in form.allRows {
+                    if let inlineRow = row as? BaseInlineRowType {
+                        inlineRow.hideInlineRow()
+                    }
+                }
+            }
+            if let onShowInlineRowCallback =  onShowInlineRowCallback {
+                onShowInlineRowCallback(cell, self, inline)
+            }
+            if let indexPath = indexPath() {
+                section.insert(inline, atIndex: indexPath.row + 1)
+                _inlineRow = inline
+            }
+        }
+    }
+    
+    public func hideInlineRow() {
+        if let selectedRowPath = indexPath(), let inlineRow = _inlineRow {
+            if let onHideInlineRowCallback = onHideInlineRowCallback {
+                onHideInlineRowCallback(cell, self, inlineRow as! InlineRow)
+            }
+            section?.removeAtIndex(selectedRowPath.row + 1)
+            _inlineRow = nil
+        }
+    }
+    
+    public func toggleInlineRow() {
+        if let _ = inlineRow {
+            hideInlineRow()
+        }
+        else{
+            showInlineRow()
+        }
+    }
+    
+    public func onShowInlineRow(callback: (Cell, Self, InlineRow)->()) -> Self {
+        callbackOnShowInlineRow = callback
+        return self
+    }
+    
+    public func onHideInlineRow(callback: (Cell, Self, InlineRow)->()) -> Self {
+        callbackOnHideInlineRow = callback
+        return self
+    }
+    
+    public var onHideInlineRowCallback: ((Cell, Self, InlineRow)->())? {
+        return callbackOnHideInlineRow as! ((Cell, Self, InlineRow)->())?
+    }
+    
+    public var onShowInlineRowCallback: ((Cell, Self, InlineRow)->())? {
+        return callbackOnShowInlineRow as! ((Cell, Self, InlineRow)->())?
+    }
 }
 
 public protocol PresenterRowType: TypedRowType {
@@ -104,13 +180,14 @@ public protocol BaseCellType : class {
     func unhighlight()
     func cellCanBecomeFirstResponder() -> Bool
     func cellBecomeFirstResponder() -> Bool
+    func cellResignFirstResponder() -> Bool
     func formViewController () -> FormViewController?
 }
 
 
 public protocol TypedCellType : BaseCellType {
     typealias Value : Equatable
-    var row : RowOf<Self.Value>! { get set }
+    var row : RowOf<Value>! { get set }
 }
 
 public protocol CellType: TypedCellType {}
@@ -120,6 +197,9 @@ public protocol CellType: TypedCellType {}
 public final class Form {
 
     public static var defaultNavigationOptions = RowNavigationOptions.Enabled.union(.SkipCanNotBecomeFirstResponderRow)
+    public static var defaultInlineRowHideOptions = InlineRowHideOptions.FirstResponderChanges.union(.AnotherInlineRowIsShown)
+    public var inlineRowHideOptions : InlineRowHideOptions?
+    
     public weak var delegate: FormDelegate?
 
     public init(){}
@@ -173,6 +253,13 @@ public final class Form {
     public var rows: [BaseRow] { return flatMap { $0 } }
     public var allRows: [BaseRow] { return kvoWrapper._allSections.map({ $0.kvoWrapper._allRows }).flatMap { $0 } }
     
+    public func hideInlineRows() {
+        for row in self.allRows {
+            if let inlineRow = row as? BaseInlineRowType {
+                inlineRow.hideInlineRow()
+            }
+        }
+    }
     
     //MARK: Private
     
@@ -702,7 +789,7 @@ extension PresenterRowType {
     }
 }
 
-extension RowType where Cell : TypedCellType, Cell.Value == Self.Value {
+extension RowType where Self: BaseRow, Cell : TypedCellType, Cell.Value == Value {
     
     public init(_ tag: String? = nil, _ initializer: (Self -> ()) = { _ in }) {
         self.init(tag: tag)
@@ -857,6 +944,9 @@ public class BaseRow : BaseRowType {
     private var callbackCellOnSelection: Any?
     private var callbackOnCellHighlight: Any?
     private var callbackOnCellUnHighlight: Any?
+    private var callbackOnShowInlineRow: Any?
+    private var callbackOnHideInlineRow: Any?
+    private var _inlineRow: BaseRow?
     
     public var title: String?
     public var cellStyle = UITableViewCellStyle.Value1
@@ -866,9 +956,6 @@ public class BaseRow : BaseRowType {
         set {}
         get { return nil }
     }
-
-    private var hiddenCache = false
-    private var disabledCache = false
     public var disabled : Condition? {
         willSet { removeFromDisabledRowObservers() }
         didSet  { addToDisabledRowObservers() }
@@ -897,7 +984,14 @@ public class BaseRow : BaseRowType {
         guard let sectionIndex = section?.index, let rowIndex = section?.indexOf(self) else { return nil }
         return NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
     }
-
+    
+    private var hiddenCache = false
+    private var disabledCache = false {
+            willSet { if newValue == true && disabledCache == false  {
+                baseCell.cellResignFirstResponder()
+            }
+        }
+    }
 }
 
 extension BaseRow: Equatable, Hidable, Disableable {}
@@ -1053,7 +1147,6 @@ public class RowOf<T: Equatable>: BaseRow {
     
 }
 
-
 public class Row<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value == T>: RowOf<T>,  TypedRowType {
     
     public var cellProvider = CellProvider<Cell>()
@@ -1081,15 +1174,15 @@ public class Row<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value =
 
     override public func updateCell() {
         super.updateCell()
-        cell?.update()
+        cell.update()
         customUpdateCell()
         let callback : ((Cell, Row<T, Cell>) -> ()) = (RowDefaults.sharedInstance.defaultCellUpdateForRow(self.dynamicType) as! (((Cell, Row<T, Cell>) -> ())))
-        callback(cell!, self)
+        callback(cell, self)
         if let callback = callbackCellUpdate{
-            (callback as! ((Cell, Row<T, Cell>) -> ()))(cell!, self)
+            (callback as! ((Cell, Row<T, Cell>) -> ()))(cell, self)
         }
-        cell?.setNeedsLayout()
-        cell?.setNeedsUpdateConstraints()
+        cell.setNeedsLayout()
+        cell.setNeedsUpdateConstraints()
     }
     
     public override func didSelect() {
@@ -1307,6 +1400,8 @@ extension CellType where Self: UITableViewCell {
 
 public class BaseCell : UITableViewCell, BaseCellType {
     
+    public var baseRow: BaseRow! { return nil }
+    
     public var height: (()->CGFloat)?
     
     public required init?(coder aDecoder: NSCoder) {
@@ -1344,7 +1439,10 @@ public class BaseCell : UITableViewCell, BaseCellType {
     public func cellBecomeFirstResponder() -> Bool {
         return becomeFirstResponder()
     }
-
+    
+    public func cellResignFirstResponder() -> Bool {
+        return resignFirstResponder()
+    }
 }
 
 
@@ -1402,6 +1500,7 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
         return result
     }
     
+    public override var baseRow : BaseRow! { return row }
 }
 
 public struct CellProvider<Cell: BaseCell where Cell: CellType> {
@@ -1583,6 +1682,20 @@ public struct RowNavigationOptions : OptionSetType {
     public static let SkipCanNotBecomeFirstResponderRow = RowNavigationOptions(.SkipCanNotBecomeFirstResponderRow)
 }
 
+public struct InlineRowHideOptions : OptionSetType {
+    
+    private enum _InlineRowHideOptions : Int {
+        case Never = 0, AnotherInlineRowIsShown = 1, FirstResponderChanges = 2
+    }
+    public let rawValue: Int
+    public init(rawValue: Int){ self.rawValue = rawValue}
+    private init(_ options:_InlineRowHideOptions ){ self.rawValue = options.rawValue }
+    
+    public static let Never = InlineRowHideOptions(.Never)
+    public static let AnotherInlineRowIsShown = InlineRowHideOptions(.AnotherInlineRowIsShown)
+    public static let FirstResponderChanges = InlineRowHideOptions(.FirstResponderChanges)
+}
+
 
 public class FormViewController : UIViewController {
     
@@ -1695,7 +1808,6 @@ extension FormViewController : UITableViewDelegate {
     
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard tableView == self.tableView else { return }
-        self.tableView?.endEditing(false)
         if !form[indexPath].baseCell.cellCanBecomeFirstResponder() || !form[indexPath].baseCell.cellBecomeFirstResponder() {
             self.tableView?.endEditing(true)
         }
@@ -1822,8 +1934,6 @@ extension FormViewController : FormDelegate {
         tableView?.endUpdates()
     }
 
-    
-    
     public func rowsHaveBeenReplaced(oldRows oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [NSIndexPath]){
         tableView?.beginUpdates()
         tableView?.reloadRowsAtIndexPaths(atIndexPaths, withRowAnimation: reloadAnimationOldRows(oldRows, newRows: newRows))
@@ -1846,6 +1956,14 @@ extension FormViewController : FormViewControllerProtocol {
     
     public func beginEditing<T:Equatable>(cell: Cell<T>) {
         cell.row.hightlightCell()
+        guard let _ = tableView where (form.inlineRowHideOptions ?? Form.defaultInlineRowHideOptions).contains(.FirstResponderChanges) else { return }
+        let row = cell.baseRow
+        let inlineRow = row._inlineRow
+        for row in form.allRows.filter({ $0 !== row && $0 !== inlineRow && $0._inlineRow != nil }) {
+            if let inlineRow = row as? BaseInlineRowType {
+                inlineRow.hideInlineRow()
+            }
+        }
     }
     
     public func endEditing<T:Equatable>(cell: Cell<T>) {

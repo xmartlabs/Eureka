@@ -168,6 +168,10 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         return textField.becomeFirstResponder()
     }
     
+    public override func cellResignFirstResponder() -> Bool {
+        return textField.resignFirstResponder()
+    }
+    
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKindKey] where ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && changeType.unsignedLongValue == NSKeyValueChange.Setting.rawValue {
             contentView.setNeedsUpdateConstraints()
@@ -188,8 +192,8 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         }
         if let imageView = imageView, let _ = imageView.image {
             views["imageView"] = imageView
-            if let text = titleLabel?.text where !text.isEmpty {
-                views["label"] = titleLabel!
+            if let titleLabel = titleLabel, text = titleLabel.text where !text.isEmpty {
+                views["label"] = titleLabel
                 dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[label]-[textField]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views)
                 dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
             }
@@ -198,8 +202,8 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
             }
         }
         else{
-            if let text = titleLabel?.text where !text.isEmpty {
-                views["label"] = titleLabel!
+            if let titleLabel = titleLabel, let text = titleLabel.text where !text.isEmpty {
+                views["label"] = titleLabel
                 dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|-[label]-[textField]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
                 dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
             }
@@ -366,7 +370,6 @@ public class URLCell : _FieldCell<NSURL>, CellType {
         super.update()
         textField.keyboardType = .URL
     }
-    
 }
 
 public class TwitterCell : _FieldCell<String>, CellType {
@@ -397,8 +400,6 @@ public class AccountCell : _FieldCell<String>, CellType {
     }
 }
 
-
-
 public class DateCell : Cell<NSDate>, CellType {
     
     lazy public var datePicker : UIDatePicker = {
@@ -411,18 +412,23 @@ public class DateCell : Cell<NSDate>, CellType {
     
     public override func setup() {
         super.setup()
+        accessoryType = .None
+        editingAccessoryType =  .None
+        datePicker.datePickerMode = datePickerMode()
         datePicker.addTarget(self, action: Selector("datePickerValueChanged:"), forControlEvents: .ValueChanged)
     }
     
     
     public override func update() {
         super.update()
-        setModeToDatePicker(datePicker)
-        accessoryType = .None
-        editingAccessoryType =  .None
         selectionStyle = row.isDisabled ? .None : .Default
         detailTextLabel?.text = row.displayValueFor?(row.value)
-        
+        datePicker.setDate(row.value ?? NSDate(), animated: row is CountDownPickerRow)
+        datePicker.minimumDate = (row as? _DatePickerRowProtocol)?.minimumDate
+        datePicker.maximumDate = (row as? _DatePickerRowProtocol)?.maximumDate
+        if let minuteIntervalValue = (row as? _DatePickerRowProtocol)?.minuteInterval{
+            datePicker.minuteInterval = minuteIntervalValue
+        }
     }
     
     public override func didSelect() {
@@ -439,29 +445,21 @@ public class DateCell : Cell<NSDate>, CellType {
     
     func datePickerValueChanged(sender: UIDatePicker){
         row.value = sender.date
-        detailTextLabel?.text = row.displayValueFor!(row.value!)
-        setNeedsLayout()
+        detailTextLabel?.text = row.displayValueFor?(row.value)
     }
     
-    
-    public func setModeToDatePicker(datePicker : UIDatePicker){
+    private func datePickerMode() -> UIDatePickerMode{
         switch row {
-            case is DateRow:
-                datePicker.datePickerMode = .Date
-            case is TimeRow:
-                datePicker.datePickerMode = .Time
-            case is DateTimeRow:
-                datePicker.datePickerMode = .DateAndTime
-            case is CountDownRow:
-                datePicker.datePickerMode = .CountDownTimer
-            default:
-                datePicker.datePickerMode = .Date
-        }
-        
-        datePicker.minimumDate = (row as? _DateFieldRow)?.minimumDate
-        datePicker.maximumDate = (row as? _DateFieldRow)?.maximumDate
-        if let minuteIntervalValue = (row as? _DateFieldRow)?.minuteInterval{
-            datePicker.minuteInterval = minuteIntervalValue
+        case is DateRow:
+            return .Date
+        case is TimeRow:
+            return .Time
+        case is DateTimeRow:
+            return .DateAndTime
+        case is CountDownRow:
+            return .CountDownTimer
+        default:
+            return .Date
         }
     }
     
@@ -471,6 +469,29 @@ public class DateCell : Cell<NSDate>, CellType {
     
     public override func canBecomeFirstResponder() -> Bool {
         return !row.isDisabled;
+    }
+}
+
+public class DateInlineCell : Cell<NSDate>, CellType {
+    
+    public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    public override func setup() {
+        super.setup()
+        accessoryType = .None
+        editingAccessoryType =  .None
+    }
+    
+    public override func update() {
+        super.update()
+        selectionStyle = row.isDisabled ? .None : .Default
+        detailTextLabel?.text = row.displayValueFor?(row.value)
+    }
+    
+    public override func didSelect() {
+        super.didSelect()
+        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
     }
 }
 
@@ -493,21 +514,42 @@ public class DatePickerCell : Cell<NSDate>, CellType {
     public override func setup() {
         super.setup()
         height = { 213 }
-        datePicker.setDate(row.value ?? NSDate(), animated: false)
-        datePicker.datePickerMode = .Date
         accessoryType = .None
         editingAccessoryType =  .None
-        
+        datePicker.datePickerMode = datePickerMode()
     }
+    
     public override func update() {
         super.update()
         selectionStyle = row.isDisabled ? .None : .Default
+        datePicker.userInteractionEnabled = !row.isDisabled
         detailTextLabel?.text = nil
         textLabel?.text = nil
+        datePicker.setDate(row.value ?? NSDate(), animated: row is CountDownPickerRow)
+        datePicker.minimumDate = (row as? _DatePickerRowProtocol)?.minimumDate
+        datePicker.maximumDate = (row as? _DatePickerRowProtocol)?.maximumDate
+        if let minuteIntervalValue = (row as? _DatePickerRowProtocol)?.minuteInterval{
+            datePicker.minuteInterval = minuteIntervalValue
+        }
     }
     
     func datePickerValueChanged(sender: UIDatePicker){
         row.value = sender.date
+    }
+    
+    private func datePickerMode() -> UIDatePickerMode{
+        switch row {
+        case is DatePickerRow:
+            return .Date
+        case is TimePickerRow:
+            return .Time
+        case is DateTimePickerRow:
+           return .DateAndTime
+        case is CountDownPickerRow:
+            return .CountDownTimer
+        default:
+            return .Date
+        }
     }
 }
 
@@ -571,6 +613,10 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     
     public override func cellBecomeFirstResponder() -> Bool {
         return textView.becomeFirstResponder()
+    }
+    
+    public override func cellResignFirstResponder() -> Bool {
+        return textView.resignFirstResponder()
     }
     
     public func textViewDidBeginEditing(textView: UITextView) {
@@ -651,7 +697,6 @@ public class CheckCell : Cell<Bool>, CellType {
         }
     }
 
-    
     public override func setup() {
         super.setup()
         accessoryType =  .Checkmark
@@ -801,7 +846,6 @@ public class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
         super.didSelect()
         formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
     }
-
 }
 
 public class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
