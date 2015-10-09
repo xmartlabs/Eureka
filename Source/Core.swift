@@ -99,13 +99,13 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
     
     public func showInlineRow() {
         guard inlineRow == nil else { return }
-        let inline = InlineRow.init() { _ in }
-        inline.value = value
-        inline.onChange { [weak self] in
-            self?.value = $0.value
-            self?.updateCell()
-        }
         if var section = section, let form = section.form {
+            let inline = InlineRow.init() { _ in }
+            inline.value = value
+            inline.onChange { [weak self] in
+                self?.value = $0.value
+                self?.updateCell()
+            }
             if (form.inlineRowHideOptions ?? Form.defaultInlineRowHideOptions).contains(.AnotherInlineRowIsShown) {
                 for row in form.allRows {
                     if let inlineRow = row as? BaseInlineRowType {
@@ -1011,7 +1011,7 @@ extension BaseRow {
                 hiddenCache = predicate.evaluateWithObject(self, substitutionVariables: form.dictionaryValuesToEvaluatePredicate())
         }
         if hiddenCache {
-            baseCell.resignFirstResponder()
+            baseCell.cellResignFirstResponder()
             section?.hideRow(self)
         }
         else{
@@ -1646,12 +1646,12 @@ extension Condition : StringLiteralConvertible {
         self = .Predicate(NSPredicate(format: value))
     }
 }
+
 //MARK: Errors
 
 public enum EurekaError : ErrorType {
     case DuplicatedTag(tag: String)
 }
-
 
 //Mark: FormViewController
 

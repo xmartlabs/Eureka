@@ -56,37 +56,37 @@ class HomeViewController : FormViewController {
             
                 <<< ButtonRow("Accesory View Navigation") { (row: ButtonRow) in
                         row.title = row.tag
-                        row.presentationMode = .SegueName(segueName: "AccesoryViewControllerSegue", completionCallback:{  vc in vc.dismissViewControllerAnimated(true, completion: nil) })
+                        row.presentationMode = .SegueName(segueName: "AccesoryViewControllerSegue", completionCallback: nil)
                     }
             
                 <<< ButtonRow("Custom Cells") { (row: ButtonRow) -> () in
                         row.title = row.tag
-                        row.presentationMode = .SegueName(segueName: "CustomCellsControllerSegue", completionCallback:{  vc in vc.dismissViewControllerAnimated(true, completion: nil) })
+                        row.presentationMode = .SegueName(segueName: "CustomCellsControllerSegue", completionCallback: nil)
                     }
             
                 <<< ButtonRow("Customization of rows with text input") { (row: ButtonRow) -> Void in
                         row.title = row.tag
-                        row.presentationMode = .SegueName(segueName: "FieldCustomizationControllerSegue", completionCallback:{  vc in vc.dismissViewControllerAnimated(true, completion: nil) })
+                        row.presentationMode = .SegueName(segueName: "FieldCustomizationControllerSegue", completionCallback: nil)
                     }
             
                 <<< ButtonRow("Hidden rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .SegueName(segueName: "HiddenRowsControllerSegue", completionCallback:{  vc in vc.dismissViewControllerAnimated(true, completion: nil) })
+                    row.presentationMode = .SegueName(segueName: "HiddenRowsControllerSegue", completionCallback: nil)
                     }
             
                 <<< ButtonRow("Disabled rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .SegueName(segueName: "DisabledRowsControllerSegue", completionCallback:{  vc in vc.dismissViewControllerAnimated(true, completion: nil) })
+                    row.presentationMode = .SegueName(segueName: "DisabledRowsControllerSegue", completionCallback: nil)
                 }
             
                 <<< ButtonRow("Formatters") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .SegueName(segueName: "FormattersControllerSegue", completionCallback:{  vc in vc.dismissViewControllerAnimated(true, completion: nil) })
+                    row.presentationMode = .SegueName(segueName: "FormattersControllerSegue", completionCallback: nil)
                 }
         
                 <<< ButtonRow("Inline rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .SegueName(segueName: "InlineRowsControllerSegue", completionCallback:{  vc in vc.dismissViewControllerAnimated(true, completion: nil) })
+                    row.presentationMode = .SegueName(segueName: "InlineRowsControllerSegue", completionCallback: nil)
         }
     }
 }
@@ -253,18 +253,17 @@ class CustomCellsController : FormViewController {
         super.viewDidLoad()
         form +++
             Section() {
-                var header = HeaderFooterView<EurekaLogoViewNib>(HeaderFooterProvider.NibFile(name: "EurekaSectionHeader", bundle: NSBundle.mainBundle()))
+                var header = HeaderFooterView<EurekaLogoViewNib>(HeaderFooterProvider.NibFile(name: "EurekaSectionHeader", bundle: nil))
                 header.onSetupView = { (view, section, form) -> () in
-                                    view.imageView.alpha = 0;
-                                    UIView.animateWithDuration(2.0, animations: { [weak view] in
-                                        view?.imageView.alpha = 1
-                                        })
-                                    view.layer.transform = CATransform3DMakeScale(0.9, 0.9, 1)
-                                    UIView.animateWithDuration(1.0, animations: { [weak view] in
-                                        view?.layer.transform = CATransform3DIdentity
-                                        })
-                                }
-                
+                                            view.imageView.alpha = 0;
+                                            UIView.animateWithDuration(2.0, animations: { [weak view] in
+                                                view?.imageView.alpha = 1
+                                            })
+                                            view.layer.transform = CATransform3DMakeScale(0.9, 0.9, 1)
+                                            UIView.animateWithDuration(1.0, animations: { [weak view] in
+                                                view?.layer.transform = CATransform3DIdentity
+                                            })
+                                     }
                 $0.header = header
             }
             +++ Section("WeekDay cell")
@@ -914,7 +913,6 @@ class EurekaLogoViewNib: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
 }
 
 class EurekaLogoView: UIView {

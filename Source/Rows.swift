@@ -120,7 +120,7 @@ public class _DateInlineRow: _DateInlineFieldRow, InlineRowType {
         dateFormatter = NSDateFormatter()
         dateFormatter?.timeStyle = .NoStyle
         dateFormatter?.dateStyle = .MediumStyle
-        dateFormatter?.locale = NSLocale.currentLocale()
+        dateFormatter?.locale = .currentLocale()
     }
     
     public override func customDidSelect() {
@@ -137,7 +137,7 @@ public class _DateTimeInlineRow: _DateInlineFieldRow, InlineRowType {
         dateFormatter = NSDateFormatter()
         dateFormatter?.timeStyle = .ShortStyle
         dateFormatter?.dateStyle = .ShortStyle
-        dateFormatter?.locale = NSLocale.currentLocale()
+        dateFormatter?.locale = .currentLocale()
     }
     
     public override func customDidSelect() {
@@ -154,7 +154,7 @@ public class _TimeInlineRow: _DateInlineFieldRow, InlineRowType {
         dateFormatter = NSDateFormatter()
         dateFormatter?.timeStyle = .ShortStyle
         dateFormatter?.dateStyle = .NoStyle
-        dateFormatter?.locale = NSLocale.currentLocale()
+        dateFormatter?.locale = .currentLocale()
     }
     
     public override func customDidSelect() {
@@ -196,7 +196,7 @@ public class _IntRow: FieldRow<Int, IntCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
         let numberFormatter = NSNumberFormatter()
-        numberFormatter.locale = NSLocale.currentLocale()
+        numberFormatter.locale = .currentLocale()
         numberFormatter.numberStyle = .DecimalStyle
         numberFormatter.minimumFractionDigits = 0
         formatter = numberFormatter
@@ -231,7 +231,7 @@ public class _DecimalRow: FieldRow<Float, DecimalCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
         let numberFormatter = NSNumberFormatter()
-        numberFormatter.locale = NSLocale.currentLocale()
+        numberFormatter.locale = .currentLocale()
         numberFormatter.numberStyle = .DecimalStyle
         numberFormatter.minimumFractionDigits = 2
         formatter = numberFormatter
@@ -305,7 +305,6 @@ public class _CountDownRow: _DateFieldRow {
         }
     }
 }
-
 
 public class _DatePickerRow : Row<NSDate, DatePickerCell>, _DatePickerRowProtocol {
     
@@ -420,16 +419,14 @@ public class _ActionSheetRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>,
     
     public override func customDidSelect() {
         super.customDidSelect()
-        if !isDisabled {
-            if let presentationMode = presentationMode {
-                if let controller = presentationMode.createController(){
-                    controller.row = self
-                    onPresentCallback?(cell.formViewController()!, controller)
-                    presentationMode.presentViewController(controller, row: self, presentingViewController: self.cell.formViewController()!)
-                }
-                else{
-                    presentationMode.presentViewController(nil, row: self, presentingViewController: self.cell.formViewController()!)
-                }
+        if let presentationMode = presentationMode where !isDisabled {
+            if let controller = presentationMode.createController(){
+                controller.row = self
+                onPresentCallback?(cell.formViewController()!, controller)
+                presentationMode.presentViewController(controller, row: self, presentingViewController: cell.formViewController()!)
+            }
+            else{
+                presentationMode.presentViewController(nil, row: self, presentingViewController: cell.formViewController()!)
             }
         }
     }
@@ -457,16 +454,14 @@ public class _AlertRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>, Prese
     
     public override func customDidSelect() {
         super.customDidSelect()
-        if !isDisabled {
-            if let presentationMode = presentationMode {
-                if let controller = presentationMode.createController(){
-                    controller.row = self
-                    onPresentCallback?(cell.formViewController()!, controller)
-                    presentationMode.presentViewController(controller, row: self, presentingViewController: cell.formViewController()!)
-                }
-                else{
-                    presentationMode.presentViewController(nil, row: self, presentingViewController: cell.formViewController()!)
-                }
+        if let presentationMode = presentationMode where !isDisabled  {
+            if let controller = presentationMode.createController(){
+                controller.row = self
+                onPresentCallback?(cell.formViewController()!, controller)
+                presentationMode.presentViewController(controller, row: self, presentingViewController: cell.formViewController()!)
+            }
+            else{
+                presentationMode.presentViewController(nil, row: self, presentingViewController: cell.formViewController()!)
             }
         }
     }
