@@ -421,12 +421,7 @@ extension Form {
             let previous = kvoWrapper._allSections[--index]
             formIndex = kvoWrapper.sections.indexOfObject(previous)
         }
-        if formIndex == NSNotFound{
-            kvoWrapper.sections.insertObject(section, atIndex: 0)
-        }
-        else{
-            kvoWrapper.sections.insertObject(section, atIndex: ++formIndex)
-        }
+        kvoWrapper.sections.insertObject(section, atIndex: formIndex == NSNotFound ? 0 : ++formIndex)
     }
 }
 
@@ -741,32 +736,23 @@ extension Section /* Condition */{
         }
     }
     
-    public func hideRow(row: BaseRow){
+    private func hideRow(row: BaseRow){
+        row.baseCell.cellResignFirstResponder()
+        (row as? BaseInlineRowType)?.hideInlineRow()
         kvoWrapper.rows.removeObject(row)
     }
     
-    public func showRow(row: BaseRow){
-        if kvoWrapper.rows.containsObject(row){
-            return
-        }
-        
+    private func showRow(row: BaseRow){
+        guard !kvoWrapper.rows.containsObject(row) else { return }
+        guard var index = kvoWrapper._allRows.indexOf(row) else { return }
         var formIndex = NSNotFound
-        
-        if var index = kvoWrapper._allRows.indexOf(row){
-            while (formIndex == NSNotFound && index > 0){
-                let previous = kvoWrapper._allRows[--index]
-                formIndex = kvoWrapper.rows.indexOfObject(previous)
-            }
-            if formIndex == NSNotFound{
-                kvoWrapper.rows.insertObject(row, atIndex: 0)
-            }
-            else{
-                kvoWrapper.rows.insertObject(row, atIndex: formIndex+1)
-            }
+        while (formIndex == NSNotFound && index > 0){
+            let previous = kvoWrapper._allRows[--index]
+            formIndex = kvoWrapper.rows.indexOfObject(previous)
         }
+        kvoWrapper.rows.insertObject(row, atIndex: formIndex == NSNotFound ? 0 : ++formIndex)
     }
 }
-
 
 // MARK: Row
 
@@ -987,7 +973,8 @@ public class BaseRow : BaseRowType {
     
     private var hiddenCache = false
     private var disabledCache = false {
-            willSet { if newValue == true && disabledCache == false  {
+        willSet {
+            if newValue == true && disabledCache == false  {
                 baseCell.cellResignFirstResponder()
             }
         }
@@ -1011,7 +998,6 @@ extension BaseRow {
                 hiddenCache = predicate.evaluateWithObject(self, substitutionVariables: form.dictionaryValuesToEvaluatePredicate())
         }
         if hiddenCache {
-            baseCell.cellResignFirstResponder()
             section?.hideRow(self)
         }
         else{
@@ -1067,8 +1053,9 @@ extension BaseRow {
     }
     
     private final func willBeRemovedFromForm(){
+        (self as? BaseInlineRowType)?.hideInlineRow()
         if let t = tag {
-            self.section?.form?.rowsByTag[t] = nil
+            section?.form?.rowsByTag[t] = nil
         }
         removeFromRowObservers()
     }

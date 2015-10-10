@@ -28,7 +28,7 @@ import XCTest
 class HiddenRowsTests: BaseEurekaTests {
     var form : Form!
     let row10 = IntRow("int1_hrt"){
-        $0.hidden = "$IntRow_s1 > 23" // .Predicate(NSPredicate(format: "$IntRow_s1 > 23"))
+        $0.hidden = "$IntRow_s1 > 23"
     }
     let row11 = TextRow("txt1_hrt"){
         $0.hidden = .Function(["NameRow_s1"], { form in
@@ -37,11 +37,11 @@ class HiddenRowsTests: BaseEurekaTests {
                         }
                         return false
                     })
-                }
+    }
     let sec2 = Section("Whatsoever"){
-                    $0.tag = "s3_hrt"
-                    $0.hidden = "$NameRow_s1 contains 'God'" //.Predicate(NSPredicate(format: "$NameRow_s1 contains 'God'"))
-                }
+        $0.tag = "s3_hrt"
+        $0.hidden = "$NameRow_s1 contains 'God'"
+    }
     let row20 = TextRow("txt2_hrt"){
         $0.hidden = .Function(["IntRow_s1", "NameRow_s1"], { form in
                         if let r1 : IntRow = form.rowByTag("IntRow_s1"), let r2 : NameRow = form.rowByTag("NameRow_s1")  {
@@ -49,7 +49,10 @@ class HiddenRowsTests: BaseEurekaTests {
                         }
                         return false
                     })
-                }
+    }
+    let inlineDateRow21 = DateInlineRow() {
+        $0.hidden = "$IntRow_s1 > 23"
+    }
     
     override func setUp() {
         super.setUp()
@@ -58,6 +61,7 @@ class HiddenRowsTests: BaseEurekaTests {
             <<< row11
             +++ sec2
             <<< row20
+            <<< inlineDateRow21
     }
 
     func testAddRowToObserver(){
@@ -70,7 +74,7 @@ class HiddenRowsTests: BaseEurekaTests {
         XCTAssertNotNil(nameDep)
         
         // test rowObservers
-        XCTAssertEqual(intDep!.count, 2)
+        XCTAssertEqual(intDep!.count, 3)
         XCTAssertEqual(nameDep!.count, 3)
         
         XCTAssertTrue(intDep!.contains({ $0.tag == "txt2_hrt" }))
@@ -87,7 +91,7 @@ class HiddenRowsTests: BaseEurekaTests {
         
         
         //check everything is still the same
-        XCTAssertEqual(intDep!.count, 2)
+        XCTAssertEqual(intDep!.count, 3)
         XCTAssertEqual(nameDep!.count, 3)
         
         XCTAssertTrue(intDep!.contains({ $0.tag == "txt2_hrt" }))
@@ -103,7 +107,7 @@ class HiddenRowsTests: BaseEurekaTests {
         form[0][1].baseValue = 1
         
         //check everything is still the same
-        XCTAssertEqual(intDep!.count, 2)
+        XCTAssertEqual(intDep!.count, 3)
         XCTAssertEqual(nameDep!.count, 3)
         XCTAssertTrue(intDep!.contains({ $0.tag == "txt2_hrt" }))
         XCTAssertTrue(intDep!.contains({ $0.tag == "int1_hrt" }))
@@ -163,7 +167,7 @@ class HiddenRowsTests: BaseEurekaTests {
         XCTAssertEqual(form.count, 3)
         XCTAssertEqual(form[0].count, 2)
         XCTAssertEqual(form[1].count, 2)
-        XCTAssertEqual(sec2.count, 1)
+        XCTAssertEqual(sec2.count, 2)
         
         // false values
         form[0][0].baseValue = "Hi there"
@@ -172,7 +176,7 @@ class HiddenRowsTests: BaseEurekaTests {
         XCTAssertEqual(form.count, 3)
         XCTAssertEqual(form[0].count, 2)
         XCTAssertEqual(form[1].count, 2)
-        XCTAssertEqual(sec2.count, 1)
+        XCTAssertEqual(sec2.count, 2)
         
         // hide 'int1_hrt' row
         form[0][1].baseValue = 24
@@ -205,6 +209,36 @@ class HiddenRowsTests: BaseEurekaTests {
         XCTAssertEqual(form.count, 3)
         XCTAssertEqual(form[0].count, 2)
         XCTAssertEqual(form[1].count, 2)
+        XCTAssertEqual(sec2.count, 2)
+    }
+    
+    func testInlineRows(){
+        //initial empty values (none is hidden)
+        XCTAssertEqual(sec2.count, 2)
+        
+        // change dependency value
+        form[0][1].baseValue = 25
+        
         XCTAssertEqual(sec2.count, 1)
+        
+        // change dependency value
+        form[0][1].baseValue = 10
+        XCTAssertEqual(sec2.count, 2)
+        
+        
+        //hide inline row when expanded
+        inlineDateRow21.showInlineRow()
+        
+        // check that the row is expanded
+        XCTAssertEqual(sec2.count, 3)
+        
+        
+        // hide expanded inline row
+        form[0][1].baseValue = 25
+        XCTAssertEqual(sec2.count, 1)
+        
+        // make inline row visible again
+        form[0][1].baseValue = 10
+        XCTAssertEqual(sec2.count, 2)
     }
 }
