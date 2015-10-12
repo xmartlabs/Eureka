@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		284729601BBA4C5E006F41DA /* FormValuesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2847295F1BBA4C5E006F41DA /* FormValuesTests.swift */; settings = {ASSET_TAGS = (); }; };
+		2887898B1BCC160F00B5FDF0 /* CallbacksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2887898A1BCC160F00B5FDF0 /* CallbacksTests.swift */; settings = {ASSET_TAGS = (); }; };
 		28B12FD51BA0E83C00F27A23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28B12FD41BA0E83C00F27A23 /* Assets.xcassets */; settings = {ASSET_TAGS = (); }; };
 		28B9B6901BC306F100CCA9B4 /* RowByTagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B9B68F1BC306F100CCA9B4 /* RowByTagTests.swift */; settings = {ASSET_TAGS = (); }; };
 		28B9B6921BC3191000CCA9B4 /* SetValuesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B9B6911BC3191000CCA9B4 /* SetValuesTests.swift */; settings = {ASSET_TAGS = (); }; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		2847295F1BBA4C5E006F41DA /* FormValuesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FormValuesTests.swift; path = Tests/FormValuesTests.swift; sourceTree = SOURCE_ROOT; };
+		2887898A1BCC160F00B5FDF0 /* CallbacksTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CallbacksTests.swift; path = Tests/CallbacksTests.swift; sourceTree = SOURCE_ROOT; };
 		28B12FD41BA0E83C00F27A23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Source/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		28B9B68F1BC306F100CCA9B4 /* RowByTagTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RowByTagTests.swift; path = Tests/RowByTagTests.swift; sourceTree = SOURCE_ROOT; };
 		28B9B6911BC3191000CCA9B4 /* SetValuesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SetValuesTests.swift; path = Tests/SetValuesTests.swift; sourceTree = SOURCE_ROOT; };
@@ -128,6 +130,7 @@
 				2847295F1BBA4C5E006F41DA /* FormValuesTests.swift */,
 				28B9B68F1BC306F100CCA9B4 /* RowByTagTests.swift */,
 				28B9B6911BC3191000CCA9B4 /* SetValuesTests.swift */,
+				2887898A1BCC160F00B5FDF0 /* CallbacksTests.swift */,
 			);
 			name = Tests;
 			path = EurekaTests;
@@ -264,6 +267,7 @@
 				BF588EC41B9F5AC300BE426E /* CollectionTests.swift in Sources */,
 				284729601BBA4C5E006F41DA /* FormValuesTests.swift in Sources */,
 				28B9B6901BC306F100CCA9B4 /* RowByTagTests.swift in Sources */,
+				2887898B1BCC160F00B5FDF0 /* CallbacksTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
