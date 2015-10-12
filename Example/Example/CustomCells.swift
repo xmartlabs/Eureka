@@ -159,6 +159,7 @@ public class FloatLabelCell: Cell<String>, CellType, UITextFieldDelegate {
         selectionStyle = .None
         contentView.addSubview(floatLabelTextField)
         floatLabelTextField.delegate = self
+        floatLabelTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
         contentView.addConstraints(layoutConstraints())
     }
     
@@ -180,11 +181,38 @@ public class FloatLabelCell: Cell<String>, CellType, UITextFieldDelegate {
         return floatLabelTextField.becomeFirstResponder()
     }
     
+    public override func cellResignFirstResponder() -> Bool {
+        return floatLabelTextField.resignFirstResponder()
+    }
+    
     private func layoutConstraints() -> [NSLayoutConstraint] {
         let views = ["floatLabeledTextField": floatLabelTextField]
         let metrics = ["vMargin":8.0]
         return NSLayoutConstraint.constraintsWithVisualFormat("H:|-[floatLabeledTextField]-|", options: .AlignAllBaseline, metrics: metrics, views: views) + NSLayoutConstraint.constraintsWithVisualFormat("V:|-(vMargin)-[floatLabeledTextField]-(vMargin)-|", options: .AlignAllBaseline, metrics: metrics, views: views)
     }
+    
+    public func textFieldDidChange(textField : UITextField){
+        guard let textValue = textField.text else {
+            row.value = nil
+            return
+        }
+        guard !textValue.isEmpty else {
+            row.value = nil
+            return
+        }
+        row.value = textValue
+    }
+    
+    //MARK: TextFieldDelegate
+    
+    public func textFieldDidBeginEditing(textField: UITextField) {
+        formViewController()?.beginEditing(self)
+    }
+    
+    public func textFieldDidEndEditing(textField: UITextField) {
+        formViewController()?.endEditing(self)
+    }
+    
 }
 
 //MARK: FloatLabelRow
