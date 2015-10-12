@@ -1684,7 +1684,7 @@ public struct InlineRowHideOptions : OptionSetType {
 }
 
 
-public class FormViewController : UIViewController {
+public class FormViewController : UIViewController, FormViewControllerProtocol {
     
     @IBOutlet public var tableView: UITableView?
     
@@ -1774,6 +1774,48 @@ public class FormViewController : UIViewController {
     //MARK: FormDelegate
     
     public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any, newValue: Any) {}
+    
+    //MARK: FormViewControllerProtocol
+    
+    public final func beginEditing<T:Equatable>(cell: Cell<T>) {
+        cell.row.hightlightCell()
+        guard let _ = tableView where (form.inlineRowHideOptions ?? Form.defaultInlineRowHideOptions).contains(.FirstResponderChanges) else { return }
+        let row = cell.baseRow
+        let inlineRow = row._inlineRow
+        for row in form.allRows.filter({ $0 !== row && $0 !== inlineRow && $0._inlineRow != nil }) {
+            if let inlineRow = row as? BaseInlineRowType {
+                inlineRow.hideInlineRow()
+            }
+        }
+    }
+    
+    public final func endEditing<T:Equatable>(cell: Cell<T>) {
+        cell.row.unhighlightCell()
+    }
+    
+    public func insertAnimationForRows(rows: [BaseRow]) -> UITableViewRowAnimation {
+        return .Fade
+    }
+    
+    public func deleteAnimationForRows(rows: [BaseRow]) -> UITableViewRowAnimation {
+        return .Fade
+    }
+    
+    public func reloadAnimationOldRows(oldRows: [BaseRow], newRows: [BaseRow]) -> UITableViewRowAnimation {
+        return .Automatic
+    }
+    
+    public func insertAnimationForSections(sections: [Section]) -> UITableViewRowAnimation {
+        return .Automatic
+    }
+    
+    public func deleteAnimationForSections(sections: [Section]) -> UITableViewRowAnimation {
+        return .Automatic
+    }
+    
+    public func reloadAnimationOldSections(oldSections: [Section], newSections: [Section]) -> UITableViewRowAnimation {
+        return .Automatic
+    }
     
     //MARK: Private
     
@@ -1934,51 +1976,6 @@ extension FormViewController : UIScrollViewDelegate {
     
     public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         tableView?.endEditing(true)
-    }
-}
-
-extension FormViewController : FormViewControllerProtocol {
-    
-    //MARK: FormViewControllerProtocol
-    
-    public func beginEditing<T:Equatable>(cell: Cell<T>) {
-        cell.row.hightlightCell()
-        guard let _ = tableView where (form.inlineRowHideOptions ?? Form.defaultInlineRowHideOptions).contains(.FirstResponderChanges) else { return }
-        let row = cell.baseRow
-        let inlineRow = row._inlineRow
-        for row in form.allRows.filter({ $0 !== row && $0 !== inlineRow && $0._inlineRow != nil }) {
-            if let inlineRow = row as? BaseInlineRowType {
-                inlineRow.hideInlineRow()
-            }
-        }
-    }
-    
-    public func endEditing<T:Equatable>(cell: Cell<T>) {
-        cell.row.unhighlightCell()
-    }
-    
-    public func insertAnimationForRows(rows: [BaseRow]) -> UITableViewRowAnimation {
-        return .Fade
-    }
-    
-    public func deleteAnimationForRows(rows: [BaseRow]) -> UITableViewRowAnimation {
-        return .Fade
-    }
-    
-    public func reloadAnimationOldRows(oldRows: [BaseRow], newRows: [BaseRow]) -> UITableViewRowAnimation {
-        return .Automatic
-    }
-    
-    public func insertAnimationForSections(sections: [Section]) -> UITableViewRowAnimation {
-        return .Automatic
-    }
-    
-    public func deleteAnimationForSections(sections: [Section]) -> UITableViewRowAnimation {
-        return .Automatic
-    }
-    
-    public func reloadAnimationOldSections(oldSections: [Section], newSections: [Section]) -> UITableViewRowAnimation {
-        return .Automatic
     }
 }
 
