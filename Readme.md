@@ -20,8 +20,12 @@ This is the re-creation of [XLForm] in Swift 2. If you have been using it then m
   + [Operators]
   + [Rows]
   + [Customization]
-  + [How to create custom rows and cells]
+  + [Section Header and Footer]
   + [How to dynamically hide and show rows (or sections)]
+* [Extensibility]
+  + [How to create custom rows and cells]
+  + [How to create custom inline rows]
+  + [Custom rows catalog]
 * [Installation]
 * [FAQ]
 
@@ -151,11 +155,20 @@ This is a list of the rows that are provided by default:
 
 
 * **Date Rows**
-	This rows have an UIDatePicker attached that will appear at the bottom of the screen. The mode of the UIDatePicker is what changes between them.
-	+ **DateRow**
-	+ **TimeRow**
-	+ **DateTimeRow**
-	+ **CountDownRow**
+  Date Rows hold a NSDate and allow us to set up a new value through UIDatePicker control. The mode of the UIDatePicker and the way how the date picker view is shown is what changes between them.
+
+  + **DateRow**
+  + **DateInlineRow**
+  + **TimeRow**
+  + **TimeInlineRow**
+  + **DateTimeRow**
+  + **DateTimeInlineRow**
+  + **CountDownRow**
+  + **CountDownInlineRow**
+  + **DatePickerRow**
+  + **TimePickerRow**
+  + **DateTimePickerRow**
+  + **CountDownPickerRow**
 
 
 * **Options Selector Rows** These are rows with a list of options associated from which the user must choose. You can see them in the examples above.
@@ -202,7 +215,7 @@ There are also some custom rows in the examples project.
 A *row* holds the basic information that will be displayed on a *cell* like title, value, options (if present), etc. All the stuff that has to do with appearance like colors, fonts, text alignments, etc. normally go in the cell. Both, the row and the cell hold a reference to each other.
 
 You will often want to customize how a row behaves when it is tapped on or when its value changes and you might be interested in changing its appearance as well.
-There are currently 5 callbacks to change the default appearance and behaviour of a row.
+There are many callbacks to change the default appearance and behaviour of a row.
 
 * **onChange()**
 
@@ -216,6 +229,23 @@ There are currently 5 callbacks to change the default appearance and behaviour o
 * **cellUpdate()**
 
 	The cellUpdate will be called each time the cell appears on screen. Here you can change how the title and value of your row is set or change the appearance (colors, fonts, etc) depending on variables that might not be present at cell creation time.
+
+* **onCellHighlight()**
+
+  The onCellHighlight will be invoked whenever the cell or any subview become the first responder.
+
+* **onCellUnHighlight()**
+
+  The onCellUnHighlight will be invoked whenever the cell or any subview resign the first responder.
+
+* **onExpandInlineRow()**
+
+  The onExpandInlineRow will be invoked before expand the inline row. This does only apply to the rows conforming to the `InlineRowType` protocol.
+
+* **onCollapseInlineRow()**
+
+  The onCollapseInlineRow will be invoked before collapse the inline row. This does only apply to the rows conforming to the `InlineRowType` protocol.
+
 * **onPresent()**
 
 	This method will be called by a row just before presenting another view controller. This does only apply to the rows conforming to the `PresenterRowType` protocol. You can use this to set up the presented controller.
@@ -246,57 +276,9 @@ Now it would look like this:
 
 <img src="Example/Media/EurekaCustomCellDisabled.gif" width="300" alt="Screenshot of Disabled Row"/>
 
-### How to create custom rows and cells  <a name="custom-rows"></a>
+### Section Header and Footer
 
-To create a custom row you will have to create a new class subclassing from `Row<ValueType, CellType>` and conforming to `RowType` protocol.
-Take for example the SwitchRow:
-
-```swift
-public final class SwitchRow: Row<Bool, SwitchCell>, RowType {
-
-    required public init(tag: String?) {
-        super.init(tag: tag)
-        displayValueFor = nil
-    }
-}
-```
-
-Most times you will want to create a custom cell as well as most of the specific logic is here. What you have to do is subclassing Cell<ValueType>:
-
-```swift
-public class SwitchCell : Cell<Bool> {
-
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-    }
-
-    public var switchControl: UISwitch? {
-        return accessoryView as? UISwitch
-    }
-
-    public override func setup() {
-        super.setup()
-        selectionStyle = .None
-        accessoryView = UISwitch()
-        editingAccessoryView = accessoryView
-        switchControl?.addTarget(self, action: "valueChanged", forControlEvents: .ValueChanged)
-    }
-
-    public override func update() {
-        super.update()
-        switchControl?.on = formRow.value ?? false
-        switchControl?.enabled = !formRow.isDisabled
-    }
-
-    func valueChanged() {
-        formRow.value = switchControl?.on.boolValue ?? false
-    }
-}
-```
-
-The setup and update methods are similar to the cellSetup and cellUpdate callbacks and that is where the cell should be customized.
-
-Note: ValueType and CellType are illustrative. You have to replace them with the type your value will have and the type of your cell (like Bool and SwitchCell in this example)
+*work in progress...*
 
 ### How to dynamically hide and show rows (or sections)  <a name="hide-show-rows"></a>
 
@@ -370,6 +352,89 @@ To disable rows, each row has an `disabled` variable which is also an optional C
 
 Note that if you want to disable a row permanently you can also set `disabled` variable to `true`.
 
+## Extensibility
+
+### How to create custom rows and cells  <a name="custom-rows"></a>
+
+To create a custom row you will have to create a new class subclassing from `Row<ValueType, CellType>` and conforming to `RowType` protocol.
+Take for example the SwitchRow:
+
+```swift
+public final class SwitchRow: Row<Bool, SwitchCell>, RowType {
+
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        displayValueFor = nil
+    }
+}
+```
+
+Most times you will want to create a custom cell as well as most of the specific logic is here. What you have to do is subclassing Cell<ValueType>:
+
+```swift
+public class SwitchCell : Cell<Bool> {
+
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+
+    public var switchControl: UISwitch? {
+        return accessoryView as? UISwitch
+    }
+
+    public override func setup() {
+        super.setup()
+        selectionStyle = .None
+        accessoryView = UISwitch()
+        editingAccessoryView = accessoryView
+        switchControl?.addTarget(self, action: "valueChanged", forControlEvents: .ValueChanged)
+    }
+
+    public override func update() {
+        super.update()
+        switchControl?.on = formRow.value ?? false
+        switchControl?.enabled = !formRow.isDisabled
+    }
+
+    func valueChanged() {
+        formRow.value = switchControl?.on.boolValue ?? false
+    }
+}
+```
+
+The setup and update methods are similar to the cellSetup and cellUpdate callbacks and that is where the cell should be customized.
+
+Note: ValueType and CellType are illustrative. You have to replace them with the type your value will have and the type of your cell (like Bool and SwitchCell in this example)
+
+## How to create custom inline rows
+
+A inline row is a specific type of row that shows dynamically a row below it, normally an inline row changes between a expand and collapse mode whenever the row is tapped.
+
+So to create a inline row we need 2 rows, the row that are "always" visible and the row that will expand/collapse.
+
+Another requirement is that the the value type of these 2 rows must be the same.
+
+Once we have these 2 rows, we should make the top row type conforms to `InlineRowType` which will add some methods to the top row class type such as:
+
+```swift
+func expandInlineRow()
+func hideInlineRow()
+func toggleInlineRow()
+```
+
+Finally we must invoke `toggleInlineRow()` when the row is selected, for example overriding the customDidSelect() row method.
+
+```swift
+public override func customDidSelect() {
+    toggleInlineRow()
+}
+```
+
+### Custom rows catalog
+
+Have you created a custom row, theme, etc?
+Let us know about it, we would be glad to mention it here..
+
 ## Installation
 
 #### CocoaPods
@@ -426,6 +491,7 @@ $ git submodule add https://github.com/xmartlabs/Eureka.git
 ## FAQ
 
 #### How to change the bottom navigation accessory view?
+
 To change the behaviour of this you should set the navigation options of your controller. The `FormViewController` has a `navigationOptions` variable which is an enum and can have one or more of the following values:
 
 - **None**: no view at all
@@ -448,8 +514,12 @@ If you want to change the whole view of the bottom you will have to override the
 [Operators]: #operators
 [Rows]: #rows
 [Customization]: #customization
+[Section Header and Footer]: #section-header-and-footer
 [How to create custom rows and cells]: #custom-rows
+[How to create custom inline rows]: #how-to-create-custom-inline-rows
+[Custom rows catalog]: #custom-rows-catalog
 [How to dynamically hide and show rows (or sections)]: #hide-show-rows
+[Extensibility]: #extensibility
 [Installation]: #installation
 [FAQ]: #faq
 

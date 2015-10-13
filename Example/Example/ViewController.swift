@@ -490,7 +490,7 @@ class NativeEventFormViewController : FormViewController {
                         endRow.updateCell()
                     }
                 }
-                .onShowInlineRow { cell, row, inlineRow in
+                .onExpandInlineRow { cell, row, inlineRow in
                     inlineRow.cellUpdate { [weak self] cell, dateRow in
                         let allRow: SwitchRow! = self?.form.rowByTag("All-day")
                         if allRow.value ?? false {
@@ -501,7 +501,7 @@ class NativeEventFormViewController : FormViewController {
                         }
                     }
                     let color = cell.detailTextLabel?.textColor
-                    row.onHideInlineRow { cell, _, _ in
+                    row.onCollapseInlineRow { cell, _, _ in
                         cell.detailTextLabel?.textColor = color
                     }
                     cell.detailTextLabel?.textColor = cell.tintColor
@@ -521,7 +521,7 @@ class NativeEventFormViewController : FormViewController {
                     }
                     row.updateCell()
                 }
-                .onShowInlineRow { cell, row, inlineRow in
+                .onExpandInlineRow { cell, row, inlineRow in
                     inlineRow.cellUpdate { [weak self] cell, dateRow in
                         let allRow: SwitchRow! = self?.form.rowByTag("All-day")
                         if allRow.value ?? false {
@@ -532,7 +532,7 @@ class NativeEventFormViewController : FormViewController {
                         }
                     }
                     let color = cell.detailTextLabel?.textColor
-                    row.onHideInlineRow { cell, _, _ in
+                    row.onCollapseInlineRow { cell, _, _ in
                         cell.detailTextLabel?.textColor = color
                     }
                     cell.detailTextLabel?.textColor = cell.tintColor
