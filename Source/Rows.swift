@@ -124,7 +124,10 @@ public class _DateInlineRow: _DateInlineFieldRow, InlineRowType {
     }
     
     public override func customDidSelect() {
-        toggleInlineRow()
+        super.customDidSelect()
+        if !isDisabled {
+            toggleInlineRow()
+        }
     }
 }
 
@@ -141,7 +144,10 @@ public class _DateTimeInlineRow: _DateInlineFieldRow, InlineRowType {
     }
     
     public override func customDidSelect() {
-        toggleInlineRow()
+        super.customDidSelect()
+        if !isDisabled {
+            toggleInlineRow()
+        }
     }
 }
 
@@ -158,7 +164,10 @@ public class _TimeInlineRow: _DateInlineFieldRow, InlineRowType {
     }
     
     public override func customDidSelect() {
-        toggleInlineRow()
+        super.customDidSelect()
+        if !isDisabled {
+            toggleInlineRow()
+        }
     }
 }
 
@@ -182,7 +191,10 @@ public class _CountDownInlineRow: _DateInlineFieldRow, InlineRowType {
     }
     
     public override func customDidSelect() {
-        toggleInlineRow()
+        super.customDidSelect()
+        if !isDisabled {
+            toggleInlineRow()
+        }
     }
 }
 
@@ -681,9 +693,9 @@ public final class CountDownRow: _CountDownRow, RowType {
 public final class DateInlineRow: _DateInlineRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
-        onShowInlineRow { cell, row, _ in
+        onExpandInlineRow { cell, row, _ in
             let color = cell.detailTextLabel?.textColor
-            row.onHideInlineRow { cell, _, _ in
+            row.onCollapseInlineRow { cell, _, _ in
                 cell.detailTextLabel?.textColor = color
             }
             cell.detailTextLabel?.textColor = cell.tintColor
@@ -694,9 +706,9 @@ public final class DateInlineRow: _DateInlineRow, RowType {
 public final class TimeInlineRow: _TimeInlineRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
-        onShowInlineRow { cell, row, _ in
+        onExpandInlineRow { cell, row, _ in
             let color = cell.detailTextLabel?.textColor
-            row.onHideInlineRow { cell, _, _ in
+            row.onCollapseInlineRow { cell, _, _ in
                 cell.detailTextLabel?.textColor = color
             }
             cell.detailTextLabel?.textColor = cell.tintColor
@@ -707,9 +719,9 @@ public final class TimeInlineRow: _TimeInlineRow, RowType {
 public final class DateTimeInlineRow: _DateTimeInlineRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
-        onShowInlineRow { cell, row, _ in
+        onExpandInlineRow { cell, row, _ in
             let color = cell.detailTextLabel?.textColor
-            row.onHideInlineRow { cell, _, _ in
+            row.onCollapseInlineRow { cell, _, _ in
                 cell.detailTextLabel?.textColor = color
             }
             cell.detailTextLabel?.textColor = cell.tintColor
@@ -720,9 +732,9 @@ public final class DateTimeInlineRow: _DateTimeInlineRow, RowType {
 public final class CountDownInlineRow: _CountDownInlineRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
-        onShowInlineRow { cell, row, _ in
+        onExpandInlineRow { cell, row, _ in
             let color = cell.detailTextLabel?.textColor
-            row.onHideInlineRow { cell, _, _ in
+            row.onCollapseInlineRow { cell, _, _ in
                 cell.detailTextLabel?.textColor = color
             }
             cell.detailTextLabel?.textColor = cell.tintColor

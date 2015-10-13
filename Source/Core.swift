@@ -84,8 +84,8 @@ public protocol RowType : TypedRowType {
 }
 
 public protocol BaseInlineRowType {
-    func showInlineRow()
-    func hideInlineRow()
+    func expandInlineRow()
+    func collapseInlineRow()
     func toggleInlineRow()
 }
 
@@ -97,7 +97,7 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
     
     public var inlineRow : Self.InlineRow? { return _inlineRow as? Self.InlineRow }
     
-    public func showInlineRow() {
+    public func expandInlineRow() {
         guard inlineRow == nil else { return }
         if var section = section, let form = section.form {
             let inline = InlineRow.init() { _ in }
@@ -109,12 +109,12 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
             if (form.inlineRowHideOptions ?? Form.defaultInlineRowHideOptions).contains(.AnotherInlineRowIsShown) {
                 for row in form.allRows {
                     if let inlineRow = row as? BaseInlineRowType {
-                        inlineRow.hideInlineRow()
+                        inlineRow.collapseInlineRow()
                     }
                 }
             }
-            if let onShowInlineRowCallback =  onShowInlineRowCallback {
-                onShowInlineRowCallback(cell, self, inline)
+            if let onExpandInlineRowCallback = onExpandInlineRowCallback {
+                onExpandInlineRowCallback(cell, self, inline)
             }
             if let indexPath = indexPath() {
                 section.insert(inline, atIndex: indexPath.row + 1)
@@ -123,10 +123,10 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
         }
     }
     
-    public func hideInlineRow() {
+    public func collapseInlineRow() {
         if let selectedRowPath = indexPath(), let inlineRow = _inlineRow {
-            if let onHideInlineRowCallback = onHideInlineRowCallback {
-                onHideInlineRowCallback(cell, self, inlineRow as! InlineRow)
+            if let onCollapseInlineRowCallback = onCollapseInlineRowCallback {
+                onCollapseInlineRowCallback(cell, self, inlineRow as! InlineRow)
             }
             section?.removeAtIndex(selectedRowPath.row + 1)
             _inlineRow = nil
@@ -135,29 +135,29 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
     
     public func toggleInlineRow() {
         if let _ = inlineRow {
-            hideInlineRow()
+            collapseInlineRow()
         }
         else{
-            showInlineRow()
+            expandInlineRow()
         }
     }
     
-    public func onShowInlineRow(callback: (Cell, Self, InlineRow)->()) -> Self {
-        callbackOnShowInlineRow = callback
+    public func onExpandInlineRow(callback: (Cell, Self, InlineRow)->()) -> Self {
+        callbackOnExpandInlineRow = callback
         return self
     }
     
-    public func onHideInlineRow(callback: (Cell, Self, InlineRow)->()) -> Self {
-        callbackOnHideInlineRow = callback
+    public func onCollapseInlineRow(callback: (Cell, Self, InlineRow)->()) -> Self {
+        callbackOnCollapseInlineRow = callback
         return self
     }
     
-    public var onHideInlineRowCallback: ((Cell, Self, InlineRow)->())? {
-        return callbackOnHideInlineRow as! ((Cell, Self, InlineRow)->())?
+    public var onCollapseInlineRowCallback: ((Cell, Self, InlineRow)->())? {
+        return callbackOnCollapseInlineRow as! ((Cell, Self, InlineRow)->())?
     }
     
-    public var onShowInlineRowCallback: ((Cell, Self, InlineRow)->())? {
-        return callbackOnShowInlineRow as! ((Cell, Self, InlineRow)->())?
+    public var onExpandInlineRowCallback: ((Cell, Self, InlineRow)->())? {
+        return callbackOnExpandInlineRow as! ((Cell, Self, InlineRow)->())?
     }
 }
 
@@ -256,7 +256,7 @@ public final class Form {
     public func hideInlineRows() {
         for row in self.allRows {
             if let inlineRow = row as? BaseInlineRowType {
-                inlineRow.hideInlineRow()
+                inlineRow.collapseInlineRow()
             }
         }
     }
@@ -738,7 +738,7 @@ extension Section /* Condition */{
     
     private func hideRow(row: BaseRow){
         row.baseCell.cellResignFirstResponder()
-        (row as? BaseInlineRowType)?.hideInlineRow()
+        (row as? BaseInlineRowType)?.collapseInlineRow()
         kvoWrapper.rows.removeObject(row)
     }
     
@@ -930,8 +930,8 @@ public class BaseRow : BaseRowType {
     private var callbackCellOnSelection: Any?
     private var callbackOnCellHighlight: Any?
     private var callbackOnCellUnHighlight: Any?
-    private var callbackOnShowInlineRow: Any?
-    private var callbackOnHideInlineRow: Any?
+    private var callbackOnExpandInlineRow: Any?
+    private var callbackOnCollapseInlineRow: Any?
     private var _inlineRow: BaseRow?
     
     public var title: String?
@@ -1053,7 +1053,7 @@ extension BaseRow {
     }
     
     private final func willBeRemovedFromForm(){
-        (self as? BaseInlineRowType)?.hideInlineRow()
+        (self as? BaseInlineRowType)?.collapseInlineRow()
         if let t = tag {
             section?.form?.rowsByTag[t] = nil
         }
@@ -1784,7 +1784,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         let inlineRow = row._inlineRow
         for row in form.allRows.filter({ $0 !== row && $0 !== inlineRow && $0._inlineRow != nil }) {
             if let inlineRow = row as? BaseInlineRowType {
-                inlineRow.hideInlineRow()
+                inlineRow.collapseInlineRow()
             }
         }
     }

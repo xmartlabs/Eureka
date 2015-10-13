@@ -227,7 +227,7 @@ class HiddenRowsTests: BaseEurekaTests {
         
         
         //hide inline row when expanded
-        inlineDateRow21.showInlineRow()
+        inlineDateRow21.expandInlineRow()
         
         // check that the row is expanded
         XCTAssertEqual(sec2.count, 3)
