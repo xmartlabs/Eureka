@@ -42,15 +42,25 @@ class CallbacksTests: XCTestCase {
     }
     
     func testOnChange() {
-        self.onChangeTest(TextRow(), value: "text")
-        self.onChangeTest(IntRow(), value: 33)
-        self.onChangeTest(DecimalRow(), value: 35.7)
-        self.onChangeTest(DateRow(), value: NSDate().dateByAddingTimeInterval(100))
-        self.onChangeTest(DateInlineRow(), value: NSDate().dateByAddingTimeInterval(100))
-        
+        onChangeTest(TextRow(), value: "text")
+        onChangeTest(IntRow(), value: 33)
+        onChangeTest(DecimalRow(), value: 35.7)
+        onChangeTest(URLRow(), value: NSURL(string: "http://xmartlabs.com")!)
+        onChangeTest(DateRow(), value: NSDate().dateByAddingTimeInterval(100))
+        onChangeTest(DateInlineRow(), value: NSDate().dateByAddingTimeInterval(100))
     }
     
-    func onChangeTest<Row, Value where  Row: BaseRow, Row : RowType, Row.Value == Row.Cell.Value, Value == Row.Value>(row:Row, value:Value){
+    
+    func testDefaultInitializers() {
+        defaultInitializerTest(TextRow())
+        defaultInitializerTest(IntRow())
+        defaultInitializerTest(DecimalRow())
+        defaultInitializerTest(URLRow())
+        defaultInitializerTest(DateRow())
+        defaultInitializerTest(DateInlineRow())
+    }
+    
+    private func onChangeTest<Row, Value where  Row: BaseRow, Row : RowType, Row.Value == Row.Cell.Value, Value == Row.Value>(row:Row, value:Value){
         var onChangeWasInvoked = false
         row.onChange { row in
             onChangeWasInvoked = true
@@ -58,5 +68,14 @@ class CallbacksTests: XCTestCase {
         formVC.form  +++ Section() <<< row
         row.value = value
         XCTAssertTrue(onChangeWasInvoked)
+    }
+    
+    private func defaultInitializerTest<Row where Row: BaseRow, Row : RowType, Row.Value == Row.Cell.Value>(row:Row){
+        var defaultInitWasInvoked = false
+        Row.defaultRowInitializer = { row in
+            defaultInitWasInvoked = true
+        }
+        formVC.form +++= Row.init() { _ in }
+        XCTAssertTrue(defaultInitWasInvoked)
     }
 }
