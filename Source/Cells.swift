@@ -69,6 +69,11 @@ public class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
         tintColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         textLabel?.textColor  = UIColor(red: red, green: green, blue: blue, alpha: row.isDisabled ? 0.3 : 1.0)
     }
+    
+    public override func didSelect() {
+        super.didSelect()
+        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
+    }
 }
 
 public typealias ButtonCell = ButtonCellOf<String>
