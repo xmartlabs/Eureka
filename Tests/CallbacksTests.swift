@@ -50,6 +50,41 @@ class CallbacksTests: XCTestCase {
         onChangeTest(DateInlineRow(), value: NSDate().dateByAddingTimeInterval(100))
     }
     
+    func testCellSetup() {
+        cellSetupTest(TextRow())
+        cellSetupTest(IntRow())
+        cellSetupTest(DecimalRow())
+        cellSetupTest(URLRow())
+        cellSetupTest(DateRow())
+        cellSetupTest(DateInlineRow())
+    }
+    
+    func testCellUpdate() {
+        cellUpdateTest(TextRow())
+        cellUpdateTest(IntRow())
+        cellUpdateTest(DecimalRow())
+        cellUpdateTest(URLRow())
+        cellUpdateTest(DateRow())
+        cellUpdateTest(DateInlineRow())
+    }
+    
+    func testDefaultCellSetup() {
+        defaultCellSetupTest(TextRow())
+        defaultCellSetupTest(IntRow())
+        defaultCellSetupTest(DecimalRow())
+        defaultCellSetupTest(URLRow())
+        defaultCellSetupTest(DateRow())
+        defaultCellSetupTest(DateInlineRow())
+    }
+    
+    func testDefaultCellUpdate() {
+        defaultCellUpdateTest(TextRow())
+        defaultCellUpdateTest(IntRow())
+        defaultCellUpdateTest(DecimalRow())
+        defaultCellUpdateTest(URLRow())
+        defaultCellUpdateTest(DateRow())
+        defaultCellUpdateTest(DateInlineRow())
+    }
     
     func testDefaultInitializers() {
         defaultInitializerTest(TextRow())
@@ -61,21 +96,61 @@ class CallbacksTests: XCTestCase {
     }
     
     private func onChangeTest<Row, Value where  Row: BaseRow, Row : RowType, Row.Value == Row.Cell.Value, Value == Row.Value>(row:Row, value:Value){
-        var onChangeWasInvoked = false
+        var invoked = false
         row.onChange { row in
-            onChangeWasInvoked = true
+            invoked = true
         }
-        formVC.form  +++ Section() <<< row
+        formVC.form +++ Section() <<< row
         row.value = value
-        XCTAssertTrue(onChangeWasInvoked)
+        XCTAssertTrue(invoked)
+    }
+    
+    private func cellSetupTest<Row, Value where  Row: BaseRow, Row : RowType, Row.Value == Row.Cell.Value, Value == Row.Value>(row:Row){
+        var invoked = false
+        row.cellSetup { cell, row in
+            invoked = true
+        }
+        formVC.form +++ Section() <<< row
+        row.cell // laod cell
+        XCTAssertTrue(invoked)
+    }
+    
+    private func cellUpdateTest<Row, Value where  Row: BaseRow, Row : RowType, Row.Value == Row.Cell.Value, Value == Row.Value>(row:Row){
+        var invoked = false
+        row.cellUpdate { cell, row in
+            invoked = true
+        }
+        formVC.form +++ Section() <<< row
+        formVC.tableView(formVC.tableView!, willDisplayCell: row.cell, forRowAtIndexPath: row.indexPath()!) // should invoke cell update
+        XCTAssertTrue(invoked)
     }
     
     private func defaultInitializerTest<Row where Row: BaseRow, Row : RowType, Row.Value == Row.Cell.Value>(row:Row){
-        var defaultInitWasInvoked = false
+        var invoked = false
         Row.defaultRowInitializer = { row in
-            defaultInitWasInvoked = true
+            invoked = true
         }
         formVC.form +++= Row.init() { _ in }
-        XCTAssertTrue(defaultInitWasInvoked)
+        XCTAssertTrue(invoked)
+    }
+    
+    private func defaultCellSetupTest<Row where Row: BaseRow, Row : RowType, Row.Value == Row.Cell.Value>(row:Row){
+        var invoked = false
+        Row.defaultCellSetup = { cell, row in
+            invoked = true
+        }
+        formVC.form +++= row
+        row.cell // laod cell
+        XCTAssertTrue(invoked)
+    }
+
+    private func defaultCellUpdateTest<Row where Row: BaseRow, Row : RowType, Row.Value == Row.Cell.Value>(row:Row){
+        var invoked = false
+        Row.defaultCellUpdate = { cell, row in
+            invoked = true
+        }
+        formVC.form +++= row
+        formVC.tableView(formVC.tableView!, willDisplayCell: row.cell, forRowAtIndexPath: row.indexPath()!) // should invoke cell update
+        XCTAssertTrue(invoked)
     }
 }

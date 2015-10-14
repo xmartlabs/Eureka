@@ -506,7 +506,6 @@ extension Section : RangeReplaceableCollectionType {
     public func append(formRow: BaseRow){
         kvoWrapper.rows.insertObject(formRow, atIndex: kvoWrapper.rows.count)
         kvoWrapper._allRows.append(formRow)
-        
         formRow.wasAddedToFormInSection(self)
     }
     
@@ -779,144 +778,139 @@ extension RowType where Self: BaseRow, Cell : TypedCellType, Cell.Value == Value
     
     public init(_ tag: String? = nil, _ initializer: (Self -> ()) = { _ in }) {
         self.init(tag: tag)
-        let callback : Self -> () = RowDefaults.sharedInstance.defaultRowInitializer(self.dynamicType) as! Self -> ()
-        callback(self)
+        RowDefaults.rowInitialization["\(self.dynamicType)"]?(self)
         initializer(self)
     }
 }
 
 internal class RowDefaults {
-    static let sharedInstance = RowDefaults()
-    private var cellUpdate = Dictionary<String, Any>()
-    private var cellSetup = Dictionary<String, Any>()
-    private var onCellHighlight = Dictionary<String, Any>()
-    private var onCellUnHighlight = Dictionary<String, Any>()
-    private var rowInitialization = Dictionary<String, Any>()
+    private static var cellUpdate = Dictionary<String, (BaseCell, BaseRow) -> Void>()
+    private static var cellSetup = Dictionary<String, (BaseCell, BaseRow) -> Void>()
+    private static var onCellHighlight = Dictionary<String, (BaseCell, BaseRow) -> Void>()
+    private static var onCellUnHighlight = Dictionary<String, (BaseCell, BaseRow) -> Void>()
+    private static var rowInitialization = Dictionary<String, BaseRow -> Void>()
+    private static var rawCellUpdate = Dictionary<String, Any>()
+    private static var rawCellSetup = Dictionary<String, Any>()
+    private static var rawOnCellHighlight = Dictionary<String, Any>()
+    private static var rawOnCellUnHighlight = Dictionary<String, Any>()
+    private static var rawRowInitialization = Dictionary<String, Any>()
     
-    private static let _defaultCallback: ((BaseCell, BaseRow) -> ()) = { _, _ in }
-    private static let _defaultRowCallback: (BaseRow -> ()) = { _ in }
-    
-    private func defaultCellUpdateForRow(type: Any.Type) -> Any{
-        let className = "\(type)"
-        return cellUpdate[className] ?? (RowDefaults._defaultCallback as Any)
-    }
-    
-    private func setDefaultCellUpdateForRow(type: Any.Type, callback: Any){
-        let className = "\(type)"
-        cellUpdate[className] = callback
-    }
-    
-    private func defaultCellSetupForRow(type: Any.Type) -> Any{
-        let className = "\(type)"
-        return cellSetup[className] ?? (RowDefaults._defaultCallback as Any)
-    }
-    
-    private func setDefaultCellSetupForRow(type: Any.Type, callback: Any){
-        let className = "\(type)"
-        cellSetup[className] = callback
-    }
-    
-    private func defaultRowInitializer(type: Any.Type) -> Any{
-        let className = "\(type)"
-        return rowInitialization[className] ?? (RowDefaults._defaultRowCallback as Any)
-    }
-    
-    private func setDefaultRowInitializer(type: Any.Type, callback: Any){
-        let className = "\(type)"
-        rowInitialization[className] = callback
-    }
-    
-    private func defaultOnCellHighlightForRow(type: Any.Type) -> Any{
-        let className = "\(type)"
-        return onCellHighlight[className] ?? (RowDefaults._defaultCallback as Any)
-    }
-    
-    private func setDefaultOnCellHighlightForRow(type: Any.Type, callback: Any){
-        let className = "\(type)"
-        onCellHighlight[className] = callback
-    }
-    
-    private func defaultOnCellUnHighlightForRow(type: Any.Type) -> Any{
-        let className = "\(type)"
-        return onCellUnHighlight[className] ?? (RowDefaults._defaultCallback as Any)
-    }
-    
-    private func setDefaultOnCellUnHighlightForRow(type: Any.Type, callback: Any){
-        let className = "\(type)"
-        onCellUnHighlight[className] = callback
-    }
 }
 
 extension RowType where Self : BaseRow, Cell : TypedCellType, Cell.Value == Value {
     
-    public static  var defaultCellUpdate:((Cell, Self) -> ()) {
-        set { RowDefaults.sharedInstance.setDefaultCellUpdateForRow(self, callback: newValue) }
-        get{ return RowDefaults.sharedInstance.defaultCellUpdateForRow(self) as Any as! ((Cell, Self) -> ()) }
+    public static var defaultCellUpdate:((Cell, Self) -> ())? {
+        set {
+            if let newValue = newValue {
+                let wrapper : (BaseCell, BaseRow) -> Void = { (baseCell: BaseCell, baseRow: BaseRow) in
+                newValue(baseCell as! Cell, baseRow as! Self)
+                }
+                RowDefaults.cellUpdate["\(self)"] = wrapper
+                RowDefaults.rawCellUpdate["\(self)"] = newValue
+            }
+            else {
+                RowDefaults.cellUpdate["\(self)"] = nil
+                RowDefaults.rawCellUpdate["\(self)"] = nil
+            }
+        }
+        get{ return RowDefaults.rawCellUpdate["\(self)"] as? ((Cell, Self) -> ()) }
     }
     
-    public static var defaultCellSetup:((Cell, Self) -> ()) {
-        set { RowDefaults.sharedInstance.setDefaultCellSetupForRow(self, callback: newValue) }
-        get{ return RowDefaults.sharedInstance.defaultCellSetupForRow(self) as Any as! ((Cell, Self) -> ()) }
+    public static var defaultCellSetup:((Cell, Self) -> ())? {
+        set {
+            if let newValue = newValue {
+                let wrapper : (BaseCell, BaseRow) -> Void = { (baseCell: BaseCell, baseRow: BaseRow) in
+                newValue(baseCell as! Cell, baseRow as! Self)
+                }
+                RowDefaults.cellSetup["\(self)"] = wrapper
+                RowDefaults.rawCellSetup["\(self)"] = newValue
+        }
+        else {
+                RowDefaults.cellSetup["\(self)"] = nil
+                RowDefaults.rawCellSetup["\(self)"] = nil
+            }
+        }
+        get{ return RowDefaults.rawCellSetup["\(self)"] as? ((Cell, Self) -> ()) }
     }
     
-    public static var defaultRowInitializer:(Self -> ()) {
-        set { RowDefaults.sharedInstance.setDefaultRowInitializer(self, callback: newValue) }
-        get { return RowDefaults.sharedInstance.defaultRowInitializer(self) as Any as! (Self -> ()) }
+    public static var defaultOnCellHighlight:((Cell, Self) -> ())? {
+        set {
+            if let newValue = newValue {
+                let wrapper : (BaseCell, BaseRow) -> Void = { (baseCell: BaseCell, baseRow: BaseRow) in
+                    newValue(baseCell as! Cell, baseRow as! Self)
+                }
+                RowDefaults.onCellHighlight["\(self)"] = wrapper
+                RowDefaults.rawOnCellHighlight["\(self)"] = newValue
+            }
+            else {
+                RowDefaults.onCellHighlight["\(self)"] = nil
+                RowDefaults.rawOnCellHighlight["\(self)"] = nil
+            }
+        }
+        get{ return RowDefaults.rawOnCellHighlight["\(self)"] as? ((Cell, Self) -> ()) }
     }
     
-    public static var defaultOnCellHighlight:((Cell, Self) -> ()) {
-        set { RowDefaults.sharedInstance.setDefaultOnCellHighlightForRow(self, callback: newValue) }
-        get { return RowDefaults.sharedInstance.defaultOnCellHighlightForRow(self) as Any as! ((Cell, Self) -> ()) }
+    public static var defaultOnCellUnHighlight:((Cell, Self) -> ())? {
+        set {
+            if let newValue = newValue {
+            let wrapper : (BaseCell, BaseRow) -> Void = { (baseCell: BaseCell, baseRow: BaseRow) in
+                newValue(baseCell as! Cell, baseRow as! Self)
+            }
+                RowDefaults.onCellUnHighlight ["\(self)"] = wrapper
+                RowDefaults.rawOnCellUnHighlight["\(self)"] = newValue
+            }
+            else {
+                RowDefaults.onCellUnHighlight["\(self)"] = nil
+                RowDefaults.rawOnCellUnHighlight["\(self)"] = nil
+            }
+        }
+        get { return RowDefaults.rawOnCellUnHighlight["\(self)"] as? ((Cell, Self) -> ()) }
     }
     
-    public static var defaultOnCellUnHighlight:((Cell, Self) -> ()) {
-        set { RowDefaults.sharedInstance.setDefaultOnCellUnHighlightForRow(self, callback: newValue) }
-        get { return RowDefaults.sharedInstance.defaultOnCellUnHighlightForRow(self) as Any as! ((Cell, Self) -> ()) }
-    }
-    
-    public var cellUpdateCallback: ((Cell, Self) -> ())? {
-        return callbackCellUpdate as! ((Cell, Self) -> ())?
-    }
-    
-    public func cellUpdate(callback: ((cell: Cell, row: Self) -> ())) -> Self{
-        callbackCellUpdate = callback
-        return self
-    }
-    
-    public var cellSetupCallback: ((Cell, Self) -> ())? {
-        return callbackCellSetup as! ((Cell, Self) -> ())?
-    }
-    
-    public func cellSetup(callback: ((cell: Cell, row: Self) -> ())) -> Self{
-        callbackCellSetup = callback
-        return self
-    }
-    
-    public var onChangeCallback: (Self -> ())? {
-        return callbackOnChange as! (Self -> ())?
+    public static var defaultRowInitializer:(Self -> ())? {
+        set {
+            if let newValue = newValue {
+                let wrapper : (BaseRow) -> Void = { (baseRow: BaseRow) in
+                    newValue(baseRow as! Self)
+                }
+                RowDefaults.rowInitialization["\(self)"] = wrapper
+                RowDefaults.rawRowInitialization["\(self)"] = newValue
+            }
+            else {
+                RowDefaults.rowInitialization["\(self)"] = nil
+                RowDefaults.rawRowInitialization["\(self)"] = nil
+            }
+        }
+        get { return RowDefaults.rawRowInitialization["\(self)"] as? (Self -> ()) }
     }
     
     public func onChange(callback: Self -> ()) -> Self{
-        callbackOnChange = callback
+        callbackOnChange = { [unowned self] in callback(self) }
         return self
     }
     
-    public var onCellSelectionCallback: ((Cell, Self) -> ())? {
-        return callbackCellOnSelection as! ((Cell, Self) -> ())?
+    public func cellUpdate(callback: ((cell: Cell, row: Self) -> ())) -> Self{
+        callbackCellUpdate = { [unowned self] in  callback(cell: self.cell, row: self) }
+        return self
     }
-
+    
+    public func cellSetup(callback: ((cell: Cell, row: Self) -> ())) -> Self{
+        callbackCellSetup = { [unowned self] (cell:Cell) in  callback(cell: cell, row: self) }
+        return self
+    }
+    
     public func onCellSelection(callback: ((cell: Cell, row: Self) -> ())) -> Self{
-        callbackCellOnSelection = callback
+        callbackCellOnSelection = { [unowned self] in  callback(cell: self.cell, row: self) }
         return self
     }
     
-    public func onCellHighlight(callback: (Cell, Self)->()) -> Self {
-        callbackOnCellHighlight = callback
+    public func onCellHighlight(callback: (cell: Cell, row: Self)->()) -> Self {
+        callbackOnCellHighlight = { [unowned self] in  callback(cell: self.cell, row: self) }
         return self
     }
     
-    public func onCellUnHighlight(callback: (Cell, Self)->()) -> Self {
-        callbackOnCellUnHighlight = callback
+    public func onCellUnHighlight(callback: (cell: Cell, row: Self)->()) -> Self {
+        callbackOnCellUnHighlight = { [unowned self] in  callback(cell: self.cell, row: self) }
         return self
     }
 }
@@ -924,12 +918,12 @@ extension RowType where Self : BaseRow, Cell : TypedCellType, Cell.Value == Valu
 
 public class BaseRow : BaseRowType {
 
-    private var callbackOnChange: Any?
-    private var callbackCellUpdate: Any?
+    private var callbackOnChange: (()->Void)?
+    private var callbackCellUpdate: (()->Void)?
     private var callbackCellSetup: Any?
-    private var callbackCellOnSelection: Any?
-    private var callbackOnCellHighlight: Any?
-    private var callbackOnCellUnHighlight: Any?
+    private var callbackCellOnSelection: (()->Void)?
+    private var callbackOnCellHighlight: (()->Void)?
+    private var callbackOnCellUnHighlight: (()->Void)?
     private var callbackOnExpandInlineRow: Any?
     private var callbackOnCollapseInlineRow: Any?
     private var _inlineRow: BaseRow?
@@ -1096,9 +1090,7 @@ public class RowOf<T: Equatable>: BaseRow {
             guard let form = section?.form else { return }
             if let delegate = form.delegate {
                 delegate.rowValueHasBeenChanged(self, oldValue: oldValue, newValue: value)
-                if let callback = callbackOnChange{
-                    (callback as! ((RowOf<T>) -> ()))(self)
-                }
+                callbackOnChange?()
             }
             guard let t = tag else { return }
             if let rowObservers = form.rowObservers[t]?[.Hidden]{
@@ -1138,22 +1130,26 @@ public class Row<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value =
     
     public var cellProvider = CellProvider<Cell>()
     public let cellType: Cell.Type! = Cell.self
-    public lazy var cell : Cell! = {
-        [unowned self] in
-        
-        let result = self.cellProvider.createCell(self.cellStyle)
-        
+    
+    private var _cell: Cell! {
+        didSet {
+            RowDefaults.cellSetup["\(self.dynamicType)"]?(_cell, self)
+            (callbackCellSetup as? (Cell -> ()))?(_cell)
+        }
+    }
+    
+    public var cell : Cell! {
+        guard _cell == nil else{
+            return _cell
+        }
+        let result = cellProvider.createCell(self.cellStyle)
         result.row = self
         result.setup()
-        let callback : ((Cell, Row<T, Cell>) -> ()) = (RowDefaults.sharedInstance.defaultCellSetupForRow(self.dynamicType) as! (((Cell, Row<T, Cell>) -> ())))
-        callback(result, self)
-        if let callback = self.callbackCellSetup{
-            (callback as! ((Cell, Row<T, Cell>) -> ()))(result, self)
-        }
-        return result
-    }()
+        _cell = result
+        return _cell
+    }
     
-    public override var baseCell: BaseCell! { return cell! }
+    public override var baseCell: BaseCell { return cell }
 
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -1163,11 +1159,8 @@ public class Row<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value =
         super.updateCell()
         cell.update()
         customUpdateCell()
-        let callback : ((Cell, Row<T, Cell>) -> ()) = (RowDefaults.sharedInstance.defaultCellUpdateForRow(self.dynamicType) as! (((Cell, Row<T, Cell>) -> ())))
-        callback(cell, self)
-        if let callback = callbackCellUpdate{
-            (callback as! ((Cell, Row<T, Cell>) -> ()))(cell, self)
-        }
+        RowDefaults.cellUpdate["\(self.dynamicType)"]?(cell, self)
+        callbackCellUpdate?()
         cell.setNeedsLayout()
         cell.setNeedsUpdateConstraints()
     }
@@ -1178,29 +1171,21 @@ public class Row<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value =
             cell?.didSelect()
         }
         customDidSelect()
-        if let callback = callbackCellOnSelection {
-            (callback as! ((Cell, Row<T, Cell>) -> ()))(cell!, self)
-        }
+        callbackCellOnSelection?()
     }
     
     override public func hightlightCell() {
         super.hightlightCell()
         cell.highlight()
-        let callback : ((Cell, Row<T, Cell>) -> ()) = (RowDefaults.sharedInstance.defaultOnCellHighlightForRow(self.dynamicType) as! (((Cell, Row<T, Cell>) -> ())))
-        callback(cell!, self)
-        if let callback = callbackOnCellHighlight{
-            (callback as! ((Cell, Row<T, Cell>) -> ()))(cell!, self)
-        }
+        RowDefaults.onCellHighlight["\(self.dynamicType)"]?(cell, self)
+        callbackOnCellHighlight?()
     }
     
     public override func unhighlightCell() {
         super.unhighlightCell()
         cell.unhighlight()
-        let callback : ((Cell, Row<T, Cell>) -> ()) = (RowDefaults.sharedInstance.defaultOnCellUnHighlightForRow(self.dynamicType) as! (((Cell, Row<T, Cell>) -> ())))
-        callback(cell!, self)
-        if let callback = callbackOnCellUnHighlight{
-            (callback as! ((Cell, Row<T, Cell>) -> ()))(cell!, self)
-        }
+        RowDefaults.onCellUnHighlight["\(self.dynamicType)"]?(cell, self)
+        callbackOnCellUnHighlight?()
     }
     
     public func customDidSelect(){}
@@ -1220,8 +1205,7 @@ public class SelectorRow<T: Equatable, VCType: TypedRowControllerType where VCTy
     
     public required convenience init(_ tag: String, _ initializer: (SelectorRow<T, VCType> -> ()) = { _ in }) {
         self.init(tag:tag)
-        let callback : (SelectorRow<T, VCType> -> ()) = RowDefaults.sharedInstance.defaultRowInitializer(self.dynamicType) as! SelectorRow<T, VCType> -> ()
-        callback(self)
+        RowDefaults.rowInitialization["\(self.dynamicType)"]?(self)
         initializer(self)
     }
     
@@ -1279,8 +1263,7 @@ public class GenericMultipleSelectorRow<T: Hashable, VCType: TypedRowControllerT
     
     public required convenience init(_ tag: String, _ initializer: (GenericMultipleSelectorRow<T, VCType> -> ()) = { _ in }) {
         self.init(tag:tag)
-        let callback : (GenericMultipleSelectorRow<T, VCType> -> ()) = RowDefaults.sharedInstance.defaultRowInitializer(self.dynamicType) as! GenericMultipleSelectorRow<T, VCType> -> ()
-        callback(self)
+        RowDefaults.rowInitialization["\(self.dynamicType)"]?(self)
         initializer(self)
     }
     
@@ -1912,20 +1895,6 @@ extension FormViewController : UITableViewDataSource {
     
     public func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return form[section].footer?.title
-    }
-    
-    public func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
-    
-    public func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
-    
-    public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    }
-    
-    public func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
     }
 }
 
