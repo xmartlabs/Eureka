@@ -430,7 +430,6 @@ class NativeEventNavigationController: UINavigationController, RowControllerType
 
 class NativeEventFormViewController : FormViewController {
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         

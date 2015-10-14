@@ -111,7 +111,7 @@ public class _DateInlineFieldRow: Row<NSDate, DateInlineCell>, _DatePickerRowPro
     }
 }
 
-public class _DateInlineRow: _DateInlineFieldRow, InlineRowType {
+public class _DateInlineRow: _DateInlineFieldRow {
     
     public typealias InlineRow = DatePickerRow
     
@@ -122,16 +122,9 @@ public class _DateInlineRow: _DateInlineFieldRow, InlineRowType {
         dateFormatter?.dateStyle = .MediumStyle
         dateFormatter?.locale = .currentLocale()
     }
-    
-    public override func customDidSelect() {
-        super.customDidSelect()
-        if !isDisabled {
-            toggleInlineRow()
-        }
-    }
 }
 
-public class _DateTimeInlineRow: _DateInlineFieldRow, InlineRowType {
+public class _DateTimeInlineRow: _DateInlineFieldRow {
 
     public typealias InlineRow = DateTimePickerRow
     
@@ -142,16 +135,9 @@ public class _DateTimeInlineRow: _DateInlineFieldRow, InlineRowType {
         dateFormatter?.dateStyle = .ShortStyle
         dateFormatter?.locale = .currentLocale()
     }
-    
-    public override func customDidSelect() {
-        super.customDidSelect()
-        if !isDisabled {
-            toggleInlineRow()
-        }
-    }
 }
 
-public class _TimeInlineRow: _DateInlineFieldRow, InlineRowType {
+public class _TimeInlineRow: _DateInlineFieldRow {
     
     public typealias InlineRow = TimePickerRow
     
@@ -162,16 +148,9 @@ public class _TimeInlineRow: _DateInlineFieldRow, InlineRowType {
         dateFormatter?.dateStyle = .NoStyle
         dateFormatter?.locale = .currentLocale()
     }
-    
-    public override func customDidSelect() {
-        super.customDidSelect()
-        if !isDisabled {
-            toggleInlineRow()
-        }
-    }
 }
 
-public class _CountDownInlineRow: _DateInlineFieldRow, InlineRowType {
+public class _CountDownInlineRow: _DateInlineFieldRow {
     
     public typealias InlineRow = CountDownPickerRow
     
@@ -187,13 +166,6 @@ public class _CountDownInlineRow: _DateInlineFieldRow, InlineRowType {
                 return "\(hour) hour \(min) min"
             }
             return "\(hour) hours \(min) min"
-        }
-    }
-    
-    public override func customDidSelect() {
-        super.customDidSelect()
-        if !isDisabled {
-            toggleInlineRow()
         }
     }
 }
@@ -690,7 +662,7 @@ public final class CountDownRow: _CountDownRow, RowType {
     }
 }
 
-public final class DateInlineRow: _DateInlineRow, RowType {
+public final class DateInlineRow: _DateInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
         onExpandInlineRow { cell, row, _ in
@@ -701,9 +673,16 @@ public final class DateInlineRow: _DateInlineRow, RowType {
             cell.detailTextLabel?.textColor = cell.tintColor
         }
     }
+    
+    public override func customDidSelect() {
+        super.customDidSelect()
+        if !isDisabled {
+            toggleInlineRow()
+        }
+    }
 }
 
-public final class TimeInlineRow: _TimeInlineRow, RowType {
+public final class TimeInlineRow: _TimeInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
         onExpandInlineRow { cell, row, _ in
@@ -714,9 +693,16 @@ public final class TimeInlineRow: _TimeInlineRow, RowType {
             cell.detailTextLabel?.textColor = cell.tintColor
         }
     }
+    
+    public override func customDidSelect() {
+        super.customDidSelect()
+        if !isDisabled {
+            toggleInlineRow()
+        }
+    }
 }
 
-public final class DateTimeInlineRow: _DateTimeInlineRow, RowType {
+public final class DateTimeInlineRow: _DateTimeInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
         onExpandInlineRow { cell, row, _ in
@@ -727,9 +713,16 @@ public final class DateTimeInlineRow: _DateTimeInlineRow, RowType {
             cell.detailTextLabel?.textColor = cell.tintColor
         }
     }
+    
+    public override func customDidSelect() {
+        super.customDidSelect()
+        if !isDisabled {
+            toggleInlineRow()
+        }
+    }
 }
 
-public final class CountDownInlineRow: _CountDownInlineRow, RowType {
+public final class CountDownInlineRow: _CountDownInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
         onExpandInlineRow { cell, row, _ in
@@ -738,6 +731,13 @@ public final class CountDownInlineRow: _CountDownInlineRow, RowType {
                 cell.detailTextLabel?.textColor = color
             }
             cell.detailTextLabel?.textColor = cell.tintColor
+        }
+    }
+    
+    public override func customDidSelect() {
+        super.customDidSelect()
+        if !isDisabled {
+            toggleInlineRow()
         }
     }
 }
@@ -765,9 +765,6 @@ public final class CountDownPickerRow : _DatePickerRow, RowType {
         super.init(tag: tag)
     }
 }
-
-
-
 
 public final class TextRow: _TextRow, RowType {
     required public init(tag: String?) {
@@ -948,7 +945,6 @@ public final class ButtonRowOf<T: Equatable> : _ButtonRowOf<T>, RowType {
 }
 
 public typealias ButtonRow = ButtonRowOf<String>
-
 
 public final class ButtonRowWithPresent<T: Equatable, VCType: TypedRowControllerType where VCType: UIViewController, VCType.RowValue == T> : _ButtonRowWithPresent<T, VCType>, RowType {
     public required init(tag: String?) {

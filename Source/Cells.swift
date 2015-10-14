@@ -59,12 +59,11 @@ public class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
     
     public override func update() {
         super.update()
-        textLabel?.textColor = tintColor
         selectionStyle = row.isDisabled ? .None : .Default
         accessoryType = .None
         editingAccessoryType = accessoryType
         textLabel?.textAlignment = .Center
-        
+        textLabel?.textColor = tintColor
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
         tintColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         textLabel?.textColor  = UIColor(red: red, green: green, blue: blue, alpha: row.isDisabled ? 0.3 : 1.0)
