@@ -357,16 +357,32 @@ class FieldRowCustomizationController : FormViewController {
 
 class NavigationAccessoryController : FormViewController {
     
+    var navigationOptionsBackup : RowNavigationOptions?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         navigationOptions = RowNavigationOptions.Enabled.union(.SkipCanNotBecomeFirstResponderRow)
+        navigationOptionsBackup = navigationOptions
         
         form = Section(header: "Settings", footer: "These settings change how the navigation accessory view behaves")
             
              <<< SwitchRow("set_none") {
                     $0.title = "Navigation accessory view"
-                    $0.value = self.navigationOptions?.contains(.Enabled)
-                 }
+                    $0.value = self.navigationOptions != .Disabled
+                }.onChange { [weak self] in
+                    if $0.value == true {
+                        self?.navigationOptions = self?.navigationOptionsBackup
+                        self?.form.rowByTag("set_disabled")?.baseValue = self?.navigationOptions?.contains(.StopDisabledRow)
+                        self?.form.rowByTag("set_skip")?.baseValue = self?.navigationOptions?.contains(.SkipCanNotBecomeFirstResponderRow)
+                        self?.form.rowByTag("set_disabled")?.updateCell()
+                        self?.form.rowByTag("set_skip")?.updateCell()
+                    }
+                    else {
+                        self?.navigationOptionsBackup = self?.navigationOptions
+                        self?.navigationOptions = .Disabled
+                    }
+                }
 
             <<< CheckRow("set_disabled") {
                     $0.title = "Stop at disabled row"

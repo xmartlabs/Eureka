@@ -1640,13 +1640,14 @@ public protocol FormViewControllerProtocol {
 public struct RowNavigationOptions : OptionSetType {
     
     private enum NavigationOptions : Int {
-        case None = 1, Enabled = 2, StopDisabledRow = 4, SkipCanNotBecomeFirstResponderRow = 8
+        case Disabled = 0, Enabled = 1, StopDisabledRow = 2, SkipCanNotBecomeFirstResponderRow = 4
     }
     public let rawValue: Int
     public  init(rawValue: Int){ self.rawValue = rawValue}
     private init(_ options:NavigationOptions ){ self.rawValue = options.rawValue }
-    
-    public static let None = RowNavigationOptions(.None)
+    @available(*, unavailable, renamed="Disabled")
+    public static let None = RowNavigationOptions(.Disabled)
+    public static let Disabled = RowNavigationOptions(.Disabled)
     public static let Enabled = RowNavigationOptions(.Enabled)
     public static let StopDisabledRow = RowNavigationOptions(.StopDisabledRow)
     public static let SkipCanNotBecomeFirstResponderRow = RowNavigationOptions(.SkipCanNotBecomeFirstResponderRow)
