@@ -494,7 +494,7 @@ $ git submodule add https://github.com/xmartlabs/Eureka.git
 
 To change the behaviour of this you should set the navigation options of your controller. The `FormViewController` has a `navigationOptions` variable which is an enum and can have one or more of the following values:
 
-- **None**: no view at all
+- **Disabled**: no view at all
 - **Enabled**: enable view at the bottom
 - **StopDisabledRow**: if the navigation should stop when the next row is disabled
 - **SkipCanNotBecomeFirstResponderRow**: if the navigation should skip the rows that return false to `canBecomeFirstResponder()`
@@ -503,6 +503,44 @@ The default value is `Enabled & SkipCanNotBecomeFirstResponderRow`
 
 If you want to change the whole view of the bottom you will have to override the `navigationAccessoryView` variable in your subclass of `FormViewController`.
 
+#### How to get a Row using its tag value
+
+We can get a particular row by invoking any of the following functions exposed by the `Form` class:
+
+```swift
+public func rowByTag<T: Equatable>(tag: String) -> RowOf<T>?
+public func rowByTag<Row: RowType>(tag: String) -> Row?
+public func rowByTag(tag: String) -> BaseRow?
+```
+
+For instance:
+
+```swift
+let dateRow : DateRow? = form.rowByTag("dateRowTag")
+let labelRow: LabelRow? = form.rowByTag("labelRowTag")
+
+let dateRow2: Row<NSDate> = form.rowByTag("dateRowTag")
+
+let labelRow2: BaseRow = form.rowByTag("labelRowTag")
+```
+
+#### How to get a Section using its tag value
+
+```swift
+let section: Section  = form.sectionByTag("sectionTag")
+```
+
+#### How to get the form values
+
+We can get all form values by invoking the following `Form` function:
+
+```swift
+public func values(includeHidden includeHidden: Bool = false) -> [String: Any?]
+```
+
+Passing `true` as `includeHidden` parameter value will also include the hidden rows values in the dictionary.
+
+As you may have noticed the result dictionary key is the row tag value and the value is the row value. Only rows with a tag value will be added to the dictionary.
 
 <!--- In file -->
 [Introduction]: #introduction
