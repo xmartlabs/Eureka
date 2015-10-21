@@ -542,6 +542,22 @@ Passing `true` as `includeHidden` parameter value will also include the hidden r
 
 As you may have noticed the result dictionary key is the row tag value and the value is the row value. Only rows with a tag value will be added to the dictionary.
 
+#### How to set the form values using a dictionary
+
+Invoking `setValues(values: [String: Any?])` which is exposed by `Form` class.
+
+For example:
+
+```swift
+form.setValues(["IntRowTag": 8, "TextRowTag": "Hello world!", "PushRowTag": Company(name:"Xmartlabs")])
+```
+
+Where `"IntRowTag"`, `"TextRowTag"`, `"PushRowTag"` are row tags (each one uniquely identifies a row) and `8`, `"Hello world!"`, `Company(name:"Xmartlabs")` are the corresponding row value to assign.
+
+The value type of a row must match with the value type of the corresponding dictionary value otherwise nil will be assigned.
+
+If the form was already displayed we have to reload the visible rows either by reloading the table view `tableView.reloadData()` or invoking `updateCell()` to each visible row.
+
 <!--- In file -->
 [Introduction]: #introduction
 [Requirements]: #requirements
