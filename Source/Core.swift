@@ -474,6 +474,18 @@ public class Section {
         initializer(self)
     }
     
+    public convenience init(_ header: String, _ initializer: Section -> () = { _ in }){
+        self.init(HeaderFooterView(stringLiteral: header), initializer)
+    }
+    
+    public convenience init(header: String, footer: String, _ initializer: Section -> () = { _ in }){
+        self.init(header: HeaderFooterView(stringLiteral: header), footer: HeaderFooterView(stringLiteral: footer), initializer)
+    }
+    
+    public convenience init(footer: String, _ initializer: Section -> () = { _ in }){
+        self.init(footer: HeaderFooterView(stringLiteral: footer), initializer)
+    }
+    
     //MARK: Private
     private lazy var kvoWrapper: KVOWrapper = { [unowned self] in return KVOWrapper(section: self) }()
     private var headerView: UIView?

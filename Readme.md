@@ -519,15 +519,15 @@ For instance:
 let dateRow : DateRow? = form.rowByTag("dateRowTag")
 let labelRow: LabelRow? = form.rowByTag("labelRowTag")
 
-let dateRow2: Row<NSDate> = form.rowByTag("dateRowTag")
+let dateRow2: Row<NSDate>? = form.rowByTag("dateRowTag")
 
-let labelRow2: BaseRow = form.rowByTag("labelRowTag")
+let labelRow2: BaseRow? = form.rowByTag("labelRowTag")
 ```
 
 #### How to get a Section using its tag value
 
 ```swift
-let section: Section  = form.sectionByTag("sectionTag")
+let section: Section?  = form.sectionByTag("sectionTag")
 ```
 
 #### How to get the form values
