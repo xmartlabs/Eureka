@@ -243,7 +243,7 @@ public final class Form {
                     }
     }
     
-    public func setValues(values: [String: Any]){
+    public func setValues(values: [String: Any?]){
         for (key, value) in values{
             let row: BaseRow? = rowByTag(key)
             row?.baseValue = value

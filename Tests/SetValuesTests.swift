@@ -52,6 +52,7 @@ class SetValuesTests: XCTestCase {
     
     func testSetValues() {
         let intRowValue: Int = 4
+        let intRowNilValue: Int? = nil
         let textRowValue = "textRow value!!!"
         let actionSheetRowValue = "ActionSheetRow value!!!"
         let alertRowValue : Int = 33
@@ -83,5 +84,7 @@ class SetValuesTests: XCTestCase {
         XCTAssertNotNil(pushRow)
         XCTAssertEqual(pushRow!.value, Float(1.0))
         
+        form.setValues(["IntRow": intRowNilValue])
+        XCTAssertNil(intRow?.value)
     }
 }
