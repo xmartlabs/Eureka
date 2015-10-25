@@ -196,7 +196,7 @@ This is a list of the rows that are provided by default:
 
 		This row allows the selection of multiple options
 
-  + **LocationRow** (Included as custom row in the the example project)
+  + **LocationRow** (Included as custom row in the example project)
 
     <img src="Example/Media/EurekaLocationRow.gif" width="300" alt="Screenshot of Location Row"/>
 
@@ -412,7 +412,7 @@ A inline row is a specific type of row that shows dynamically a row below it, no
 
 So to create a inline row we need 2 rows, the row that are "always" visible and the row that will expand/collapse.
 
-Another requirement is that the the value type of these 2 rows must be the same.
+Another requirement is that the value type of these 2 rows must be the same.
 
 Once we have these 2 rows, we should make the top row type conforms to `InlineRowType` which will add some methods to the top row class type such as:
 
