@@ -91,6 +91,8 @@ public protocol BaseInlineRowType {
 
 public protocol InlineRowType: TypedRowType, BaseInlineRowType {
     typealias InlineRow: RowType
+    
+    var onPresentInlineRow : (InlineRow -> Void)? { get set }   
 }
 
 extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell : TypedCellType, Self.Cell.Value == Self.Value, Self.InlineRow.Cell.Value == Self.InlineRow.Value, Self.InlineRow.Value == Self.Value {
@@ -106,6 +108,7 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
                 self?.value = $0.value
                 self?.updateCell()
             }
+            onPresentInlineRow?(inline)
             if (form.inlineRowHideOptions ?? Form.defaultInlineRowHideOptions).contains(.AnotherInlineRowIsShown) {
                 for row in form.allRows {
                     if let inlineRow = row as? BaseInlineRowType {

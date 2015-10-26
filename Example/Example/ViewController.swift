@@ -185,6 +185,17 @@ class RowsExampleViewController: FormViewController {
                     .onPresent { from, to in
                         to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: from, action: "multipleSelectorDone:")
                     }
+            
+            +++ Section("Generic picker")
+            
+                <<< PickerRow<String>("Picker Row") { (row : PickerRow<String>) -> Void in
+                
+                    row.options = []
+                    for i in 1...10{
+                        row.options.append("option \(i)")
+                    }
+                
+                }
         
             +++ Section("FieldRow examples")
             
@@ -926,6 +937,28 @@ class InlineRowsController: FormViewController {
                     dateComp.minute = 33
                     dateComp.timeZone = NSTimeZone.systemTimeZone()
                     $0.value = NSCalendar.currentCalendar().dateFromComponents(dateComp)
+                }
+        
+        +++ Section("Generic inline picker")
+            
+            <<< PickerInlineRow<NSDate>("PickerInlineRow") { (row : PickerInlineRow<NSDate>) -> Void in
+            
+                    row.title = row.tag
+                    row.displayValueFor = {
+                        guard let date = $0 else{
+                            return nil
+                        }
+                        let year = NSCalendar.currentCalendar().component(.Year, fromDate: date)
+                        return "Year \(year)"
+                    }
+                
+                    row.options = []
+                    var date = NSDate()
+                    for _ in 1...10{
+                        row.options.append(date)
+                        date = date.dateByAddingTimeInterval(60*60*24*365)
+                    }
+                    row.value = row.options[0]
                 }
     }
 }
