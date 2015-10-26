@@ -35,7 +35,7 @@ internal protocol TextAreaConformance : FormatterConformance {
     var placeholder : String? { get set }
 }
 
-internal protocol FormatterConformance: class {
+public protocol FormatterConformance: class {
     var formatter: NSFormatter? { get set }
     var useFormatterDuringInput: Bool { get set }
 }

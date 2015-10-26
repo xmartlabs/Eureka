@@ -274,8 +274,8 @@ public class TextCell : _FieldCell<String>, CellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    public override func update() {
-        super.update()
+    public override func setup() {
+        super.setup()
         textField.autocorrectionType = .Default
         textField.autocapitalizationType = .Sentences
         textField.keyboardType = .Default
@@ -289,8 +289,8 @@ public class IntCell : _FieldCell<Int>, CellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    public override func update() {
-        super.update()
+    public override func setup() {
+        super.setup()
         textField.autocorrectionType = .Default
         textField.autocapitalizationType = .None
         textField.keyboardType = .NumberPad
@@ -303,8 +303,8 @@ public class PhoneCell : _FieldCell<String>, CellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    public override func update() {
-        super.update()
+    public override func setup() {
+        super.setup()
         textField.keyboardType = .PhonePad
     }
 }
@@ -315,8 +315,8 @@ public class NameCell : _FieldCell<String>, CellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    public override func update() {
-        super.update()
+    public override func setup() {
+        super.setup()
         textField.autocorrectionType = .No
         textField.autocapitalizationType = .Words
         textField.keyboardType = .NamePhonePad
@@ -329,8 +329,8 @@ public class EmailCell : _FieldCell<String>, CellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    public override func update() {
-        super.update()
+    public override func setup() {
+        super.setup()
         textField.autocorrectionType = .No
         textField.autocapitalizationType = .None
         textField.keyboardType = .EmailAddress
@@ -343,8 +343,8 @@ public class PasswordCell : _FieldCell<String>, CellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    public override func update() {
-        super.update()
+    public override func setup() {
+        super.setup()
         textField.autocorrectionType = .No
         textField.autocapitalizationType = .None
         textField.keyboardType = .ASCIICapable
@@ -358,8 +358,8 @@ public class DecimalCell : _FieldCell<Float>, CellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    public override func update() {
-        super.update()
+    public override func setup() {
+        super.setup()
         textField.keyboardType = .DecimalPad
     }
 }
@@ -370,8 +370,8 @@ public class URLCell : _FieldCell<NSURL>, CellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    public override func update() {
-        super.update()
+    public override func setup() {
+        super.setup()
         textField.keyboardType = .URL
     }
 }
@@ -382,8 +382,8 @@ public class TwitterCell : _FieldCell<String>, CellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
-    public override func update() {
-        super.update()
+    public override func setup() {
+        super.setup()
         textField.autocorrectionType = .No
         textField.autocapitalizationType = .None
         textField.keyboardType = .Twitter
@@ -396,8 +396,8 @@ public class AccountCell : _FieldCell<String>, CellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    public override func update() {
-        super.update()
+    public override func setup() {
+        super.setup()
         textField.autocorrectionType = .No
         textField.autocapitalizationType = .None
         textField.keyboardType = .ASCIICapable
