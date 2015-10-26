@@ -308,6 +308,8 @@ extension Form : RangeReplaceableCollectionType {
             }
         }
         kvoWrapper.sections.replaceObjectsInRange(NSMakeRange(subRange.startIndex, subRange.endIndex - subRange.startIndex), withObjectsFromArray: newElements.map { $0 })
+        kvoWrapper._allSections.insertContentsOf(newElements, at: indexForInsertionAtIndex(subRange.startIndex))
+        
         for section in newElements{
             section.wasAddedToForm(self)
         }
@@ -320,6 +322,16 @@ extension Form : RangeReplaceableCollectionType {
         }
         kvoWrapper.sections.removeAllObjects()
         kvoWrapper._allSections.removeAll()
+    }
+    
+    private func indexForInsertionAtIndex(index: Int) -> Int {
+        guard index != 0 else { return 0 }
+        
+        let row = kvoWrapper.sections[index-1]
+        if let i = kvoWrapper._allSections.indexOf(row as! Section){
+            return i + 1
+        }
+        return kvoWrapper._allSections.count
     }
 }
 
@@ -539,7 +551,8 @@ extension Section : RangeReplaceableCollectionType {
             }
         }
         kvoWrapper.rows.replaceObjectsInRange(NSMakeRange(subRange.startIndex, subRange.endIndex - subRange.startIndex), withObjectsFromArray: newElements.map { $0 })
-        kvoWrapper._allRows.appendContentsOf(newElements)
+        
+        kvoWrapper._allRows.insertContentsOf(newElements, at: indexForInsertionAtIndex(subRange.startIndex))
         for row in newElements{
             row.wasAddedToFormInSection(self)
         }
@@ -552,6 +565,16 @@ extension Section : RangeReplaceableCollectionType {
         }
         kvoWrapper.rows.removeAllObjects()
         kvoWrapper._allRows.removeAll()
+    }
+    
+    private func indexForInsertionAtIndex(index: Int) -> Int {
+        guard index != 0 else { return 0 }
+        
+        let row = kvoWrapper.rows[index-1]
+        if let i = kvoWrapper._allRows.indexOf(row as! BaseRow){
+            return i + 1
+        }
+        return kvoWrapper._allRows.count
     }
 }
 
