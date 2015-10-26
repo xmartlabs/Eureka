@@ -241,4 +241,106 @@ class HiddenRowsTests: BaseEurekaTests {
         form[0][1].baseValue = 10
         XCTAssertEqual(sec2.count, 2)
     }
+    
+    func testHiddenSections(){
+        let s1 = Section(){
+                    $0.hidden = "$NameRow_s1 contains 'hello'"
+                    $0.tag = "s1_ths"
+                }
+        let s2 = Section(){
+                    $0.hidden = "$NameRow_s1 contains 'morning'"
+                    $0.tag = "s2_ths"
+                }
+        form.insert(s1, atIndex: 1)
+        form.insert(s2, atIndex: 3)
+        
+        /* what we should have here
+        
+        shortForm (1 section)
+        s1
+        { row10, row11 }
+        s2
+        sec2 (2 rows)
+        */
+        
+        XCTAssertEqual(form.count, 5)
+        XCTAssertEqual(form[0].count, 2)
+        XCTAssertEqual(form[1].count, 0)
+        XCTAssertEqual(form[2].count, 2)
+        XCTAssertEqual(form[3].count, 0)
+        XCTAssertEqual(form[4].count, 2)
+        
+        form[0][0].baseValue = "hello, good morning!"
+        
+        XCTAssertEqual(form.count, 3)
+        XCTAssertEqual(form[0].count, 2)
+        XCTAssertEqual(form[1].count, 2)
+        XCTAssertEqual(form[2].count, 2)
+        
+        form[0][0].baseValue = "whatever"
+        
+        XCTAssertEqual(form.count, 5)
+        XCTAssertEqual(form[1].tag, "s1_ths")
+        XCTAssertEqual(form[3].tag, "s2_ths")
+        XCTAssertEqual(form[4].tag, "s3_hrt")
+    }
+    
+    func testInsertionIndex(){
+        let r1 = CheckRow("check1_tii_hrt"){ $0.hidden = "$NameRow_s1 contains 'morning'" }
+        let r2 = CheckRow("check2_tii_hrt"){ $0.hidden = "$NameRow_s1 contains 'morning'" }
+        let r3 = CheckRow("check3_tii_hrt"){ $0.hidden = "$NameRow_s1 contains 'good'" }
+        let r4 = CheckRow("check4_tii_hrt"){ $0.hidden = "$NameRow_s1 contains 'good'" }
+        
+        form[0].insert(r1, atIndex: 1)
+        form[1].insertContentsOf([r2,r3], at: 0)
+        
+        //test correct insert
+        
+        XCTAssertEqual(form[0].count, 3)
+        XCTAssertEqual(form[0][1].tag, "check1_tii_hrt")
+        
+        XCTAssertEqual(form[1].count, 4)
+        XCTAssertEqual(form[1][0].tag, "check2_tii_hrt")
+        XCTAssertEqual(form[1][1].tag, "check3_tii_hrt")
+        
+        // hide these rows
+        form[0][0].baseValue = "hello, good morning!"
+        
+        // insert another row
+        form[1].insert(r4, atIndex: 1)
+        
+        XCTAssertEqual(form[1].count, 2) // all inserted rows should be hidden
+        XCTAssertEqual(form[1][0].tag, "int1_hrt")
+        XCTAssertEqual(form[1][1].tag, "txt1_hrt")
+        
+        form[0][0].baseValue = "whatever"
+        
+        // we inserted r4 at index 1 but there were two rows hidden before it as well so it shall be at index 3
+        XCTAssertEqual(form[1].count, 5)
+        XCTAssertEqual(form[1][0].tag, "check2_tii_hrt")
+        XCTAssertEqual(form[1][1].tag, "check3_tii_hrt")
+        XCTAssertEqual(form[1][2].tag, "int1_hrt")
+        XCTAssertEqual(form[1][3].tag, "check4_tii_hrt")
+        XCTAssertEqual(form[1][4].tag, "txt1_hrt")
+        
+        form[0][0].baseValue = "hello, good morning!"
+        
+        //check that hidden rows get removed as well
+        form[1].removeAll()
+        
+        //inserting 2 rows at the end, deleting 1
+        form[2].replaceRange(Range(start: 1, end: 2), with: [r2, r4])
+        
+        XCTAssertEqual(form[1].count, 0)
+        XCTAssertEqual(form[2].count, 1)
+        XCTAssertEqual(form[2][0].tag, "txt2_hrt")
+        
+        form[0][0].baseValue = "whatever"
+        
+        XCTAssertEqual(form[2].count, 3)
+        XCTAssertEqual(form[2][0].tag, "txt2_hrt")
+        XCTAssertEqual(form[2][1].tag, "check2_tii_hrt")
+        XCTAssertEqual(form[2][2].tag, "check4_tii_hrt")
+        
+    }
 }
