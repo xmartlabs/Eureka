@@ -277,7 +277,11 @@ class CustomCellsController : FormViewController {
                     $0.value = [.Monday, .Wednesday, .Friday]
                 }
                
-                <<< FloatLabelRow() {
+                <<< TextFloatLabelRow() {
+                    $0.title = "Float Label Row, type something to see.."
+                }
+        
+                <<< IntFloatLabelRow() {
                     $0.title = "Float Label Row, type something to see.."
                 }
     }
