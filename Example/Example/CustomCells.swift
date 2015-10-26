@@ -137,8 +137,10 @@ public final class WeekDayRow: Row<Set<WeekDay>, WeekDayCell>, RowType {
 
 //MARK: FloatLabelCell
 
-public class FloatLabelCell: Cell<String>, CellType, UITextFieldDelegate {
+public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<T>, UITextFieldDelegate, TextFieldCell {
         
+    public var textField : UITextField { return floatLabelTextField }
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
@@ -166,8 +168,9 @@ public class FloatLabelCell: Cell<String>, CellType, UITextFieldDelegate {
     public override func update() {
         super.update()
         textLabel?.text = nil
+        detailTextLabel?.text = nil
         floatLabelTextField.attributedPlaceholder = NSAttributedString(string: row.title ?? "", attributes: [NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        floatLabelTextField.text = row.value
+        floatLabelTextField.text =  row.displayValueFor?(row.value)
         floatLabelTextField.enabled = !row.isDisabled
         floatLabelTextField.titleTextColour = .lightGrayColor()
         floatLabelTextField.alpha = row.isDisabled ? 0.6 : 1
@@ -196,11 +199,31 @@ public class FloatLabelCell: Cell<String>, CellType, UITextFieldDelegate {
             row.value = nil
             return
         }
+        if let fieldRow = row as? FormatterConformance, let formatter = fieldRow.formatter where fieldRow.useFormatterDuringInput {
+            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
+            let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
+            if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
+                row.value = value.memory as? T
+                if var selStartPos = textField.selectedTextRange?.start {
+                    let oldVal = textField.text
+                    textField.text = row.displayValueFor?(row.value)
+                    if let f = formatter as? FormatterProtocol {
+                        selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text)
+                    }
+                    textField.selectedTextRange = textField.textRangeFromPosition(selStartPos, toPosition: selStartPos)
+                }
+                return
+            }
+        }
         guard !textValue.isEmpty else {
             row.value = nil
             return
         }
-        row.value = textValue
+        guard let newValue = T.init(string: textValue) else {
+            row.updateCell()
+            return
+        }
+        row.value = newValue
     }
     
     //MARK: TextFieldDelegate
@@ -212,19 +235,188 @@ public class FloatLabelCell: Cell<String>, CellType, UITextFieldDelegate {
     public func textFieldDidEndEditing(textField: UITextField) {
         formViewController()?.endEditing(self)
     }
-    
 }
 
-//MARK: FloatLabelRow
-
-public final class FloatLabelRow: Row<String, FloatLabelCell>, RowType {
+public class TextFloatLabelCell : _FloatLabelCell<String>, CellType {
     
-    required public init(tag: String?) {
-        super.init(tag: tag)
-        displayValueFor = nil
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    public override func setup() {
+        super.setup()
+        textField.autocorrectionType = .Default
+        textField.autocapitalizationType = .Sentences
+        textField.keyboardType = .Default
     }
 }
 
+
+public class IntFloatLabelCell : _FloatLabelCell<Int>, CellType {
+    
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    public override func setup() {
+        super.setup()
+        textField.autocorrectionType = .Default
+        textField.autocapitalizationType = .None
+        textField.keyboardType = .NumberPad
+    }
+}
+
+public class PhoneFloatLabelCell : _FloatLabelCell<String>, CellType {
+    
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    public override func setup() {
+        super.setup()
+        textField.keyboardType = .PhonePad
+    }
+}
+
+public class NameFloatLabelCell : _FloatLabelCell<String>, CellType {
+    
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    public override func setup() {
+        super.setup()
+        textField.autocorrectionType = .No
+        textField.autocapitalizationType = .Words
+        textField.keyboardType = .NamePhonePad
+    }
+}
+
+public class EmailFloatLabelCell : _FloatLabelCell<String>, CellType {
+    
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    public override func setup() {
+        super.setup()
+        textField.autocorrectionType = .No
+        textField.autocapitalizationType = .None
+        textField.keyboardType = .EmailAddress
+    }
+}
+
+public class PasswordFloatLabelCell : _FloatLabelCell<String>, CellType {
+    
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    public override func setup() {
+        super.setup()
+        textField.autocorrectionType = .No
+        textField.autocapitalizationType = .None
+        textField.keyboardType = .ASCIICapable
+        textField.secureTextEntry = true
+    }
+}
+
+public class DecimalFloatLabelCell : _FloatLabelCell<Float>, CellType {
+    
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    public override func setup() {
+        super.setup()
+        textField.keyboardType = .DecimalPad
+    }
+}
+
+public class URLFloatLabelCell : _FloatLabelCell<NSURL>, CellType {
+    
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    public override func setup() {
+        super.setup()
+        textField.keyboardType = .URL
+    }
+}
+
+public class TwitterFloatLabelCell : _FloatLabelCell<String>, CellType {
+    
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    public override func setup() {
+        super.setup()
+        textField.autocorrectionType = .No
+        textField.autocapitalizationType = .None
+        textField.keyboardType = .Twitter
+    }
+}
+
+public class AccountFloatLabelCell : _FloatLabelCell<String>, CellType {
+    
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    public override func setup() {
+        super.setup()
+        textField.autocorrectionType = .No
+        textField.autocapitalizationType = .None
+        textField.keyboardType = .ASCIICapable
+    }
+}
+
+
+
+//MARK: FloatLabelRow
+
+public class FloatFieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TextFieldCell, Cell.Value == T>: Row<T, Cell> {
+
+    public var formatter: NSFormatter?
+    public var useFormatterDuringInput: Bool
+    
+    public required init(tag: String?) {
+        useFormatterDuringInput = false
+        super.init(tag: tag)
+        self.displayValueFor = { [unowned self] value in
+            guard let v = value else {
+                return nil
+            }
+            if let formatter = self.formatter {
+                if self.cell.textField.isFirstResponder() {
+                    if self.useFormatterDuringInput {
+                        return formatter.editingStringForObjectValue(v as! AnyObject)
+                    }
+                    else {
+                        return String(v)
+                    }
+                }
+                return formatter.stringForObjectValue(v as! AnyObject)
+            }
+            else{
+                return String(v)
+            }
+        }
+    }
+}
+
+
+public final class TextFloatLabelRow: FloatFieldRow<String, TextFloatLabelCell>, RowType {}
+public final class IntFloatLabelRow: FloatFieldRow<Int, IntFloatLabelCell>, RowType {}
+public final class DecimalFloatLabelRow: FloatFieldRow<Float, DecimalFloatLabelCell>, RowType {}
+public final class URLFloatLabelRow: FloatFieldRow<NSURL, URLFloatLabelCell>, RowType {}
+public final class TwitterFloatLabelRow: FloatFieldRow<String, TwitterFloatLabelCell>, RowType {}
+public final class AccountFloatLabelRow: FloatFieldRow<String, AccountFloatLabelCell>, RowType {}
+public final class PasswordFloatLabelRow: FloatFieldRow<String, PasswordFloatLabelCell>, RowType {}
+public final class NameFloatLabelRow: FloatFieldRow<String, NameFloatLabelCell>, RowType {}
+public final class EmailFloatLabelRow: FloatFieldRow<String, EmailFloatLabelCell>, RowType {}
 
 //MARK: LocationRow
 
