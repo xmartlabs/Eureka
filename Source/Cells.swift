@@ -404,6 +404,20 @@ public class AccountCell : _FieldCell<String>, CellType {
     }
 }
 
+public class ZipCodeCell : _FieldCell<String>, CellType {
+
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+
+    public override func update() {
+        super.update()
+        textField.autocorrectionType = .No
+        textField.autocapitalizationType = .AllCharacters
+        textField.keyboardType = .ASCIICapable
+    }
+}
+
 public class DateCell : Cell<NSDate>, CellType {
     
     lazy public var datePicker : UIDatePicker = {

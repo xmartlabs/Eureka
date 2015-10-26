@@ -152,6 +152,7 @@ This is a list of the rows that are provided by default:
 	+ **DecimalRow**
 	+ **TwitterRow**
 	+ **AccountRow**
+	+ ZipCodeRow
 
 
 * **Date Rows**
