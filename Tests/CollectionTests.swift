@@ -31,16 +31,16 @@ class CollectionTests: BaseEurekaTests {
         // test if the collection function work as expected
         
         fieldForm[0].replaceRange(3...6, with: [CheckRow("check1_ctx")])          // replacing 4 rows with 1
-        XCTAssertEqual(fieldForm[0].count, 7)                                                       // fieldform had 10 rows prior to replacing
+        XCTAssertEqual(fieldForm[0].count, 8)                                                       // fieldform had 10 rows prior to replacing
         fieldForm[0][4] = CheckRow("check2_ctx")                                                    // replacing 5th row
-        XCTAssertEqual(fieldForm[0].count, 7)
+        XCTAssertEqual(fieldForm[0].count, 8)
         
         XCTAssertEqual(fieldForm[0].filter({ $0 is CheckRow }).count, 2)                            // Do I have 2 CheckRows??
 
         fieldForm[0].appendContentsOf([CheckRow("check3_ctx"), CheckRow("check4_ctx"), CheckRow("check5_ctx")])
         // is the same as fieldForm[0] += [...]
         
-        XCTAssertEqual(fieldForm[0].count, 10)
+        XCTAssertEqual(fieldForm[0].count, 11)
     }
     
     func testFormRangeReplaceableCollectionTypeConformance() {

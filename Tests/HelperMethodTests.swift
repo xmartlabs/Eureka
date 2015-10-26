@@ -52,13 +52,13 @@ class HelperMethodTests: BaseEurekaTests {
         XCTAssertEqual(row_5_and_6[6], form[0][6])
         
         
-        let row10n = form.nextRowForRow(form[0][9])
+        let row10n = form.nextRowForRow(form[0][8])
         let rownil = form.nextRowForRow(form[2][7])
         
-        XCTAssertEqual(row10n, form[1][0])
+        XCTAssertEqual(row10n, form[0][9])
         XCTAssertNil(rownil)
         
-        let row10p = form.previousRowForRow(form[1][1])
+        let row10p = form.previousRowForRow(form[0][10])
         let rowNilP = form.previousRowForRow(form[0][0])
         
         XCTAssertEqual(row10n, row10p)
@@ -72,9 +72,9 @@ class HelperMethodTests: BaseEurekaTests {
         // Tests the allRows() method
         
         let form = fieldForm + shortForm + dateForm
-        XCTAssertEqual(form.rows.count, 20)
-        XCTAssertEqual(form.rows[11], shortForm[0][1])
-        XCTAssertEqual(form.rows[19], form.rowByTag("IntervalDateRow_d1") as? DateRow)
+        XCTAssertEqual(form.rows.count, 21)
+        XCTAssertEqual(form.rows[12], shortForm[0][1])
+        XCTAssertEqual(form.rows[20], form.rowByTag("IntervalDateRow_d1") as? DateRow)
     }
     
     func testAllRowsWrappedByTagMethod(){
@@ -84,7 +84,7 @@ class HelperMethodTests: BaseEurekaTests {
         
         let rows = form.dictionaryValuesToEvaluatePredicate()
         
-        XCTAssertEqual(rows.count, 20)
+        XCTAssertEqual(rows.count, 21)
     }
     
     func testDisabledRows(){

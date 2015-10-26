@@ -240,6 +240,12 @@ public class _AccountRow: FieldRow<String, AccountCell> {
     }
 }
 
+public class _ZipCodeRow: FieldRow<String, ZipCodeCell> {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+
 public class _TimeRow: _DateFieldRow {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -832,6 +838,19 @@ public final class TwitterRow: _TwitterRow, RowType {
 }
 
 public final class AccountRow: _AccountRow, RowType {
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        onCellHighlight { cell, row  in
+            let color = cell.textLabel?.textColor
+            row.onCellUnHighlight { cell, _ in
+                cell.textLabel?.textColor = color
+            }
+            cell.textLabel?.textColor = cell.tintColor
+        }
+    }
+}
+
+public final class ZipCodeRow: _ZipCodeRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
         onCellHighlight { cell, row  in

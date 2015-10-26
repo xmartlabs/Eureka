@@ -237,6 +237,11 @@ class RowsExampleViewController: FormViewController {
                         $0.title = "AccountRow"
                         $0.placeholder = "Placeholder"
                     }
+        
+                <<< ZipCodeRow() {
+                        $0.title = "ZipCodeRow"
+                        $0.placeholder = "90210"
+                    }
     }
     
     func multipleSelectorDone(item:UIBarButtonItem) {

@@ -67,6 +67,7 @@ class BaseEurekaTests: XCTestCase {
             <<< DecimalRow("DecimalRow_f1"){ $0.title = "Decimal" }
             <<< TwitterRow("TwitterRow_f1"){ $0.title = "Twitter" }
             <<< AccountRow("AccountRow_f1"){ $0.title = "Account" }
+            <<< ZipCodeRow("ZipCodeRow_f1"){ $0.title = "Zip Code" }
         
         manySectionsForm =  Section("Section A")
                         +++ Section("Section B")
@@ -91,7 +92,7 @@ class BaseEurekaTests: XCTestCase {
         XCTAssertEqual(dateForm[0].count, 8)
         XCTAssertEqual(shortForm[0].count, 2)
         XCTAssertEqual(fieldForm.count, 1)
-        XCTAssertEqual(fieldForm[0].count, 10)
+        XCTAssertEqual(fieldForm[0].count, 11)
         XCTAssertEqual(manySectionsForm.count, 6)
         XCTAssertEqual(manySectionsForm[0].count, 0)
     }
