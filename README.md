@@ -75,16 +75,22 @@ class CustomCellsController : FormViewController {
 	            	<<< WeekDayRow(){
 	            		$0.value = [.Monday, .Wednesday, .Friday]
 	            	}
-	            	<<< FloatLabelRow() {
+	            	<<< TextFloatLabelRow() {
 	            		$0.title = "Float Label Row, type something to see.."
 	            	}
     }
 }
 ```
 
-In this example we create a [CustomCellsController] and then simply add a section with two custom rows to the `form` variable inherited from [FormViewController]. And this is the product:
+In this example we create a [CustomCellsController] and then simply add a section with two custom rows to the `form` variable.
+
+And this is the product:
 
 <img src="Example/Media/EurekaCustomCells.gif" width="300" alt="Screenshot of Custom Cells"/>
+
+As you may have noticed `CustomCellsController` extends from `FormViewController` which has a `form` property that can be used to declare the form as the example shows.
+`WeekDayRow` and `TextFloatLabelRow` are non-standard rows included in the example project, but the standard rows usage is analog. You can create a form by just setting up the `form` property without extending from `FormViewController` but typically it is more convenient to create a custom view controller that extends from it. 
+
 
 ### Operators
 
@@ -152,7 +158,7 @@ This is a list of the rows that are provided by default:
 	+ **DecimalRow**
 	+ **TwitterRow**
 	+ **AccountRow**
-	+ ZipCodeRow
+	+ **ZipCodeRow**
 
 
 * **Date Rows**
