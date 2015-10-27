@@ -130,6 +130,11 @@ class RowsExampleViewController: FormViewController {
                         $0.value = true
                     }
             
+                <<< SliderRow() {
+                    $0.title = "SliderRow"
+                    $0.value = 5.0
+                }
+            
             +++ Section("SegmentedRow examples")
             
                 <<< SegmentedRow<String>() { $0.options = ["One", "Two", "Three"] }
