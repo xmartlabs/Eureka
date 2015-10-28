@@ -321,12 +321,19 @@ public class _PickerRow<T where T: Equatable> : Row<T, PickerCell<T>>{
     }
 }
 
-public class _PickerInlineRow<T where T: Equatable> : Row<T, LabelCellOf<T>>, InlineRowType{
+public class _PickerInlineRow<T where T: Equatable> : Row<T, LabelCellOf<T>>{
     
     public typealias InlineRow = PickerRow<T>
     public var onPresentInlineRow : (PickerRow<T> -> Void)?
     public var options = [T]()
 
+    required public init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+
+public final class PickerInlineRow<T where T: Equatable> : _PickerInlineRow<T>, RowType, InlineRowType{
+    
     required public init(tag: String?) {
         super.init(tag: tag)
         onPresentInlineRow = { [unowned self] inlineRow in
@@ -343,14 +350,10 @@ public class _PickerInlineRow<T where T: Equatable> : Row<T, LabelCellOf<T>>, In
     }
     
     public override func customDidSelect() {
-        toggleInlineRow()
-    }
-}
-
-public final class PickerInlineRow<T where T: Equatable> : _PickerInlineRow<T>, RowType{
-    
-    required public init(tag: String?) {
-        super.init(tag: tag)
+        super.customDidSelect()
+        if !isDisabled {
+            toggleInlineRow()
+        }
     }
     
 }
