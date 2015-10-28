@@ -43,7 +43,7 @@ public protocol FormDelegate : class {
     func rowsHaveBeenAdded(rows: [BaseRow], atIndexPaths:[NSIndexPath])
     func rowsHaveBeenRemoved(rows: [BaseRow], atIndexPaths:[NSIndexPath])
     func rowsHaveBeenReplaced(oldRows oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [NSIndexPath])
-    func rowValueHasBeenChanged(row: BaseRow, oldValue: Any, newValue: Any)
+    func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?)
 }
 
 //MARK: Header Footer Protocols
@@ -1801,7 +1801,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     
     //MARK: FormDelegate
     
-    public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any, newValue: Any) {}
+    public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {}
     
     //MARK: FormViewControllerProtocol
     
