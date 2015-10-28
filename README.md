@@ -203,9 +203,18 @@ This is a list of the rows that are provided by default:
 
 		This row allows the selection of multiple options
 
-  + **LocationRow** (Included as custom row in the example project)
+	+ **PickerRow**
+
+		This row allows you to present options of a generic type through a picker view
+
+	+ **PickerInlineRow**
+
+		This row uses the **PickerRow** row as its inline row
+
+	+ **LocationRow** (Included as custom row in the example project)
 
     <img src="Example/Media/EurekaLocationRow.gif" width="300" alt="Screenshot of Location Row"/>
+
 
 * **Other Rows**
 	These are other rows that might be useful
