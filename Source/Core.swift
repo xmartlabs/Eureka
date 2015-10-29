@@ -1847,7 +1847,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     
     //MARK: Private
     
-    private var oldBottomInset : CGFloat = 0.0
+    private var oldBottomInset : CGFloat?
 }
 
 extension FormViewController : UITableViewDelegate {
@@ -2004,7 +2004,7 @@ extension FormViewController {
         let newBottomInset = table.frame.origin.y + table.frame.size.height - keyBoardFrame.origin.y
         var tableInsets = table.contentInset
         var scrollIndicatorInsets = table.scrollIndicatorInsets
-        oldBottomInset = oldBottomInset != 0.0 ? oldBottomInset : tableInsets.bottom
+        oldBottomInset = oldBottomInset ?? tableInsets.bottom
         if newBottomInset > oldBottomInset {
             tableInsets.bottom = newBottomInset
             scrollIndicatorInsets.bottom = tableInsets.bottom
@@ -2025,9 +2025,11 @@ extension FormViewController {
         let keyBoardInfo = notification.userInfo!
         var tableInsets = table.contentInset
         var scrollIndicatorInsets = table.scrollIndicatorInsets
-        tableInsets.bottom = oldBottomInset
-        scrollIndicatorInsets.bottom = oldBottomInset
-        oldBottomInset = 0.0
+        if let oldBottomInset = oldBottomInset {
+            tableInsets.bottom = oldBottomInset
+            scrollIndicatorInsets.bottom = tableInsets.bottom
+        }
+        oldBottomInset = nil
         UIView.beginAnimations(nil, context: nil)
         UIView.setAnimationDuration(keyBoardInfo[UIKeyboardAnimationDurationUserInfoKey]!.doubleValue)
         UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: keyBoardInfo[UIKeyboardAnimationCurveUserInfoKey]!.integerValue)!)
