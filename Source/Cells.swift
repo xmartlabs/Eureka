@@ -179,6 +179,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKindKey] where ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && changeType.unsignedLongValue == NSKeyValueChange.Setting.rawValue {
             contentView.setNeedsUpdateConstraints()
+            contentView.updateConstraintsIfNeeded()
         }
     }
     

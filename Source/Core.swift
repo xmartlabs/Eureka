@@ -1167,7 +1167,6 @@ public class RowOf<T: Equatable>: BaseRow {
     public required init(tag: String?){
         super.init(tag: tag)
     }
-    
 }
 
 public class Row<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value == T>: RowOf<T>,  TypedRowType {

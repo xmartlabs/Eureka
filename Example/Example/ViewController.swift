@@ -808,24 +808,24 @@ class FormatterExample : FormViewController {
                 $0.title = "Currency style"
                 $0.value = 2015
                 let formatter = CurrencyFormatter()
-                formatter.locale = NSLocale.currentLocale()
-                formatter.numberStyle = NSNumberFormatterStyle.CurrencyStyle
+                formatter.locale = .currentLocale()
+                formatter.numberStyle = .CurrencyStyle
                 $0.formatter = formatter
             }
             <<< DecimalRow(){
                 $0.title = "Scientific style"
                 $0.value = 2015
                 let formatter = NSNumberFormatter()
-                formatter.locale = NSLocale.currentLocale()
-                formatter.numberStyle = NSNumberFormatterStyle.ScientificStyle
+                formatter.locale = .currentLocale()
+                formatter.numberStyle = .ScientificStyle
                 $0.formatter = formatter
             }
             <<< IntRow(){
                 $0.title = "Spell out style"
                 $0.value = 2015
                 let formatter = NSNumberFormatter()
-                formatter.locale = NSLocale.currentLocale()
-                formatter.numberStyle = NSNumberFormatterStyle.SpellOutStyle
+                formatter.locale = .currentLocale()
+                formatter.numberStyle = .SpellOutStyle
                 $0.formatter = formatter
             }
         +++ Section("Date formatters")
@@ -833,16 +833,16 @@ class FormatterExample : FormViewController {
                 $0.title = "Short style"
                 $0.value = NSDate()
                 let formatter = NSDateFormatter()
-                formatter.locale = NSLocale.currentLocale()
-                formatter.dateStyle = NSDateFormatterStyle.ShortStyle
+                formatter.locale = .currentLocale()
+                formatter.dateStyle = .ShortStyle
                 $0.dateFormatter = formatter
             }
             <<< DateRow(){
                 $0.title = "Long style"
                 $0.value = NSDate()
                 let formatter = NSDateFormatter()
-                formatter.locale = NSLocale.currentLocale()
-                formatter.dateStyle = NSDateFormatterStyle.LongStyle
+                formatter.locale = .currentLocale()
+                formatter.dateStyle = .LongStyle
                 $0.dateFormatter = formatter
             }
         +++ Section("Other formatters")
@@ -863,8 +863,8 @@ class FormatterExample : FormViewController {
         override func getObjectValue(obj: AutoreleasingUnsafeMutablePointer<AnyObject?>, forString string: String, errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>) -> Bool {
             guard obj != nil else { return false }
             var str : String
-            str = string.stringByReplacingOccurrencesOfString("$", withString: "")
-            str = str.stringByReplacingOccurrencesOfString(",", withString: "")
+            str = string.stringByReplacingOccurrencesOfString(currencySymbol, withString: "")
+            str = str.stringByReplacingOccurrencesOfString(currencyGroupingSeparator, withString: "")
             guard let i = Float(str) else { return false }
             obj.memory = NSNumber(float: i)
             return true
