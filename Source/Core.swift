@@ -43,7 +43,7 @@ public protocol FormDelegate : class {
     func rowsHaveBeenAdded(rows: [BaseRow], atIndexPaths:[NSIndexPath])
     func rowsHaveBeenRemoved(rows: [BaseRow], atIndexPaths:[NSIndexPath])
     func rowsHaveBeenReplaced(oldRows oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [NSIndexPath])
-    func rowValueHasBeenChanged(row: BaseRow, oldValue: Any, newValue: Any)
+    func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?)
 }
 
 //MARK: Header Footer Protocols
@@ -80,7 +80,7 @@ public protocol TypedRowType : BaseRowType {
 }
 
 public protocol RowType : TypedRowType {
-    init(_ tag: String?, _ initializer: (Self -> ()))
+    init(_ tag: String?, @noescape _ initializer: (Self -> ()))
 }
 
 public protocol BaseInlineRowType {
@@ -469,35 +469,35 @@ public class Section {
     
     public required init(){}
     
-    public init(_ initializer: Section -> ()){
+    public init(@noescape _ initializer: Section -> ()){
         initializer(self)
     }
 
-    public init(_ header: HeaderFooterView<UIView>, _ initializer: Section -> () = { _ in }){
+    public init(_ header: HeaderFooterView<UIView>, @noescape _ initializer: Section -> () = { _ in }){
         self.header = header
         initializer(self)
     }
     
-    public init(header: HeaderFooterView<UIView>, footer: HeaderFooterView<UIView>, _ initializer: Section -> () = { _ in }){
+    public init(header: HeaderFooterView<UIView>, footer: HeaderFooterView<UIView>, @noescape _ initializer: Section -> () = { _ in }){
         self.header = header
         self.footer = footer
         initializer(self)
     }
     
-    public init(footer: HeaderFooterView<UIView>, _ initializer: Section -> () = { _ in }){
+    public init(footer: HeaderFooterView<UIView>, @noescape _ initializer: Section -> () = { _ in }){
         self.footer = footer
         initializer(self)
     }
     
-    public convenience init(_ header: String, _ initializer: Section -> () = { _ in }){
+    public convenience init(_ header: String, @noescape _ initializer: Section -> () = { _ in }){
         self.init(HeaderFooterView(stringLiteral: header), initializer)
     }
     
-    public convenience init(header: String, footer: String, _ initializer: Section -> () = { _ in }){
+    public convenience init(header: String, footer: String, @noescape _ initializer: Section -> () = { _ in }){
         self.init(header: HeaderFooterView(stringLiteral: header), footer: HeaderFooterView(stringLiteral: footer), initializer)
     }
     
-    public convenience init(footer: String, _ initializer: Section -> () = { _ in }){
+    public convenience init(footer: String, @noescape _ initializer: Section -> () = { _ in }){
         self.init(footer: HeaderFooterView(stringLiteral: footer), initializer)
     }
     
@@ -820,7 +820,7 @@ extension PresenterRowType {
 
 extension RowType where Self: BaseRow, Cell : TypedCellType, Cell.Value == Value {
     
-    public init(_ tag: String? = nil, _ initializer: (Self -> ()) = { _ in }) {
+    public init(_ tag: String? = nil, @noescape _ initializer: (Self -> ()) = { _ in }) {
         self.init(tag: tag)
         RowDefaults.rowInitialization["\(self.dynamicType)"]?(self)
         initializer(self)
@@ -1246,7 +1246,7 @@ public class SelectorRow<T: Equatable, VCType: TypedRowControllerType where VCTy
         super.init(tag: tag)
     }
     
-    public required convenience init(_ tag: String, _ initializer: (SelectorRow<T, VCType> -> ()) = { _ in }) {
+    public required convenience init(_ tag: String, @noescape _ initializer: (SelectorRow<T, VCType> -> ()) = { _ in }) {
         self.init(tag:tag)
         RowDefaults.rowInitialization["\(self.dynamicType)"]?(self)
         initializer(self)
@@ -1304,7 +1304,7 @@ public class GenericMultipleSelectorRow<T: Hashable, VCType: TypedRowControllerT
         presentationMode = .Show(controllerProvider: ControllerProvider.Callback { return VCType() }, completionCallback: { vc in vc.navigationController?.popViewControllerAnimated(true) })
     }
     
-    public required convenience init(_ tag: String, _ initializer: (GenericMultipleSelectorRow<T, VCType> -> ()) = { _ in }) {
+    public required convenience init(_ tag: String, @noescape _ initializer: (GenericMultipleSelectorRow<T, VCType> -> ()) = { _ in }) {
         self.init(tag:tag)
         RowDefaults.rowInitialization["\(self.dynamicType)"]?(self)
         initializer(self)
@@ -1800,7 +1800,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     
     //MARK: FormDelegate
     
-    public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any, newValue: Any) {}
+    public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {}
     
     //MARK: FormViewControllerProtocol
     
@@ -1846,7 +1846,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     
     //MARK: Private
     
-    private var oldBottomInset : CGFloat = 0.0
+    private var oldBottomInset : CGFloat?
 }
 
 extension FormViewController : UITableViewDelegate {
@@ -2003,7 +2003,7 @@ extension FormViewController {
         let newBottomInset = table.frame.origin.y + table.frame.size.height - keyBoardFrame.origin.y
         var tableInsets = table.contentInset
         var scrollIndicatorInsets = table.scrollIndicatorInsets
-        oldBottomInset = oldBottomInset != 0.0 ? oldBottomInset : tableInsets.bottom
+        oldBottomInset = oldBottomInset ?? tableInsets.bottom
         if newBottomInset > oldBottomInset {
             tableInsets.bottom = newBottomInset
             scrollIndicatorInsets.bottom = tableInsets.bottom
@@ -2024,9 +2024,11 @@ extension FormViewController {
         let keyBoardInfo = notification.userInfo!
         var tableInsets = table.contentInset
         var scrollIndicatorInsets = table.scrollIndicatorInsets
-        tableInsets.bottom = oldBottomInset
-        scrollIndicatorInsets.bottom = oldBottomInset
-        oldBottomInset = 0.0
+        if let oldBottomInset = oldBottomInset {
+            tableInsets.bottom = oldBottomInset
+            scrollIndicatorInsets.bottom = tableInsets.bottom
+        }
+        oldBottomInset = nil
         UIView.beginAnimations(nil, context: nil)
         UIView.setAnimationDuration(keyBoardInfo[UIKeyboardAnimationDurationUserInfoKey]!.doubleValue)
         UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: keyBoardInfo[UIKeyboardAnimationCurveUserInfoKey]!.integerValue)!)
