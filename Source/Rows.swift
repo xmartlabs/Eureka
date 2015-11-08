@@ -536,6 +536,17 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController>, PresenterR
             cell.accessoryView = nil
         }
     }
+    
+    public func setImage(url: NSURL){
+        let req = NSURLRequest(URL: url)
+        NSURLConnection.sendAsynchronousRequest(req, queue:NSOperationQueue.mainQueue()){(res, data, err) in
+            let imageView = UIImageView(frame: CGRectMake(0, 0, 44, 44))
+            imageView.contentMode = .ScaleAspectFill
+            imageView.image = UIImage(data: data!)
+            imageView.clipsToBounds = true
+            self.cell.accessoryView = imageView
+        }
+    }
 }
 
 public class _MultipleSelectorRow<T: Hashable> : GenericMultipleSelectorRow<T, MultipleSelectorViewController<T>>, PresenterRowType {
@@ -1000,6 +1011,10 @@ public final class AlertRow<T: Equatable>: _AlertRow<T>, RowType {
 public final class ImageRow : _ImageRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
+    }
+    public func setImage(url: NSURL) -> ImageRow{
+        super.setImage(url)
+        return self
     }
 }
 
