@@ -2097,7 +2097,7 @@ public class NavigationAccessoryView : UIToolbar {
     private var fixedSpace = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
     private var flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: CGRectMake(0, 0, frame.size.width, 44.0))
         autoresizingMask = .FlexibleWidth
         fixedSpace.width = 22.0
