@@ -320,7 +320,7 @@ public class NameCell : _FieldCell<String>, CellType {
         super.setup()
         textField.autocorrectionType = .No
         textField.autocapitalizationType = .Words
-        textField.keyboardType = .NamePhonePad
+        textField.keyboardType = .ASCIICapable
     }
 }
 
