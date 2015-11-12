@@ -7,19 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2837E2A01BA3A5A800A1952C /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2837E29E1BA3A5A800A1952C /* FloatLabelTextField.swift */; settings = {ASSET_TAGS = (); }; };
+		2837E2A01BA3A5A800A1952C /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2837E29E1BA3A5A800A1952C /* FloatLabelTextField.swift */; };
 		285F2B441BB79B86005991BA /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 285F2B431BB79B86005991BA /* MapKit.framework */; };
 		28C777241BA14A52000ED936 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51729E471B9A5841004A00EB /* Eureka.framework */; };
 		28C777251BA14A52000ED936 /* Eureka.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51729E471B9A5841004A00EB /* Eureka.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		28CD97C21BB32F0E00AFDA67 /* EurekaSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28CD97C01BB32F0E00AFDA67 /* EurekaSectionHeader.xib */; settings = {ASSET_TAGS = (); }; };
-		28E8554C1B9EA46F004E5189 /* ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E8554A1B9EA400004E5189 /* ExampleUITests.swift */; settings = {ASSET_TAGS = (); }; };
+		28CD97C21BB32F0E00AFDA67 /* EurekaSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28CD97C01BB32F0E00AFDA67 /* EurekaSectionHeader.xib */; };
+		28E8554C1B9EA46F004E5189 /* ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E8554A1B9EA400004E5189 /* ExampleUITests.swift */; };
 		51729E1E1B9A54F1004A00EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51729E1D1B9A54F1004A00EB /* AppDelegate.swift */; };
 		51729E201B9A54F1004A00EB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51729E1F1B9A54F1004A00EB /* ViewController.swift */; };
 		51729E231B9A54F1004A00EB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51729E211B9A54F1004A00EB /* Main.storyboard */; };
 		51729E251B9A54F1004A00EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51729E241B9A54F1004A00EB /* Assets.xcassets */; };
 		51729E281B9A54F1004A00EB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51729E261B9A54F1004A00EB /* LaunchScreen.storyboard */; };
-		51729E6E1B9A6601004A00EB /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51729E6D1B9A6601004A00EB /* CustomCells.swift */; settings = {ASSET_TAGS = (); }; };
-		51729E711B9A660A004A00EB /* WeekDaysCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51729E6F1B9A660A004A00EB /* WeekDaysCell.xib */; settings = {ASSET_TAGS = (); }; };
+		51729E6E1B9A6601004A00EB /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51729E6D1B9A6601004A00EB /* CustomCells.swift */; };
+		51729E711B9A660A004A00EB /* WeekDaysCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51729E6F1B9A660A004A00EB /* WeekDaysCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
