@@ -1463,7 +1463,7 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
     
     public typealias Value = T
     
-    public var row : RowOf<T>!
+    public weak var row : RowOf<T>!
     
     override public var inputAccessoryView: UIView? {
         if let v = formViewController()?.inputAccessoryViewForRow(row){
