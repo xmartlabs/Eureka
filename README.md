@@ -299,9 +299,9 @@ The UITableView accepts two ways of setting the headers and footers for its sect
 
 The easiest way of setting a header or a footer is by setting them as a String. This can be done using the following Section initializers:
 ```
-convenience init(_ header: String, @noescape _ initializer: Section -> () = { _ in })
-convenience init(header: String, footer: String, @noescape _ initializer: Section -> () = { _ in })
-convenience init(footer: String, @noescape _ initializer: Section -> () = { _ in })
+init(_ header: String, @noescape _ initializer: Section -> () = { _ in })
+init(header: String, footer: String, @noescape _ initializer: Section -> () = { _ in })
+init(footer: String, @noescape _ initializer: Section -> () = { _ in })
 ```
 
 Using this you can instantiate a Section like `Section("Title")` or `Section(header: "Title", footer: "Footnote")` for example.
