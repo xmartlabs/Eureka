@@ -392,7 +392,7 @@ public class _SwitchRow: Row<Bool, SwitchCell> {
     }
 }
 
-public class _PushRow<T: Equatable> : SelectorRow<T, SelectorViewController<T>>, PresenterRowType {
+public class _PushRow<T: Equatable> : SelectorRow<T, SelectorViewController<T>> {
     
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -515,7 +515,7 @@ public class _AlertRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>, Prese
     }
 }
 
-public class _ImageRow : SelectorRow<UIImage, ImagePickerController>, PresenterRowType {
+public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
     public required init(tag: String?) {
         super.init(tag: tag)
         presentationMode = .PresentModally(controllerProvider: ControllerProvider.Callback { return ImagePickerController() }, completionCallback: { vc in vc.dismissViewControllerAnimated(true, completion: nil) })
@@ -538,7 +538,7 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController>, PresenterR
     }
 }
 
-public class _MultipleSelectorRow<T: Hashable> : GenericMultipleSelectorRow<T, MultipleSelectorViewController<T>>, PresenterRowType {
+public class _MultipleSelectorRow<T: Hashable> : GenericMultipleSelectorRow<T, MultipleSelectorViewController<T>> {
     public required init(tag: String?) {
         super.init(tag: tag)
         self.displayValueFor = {
