@@ -473,32 +473,20 @@ public class Section {
         initializer(self)
     }
 
-    public init(_ header: HeaderFooterView<UIView>, @noescape _ initializer: Section -> () = { _ in }){
-        self.header = header
+    public init(_ header: String, @noescape _ initializer: Section -> () = { _ in }){
+        self.header = HeaderFooterView(stringLiteral: header)
         initializer(self)
     }
     
-    public init(header: HeaderFooterView<UIView>, footer: HeaderFooterView<UIView>, @noescape _ initializer: Section -> () = { _ in }){
-        self.header = header
-        self.footer = footer
+    public init(header: String, footer: String, @noescape _ initializer: Section -> () = { _ in }){
+        self.header = HeaderFooterView(stringLiteral: header)
+        self.footer = HeaderFooterView(stringLiteral: footer)
         initializer(self)
     }
     
-    public init(footer: HeaderFooterView<UIView>, @noescape _ initializer: Section -> () = { _ in }){
-        self.footer = footer
+    public init(footer: String, @noescape _ initializer: Section -> () = { _ in }){
+        self.footer = HeaderFooterView(stringLiteral: footer)
         initializer(self)
-    }
-    
-    public convenience init(_ header: String, @noescape _ initializer: Section -> () = { _ in }){
-        self.init(HeaderFooterView(stringLiteral: header), initializer)
-    }
-    
-    public convenience init(header: String, footer: String, @noescape _ initializer: Section -> () = { _ in }){
-        self.init(header: HeaderFooterView(stringLiteral: header), footer: HeaderFooterView(stringLiteral: footer), initializer)
-    }
-    
-    public convenience init(footer: String, @noescape _ initializer: Section -> () = { _ in }){
-        self.init(footer: HeaderFooterView(stringLiteral: footer), initializer)
     }
     
     //MARK: Private
@@ -1237,7 +1225,8 @@ public class Row<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value =
     
 }
 
-public class SelectorRow<T: Equatable, VCType: TypedRowControllerType where VCType: UIViewController,  VCType.RowValue == T>: OptionsRow<T, PushSelectorCell<T>> {
+
+public class SelectorRow<T: Equatable, VCType: TypedRowControllerType where VCType: UIViewController,  VCType.RowValue == T>: OptionsRow<T, PushSelectorCell<T>>, PresenterRowType {
     
     public var presentationMode: PresentationMode<VCType>?
     public var onPresentCallback : ((FormViewController, VCType)->())?
@@ -1287,7 +1276,7 @@ public class SelectorRow<T: Equatable, VCType: TypedRowControllerType where VCTy
     }
 }
 
-public class GenericMultipleSelectorRow<T: Hashable, VCType: TypedRowControllerType where VCType: UIViewController,  VCType.RowValue == Set<T>>: Row<Set<T>, PushSelectorCell<Set<T>>> {
+public class GenericMultipleSelectorRow<T: Hashable, VCType: TypedRowControllerType where VCType: UIViewController,  VCType.RowValue == Set<T>>: Row<Set<T>, PushSelectorCell<Set<T>>>, PresenterRowType {
     
     public var presentationMode: PresentationMode<VCType>?
     public var onPresentCallback : ((FormViewController, VCType)->())?
