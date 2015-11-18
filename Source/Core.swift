@@ -1736,6 +1736,12 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         }()
     
     public var navigationOptions : RowNavigationOptions?
+    private var tableViewStyle: UITableViewStyle = .Grouped
+    
+    public convenience init(style: UITableViewStyle) {
+        self.init(nibName: nil, bundle: nil)
+        tableViewStyle = style
+    }
     
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -1748,7 +1754,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     public override func viewDidLoad() {
         super.viewDidLoad()
         if tableView == nil {
-            tableView = UITableView(frame: view.bounds, style: .Grouped)
+            tableView = UITableView(frame: view.bounds, style: tableViewStyle)
             tableView?.autoresizingMask = UIViewAutoresizing.FlexibleWidth.union(.FlexibleHeight)
         }
         if tableView?.superview == nil {
