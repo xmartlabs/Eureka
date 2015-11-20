@@ -485,7 +485,7 @@ public override func customDidSelect() {
 
 **Note:** *A Presenter row is a row that presents a new UIViewController.*
 
-To create a custom Presenter row you must create a class that conforms the `PresenterRowType` protocol. It is highly recommended to subclass `SelectorRow` as it does conform to that protocol and adds other useful functionality. 
+To create a custom Presenter row you must create a class that conforms the `PresenterRowType` protocol. It is highly recommended to subclass `SelectorRow` as it does conform to that protocol and adds other useful functionality.
 
 The PresenterRowType protocol is defined as followes:
 ```
@@ -502,13 +502,13 @@ The `presentationMode` is what defines how the controller is presented and which
 
 ```
 public final class CustomPushRow<T: Equatable> : SelectorRow<T, SelectorViewController<T>>, RowType {
-    
+
     public required init(tag: String?) {
         super.init(tag: tag)
-        presentationMode = .Show(controllerProvider: ControllerProvider.Callback { 
-        	return SelectorViewController<T>(){ _ in } 
-        }, completionCallback: { vc in 
-        	vc.navigationController?.popViewControllerAnimated(true) 
+        presentationMode = .Show(controllerProvider: ControllerProvider.Callback {
+        	return SelectorViewController<T>(){ _ in }
+        }, completionCallback: { vc in
+        	vc.navigationController?.popViewControllerAnimated(true)
         })
     }
 }
@@ -654,6 +654,10 @@ After setting a condition, this condition is not automatically evaluated. If you
 
 This functions are just called when a row is added to the form and when a row it depends on changes. If the condition is changed when the row is being displayed then it must be reevaluated manually.
 
+### onCellUnHighlight doesn't get called unless onCellHighlight is also defined
+
+Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
+
 <!--- In file -->
 [Introduction]: #introduction
 [Requirements]: #requirements
@@ -692,7 +696,7 @@ This functions are just called when a row is added to the form and when a row it
 
  * Memory leak fix.
  * Removed HeaderFooterView inits from Section.
-  
+
 ### 1.2.0
 
  * Added PickerRow.
