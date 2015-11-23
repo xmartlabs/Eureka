@@ -256,6 +256,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     
     public func textFieldDidBeginEditing(textField: UITextField) {
         formViewController()?.beginEditing(self)
+        formViewController()?.textInputDidBeginEditing(textField, cell: self)
         if let fieldRowConformance = (row as? FieldRowConformance), let _ = fieldRowConformance.formatter where !fieldRowConformance.useFormatterDuringInput {
                 textField.text = row.displayValueFor?(row.value)
         }
@@ -263,10 +264,33 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     
     public func textFieldDidEndEditing(textField: UITextField) {
         formViewController()?.endEditing(self)
+        formViewController()?.textInputDidEndEditing(textField, cell: self)
         if let fieldRowConformance = (row as? FieldRowConformance), let _ = fieldRowConformance.formatter where !fieldRowConformance.useFormatterDuringInput {
             textField.text = row.displayValueFor?(row.value)
         }
     }
+    
+    public func textFieldShouldReturn(textField: UITextField) -> Bool {
+        return formViewController()?.textInputShouldReturn(textField, cell: self) ?? true
+    }
+    
+    public func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        return formViewController()?.textInputShouldEndEditing(textField, cell: self) ?? true
+    }
+    
+    public func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        return formViewController()?.textInputShouldBeginEditing(textField, cell: self) ?? true
+    }
+    
+    public func textFieldShouldClear(textField: UITextField) -> Bool {
+        return formViewController()?.textInputShouldClear(textField, cell: self) ?? true
+    }
+    
+    public func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+        return formViewController()?.textInputShouldEndEditing(textField, cell: self) ?? true
+    }
+    
+    
 }
 
 public class TextCell : _FieldCell<String>, CellType {
@@ -693,6 +717,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     
     public func textViewDidBeginEditing(textView: UITextView) {
         formViewController()?.beginEditing(self)
+        formViewController()?.textInputDidBeginEditing(textView, cell: self)
         if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter where !textAreaConformance.useFormatterDuringInput {
             textView.text = row.displayValueFor?(row.value)
         }
@@ -700,6 +725,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     
     public func textViewDidEndEditing(textView: UITextView) {
         formViewController()?.endEditing(self)
+        formViewController()?.textInputDidEndEditing(textView, cell: self)
         if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter where !textAreaConformance.useFormatterDuringInput {
             textView.text = row.displayValueFor?(row.value)
         }
@@ -738,6 +764,17 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         row.value = newValue
     }
     
+    public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        return formViewController()?.textInput(textView, shouldChangeCharactersInRange: range, replacementString: text, cell: self) ?? true
+    }
+    
+    public func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+        return formViewController()?.textInputShouldBeginEditing(textView, cell: self) ?? true
+    }
+    
+    public func textViewShouldEndEditing(textView: UITextView) -> Bool {
+        return formViewController()?.textInputShouldEndEditing(textView, cell: self) ?? true
+    }
 }
 
 public class TextAreaCell : _TextAreaCell<String>, CellType {
