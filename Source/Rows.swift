@@ -40,8 +40,9 @@ public protocol FormatterConformance: class {
     var useFormatterDuringInput: Bool { get set }
 }
 
-public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TextFieldCell, Cell.Value == T>: Row<T, Cell>, FieldRowConformance {
+public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TextFieldCell, Cell.Value == T>: Row<T, Cell>, FieldRowConformance, KeyboardReturnHandler {
     
+    public var keyboardReturnType : KeyboardReturnTypeConfiguration?
     public var textFieldPercentage : CGFloat?
     public var placeholder : String?
     public var placeholderColor : UIColor?
@@ -429,7 +430,6 @@ public class AreaRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: Ar
             }
         }
     }
-
 }
 
 public class OptionsRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value == T> : Row<T, Cell> {

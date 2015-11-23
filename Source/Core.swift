@@ -171,6 +171,10 @@ public protocol PresenterRowType: TypedRowType {
     var onPresentCallback: ((FormViewController, ProviderType)->())? { get set }
 }
 
+public protocol KeyboardReturnHandler : BaseRowType {
+    var keyboardReturnType : KeyboardReturnTypeConfiguration? { get set }
+}
+
 //MARK: Cell Protocols
 
 public protocol BaseCellType : class {
@@ -202,6 +206,8 @@ public final class Form {
     public static var defaultNavigationOptions = RowNavigationOptions.Enabled.union(.SkipCanNotBecomeFirstResponderRow)
     public static var defaultInlineRowHideOptions = InlineRowHideOptions.FirstResponderChanges.union(.AnotherInlineRowIsShown)
     public var inlineRowHideOptions : InlineRowHideOptions?
+    public var keyboardReturnType : KeyboardReturnTypeConfiguration?
+    public static var defaultKeyboardReturnType = KeyboardReturnTypeConfiguration()
     
     public weak var delegate: FormDelegate?
 
@@ -826,7 +832,6 @@ internal class RowDefaults {
     private static var rawOnCellHighlight = Dictionary<String, Any>()
     private static var rawOnCellUnHighlight = Dictionary<String, Any>()
     private static var rawRowInitialization = Dictionary<String, Any>()
-    
 }
 
 extension RowType where Self : BaseRow, Cell : TypedCellType, Cell.Value == Value {
@@ -835,7 +840,7 @@ extension RowType where Self : BaseRow, Cell : TypedCellType, Cell.Value == Valu
         set {
             if let newValue = newValue {
                 let wrapper : (BaseCell, BaseRow) -> Void = { (baseCell: BaseCell, baseRow: BaseRow) in
-                newValue(baseCell as! Cell, baseRow as! Self)
+                    newValue(baseCell as! Cell, baseRow as! Self)
                 }
                 RowDefaults.cellUpdate["\(self)"] = wrapper
                 RowDefaults.rawCellUpdate["\(self)"] = newValue
@@ -852,12 +857,12 @@ extension RowType where Self : BaseRow, Cell : TypedCellType, Cell.Value == Valu
         set {
             if let newValue = newValue {
                 let wrapper : (BaseCell, BaseRow) -> Void = { (baseCell: BaseCell, baseRow: BaseRow) in
-                newValue(baseCell as! Cell, baseRow as! Self)
+                    newValue(baseCell as! Cell, baseRow as! Self)
                 }
                 RowDefaults.cellSetup["\(self)"] = wrapper
                 RowDefaults.rawCellSetup["\(self)"] = newValue
-        }
-        else {
+            }
+            else {
                 RowDefaults.cellSetup["\(self)"] = nil
                 RowDefaults.rawCellSetup["\(self)"] = nil
             }
@@ -1685,6 +1690,11 @@ public struct RowNavigationOptions : OptionSetType {
     public static let SkipCanNotBecomeFirstResponderRow = RowNavigationOptions(.SkipCanNotBecomeFirstResponderRow)
 }
 
+public struct KeyboardReturnTypeConfiguration {
+    public var nextKeyboardType = UIReturnKeyType.Next
+    public var defaultKeyboardType = UIReturnKeyType.Default
+}
+
 public struct InlineRowHideOptions : OptionSetType {
     
     private enum _InlineRowHideOptions : Int {
@@ -1704,7 +1714,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     
     @IBOutlet public var tableView: UITableView?
     
-    private lazy var _form : Form = { [unowned self] in
+    private lazy var _form : Form = { [weak self] in
         let form = Form()
         form.delegate = self
         return form
@@ -1837,6 +1847,51 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     
     public func reloadAnimationOldSections(oldSections: [Section], newSections: [Section]) -> UITableViewRowAnimation {
         return .Automatic
+    }
+    
+    //MARK: TextField and TextView Delegate
+    
+    public func textInputShouldBeginEditing<T>(textInput: UITextInput, cell: Cell<T>) -> Bool {
+        return true
+    }
+    
+    public func textInputDidBeginEditing<T>(textInput: UITextInput, cell: Cell<T>) {
+        if let row = cell.row as? KeyboardReturnHandler {
+            let nextRow = nextRowForRow(cell.row, withDirection: .Down)
+            if let textField = textInput as? UITextField {
+                textField.returnKeyType = nextRow != nil ? (row.keyboardReturnType?.nextKeyboardType ?? (form.keyboardReturnType?.nextKeyboardType ?? Form.defaultKeyboardReturnType.nextKeyboardType )) : (row.keyboardReturnType?.defaultKeyboardType ?? (form.keyboardReturnType?.defaultKeyboardType ?? Form.defaultKeyboardReturnType.defaultKeyboardType))
+            }
+            else if let textView = textInput as? UITextView {
+                textView.returnKeyType = nextRow != nil ? (row.keyboardReturnType?.nextKeyboardType ?? (form.keyboardReturnType?.nextKeyboardType ?? Form.defaultKeyboardReturnType.nextKeyboardType )) : (row.keyboardReturnType?.defaultKeyboardType ?? (form.keyboardReturnType?.defaultKeyboardType ?? Form.defaultKeyboardReturnType.defaultKeyboardType))
+            }
+        }
+    }
+    
+    public func textInputShouldEndEditing<T>(textInput: UITextInput, cell: Cell<T>) -> Bool {
+        return true
+    }
+    
+    public func textInputDidEndEditing<T>(textInput: UITextInput, cell: Cell<T>) {
+        
+    }
+    
+    public func textInput<T>(textInput: UITextInput, shouldChangeCharactersInRange range: NSRange, replacementString string: String, cell: Cell<T>) -> Bool {
+        return true
+    }
+    
+    public func textInputShouldClear<T>(textInput: UITextInput, cell: Cell<T>) -> Bool {
+        return true
+    }
+
+    public func textInputShouldReturn<T>(textInput: UITextInput, cell: Cell<T>) -> Bool {
+        if let nextRow = nextRowForRow(cell.row, withDirection: .Down){
+            if nextRow.baseCell.cellCanBecomeFirstResponder(){
+                nextRow.baseCell.cellBecomeFirstResponder()
+                return true
+            }
+        }
+        tableView?.endEditing(true)
+        return true
     }
     
     //MARK: Private
@@ -2105,4 +2160,6 @@ public class NavigationAccessoryView : UIToolbar {
     
     public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {}
 }
+
+
 
