@@ -1737,6 +1737,8 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         let naview = NavigationAccessoryView(frame: CGRectMake(0, 0, self.view.frame.width, 44.0))
         naview.doneButton.target = self
         naview.doneButton.action = "navigationDone:"
+        naview.clearButton.target = self
+        naview.clearButton.action = "navigationClear:"
         naview.previousButton.target = self
         naview.previousButton.action = "navigationAction:"
         naview.nextButton.target = self
@@ -2098,6 +2100,12 @@ extension FormViewController {
         tableView?.endEditing(true)
     }
     
+    func navigationClear(sender: UIBarButtonItem) {
+        guard let currentCell = tableView?.findFirstResponder()?.formCell() else { return }
+        currentCell.baseRow.baseValue = nil
+        currentCell.update()
+    }
+    
     func navigationAction(sender: UIBarButtonItem) {
         navigateToDirection(sender == navigationAccessoryView.previousButton ? .Up : .Down)
     }
@@ -2144,6 +2152,7 @@ public class NavigationAccessoryView : UIToolbar {
     public var previousButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem(rawValue: 105)!, target: nil, action: nil)
     public var nextButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem(rawValue: 106)!, target: nil, action: nil)
     public var doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: nil, action: nil)
+    public var clearButton = UIBarButtonItem(title: "Clear", style: .Plain, target: nil, action: nil)
     private var fixedSpace = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
     private var flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
     
@@ -2151,7 +2160,7 @@ public class NavigationAccessoryView : UIToolbar {
         super.init(frame: CGRectMake(0, 0, frame.size.width, 44.0))
         autoresizingMask = .FlexibleWidth
         fixedSpace.width = 22.0
-        setItems([previousButton, fixedSpace, nextButton, flexibleSpace, doneButton], animated: false)
+        setItems([previousButton, fixedSpace, nextButton, flexibleSpace, clearButton, fixedSpace, doneButton], animated: false)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -2160,6 +2169,7 @@ public class NavigationAccessoryView : UIToolbar {
     
     public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {}
 }
+
 
 
 
