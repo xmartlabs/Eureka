@@ -870,6 +870,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     
     deinit {
         titleLabel?.removeObserver(self, forKeyPath: "text")
+        imageView?.removeObserver(self, forKeyPath: "image")
     }
     
     public override func setup() {
@@ -878,6 +879,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         contentView.addSubview(titleLabel!)
         contentView.addSubview(segmentedControl)
         titleLabel?.addObserver(self, forKeyPath: "text", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
+        imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
         segmentedControl.addTarget(self, action: "valueChanged", forControlEvents: .ValueChanged)
         contentView.addConstraint(NSLayoutConstraint(item: segmentedControl, attribute: .CenterY, relatedBy: .Equal, toItem: contentView, attribute: .CenterY, multiplier: 1, constant: 0))
     }
@@ -896,7 +898,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     }
     
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if let obj = object, let changeType = change, let _ = keyPath where obj === titleLabel && keyPath == "text" && changeType[NSKeyValueChangeKindKey]?.unsignedLongValue == NSKeyValueChange.Setting.rawValue{
+        if let obj = object, let changeType = change, let _ = keyPath where ((obj === titleLabel && keyPath == "text") || (obj === imageView && keyPath == "image")) && changeType[NSKeyValueChangeKindKey]?.unsignedLongValue == NSKeyValueChange.Setting.rawValue{
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()
         }
@@ -913,14 +915,36 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         contentView.removeConstraints(dynamicConstraints)
         dynamicConstraints = []
         var views : [String: AnyObject] =  ["segmentedControl": segmentedControl]
-        if (titleLabel?.text?.isEmpty == false) {
+        
+        var hasImageView = false
+        var hasTitleLabel = false
+        
+        if let imageView = imageView, let _ = imageView.image {
+            views["imageView"] = imageView
+            hasImageView = true
+        }
+        
+        if let titleLabel = titleLabel, text = titleLabel.text where !text.isEmpty {
             views["titleLabel"] = titleLabel
+            hasTitleLabel = true
+        }
+        
+        if hasImageView && hasTitleLabel {
+            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[titleLabel]-[segmentedControl]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views)
+            dynamicConstraints.append(NSLayoutConstraint(item: segmentedControl, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
+            dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("V:|-12-[titleLabel]-12-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
+        }
+        else if hasImageView && !hasTitleLabel {
+            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[segmentedControl]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
+        }
+        else if !hasImageView && hasTitleLabel {
             dynamicConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[titleLabel]-16-[segmentedControl]-|", options: .AlignAllCenterY, metrics: nil, views: views)
             dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("V:|-12-[titleLabel]-12-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
         }
-        else{
+        else {
             dynamicConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[segmentedControl]-|", options: .AlignAllCenterY, metrics: nil, views: views)
         }
+        
         contentView.addConstraints(dynamicConstraints)
         super.updateConstraints()
     }

@@ -140,6 +140,20 @@ class RowsExampleViewController: FormViewController {
                         $0.value = 🍐
                     }
             
+                <<< SegmentedRow<String>(){
+                    $0.title = "SegmentedRow"
+                    $0.options = ["One", "Two"]
+                    }.cellSetup { cell, row in
+                        cell.imageView?.image = UIImage(named: "plus_image")
+                }
+            
+                <<< SegmentedRow<String>(){
+                    $0.options = ["One", "Two", "Three", "Four"]
+                    $0.value = "Three"
+                    }.cellSetup { cell, row in
+                        cell.imageView?.image = UIImage(named: "plus_image")
+                }
+            
             +++ Section("Selectors Rows Examples")
                 
                 <<< ActionSheetRow<String>() {
