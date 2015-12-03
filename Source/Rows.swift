@@ -115,7 +115,6 @@ public class _DateInlineFieldRow: Row<NSDate, DateInlineCell>, _DatePickerRowPro
 public class _DateInlineRow: _DateInlineFieldRow {
     
     public typealias InlineRow = DatePickerRow
-    public var onPresentInlineRow : (DatePickerRow -> Void)?
     
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -124,12 +123,17 @@ public class _DateInlineRow: _DateInlineFieldRow {
         dateFormatter?.dateStyle = .MediumStyle
         dateFormatter?.locale = .currentLocale()
     }
+    
+    public func setupInlineRow(inlineRow: DatePickerRow) {
+        inlineRow.minimumDate = minimumDate
+        inlineRow.maximumDate = maximumDate
+        inlineRow.minuteInterval = minuteInterval
+    }
 }
 
 public class _DateTimeInlineRow: _DateInlineFieldRow {
 
     public typealias InlineRow = DateTimePickerRow
-    public var onPresentInlineRow : (DateTimePickerRow -> Void)?
     
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -138,12 +142,17 @@ public class _DateTimeInlineRow: _DateInlineFieldRow {
         dateFormatter?.dateStyle = .ShortStyle
         dateFormatter?.locale = .currentLocale()
     }
+    
+    public func setupInlineRow(inlineRow: DateTimePickerRow) {
+        inlineRow.minimumDate = minimumDate
+        inlineRow.maximumDate = maximumDate
+        inlineRow.minuteInterval = minuteInterval
+    }
 }
 
 public class _TimeInlineRow: _DateInlineFieldRow {
     
     public typealias InlineRow = TimePickerRow
-    public var onPresentInlineRow : (TimePickerRow -> Void)?
     
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -152,12 +161,17 @@ public class _TimeInlineRow: _DateInlineFieldRow {
         dateFormatter?.dateStyle = .NoStyle
         dateFormatter?.locale = .currentLocale()
     }
+    
+    public func setupInlineRow(inlineRow: TimePickerRow) {
+        inlineRow.minimumDate = minimumDate
+        inlineRow.maximumDate = maximumDate
+        inlineRow.minuteInterval = minuteInterval
+    }
 }
 
 public class _CountDownInlineRow: _DateInlineFieldRow {
     
     public typealias InlineRow = CountDownPickerRow
-    public var onPresentInlineRow : (CountDownPickerRow -> Void)?
     
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -172,6 +186,12 @@ public class _CountDownInlineRow: _DateInlineFieldRow {
             }
             return "\(hour) hours \(min) min"
         }
+    }
+    
+    public func setupInlineRow(inlineRow: CountDownPickerRow) {
+        inlineRow.minimumDate = minimumDate
+        inlineRow.maximumDate = maximumDate
+        inlineRow.minuteInterval = minuteInterval
     }
 }
 
@@ -325,7 +345,6 @@ public class _PickerRow<T where T: Equatable> : Row<T, PickerCell<T>>{
 public class _PickerInlineRow<T where T: Equatable> : Row<T, LabelCellOf<T>>{
     
     public typealias InlineRow = PickerRow<T>
-    public var onPresentInlineRow : (PickerRow<T> -> Void)?
     public var options = [T]()
 
     required public init(tag: String?) {
@@ -337,10 +356,6 @@ public final class PickerInlineRow<T where T: Equatable> : _PickerInlineRow<T>, 
     
     required public init(tag: String?) {
         super.init(tag: tag)
-        onPresentInlineRow = { [unowned self] inlineRow in
-            inlineRow.options = self.options
-            inlineRow.displayValueFor = self.displayValueFor
-        }
         onExpandInlineRow { cell, row, _ in
             let color = cell.detailTextLabel?.textColor
             row.onCollapseInlineRow { cell, _, _ in
@@ -357,6 +372,10 @@ public final class PickerInlineRow<T where T: Equatable> : _PickerInlineRow<T>, 
         }
     }
     
+    public func setupInlineRow(inlineRow: InlineRow) {
+        inlineRow.options = self.options
+        inlineRow.displayValueFor = self.displayValueFor
+    }
 }
 
 public final class PickerRow<T where T: Equatable>: _PickerRow<T>, RowType {
