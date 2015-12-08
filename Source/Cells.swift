@@ -230,9 +230,9 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
             let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
             if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
                 row.value = value.memory as? T
+                let oldVal = textField.text
+                textField.text = row.displayValueFor?(row.value)
                 if var selStartPos = textField.selectedTextRange?.start {
-                    let oldVal = textField.text
-                    textField.text = row.displayValueFor?(row.value)
                     if let f = formatter as? FormatterProtocol {
                         selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text)
                     }
@@ -265,9 +265,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     public func textFieldDidEndEditing(textField: UITextField) {
         formViewController()?.endEditing(self)
         formViewController()?.textInputDidEndEditing(textField, cell: self)
-        if let fieldRowConformance = (row as? FieldRowConformance), let _ = fieldRowConformance.formatter where !fieldRowConformance.useFormatterDuringInput {
-            textField.text = row.displayValueFor?(row.value)
-        }
+        textFieldDidChange(textField)
     }
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {
