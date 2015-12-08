@@ -230,9 +230,9 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
             let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
             if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
                 row.value = value.memory as? T
-                let oldVal = textField.text
-                textField.text = row.displayValueFor?(row.value)
                 if var selStartPos = textField.selectedTextRange?.start {
+                    let oldVal = textField.text
+                    textField.text = row.displayValueFor?(row.value)
                     if let f = formatter as? FormatterProtocol {
                         selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text)
                     }
@@ -266,6 +266,9 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         formViewController()?.endEditing(self)
         formViewController()?.textInputDidEndEditing(textField, cell: self)
         textFieldDidChange(textField)
+        if let fieldRowConformance = (row as? FieldRowConformance), let _ = fieldRowConformance.formatter where !fieldRowConformance.useFormatterDuringInput {
+            textField.text = row.displayValueFor?(row.value)
+        }
     }
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -383,6 +386,7 @@ public class DecimalCell : _FieldCell<Float>, CellType {
     
     public override func setup() {
         super.setup()
+        textField.autocorrectionType = .No
         textField.keyboardType = .DecimalPad
     }
 }
@@ -724,6 +728,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     public func textViewDidEndEditing(textView: UITextView) {
         formViewController()?.endEditing(self)
         formViewController()?.textInputDidEndEditing(textView, cell: self)
+        textViewDidChange(textView)
         if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter where !textAreaConformance.useFormatterDuringInput {
             textView.text = row.displayValueFor?(row.value)
         }

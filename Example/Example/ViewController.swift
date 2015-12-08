@@ -877,10 +877,8 @@ class FormatterExample : FormViewController {
         override func getObjectValue(obj: AutoreleasingUnsafeMutablePointer<AnyObject?>, forString string: String, errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>) -> Bool {
             guard obj != nil else { return false }
             var str : String
-            str = string.stringByReplacingOccurrencesOfString(currencySymbol, withString: "")
-            str = str.stringByReplacingOccurrencesOfString(currencyGroupingSeparator, withString: "")
-            guard let i = Float(str) else { return false }
-            obj.memory = NSNumber(float: i)
+            str = string.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet).joinWithSeparator("")
+            obj.memory = NSNumber(float: (Float(str) ?? 0.0)/Float(100))
             return true
         }
         
