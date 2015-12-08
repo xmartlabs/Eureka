@@ -95,6 +95,10 @@ public protocol InlineRowType: TypedRowType, BaseInlineRowType {
     func setupInlineRow(inlineRow: InlineRow)
 }
 
+public protocol SelectableRow : RowType {
+    var selectableValue : Value? { get set }
+}
+
 extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell : TypedCellType, Self.Cell.Value == Self.Value, Self.InlineRow.Cell.Value == Self.InlineRow.Value, Self.InlineRow.Value == Self.Value {
     
     public var inlineRow : Self.InlineRow? { return _inlineRow as? Self.InlineRow }
@@ -2161,67 +2165,48 @@ public class NavigationAccessoryView : UIToolbar {
     public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {}
 }
 
-
-public protocol SelectableRow : RowType {
-    var selectableValue : Value? { get set }
-}
-
-public class SelectableSection<Row, T where Row: BaseRow, Row: SelectableRow, Row.Cell.Value == T, T == Row.Value> : Section {
-
+public class SelectableSection<Row, T where Row: BaseRow, Row: SelectableRow, Row.Value == T, T == Row.Cell.Value> : Section {
+    
+    // MARK: SelectableSection
+    
     public func selectedRow() -> BaseRow? {
-        return self.filter({ row in
-            return row.baseValue != nil
-        }).first
+        return self.filter { $0.baseValue != nil }.first
     }
     
-    public func selectedRows() -> [BaseRow]? {
-        return self.filter({ row in
-            return row.baseValue != nil
-        })
-    }
-
-
-    convenience public init(data: [(String, String, Row.Value)], initializer: (Section -> ())?, isMultipleSelection : Bool = false, enableDeselection: Bool = true, selectedTags: [String]? = nil, rowInitializer: ((Row) -> Void)? = nil){
-        let rows = data.map { tag, title, value in
-            Row.init(tag){ row in
-                    row.title = title
-                    row.selectableValue = value
-                    if selectedTags?.contains(tag) == true {
-                        row.value = value
-                    } else {
-                        row.value = nil
-                    }
-                    rowInitializer?(row)
-                }
-        }
-        self.init(rows: rows, initializer: initializer, isMultipleSelection: isMultipleSelection, enableDeselection: enableDeselection)
+    public func selectedRows() -> [BaseRow] {
+        return self.filter { $0.baseValue != nil }
     }
     
-     public init(rows: [Row], initializer: (Section -> ())?, isMultipleSelection : Bool = false, enableDeselection: Bool = true){
+    public init(rows: [Row], initializer: (Section -> ())?, isMultipleSelection : Bool = false, enableDeselection: Bool = true) {
         super.init()
-        
         for row in rows {
             let callback = row.callbackCellOnSelection
-            self <<< row.onCellSelection { [weak self] cell, row in
+            self <<< row.onCellSelection { [weak self] _, row in
                 guard let s = self else { return }
                 if !isMultipleSelection {
-                    s.filter {
-                            return $0.baseValue != nil && $0 != row
-                        }.forEach {
-                            $0.baseValue = nil
-                            $0.updateCell()
+                    s.filter { $0.baseValue != nil && $0 != row }.forEach {
+                        $0.baseValue = nil
+                        $0.updateCell()
                     }
                 }
-                if enableDeselection {
-                    row.value = row.value == nil ? row.selectableValue : nil
-                    row.updateCell()
-                } else if row.value == nil {
-                    row.value = row.selectableValue
-                    row.updateCell()
-                }
+                row.value = !enableDeselection || row.value == nil ? row.selectableValue : nil
+                row.updateCell()
                 callback?()
             }
         }
         initializer?(self)
     }
+    
+    convenience public init(data: [(String, String, Row.Value)], initializer: (Section -> ())?, isMultipleSelection : Bool = false, enableDeselection: Bool = true, selectedTags: [String]? = nil, rowInitializer: ((Row) -> Void)? = nil){
+        let rows = data.map { tag, title, value in
+            Row.init(tag){ row in
+                row.title = title
+                row.selectableValue = value
+                row.value = selectedTags?.contains(tag) ?? false ? value : nil
+                rowInitializer?(row)
+            }
+        }
+        self.init(rows: rows, initializer: initializer, isMultipleSelection: isMultipleSelection, enableDeselection: enableDeselection)
+    }
+    
 }

@@ -48,17 +48,13 @@ public class SelectorViewController<T:Equatable> : FormViewController, TypedRowC
         guard let options = row.dataProvider?.arrayData else { return }
         let rows = options.map { opt in
             ListCheckRow<T>(String(opt)){ lrow in
-                lrow.title = String(opt)
+                lrow.title = row.displayValueFor?(opt)
                 lrow.selectableValue = opt
-                if let selected = row.value as? String where selected == String(opt) {
-                    lrow.value = opt
-                } else {
-                    lrow.value = nil
-                }
-                }.onCellSelection { [weak self] cell, row in
-                    self?.row.value = row.value
-                    self?.completionCallback?(self!)
-                }
+                lrow.value = row.value == opt ? opt : nil
+            }.onCellSelection { [weak self] cell, row in
+                self?.row.value = row.value
+                self?.completionCallback?(self!)
+            }
         }
         form +++= SelectableSection<ListCheckRow<T>, T>(rows: rows, initializer: {
             [weak self] sec in

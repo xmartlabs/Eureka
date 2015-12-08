@@ -87,23 +87,23 @@ class SelectableSectionTests: XCTestCase {
         formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 3, inSection: 1))
         
         let value1 = (formVC.form[0] as! SelectableSection<ListCheckRow<String>, String>).selectedRow()?.baseValue
-        let value2 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>, String>).selectedRows()?.map({$0.baseValue})
+        let value2 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>, String>).selectedRows().map({$0.baseValue})
         
         XCTAssertEqual(value1 as? String, "Antarctica")
-        XCTAssertTrue(value2?.count == 2)
-        XCTAssertEqual((value2?[0] as? String), "Atlantic")
-        XCTAssertEqual((value2?[1] as? String), "Pacific")
+        XCTAssertTrue(value2.count == 2)
+        XCTAssertEqual((value2[0] as? String), "Atlantic")
+        XCTAssertEqual((value2[1] as? String), "Pacific")
         
         //Now deselect One of the multiple selection section and change the value of the first section
         formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 6, inSection: 0))
         formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 1, inSection: 1))
         
         let value3 = (formVC.form[0] as! SelectableSection<ListCheckRow<String>, String>).selectedRow()?.baseValue
-        let value4 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>, String>).selectedRows()?.map({$0.baseValue})
+        let value4 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>, String>).selectedRows().map({$0.baseValue})
         
         XCTAssertEqual(value3 as? String, "South America")
-        XCTAssertTrue(value4?.count == 1)
-        XCTAssertEqual((value4?[0] as? String), "Pacific")
+        XCTAssertTrue(value4.count == 1)
+        XCTAssertEqual((value4[0] as? String), "Pacific")
     }
     
     func testDeselectionDisabled() {
@@ -112,24 +112,24 @@ class SelectableSectionTests: XCTestCase {
         formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 4, inSection: 3))
         
         var value1 = (formVC.form[2] as! SelectableSection<ListCheckRow<String>, String>).selectedRow()?.baseValue
-        var value2 = (formVC.form[3] as! SelectableSection<ListCheckRow<String>, String>).selectedRows()?.map({$0.baseValue})
+        var value2 = (formVC.form[3] as! SelectableSection<ListCheckRow<String>, String>).selectedRows().map({$0.baseValue})
         
         XCTAssertEqual(value1 as? String, "Arctic")
-        XCTAssertTrue(value2?.count == 2)
-        XCTAssertEqual((value2?[0] as? String), "Indian")
-        XCTAssertEqual((value2?[1] as? String), "Southern")
+        XCTAssertTrue(value2.count == 2)
+        XCTAssertEqual((value2[0] as? String), "Indian")
+        XCTAssertEqual((value2[1] as? String), "Southern")
         
         // now try deselecting one of each and see that nothing changes.
         formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 2))
         formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 2, inSection: 3))
         
         value1 = (formVC.form[2] as! SelectableSection<ListCheckRow<String>, String>).selectedRow()?.baseValue
-        value2 = (formVC.form[3] as! SelectableSection<ListCheckRow<String>, String>).selectedRows()?.map({$0.baseValue})
+        value2 = (formVC.form[3] as! SelectableSection<ListCheckRow<String>, String>).selectedRows().map({$0.baseValue})
         
         XCTAssertEqual(value1 as? String, "Arctic")
-        XCTAssertTrue(value2?.count == 2)
-        XCTAssertEqual((value2?[0] as? String), "Indian")
-        XCTAssertEqual((value2?[1] as? String), "Southern")
+        XCTAssertTrue(value2.count == 2)
+        XCTAssertEqual((value2[0] as? String), "Indian")
+        XCTAssertEqual((value2[1] as? String), "Southern")
         
         // But we can change the value in the first section
         formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 2, inSection: 2))
