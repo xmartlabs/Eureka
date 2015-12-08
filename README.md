@@ -47,7 +47,7 @@ Both `Form` and `Section` classes conform to `MutableCollectionType` and `RangeR
 ## Getting involved
 * If you **want to contribute** please feel free to **submit pull requests**.
 * If you **have a feature request** please **open an issue**.
-* If you **found a bug** or **need help** please **check older issues or threads on [StackOverflow] (tag 'eureka') before submitting an issue**.
+* If you **found a bug** or **need help** please **check older issues or threads on [StackOverflow] before submitting an issue**.
 
 If you use **Eureka** in your app We would love to hear about it! Drop us a line on [twitter].
 
