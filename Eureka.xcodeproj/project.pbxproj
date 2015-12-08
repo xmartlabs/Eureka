@@ -26,6 +26,7 @@
 		BF527EB41BAB3DF100BA63C2 /* HiddenRowsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF527EB31BAB3DF100BA63C2 /* HiddenRowsTests.swift */; };
 		BF53E6111B9F727C006258EB /* OperatorsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF53E6101B9F727C006258EB /* OperatorsTest.swift */; };
 		BF588EC41B9F5AC300BE426E /* CollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF588EC31B9F5AC300BE426E /* CollectionTests.swift */; };
+		BFF9C6C61C170BB900928216 /* SelectableSectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF9C6C41C170BB000928216 /* SelectableSectionTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		BF527EB31BAB3DF100BA63C2 /* HiddenRowsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = HiddenRowsTests.swift; path = Tests/HiddenRowsTests.swift; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BF53E6101B9F727C006258EB /* OperatorsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperatorsTest.swift; path = Tests/OperatorsTest.swift; sourceTree = SOURCE_ROOT; };
 		BF588EC31B9F5AC300BE426E /* CollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionTests.swift; path = Tests/CollectionTests.swift; sourceTree = SOURCE_ROOT; };
+		BFF9C6C41C170BB000928216 /* SelectableSectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectableSectionTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 				28B9B68F1BC306F100CCA9B4 /* RowByTagTests.swift */,
 				28B9B6911BC3191000CCA9B4 /* SetValuesTests.swift */,
 				2887898A1BCC160F00B5FDF0 /* CallbacksTests.swift */,
+				BFF9C6C41C170BB000928216 /* SelectableSectionTests.swift */,
 			);
 			name = Tests;
 			path = EurekaTests;
@@ -268,6 +271,7 @@
 				284729601BBA4C5E006F41DA /* FormValuesTests.swift in Sources */,
 				28B9B6901BC306F100CCA9B4 /* RowByTagTests.swift in Sources */,
 				2887898B1BCC160F00B5FDF0 /* CallbacksTests.swift in Sources */,
+				BFF9C6C61C170BB900928216 /* SelectableSectionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

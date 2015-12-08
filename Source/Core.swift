@@ -633,7 +633,7 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
         return v
     }
     
-    init?(title: String?){
+    public init?(title: String?){
         guard let t = title else { return nil }
         self.init(stringLiteral: t)
     }
@@ -2162,4 +2162,66 @@ public class NavigationAccessoryView : UIToolbar {
 }
 
 
+public protocol SelectableRow : RowType {
+    var selectableValue : Value? { get set }
+}
 
+public class SelectableSection<Row, T where Row: BaseRow, Row: SelectableRow, Row.Cell.Value == T, T == Row.Value> : Section {
+
+    public func selectedRow() -> BaseRow? {
+        return self.filter({ row in
+            return row.baseValue != nil
+        }).first
+    }
+    
+    public func selectedRows() -> [BaseRow]? {
+        return self.filter({ row in
+            return row.baseValue != nil
+        })
+    }
+
+
+    convenience public init(data: [(String, String, Row.Value)], initializer: (Section -> ())?, isMultipleSelection : Bool = false, enableDeselection: Bool = true, selectedTags: [String]? = nil, rowInitializer: ((Row) -> Void)? = nil){
+        let rows = data.map { tag, title, value in
+            Row.init(tag){ row in
+                    row.title = title
+                    row.selectableValue = value
+                    if selectedTags?.contains(tag) == true {
+                        row.value = value
+                    } else {
+                        row.value = nil
+                    }
+                    rowInitializer?(row)
+                }
+        }
+        self.init(rows: rows, initializer: initializer, isMultipleSelection: isMultipleSelection, enableDeselection: enableDeselection)
+    }
+    
+     public init(rows: [Row], initializer: (Section -> ())?, isMultipleSelection : Bool = false, enableDeselection: Bool = true){
+        super.init()
+        
+        for row in rows {
+            let callback = row.callbackCellOnSelection
+            self <<< row.onCellSelection { [weak self] cell, row in
+                guard let s = self else { return }
+                if !isMultipleSelection {
+                    s.filter {
+                            return $0.baseValue != nil && $0 != row
+                        }.forEach {
+                            $0.baseValue = nil
+                            $0.updateCell()
+                    }
+                }
+                if enableDeselection {
+                    row.value = row.value == nil ? row.selectableValue : nil
+                    row.updateCell()
+                } else if row.value == nil {
+                    row.value = row.selectableValue
+                    row.updateCell()
+                }
+                callback?()
+            }
+        }
+        initializer?(self)
+    }
+}

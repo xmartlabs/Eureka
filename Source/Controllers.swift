@@ -46,18 +46,24 @@ public class SelectorViewController<T:Equatable> : FormViewController, TypedRowC
     public override func viewDidLoad() {
         super.viewDidLoad()
         guard let options = row.dataProvider?.arrayData else { return }
-        form +++= Section()
-        for o in options {
-            form.first! <<< CheckRow(){ [weak self] in
-                                $0.title = self?.row.displayValueFor?(o)
-                                $0.value = self?.row.value == o
-                            }
-                            .onCellSelection { [weak self] _, _ in
-                                self?.row.value = o
-                                self?.completionCallback?(self!)
-                            }
+        let rows = options.map { opt in
+            ListCheckRow<T>(String(opt)){ lrow in
+                lrow.title = String(opt)
+                lrow.selectableValue = opt
+                if let selected = row.value as? String where selected == String(opt) {
+                    lrow.value = opt
+                } else {
+                    lrow.value = nil
+                }
+                }.onCellSelection { [weak self] cell, row in
+                    self?.row.value = row.value
+                    self?.completionCallback?(self!)
+                }
         }
-        form.first?.header = HeaderFooterView<UITableViewHeaderFooterView>(title: row.title)
+        form +++= SelectableSection<ListCheckRow<T>, T>(rows: rows, initializer: {
+            [weak self] sec in
+                sec.header = HeaderFooterView<UITableViewHeaderFooterView>(title: self?.row.title)
+            })
     }
 }
 

@@ -40,7 +40,7 @@ class HomeViewController : FormViewController {
         
         form  +++=
             
-            Section(footer: "These are 9 ButtonRow rows") {
+            Section(footer: "These are 10 ButtonRow rows") {
                 $0.header = HeaderFooterView<EurekaLogoView>(HeaderFooterProvider.Class)
             }
         
@@ -87,7 +87,11 @@ class HomeViewController : FormViewController {
                 <<< ButtonRow("Inline rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
                     row.presentationMode = .SegueName(segueName: "InlineRowsControllerSegue", completionCallback: nil)
-        }
+                }
+                <<< ButtonRow("List Sections") { (row: ButtonRow) -> Void in
+                    row.title = row.tag
+                    row.presentationMode = .SegueName(segueName: "ListSectionsControllerSegue", completionCallback: nil)
+                }
     }
 }
 
@@ -972,6 +976,47 @@ class InlineRowsController: FormViewController {
                     }
                     row.value = row.options[0]
                 }
+    }
+}
+
+class ListSectionsController: FormViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        form.inlineRowHideOptions = InlineRowHideOptions.AnotherInlineRowIsShown.union(.FirstResponderChanges)
+        
+        let continents = [("Africa", "Africa", "Africa"),
+                    ("Antarctica", "Antarctica", "Antarctica"),
+                    ("Asia", "Asia", "Asia"),
+                    ("Australia", "Australia", "Australia"),
+                    ("Europe", "Europe", "Europe"),
+                    ("North America", "North America", "North America"),
+                    ("South America", "South America", "South America")]
+        
+            
+        form +++= SelectableSection<ImageCheckRow<String>, String>(data: continents, initializer: { section in
+            section.header = HeaderFooterView(title: "Where do you live?")
+        })
+        let oceans = ["Arctic", "Atlantic", "Indian", "Pacific", "Southern"]
+        
+        let rows = oceans.map { o in
+            ImageCheckRow<String>(o){ lrow in
+                lrow.title = o
+                lrow.selectableValue = o
+                }.cellSetup { cell, row in
+                    cell.trueImage = UIImage(named: "selectedRectangle")!
+                    cell.falseImage = UIImage(named: "unselectedRectangle")!
+            }
+        }
+        form +++= SelectableSection<ImageCheckRow<String>, String>(rows: rows, initializer: { sec in
+            sec.header = HeaderFooterView(title: "And which of the following oceans have you taken a bath in?")
+            }, isMultipleSelection: true, enableDeselection: true)
+    }
+    
+    override func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {
+        print("section1:\((form[0] as! SelectableSection<ImageCheckRow<String>, String>).selectedRow()?.baseValue)")
+        print("section2:\((form[1] as! SelectableSection<ImageCheckRow<String>, String>).selectedRows()?.map({$0.baseValue}))")
     }
 }
 

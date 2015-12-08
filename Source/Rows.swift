@@ -405,6 +405,14 @@ public class _CheckRow: Row<Bool, CheckCell> {
     }
 }
 
+public final class ListCheckRow<T: Equatable>: Row<T, ListCheckCell<T>>, SelectableRow, RowType {
+    public var selectableValue: T?
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        displayValueFor = nil
+    }
+}
+
 public class _SwitchRow: Row<Bool, SwitchCell> {
     required public init(tag: String?) {
         super.init(tag: tag)

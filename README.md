@@ -403,6 +403,57 @@ To disable rows, each row has an `disabled` variable which is also an optional C
 
 Note that if you want to disable a row permanently you can also set `disabled` variable to `true`.
 
+### List sections
+It happens quite often when developing apps you want the user to choose among a list of options. Therefore we created a special section that accomplishes this.
+These sections are called `SelectionSection`.
+
+There are two initializers that can be used for this sections.
+```
+convenience public init(data: [(String, String, Row.Value)], initializer: (Section -> ())?, isMultipleSelection : Bool = false, enableDeselection: Bool = true, selectedTags: [String]? = nil, rowInitializer: ((Row) -> Void)? = nil)
+
+public init(rows: [Row], initializer: (Section -> ())?, isMultipleSelection : Bool = false, enableDeselection: Bool = true)
+```	
+Here is what their parameters mean:
+
+* **data:** This is an array of tuples containing (Tag, Title, Value). We will create a row for each tuple.
+* **initializer:** This is the section initializer. You can perform extra section customization here
+* **isMultipleSelection:** This boolean will enable the selection of multiple options
+* **enableDeselection:** This boolean value will determine if selecting an already selected option will deselect it or not. This might be useful when just one option can be selected.
+* **selectedTags:** Used to define which rows should be selected initially
+* **rowInitializer:** This is a block that will be called inside the initializer of the created rows. Can be used to add extra customization to the rows.
+* **rows:** You can directly pass the rows in here. 
+
+##### How is this supposed to be used?
+To call these methods you have to create a row that conforms the `SelectableRow` protocol. 
+```
+public protocol SelectableRow : RowType {
+    var selectableValue : Value? { get set }
+}
+```
+This value is where the value of the row will be permanently stored. The `value` variable will be used to determine if the row is selected or not, being 'selectableValue' if selected or nil otherwise.
+
+Eureka includes the ListCheckRow which is used for example in the SelectorViewController.
+<img src="Example/Media/EurekaCustomCells.gif" width="300" alt="Screenshot of Custom Cells"/>
+
+Then you use it like this:
+```
+let rows = options.map { opt in
+            ListCheckRow<T>(String(opt)){ lrow in
+                lrow.title = String(opt)
+                lrow.selectableValue = opt
+            }
+        }
+form +++= SelectionSection<ListCheckRow<T>, T>(rows: rows, initializer: nil)
+```
+Or:
+```
+let data : [(String, String, T)] = options.map{ opt in
+  return (String(opt), String(opt), opt)
+}
+form +++= SelectableSection<ListCheckRow<T>, T>(data: data, initializer: nil, isMultipleSelection: true, enableDeselection: true, selectedTags: [row.value as? String ?? ""], rowInitializer: nil)
+```
+
+
 ## Extensibility
 
 ### How to create custom rows and cells  <a name="custom-rows"></a>
@@ -696,6 +747,8 @@ Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
 
  * Memory leak fix.
  * Removed HeaderFooterView inits from Section.
+ * 
+ * List Sections
 
 ### 1.2.0
 
