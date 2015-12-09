@@ -397,7 +397,7 @@ extension Form {
         }
     }
     
-    func dictionaryValuesToEvaluatePredicate() -> [String: AnyObject] {
+    internal func dictionaryValuesToEvaluatePredicate() -> [String: AnyObject] {
         return rowsByTag.reduce([String: AnyObject]()) {
             var result = $0
             result[$1.0] = $1.1.baseValue as? AnyObject ?? NSNull()
