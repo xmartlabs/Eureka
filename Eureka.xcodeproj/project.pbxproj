@@ -62,7 +62,7 @@
 		BF527EB31BAB3DF100BA63C2 /* HiddenRowsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = HiddenRowsTests.swift; path = Tests/HiddenRowsTests.swift; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		BF53E6101B9F727C006258EB /* OperatorsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperatorsTest.swift; path = Tests/OperatorsTest.swift; sourceTree = SOURCE_ROOT; };
 		BF588EC31B9F5AC300BE426E /* CollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionTests.swift; path = Tests/CollectionTests.swift; sourceTree = SOURCE_ROOT; };
-		BFF9C6C41C170BB000928216 /* SelectableSectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectableSectionTests.swift; sourceTree = "<group>"; };
+		BFF9C6C41C170BB000928216 /* SelectableSectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SelectableSectionTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

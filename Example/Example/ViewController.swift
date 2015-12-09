@@ -984,38 +984,41 @@ class ListSectionsController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let continents = [("Africa", "Africa", "Africa"),
-                    ("Antarctica", "Antarctica", "Antarctica"),
-                    ("Asia", "Asia", "Asia"),
-                    ("Australia", "Australia", "Australia"),
-                    ("Europe", "Europe", "Europe"),
-                    ("North America", "North America", "North America"),
-                    ("South America", "South America", "South America")]
-        form +++= SelectableList<ImageCheckRow<String>, String>(data: continents, initializer: { section in
+        let continents = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
+        
+        form +++= SelectableSection<ImageCheckRow<String>, String>() { section in
             section.header = HeaderFooterView(title: "Where do you live?")
-        })
+        }
+        
+        for option in continents {
+            form.last! <<< ImageCheckRow<String>(option){ lrow in
+                lrow.title = option
+                lrow.selectableValue = option
+                lrow.value = nil
+            }
+        }
         
         let oceans = ["Arctic", "Atlantic", "Indian", "Pacific", "Southern"]
-        let rows = oceans.map { tag in
-            ImageCheckRow<String>(tag){
-                $0.title = tag
-                $0.selectableValue = tag
+        
+        form +++= SelectableSection<ImageCheckRow<String>, String>("And which of the following oceans have you taken a bath in?", selectionType: .MultipleSelection)
+        for option in oceans {
+            form.last! <<< ImageCheckRow<String>(option){ lrow in
+                lrow.title = option
+                lrow.selectableValue = option
+                lrow.value = nil
             }.cellSetup { cell, _ in
                 cell.trueImage = UIImage(named: "selectedRectangle")!
                 cell.falseImage = UIImage(named: "unselectedRectangle")!
             }
         }
-        form +++= SelectableList<ImageCheckRow<String>, String>(rows: rows, initializer: { sec in
-            sec.header = HeaderFooterView(title: "And which of the following oceans have you taken a bath in?")
-        }, isMultipleSelection: true, enableDeselection: true)
     }
     
     override func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {
         if row.section === form[0] {
-            print("Single Selection:\((row.section as! SelectableList<ImageCheckRow<String>, String>).selectedRow()?.baseValue)")
+            print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>, String>).selectedRow()?.baseValue)")
         }
         else if row.section === form[1] {
-            print("Mutiple Selection:\((row.section as! SelectableList<ImageCheckRow<String>, String>).selectedRows().map({$0.baseValue}))")
+            print("Mutiple Selection:\((row.section as! SelectableSection<ImageCheckRow<String>, String>).selectedRows().map({$0.baseValue}))")
         }
     }
 }

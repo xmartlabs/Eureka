@@ -46,6 +46,12 @@ public protocol FormDelegate : class {
     func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?)
 }
 
+public protocol SectionDelegate: class {
+    func rowsHaveBeenAdded(rows: [BaseRow], atIndexes:NSIndexSet)
+    func rowsHaveBeenRemoved(rows: [BaseRow], atIndexes:NSIndexSet)
+    func rowsHaveBeenReplaced(oldRows oldRows:[BaseRow], newRows: [BaseRow], atIndexes: NSIndexSet)
+}
+
 //MARK: Header Footer Protocols
 
 public protocol HeaderFooterViewRepresentable {
@@ -459,7 +465,7 @@ public func ==(lhs: Section, rhs: Section) -> Bool{
     return lhs === rhs
 }
 
-extension Section : Hidable {}
+extension Section : Hidable, SectionDelegate {}
 
 public class Section {
 
@@ -479,7 +485,7 @@ public class Section {
     
     public required init(){}
     
-    public init(@noescape _ initializer: Section -> ()){
+    public required init(@noescape _ initializer: Section -> ()){
         initializer(self)
     }
 
@@ -498,6 +504,11 @@ public class Section {
         self.footer = HeaderFooterView(stringLiteral: footer)
         initializer(self)
     }
+    
+    //MARK: SectionDelegate
+    public func rowsHaveBeenAdded(rows: [BaseRow], atIndexes:NSIndexSet) {}
+    public func rowsHaveBeenRemoved(rows: [BaseRow], atIndexes:NSIndexSet) {}
+    public func rowsHaveBeenReplaced(oldRows oldRows:[BaseRow], newRows: [BaseRow], atIndexes: NSIndexSet) {}
     
     //MARK: Private
     private lazy var kvoWrapper: KVOWrapper = { [unowned self] in return KVOWrapper(section: self) }()
@@ -687,29 +698,30 @@ extension Section {
         override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
             let newRows = change![NSKeyValueChangeNewKey] as? [BaseRow] ?? []
             let oldRows = change![NSKeyValueChangeOldKey] as? [BaseRow] ?? []
-            guard let delegateValue = section?.form?.delegate, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKindKey] else{ return }
+            guard let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKindKey] else{ return }
+            let delegateValue = section?.form?.delegate
             guard keyPathValue == "_rows" else { return }
             switch changeType.unsignedLongValue {
                 case NSKeyValueChange.Setting.rawValue:
-                    //rowsHaveBeenAdded(sections: [BaseRow], atIndexes: NSIndexSet)
-                    delegateValue.rowsHaveBeenAdded(newRows, atIndexPaths:[NSIndexPath(index: 0)])
+                    section?.rowsHaveBeenAdded(newRows, atIndexes:NSIndexSet(index: 0))
+                    delegateValue?.rowsHaveBeenAdded(newRows, atIndexPaths:[NSIndexPath(index: 0)])
                 case NSKeyValueChange.Insertion.rawValue:
                     let indexSet = change![NSKeyValueChangeIndexesKey] as! NSIndexSet
                     if let _index = section?.index {
-                        //rowsHaveBeenAdded(sections: [BaseRow], atIndexes: NSIndexSet)
-                        delegateValue.rowsHaveBeenAdded(newRows, atIndexPaths: indexSet.map { NSIndexPath(forRow: $0, inSection: _index ) } )
+                        section?.rowsHaveBeenAdded(newRows, atIndexes: indexSet)
+                        delegateValue?.rowsHaveBeenAdded(newRows, atIndexPaths: indexSet.map { NSIndexPath(forRow: $0, inSection: _index ) } )
                     }
                 case NSKeyValueChange.Removal.rawValue:
                     let indexSet = change![NSKeyValueChangeIndexesKey] as! NSIndexSet
                     if let _index = section?.index {
-                      //rowsHaveBeenRemoved(sections: [BaseRow], atIndexes: NSIndexSet)
-                      delegateValue.rowsHaveBeenRemoved(oldRows, atIndexPaths: indexSet.map { NSIndexPath(forRow: $0, inSection: _index ) } )
+                      section?.rowsHaveBeenRemoved(oldRows, atIndexes: indexSet)
+                      delegateValue?.rowsHaveBeenRemoved(oldRows, atIndexPaths: indexSet.map { NSIndexPath(forRow: $0, inSection: _index ) } )
                     }
                 case NSKeyValueChange.Replacement.rawValue:
                     let indexSet = change![NSKeyValueChangeIndexesKey] as! NSIndexSet
                     if let _index = section?.index {
-                      //rowsHaveBeenReplaced
-                      delegateValue.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, atIndexPaths: indexSet.map { NSIndexPath(forRow: $0, inSection: _index)})
+                      section?.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, atIndexes: indexSet)
+                      delegateValue?.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, atIndexPaths: indexSet.map { NSIndexPath(forRow: $0, inSection: _index)})
                     }
                 default:
                     assertionFailure()
@@ -2169,15 +2181,23 @@ public class NavigationAccessoryView : UIToolbar {
     public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {}
 }
 
+// MARK: SelectableSection
+public enum SelectionType {
+    case MultipleSelection
+    case SingleSelection(enableDeselection: Bool)
+}
 
-public protocol SelectableSection: CollectionType {
-    typealias SelectableRow: SelectableRowType
+public protocol SelectableSectionType: CollectionType {
+    typealias SelectableRow: BaseRow, SelectableRowType
+    
+    var selectionType : SelectionType { get set }
+    var onSelectSelectableRow: ((SelectableRow.Cell, SelectableRow) -> Void)? { get set }
     
     func selectedRow() -> SelectableRow?
     func selectedRows() -> [SelectableRow]
 }
 
-extension SelectableSection where Self: Section {
+extension SelectableSectionType where Self: Section, SelectableRow.Value == SelectableRow.Cell.Value {
     
     public func selectedRow() -> SelectableRow? {
         return selectedRows().first
@@ -2188,44 +2208,48 @@ extension SelectableSection where Self: Section {
             row is SelectableRow && row.baseValue != nil
         }).map({ $0 as! SelectableRow})
     }
+    
+    func prepareSelectableRows(rows: [BaseRow]){
+        for row in rows {
+            if let row = row as? SelectableRow {
+                row.onCellSelection { [weak self] cell, row in
+                    guard let s = self else { return }
+                    switch s.selectionType {
+                    case .MultipleSelection:
+                        row.value = row.value == nil ? row.selectableValue : nil
+                        row.updateCell()
+                    case .SingleSelection(let enableDeselection):
+                        s.filter { $0.baseValue != nil && $0 != row }.forEach {
+                            $0.baseValue = nil
+                            $0.updateCell()
+                        }
+                        row.value = !enableDeselection || row.value == nil ? row.selectableValue : nil
+                        row.updateCell()
+                    }
+                    s.onSelectSelectableRow?(cell, row)
+                }
+            }
+        }
+    }
+    
 }
 
-public class SelectableList<Row, T where Row: BaseRow, Row: SelectableRowType, Row.Value == T, T == Row.Cell.Value> : Section, SelectableSection  {
+public class SelectableSection<Row, T where Row: BaseRow, Row: SelectableRowType, Row.Value == T, T == Row.Cell.Value> : Section, SelectableSectionType  {
     
     public typealias SelectableRow = Row
+    public var selectionType = SelectionType.SingleSelection(enableDeselection: true)
+    public var onSelectSelectableRow: ((Row.Cell, Row) -> Void)?
     
-    // MARK: SelectableSection
-    
-    public init(rows: [Row], initializer: (Section -> ())?, isMultipleSelection : Bool = false, enableDeselection: Bool = true) {
-        super.init()
-        for row in rows {
-            let callback = row.callbackCellOnSelection
-            self <<< row.onCellSelection { [weak self] _, row in
-                guard let s = self else { return }
-                if !isMultipleSelection {
-                    s.filter { $0.baseValue != nil && $0 != row }.forEach {
-                        $0.baseValue = nil
-                        $0.updateCell()
-                    }
-                }
-                row.value = !enableDeselection || row.value == nil ? row.selectableValue : nil
-                row.updateCell()
-                callback?()
-            }
-        }
-        initializer?(self)
+    public required init(@noescape _ initializer: Section -> ()) {
+        super.init(initializer)
     }
     
-    convenience public init(data: [(String, String, Row.Value)], initializer: (Section -> ())?, isMultipleSelection : Bool = false, enableDeselection: Bool = true, selectedTags: [String]? = nil, rowInitializer: ((Row) -> Void)? = nil){
-        let rows = data.map { tag, title, value in
-            Row.init(tag){ row in
-                row.title = title
-                row.selectableValue = value
-                row.value = selectedTags?.contains(tag) ?? false ? value : nil
-                rowInitializer?(row)
-            }
-        }
-        self.init(rows: rows, initializer: initializer, isMultipleSelection: isMultipleSelection, enableDeselection: enableDeselection)
+    public init(_ header: String, selectionType: SelectionType, @noescape _ initializer: Section -> () = { _ in }) {
+        self.selectionType = selectionType
+        super.init(header, initializer)
     }
     
+    public override func rowsHaveBeenAdded(rows: [BaseRow], atIndexes: NSIndexSet) {
+        prepareSelectableRows(rows)
+    }
 }

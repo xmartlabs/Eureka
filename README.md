@@ -405,54 +405,41 @@ Note that if you want to disable a row permanently you can also set `disabled` v
 
 ### List sections
 It happens quite often when developing apps you want the user to choose among a list of options. Therefore we created a special section that accomplishes this.
-These sections are called `SelectionSection`.
+These sections are called `SelectableSection`.
+When instancing a SelectableSection you have to pass the type of row you will use in the section as well as the type of that row. These sections have a variable called `selectionStyle` that defines if multiple selection is allowed. `selectionStyle` is an enum which can be either `MultipleSelection` or `SingleSelection(enableDeselection: Bool)` where the enableDeselection paramter determines if the selected rows can be deselected or not.
 
-There are two initializers that can be used for this sections.
+This sections can be created, as it is done in the Examples project, like this:
+
+``` 
+let oceans = ["Arctic", "Atlantic", "Indian", "Pacific", "Southern"]
+     
+form +++= SelectableSection<ImageCheckRow<String>, String>("And which of the following oceans have you taken a bath in?", selectionType: .MultipleSelection)
+      
+for option in oceans {
+    form.last! <<< ImageCheckRow<String>(option){ lrow in
+        lrow.title = option
+        lrow.selectableValue = option
+        lrow.value = nil
+    }.cellSetup { cell, _ in
+        cell.trueImage = UIImage(named: "selectedRectangle")!
+        cell.falseImage = UIImage(named: "unselectedRectangle")!
+    }
+}
 ```
-convenience public init(data: [(String, String, Row.Value)], initializer: (Section -> ())?, isMultipleSelection : Bool = false, enableDeselection: Bool = true, selectedTags: [String]? = nil, rowInitializer: ((Row) -> Void)? = nil)
 
-public init(rows: [Row], initializer: (Section -> ())?, isMultipleSelection : Bool = false, enableDeselection: Bool = true)
-```	
-Here is what their parameters mean:
-
-* **data:** This is an array of tuples containing (Tag, Title, Value). We will create a row for each tuple.
-* **initializer:** This is the section initializer. You can perform extra section customization here
-* **isMultipleSelection:** This boolean will enable the selection of multiple options
-* **enableDeselection:** This boolean value will determine if selecting an already selected option will deselect it or not. This might be useful when just one option can be selected.
-* **selectedTags:** Used to define which rows should be selected initially
-* **rowInitializer:** This is a block that will be called inside the initializer of the created rows. Can be used to add extra customization to the rows.
-* **rows:** You can directly pass the rows in here. 
-
-##### How is this supposed to be used?
-To call these methods you have to create a row that conforms the `SelectableRow` protocol. 
+##### What kind of rows can be used?
+To create such a Section you have to create a row that conforms the `SelectableRowType` protocol. 
 ```
-public protocol SelectableRow : RowType {
+public protocol SelectableRowType : RowType {
     var selectableValue : Value? { get set }
 }
 ```
-This value is where the value of the row will be permanently stored. The `value` variable will be used to determine if the row is selected or not, being 'selectableValue' if selected or nil otherwise.
+This `selectableValue` is where the value of the row will be permanently stored. The `value` variable will be used to determine if the row is selected or not, being 'selectableValue' if selected or nil otherwise.
 
-Eureka includes the ListCheckRow which is used for example in the SelectorViewController.
-<img src="Example/Media/EurekaCustomCells.gif" width="300" alt="Screenshot of Custom Cells"/>
+Eureka includes the `ListCheckRow` which is used for example in the SelectorViewController. In the custom rows of the Examples project you can also find the `ImageCheckRow`
 
-Then you use it like this:
-```
-let rows = options.map { opt in
-            ListCheckRow<T>(String(opt)){ lrow in
-                lrow.title = String(opt)
-                lrow.selectableValue = opt
-            }
-        }
-form +++= SelectionSection<ListCheckRow<T>, T>(rows: rows, initializer: nil)
-```
-Or:
-```
-let data : [(String, String, T)] = options.map{ opt in
-  return (String(opt), String(opt), opt)
-}
-form +++= SelectableSection<ListCheckRow<T>, T>(data: data, initializer: nil, isMultipleSelection: true, enableDeselection: true, selectedTags: [row.value as? String ?? ""], rowInitializer: nil)
-```
-
+##### Helpers
+To easily get the selected row of a `SelectableSection` there are two methods: `selectedRow()` and `selectedRows()` which can be called to get the selected row in case it is a `SingleSelection` section or all the selected rows if it is a `MultipleSelection` section.
 
 ## Extensibility
 
