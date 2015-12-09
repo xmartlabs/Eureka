@@ -10,7 +10,7 @@
 </p>
 
 By [XMARTLABS](http://xmartlabs.com).
-This is the re-creation of [XLForm] in Swift 2. If you have been using it then many terms will result familiar to you.
+This is the re-creation of [XLForm] in Swift 2.
 
 * [Introduction]
 * [Requirements]
@@ -33,6 +33,8 @@ This is the re-creation of [XLForm] in Swift 2. If you have been using it then m
 ## Introduction
 
 **Eureka!** is a library to create dynamic table-view forms from a [DSL] specification in Swift. This DSL basically consists of *Rows*, *Sections* and *Forms*. A *Form* is a collection of *Sections* and a *Section* is a collection of *Rows*.
+
+If you have been using `XLForm` then many terms will result familiar to you.
 
 Both `Form` and `Section` classes conform to `MutableCollectionType` and `RangeReplaceableCollectionType` protocols. This makes a whole bunch of functions available to be executed on them.
 
@@ -610,7 +612,7 @@ $ git submodule add https://github.com/xmartlabs/Eureka.git
 ## Authors
 
 * [Martin Barreto](https://github.com/mtnBarreto) ([@mtnBarreto](https://twitter.com/mtnBarreto))
-* [Mathias Claassen](https://github.com/mats-claassen)
+* [Mathias Claassen](https://github.com/mats-claassen) ([@mClaassen26](https://twitter.com/mClaassen26))
 
 ## FAQ
 
@@ -730,21 +732,5 @@ Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
 
 # Change Log
 
-### master branch
+This can be found in the [CHANGELOG.md](CHANGELOG.md) file.
 
- * Memory leak fix.
- * Removed HeaderFooterView inits from Section.
- * 
- * List Sections
-
-### 1.2.0
-
- * Added PickerRow.
- * Added PickerInlineRow.
- * Added ZipCodeRow.
- * Fix bug when inserting hidden row in midst of a section.
- * Example project: Added ability to set up a formatter to FloatLabelRow.
- * `rowValueHasBeenChanged` signature has been changed to `override func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?)`.
- * Added `@noescape` attribute to initializer closures.
- * Fixed issue with tableView's bottom inset when keyboard was dismissed.
- * Changed NameRow keyboardType to make autocapitalization works.
