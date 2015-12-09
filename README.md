@@ -403,6 +403,44 @@ To disable rows, each row has an `disabled` variable which is also an optional C
 
 Note that if you want to disable a row permanently you can also set `disabled` variable to `true`.
 
+### List sections
+It happens quite often when developing apps you want the user to choose among a list of options. Therefore we created a special section that accomplishes this.
+These sections are called `SelectableSection`.
+When instancing a SelectableSection you have to pass the type of row you will use in the section as well as the type of that row. These sections have a variable called `selectionStyle` that defines if multiple selection is allowed. `selectionStyle` is an enum which can be either `MultipleSelection` or `SingleSelection(enableDeselection: Bool)` where the enableDeselection paramter determines if the selected rows can be deselected or not.
+
+This sections can be created, as it is done in the Examples project, like this:
+
+``` 
+let oceans = ["Arctic", "Atlantic", "Indian", "Pacific", "Southern"]
+     
+form +++= SelectableSection<ImageCheckRow<String>, String>("And which of the following oceans have you taken a bath in?", selectionType: .MultipleSelection)
+      
+for option in oceans {
+    form.last! <<< ImageCheckRow<String>(option){ lrow in
+        lrow.title = option
+        lrow.selectableValue = option
+        lrow.value = nil
+    }.cellSetup { cell, _ in
+        cell.trueImage = UIImage(named: "selectedRectangle")!
+        cell.falseImage = UIImage(named: "unselectedRectangle")!
+    }
+}
+```
+
+##### What kind of rows can be used?
+To create such a Section you have to create a row that conforms the `SelectableRowType` protocol. 
+```
+public protocol SelectableRowType : RowType {
+    var selectableValue : Value? { get set }
+}
+```
+This `selectableValue` is where the value of the row will be permanently stored. The `value` variable will be used to determine if the row is selected or not, being 'selectableValue' if selected or nil otherwise.
+
+Eureka includes the `ListCheckRow` which is used for example in the SelectorViewController. In the custom rows of the Examples project you can also find the `ImageCheckRow`
+
+##### Helpers
+To easily get the selected row of a `SelectableSection` there are two methods: `selectedRow()` and `selectedRows()` which can be called to get the selected row in case it is a `SingleSelection` section or all the selected rows if it is a `MultipleSelection` section.
+
 ## Extensibility
 
 ### How to create custom rows and cells  <a name="custom-rows"></a>
@@ -696,6 +734,8 @@ Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
 
  * Memory leak fix.
  * Removed HeaderFooterView inits from Section.
+ * 
+ * List Sections
 
 ### 1.2.0
 
