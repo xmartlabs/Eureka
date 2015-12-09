@@ -44,9 +44,9 @@ class FormValuesTests: BaseEurekaTests {
         
         form +++ Section() <<< textRow
         
-        // check that the row is included in the values dctionary
+        // check that the row is included in the values dictionary
         XCTAssertEqual(form.values(includeHidden: true).count, 1)
-        // check taht the row value is nil
+        // check that the row value is nil
         XCTAssertTrue(form.values(includeHidden: true)["RowTag"]! == nil)
         
         // change the value and check that the new value appears
@@ -80,9 +80,9 @@ class FormValuesTests: BaseEurekaTests {
         
         form +++ Section() <<< textRow
         
-        // check that the row is included in the values dctionary
+        // check that the row is included in the values dictionary
         XCTAssertEqual(form.values().count, 1)
-        // check taht the row value is nil
+        // check that the row value is nil
         XCTAssertTrue(form.values()["RowTag"]! == nil)
         
         // change the value and check that the new value appears
