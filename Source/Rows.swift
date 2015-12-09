@@ -605,7 +605,7 @@ public class _ButtonRowOf<T: Equatable> : Row<T, ButtonCellOf<T>> {
         let leftAligmnment = presentationMode != nil
         cell.textLabel?.textAlignment = leftAligmnment ? .Left : .Center
         cell.accessoryType = !leftAligmnment || isDisabled ? .None : .DisclosureIndicator
-        cell.editingAccessoryType = cell.accessoryType;
+        cell.editingAccessoryType = cell.accessoryType
         if (!leftAligmnment){
             var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
             cell.tintColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
@@ -639,7 +639,7 @@ public class _ButtonRowWithPresent<T: Equatable, VCType: TypedRowControllerType 
         let leftAligmnment = presentationMode != nil
         cell.textLabel?.textAlignment = leftAligmnment ? .Left : .Center
         cell.accessoryType = !leftAligmnment || isDisabled ? .None : .DisclosureIndicator
-        cell.editingAccessoryType = cell.accessoryType;
+        cell.editingAccessoryType = cell.accessoryType
         if (!leftAligmnment){
             var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
             cell.tintColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
