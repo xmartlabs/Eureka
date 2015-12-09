@@ -570,7 +570,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
     }
 }
 
-public final class ImageCheckRow<T: Equatable>: Row<T, ImageCheckCell<T>>, SelectableRow, RowType {
+public final class ImageCheckRow<T: Equatable>: Row<T, ImageCheckCell<T>>, SelectableRowType, RowType {
     public var selectableValue: T?
     required public init(tag: String?) {
         super.init(tag: tag)

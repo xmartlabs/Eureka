@@ -95,7 +95,7 @@ public protocol InlineRowType: TypedRowType, BaseInlineRowType {
     func setupInlineRow(inlineRow: InlineRow)
 }
 
-public protocol SelectableRow : RowType {
+public protocol SelectableRowType : RowType {
     var selectableValue : Value? { get set }
 }
 
@@ -691,20 +691,24 @@ extension Section {
             guard keyPathValue == "_rows" else { return }
             switch changeType.unsignedLongValue {
                 case NSKeyValueChange.Setting.rawValue:
+                    //rowsHaveBeenAdded(sections: [BaseRow], atIndexes: NSIndexSet)
                     delegateValue.rowsHaveBeenAdded(newRows, atIndexPaths:[NSIndexPath(index: 0)])
                 case NSKeyValueChange.Insertion.rawValue:
                     let indexSet = change![NSKeyValueChangeIndexesKey] as! NSIndexSet
                     if let _index = section?.index {
-                      delegateValue.rowsHaveBeenAdded(newRows, atIndexPaths: indexSet.map { NSIndexPath(forRow: $0, inSection: _index ) } )
+                        //rowsHaveBeenAdded(sections: [BaseRow], atIndexes: NSIndexSet)
+                        delegateValue.rowsHaveBeenAdded(newRows, atIndexPaths: indexSet.map { NSIndexPath(forRow: $0, inSection: _index ) } )
                     }
                 case NSKeyValueChange.Removal.rawValue:
                     let indexSet = change![NSKeyValueChangeIndexesKey] as! NSIndexSet
                     if let _index = section?.index {
+                      //rowsHaveBeenRemoved(sections: [BaseRow], atIndexes: NSIndexSet)
                       delegateValue.rowsHaveBeenRemoved(oldRows, atIndexPaths: indexSet.map { NSIndexPath(forRow: $0, inSection: _index ) } )
                     }
                 case NSKeyValueChange.Replacement.rawValue:
                     let indexSet = change![NSKeyValueChangeIndexesKey] as! NSIndexSet
                     if let _index = section?.index {
+                      //rowsHaveBeenReplaced
                       delegateValue.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, atIndexPaths: indexSet.map { NSIndexPath(forRow: $0, inSection: _index)})
                     }
                 default:
@@ -2165,17 +2169,32 @@ public class NavigationAccessoryView : UIToolbar {
     public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {}
 }
 
-public class SelectableSection<Row, T where Row: BaseRow, Row: SelectableRow, Row.Value == T, T == Row.Cell.Value> : Section {
+
+public protocol SelectableSection: CollectionType {
+    typealias SelectableRow: SelectableRowType
+    
+    func selectedRow() -> SelectableRow?
+    func selectedRows() -> [SelectableRow]
+}
+
+extension SelectableSection where Self: Section {
+    
+    public func selectedRow() -> SelectableRow? {
+        return selectedRows().first
+    }
+    
+    public func selectedRows() -> [SelectableRow] {
+        return filter({ (row: BaseRow) -> Bool in
+            row is SelectableRow && row.baseValue != nil
+        }).map({ $0 as! SelectableRow})
+    }
+}
+
+public class SelectableList<Row, T where Row: BaseRow, Row: SelectableRowType, Row.Value == T, T == Row.Cell.Value> : Section, SelectableSection  {
+    
+    public typealias SelectableRow = Row
     
     // MARK: SelectableSection
-    
-    public func selectedRow() -> BaseRow? {
-        return self.filter { $0.baseValue != nil }.first
-    }
-    
-    public func selectedRows() -> [BaseRow] {
-        return self.filter { $0.baseValue != nil }
-    }
     
     public init(rows: [Row], initializer: (Section -> ())?, isMultipleSelection : Bool = false, enableDeselection: Bool = true) {
         super.init()

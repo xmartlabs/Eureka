@@ -56,7 +56,7 @@ public class SelectorViewController<T:Equatable> : FormViewController, TypedRowC
                 self?.completionCallback?(self!)
             }
         }
-        form +++= SelectableSection<ListCheckRow<T>, T>(rows: rows, initializer: {
+        form +++= SelectableList<ListCheckRow<T>, T>(rows: rows, initializer: {
             [weak self] sec in
                 sec.header = HeaderFooterView<UITableViewHeaderFooterView>(title: self?.row.title)
             })

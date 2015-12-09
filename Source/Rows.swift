@@ -405,7 +405,7 @@ public class _CheckRow: Row<Bool, CheckCell> {
     }
 }
 
-public final class ListCheckRow<T: Equatable>: Row<T, ListCheckCell<T>>, SelectableRow, RowType {
+public final class ListCheckRow<T: Equatable>: Row<T, ListCheckCell<T>>, SelectableRowType, RowType {
     public var selectableValue: T?
     required public init(tag: String?) {
         super.init(tag: tag)

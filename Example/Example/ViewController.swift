@@ -991,7 +991,7 @@ class ListSectionsController: FormViewController {
                     ("Europe", "Europe", "Europe"),
                     ("North America", "North America", "North America"),
                     ("South America", "South America", "South America")]
-        form +++= SelectableSection<ImageCheckRow<String>, String>(data: continents, initializer: { section in
+        form +++= SelectableList<ImageCheckRow<String>, String>(data: continents, initializer: { section in
             section.header = HeaderFooterView(title: "Where do you live?")
         })
         
@@ -1005,17 +1005,17 @@ class ListSectionsController: FormViewController {
                 cell.falseImage = UIImage(named: "unselectedRectangle")!
             }
         }
-        form +++= SelectableSection<ImageCheckRow<String>, String>(rows: rows, initializer: { sec in
+        form +++= SelectableList<ImageCheckRow<String>, String>(rows: rows, initializer: { sec in
             sec.header = HeaderFooterView(title: "And which of the following oceans have you taken a bath in?")
         }, isMultipleSelection: true, enableDeselection: true)
     }
     
     override func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {
         if row.section === form[0] {
-            print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>, String>).selectedRow()?.baseValue)")
+            print("Single Selection:\((row.section as! SelectableList<ImageCheckRow<String>, String>).selectedRow()?.baseValue)")
         }
         else if row.section === form[1] {
-            print("Mutiple Selection:\((row.section as! SelectableSection<ImageCheckRow<String>, String>).selectedRows().map({$0.baseValue}))")
+            print("Mutiple Selection:\((row.section as! SelectableList<ImageCheckRow<String>, String>).selectedRows().map({$0.baseValue}))")
         }
     }
 }
