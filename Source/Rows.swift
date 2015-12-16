@@ -42,11 +42,22 @@ public protocol FormatterConformance: class {
 
 public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TextFieldCell, Cell.Value == T>: Row<T, Cell>, FieldRowConformance, KeyboardReturnHandler {
     
+    /// Configuration for the keyboardReturnType of this row
     public var keyboardReturnType : KeyboardReturnTypeConfiguration?
+    
+    /// The percentage of the cell that should be occupied by the textField
     public var textFieldPercentage : CGFloat?
+    
+    /// The placeholder for the textField
     public var placeholder : String?
+    
+    /// The textColor for the textField's placeholder
     public var placeholderColor : UIColor?
+    
+    /// A formatter to be used to format the user's input
     public var formatter: NSFormatter?
+    
+    /// If the formatter should be used while the user is editing the text.
     public var useFormatterDuringInput: Bool
     
     public required init(tag: String?) {
@@ -82,9 +93,16 @@ public protocol _DatePickerRowProtocol {
 
 public class _DateFieldRow: Row<NSDate, DateCell>, _DatePickerRowProtocol {
     
+    /// The minimum value for this row's UIDatePicker
     public var minimumDate : NSDate?
+    
+    /// The maximum value for this row's UIDatePicker
     public var maximumDate : NSDate?
+    
+    /// The interval between options for this row's UIDatePicker
     public var minuteInterval : Int?
+    
+    /// The formatter for the date picked by the user
     public var dateFormatter: NSDateFormatter?
     
     required public init(tag: String?) {
@@ -98,9 +116,16 @@ public class _DateFieldRow: Row<NSDate, DateCell>, _DatePickerRowProtocol {
 
 public class _DateInlineFieldRow: Row<NSDate, DateInlineCell>, _DatePickerRowProtocol {
     
+    /// The minimum value for this row's UIDatePicker
     public var minimumDate : NSDate?
+    
+    /// The maximum value for this row's UIDatePicker
     public var maximumDate : NSDate?
+    
+    /// The interval between options for this row's UIDatePicker
     public var minuteInterval : Int?
+    
+    /// The formatter for the date picked by the user
     public var dateFormatter: NSDateFormatter?
     
     required public init(tag: String?) {
@@ -351,40 +376,6 @@ public class _PickerInlineRow<T where T: Equatable> : Row<T, LabelCellOf<T>>{
         super.init(tag: tag)
     }
 }
-
-public final class PickerInlineRow<T where T: Equatable> : _PickerInlineRow<T>, RowType, InlineRowType{
-    
-    required public init(tag: String?) {
-        super.init(tag: tag)
-        onExpandInlineRow { cell, row, _ in
-            let color = cell.detailTextLabel?.textColor
-            row.onCollapseInlineRow { cell, _, _ in
-                cell.detailTextLabel?.textColor = color
-            }
-            cell.detailTextLabel?.textColor = cell.tintColor
-        }
-    }
-    
-    public override func customDidSelect() {
-        super.customDidSelect()
-        if !isDisabled {
-            toggleInlineRow()
-        }
-    }
-    
-    public func setupInlineRow(inlineRow: InlineRow) {
-        inlineRow.options = self.options
-        inlineRow.displayValueFor = self.displayValueFor
-    }
-}
-
-public final class PickerRow<T where T: Equatable>: _PickerRow<T>, RowType {
-    
-    required public init(tag: String?) {
-        super.init(tag: tag)
-    }
-}
-
 
 public class _TextAreaRow: AreaRow<String, TextAreaCell> {
     required public init(tag: String?) {
@@ -683,24 +674,28 @@ public class _ButtonRowWithPresent<T: Equatable, VCType: TypedRowControllerType 
 
 //MARK: Rows
 
+/// Boolean row that has a checkmark as accessoryType
 public final class CheckRow: _CheckRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// Boolean row that has a UISwitch as accessoryType
 public final class SwitchRow: _SwitchRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// Simple row that can show title and value but is not editable by user.
 public final class LabelRow: _LabelRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// A row with an NSDate as value where the user can select a date from a picker view.
 public final class DateRow: _DateRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -714,6 +709,7 @@ public final class DateRow: _DateRow, RowType {
     }
 }
 
+/// A row with an NSDate as value where the user can select a time from a picker view.
 public final class TimeRow: _TimeRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -727,6 +723,7 @@ public final class TimeRow: _TimeRow, RowType {
     }
 }
 
+/// A row with an NSDate as value where the user can select date and time from a picker view.
 public final class DateTimeRow: _DateTimeRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -740,6 +737,7 @@ public final class DateTimeRow: _DateTimeRow, RowType {
     }
 }
 
+/// A row with an NSDate as value where the user can select hour and minute as a countdown timer in a picker view.
 public final class CountDownRow: _CountDownRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -753,6 +751,7 @@ public final class CountDownRow: _CountDownRow, RowType {
     }
 }
 
+/// A row with an NSDate as value where the user can select a date from an inline picker view.
 public final class DateInlineRow: _DateInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -773,6 +772,7 @@ public final class DateInlineRow: _DateInlineRow, RowType, InlineRowType {
     }
 }
 
+/// A row with an NSDate as value where the user can select a time from an inline picker view.
 public final class TimeInlineRow: _TimeInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -793,6 +793,7 @@ public final class TimeInlineRow: _TimeInlineRow, RowType, InlineRowType {
     }
 }
 
+/// A row with an NSDate as value where the user can select date and time from an inline picker view.
 public final class DateTimeInlineRow: _DateTimeInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -813,6 +814,7 @@ public final class DateTimeInlineRow: _DateTimeInlineRow, RowType, InlineRowType
     }
 }
 
+/// A row with an NSDate as value where the user can select hour and minute as a countdown timer in an inline picker view.
 public final class CountDownInlineRow: _CountDownInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -833,30 +835,35 @@ public final class CountDownInlineRow: _CountDownInlineRow, RowType, InlineRowTy
     }
 }
 
+/// A row with an NSDate as value where the user can select a date directly.
 public final class DatePickerRow : _DatePickerRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// A row with an NSDate as value where the user can select a time directly.
 public final class TimePickerRow : _DatePickerRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// A row with an NSDate as value where the user can select date and time directly.
 public final class DateTimePickerRow : _DatePickerRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// A row with an NSDate as value where the user can select hour and minute as a countdown timer.
 public final class CountDownPickerRow : _DatePickerRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// A String valued row where the user can enter arbitrary text.
 public final class TextRow: _TextRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -870,6 +877,7 @@ public final class TextRow: _TextRow, RowType {
     }
 }
 
+/// A String valued row where the user can enter names. Biggest difference to TextRow is that it autocapitalization is set to Words.
 public final class NameRow: _NameRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -883,6 +891,7 @@ public final class NameRow: _NameRow, RowType {
     }
 }
 
+/// A String valued row where the user can enter secure text.
 public final class PasswordRow: _PasswordRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -896,6 +905,7 @@ public final class PasswordRow: _PasswordRow, RowType {
     }
 }
 
+/// A String valued row where the user can enter an email address.
 public final class EmailRow: _EmailRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -909,6 +919,7 @@ public final class EmailRow: _EmailRow, RowType {
     }
 }
 
+/// A String valued row where the user can enter a twitter username.
 public final class TwitterRow: _TwitterRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -922,6 +933,7 @@ public final class TwitterRow: _TwitterRow, RowType {
     }
 }
 
+/// A String valued row where the user can enter a simple account username.
 public final class AccountRow: _AccountRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -935,6 +947,7 @@ public final class AccountRow: _AccountRow, RowType {
     }
 }
 
+/// A String valued row where the user can enter a zip code.
 public final class ZipCodeRow: _ZipCodeRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -948,6 +961,7 @@ public final class ZipCodeRow: _ZipCodeRow, RowType {
     }
 }
 
+/// A row where the user can enter an integer number.
 public final class IntRow: _IntRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -961,6 +975,7 @@ public final class IntRow: _IntRow, RowType {
     }
 }
 
+/// A row where the user can enter a decimal number.
 public final class DecimalRow: _DecimalRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -974,6 +989,7 @@ public final class DecimalRow: _DecimalRow, RowType {
     }
 }
 
+/// A row where the user can enter an URL. The value of this row will be a NSURL.
 public final class URLRow: _URLRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -987,6 +1003,7 @@ public final class URLRow: _URLRow, RowType {
     }
 }
 
+/// A String valued row where the user can enter a phone number.
 public final class PhoneRow: _PhoneRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -1000,58 +1017,103 @@ public final class PhoneRow: _PhoneRow, RowType {
     }
 }
 
+/// A row with a UITextView where the user can enter large text.
 public final class TextAreaRow: _TextAreaRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// An options row where the user can select an option from an UISegmentedControl
 public final class SegmentedRow<T: Equatable>: OptionsRow<T, SegmentedCell<T>>, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// An options row where the user can select an option from an ActionSheet
 public final class ActionSheetRow<T: Equatable>: _ActionSheetRow<T>, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// An options row where the user can select an option from a modal Alert
 public final class AlertRow<T: Equatable>: _AlertRow<T>, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// A selector row where the user can pick an image
 public final class ImageRow : _ImageRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// A selector row where the user can pick an option from a pushed view controller
 public final class PushRow<T: Equatable> : _PushRow<T>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// A selector row where the user can pick several options from a pushed view controller
 public final class MultipleSelectorRow<T: Hashable> : _MultipleSelectorRow<T>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// A generic row with a button. The action of this button can be anything but normally will push a new view controller
 public final class ButtonRowOf<T: Equatable> : _ButtonRowOf<T>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
+/// A row with a button and String value. The action of this button can be anything but normally will push a new view controller
 public typealias ButtonRow = ButtonRowOf<String>
 
+/// A generic row with a button that presents a view controller when tapped
 public final class ButtonRowWithPresent<T: Equatable, VCType: TypedRowControllerType where VCType: UIViewController, VCType.RowValue == T> : _ButtonRowWithPresent<T, VCType>, RowType {
     public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+
+/// A generic inline row where the user can pick an option from a picker view
+public final class PickerInlineRow<T where T: Equatable> : _PickerInlineRow<T>, RowType, InlineRowType{
+    
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        onExpandInlineRow { cell, row, _ in
+            let color = cell.detailTextLabel?.textColor
+            row.onCollapseInlineRow { cell, _, _ in
+                cell.detailTextLabel?.textColor = color
+            }
+            cell.detailTextLabel?.textColor = cell.tintColor
+        }
+    }
+    
+    public override func customDidSelect() {
+        super.customDidSelect()
+        if !isDisabled {
+            toggleInlineRow()
+        }
+    }
+    
+    public func setupInlineRow(inlineRow: InlineRow) {
+        inlineRow.options = self.options
+        inlineRow.displayValueFor = self.displayValueFor
+    }
+}
+
+/// A generic row where the user can pick an option from a picker view
+public final class PickerRow<T where T: Equatable>: _PickerRow<T>, RowType {
+    
+    required public init(tag: String?) {
         super.init(tag: tag)
     }
 }

@@ -25,9 +25,13 @@
 import Foundation
 import UIKit
 
+/// Selector Controller (used to select one option among a list)
 public class SelectorViewController<T:Equatable> : FormViewController, TypedRowControllerType {
     
+    /// The row that pushed or presented this controller
     public var row: RowOf<T>!
+    
+    /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -65,9 +69,13 @@ public class SelectorViewController<T:Equatable> : FormViewController, TypedRowC
     }
 }
 
+/// Selector Controller that enables multiple selection
 public class MultipleSelectorViewController<T:Hashable> : FormViewController, TypedRowControllerType {
 
+    /// The row that pushed or presented this controller
     public var row: RowOf<Set<T>>!
+    
+    /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -110,10 +118,13 @@ public class MultipleSelectorViewController<T:Hashable> : FormViewController, Ty
     
 }
 
-
+/// Selector UIAlertController
 public class SelectorAlertController<T: Equatable> : UIAlertController, TypedRowControllerType {
     
+    /// The row that pushed or presented this controller
     public var row: RowOf<T>!
+    
+    /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -143,9 +154,13 @@ public class SelectorAlertController<T: Equatable> : UIAlertController, TypedRow
     
 }
 
+/// Selector Controller used to pick an image
 public class ImagePickerController : UIImagePickerController, TypedRowControllerType, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    /// The row that pushed or presented this controller
     public var row: RowOf<UIImage>!
+    
+    /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
     public override func viewDidLoad() {
