@@ -25,13 +25,13 @@
 import UIKit
 import Foundation
 
-internal protocol FieldRowConformance : FormatterConformance {
+protocol FieldRowConformance : FormatterConformance {
     var textFieldPercentage : CGFloat? { get set }
     var placeholder : String? { get set }
     var placeholderColor : UIColor? { get set }
 }
 
-internal protocol TextAreaConformance : FormatterConformance {
+protocol TextAreaConformance : FormatterConformance {
     var placeholder : String? { get set }
 }
 

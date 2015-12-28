@@ -610,14 +610,14 @@ extension Form {
         }
     }
     
-    internal func nextRowForRow(currentRow: BaseRow) -> BaseRow? {
+    func nextRowForRow(currentRow: BaseRow) -> BaseRow? {
         let allRows = rows
         guard let index = allRows.indexOf(currentRow) else { return nil }
         guard index < allRows.count - 1 else { return nil }
         return allRows[index + 1]
     }
     
-    internal func previousRowForRow(currentRow: BaseRow) -> BaseRow? {
+    func previousRowForRow(currentRow: BaseRow) -> BaseRow? {
         let allRows = rows
         guard let index = allRows.indexOf(currentRow) else { return nil }
         guard index > 0 else { return nil }
@@ -857,7 +857,7 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
     /// A closure that returns the height for the header or footer view.
     public var height: (()->CGFloat)?
 
-    lazy internal var staticView : ViewType? = {
+    lazy var staticView : ViewType? = {
         guard let view = self.viewProvider?.createView() else { return nil }
         return view;
     }()
@@ -1095,13 +1095,13 @@ extension Section /* Condition */{
 
 // MARK: Row
 
-internal protocol Disableable : Taggable {
+protocol Disableable : Taggable {
     func evaluateDisabled()
     var disabled : Condition? { get set }
     var isDisabled : Bool { get }
 }
 
-internal protocol Hidable: Taggable {
+protocol Hidable: Taggable {
     func evaluateHidden()
     var hidden : Condition? { get set }
     var isHidden : Bool { get }
@@ -1134,7 +1134,7 @@ extension RowType where Self: BaseRow, Cell : TypedCellType, Cell.Value == Value
     }
 }
 
-internal class RowDefaults {
+class RowDefaults {
     private static var cellUpdate = Dictionary<String, (BaseCell, BaseRow) -> Void>()
     private static var cellSetup = Dictionary<String, (BaseCell, BaseRow) -> Void>()
     private static var onCellHighlight = Dictionary<String, (BaseCell, BaseRow) -> Void>()
@@ -2118,9 +2118,9 @@ public enum ControllerProvider<VCType: UIViewController>{
  */
 public struct DataProvider<T: Equatable> {
     
-    internal var arrayData: [T]?
+    var arrayData: [T]?
     
-    init(arrayData: [T]){
+    public init(arrayData: [T]){
         self.arrayData = arrayData
     }
 }
@@ -2216,7 +2216,7 @@ public protocol FormatterProtocol{
 
 //MARK: Predicate Machine
 
-internal enum ConditionType {
+enum ConditionType {
     case Hidden, Disabled
 }
 
