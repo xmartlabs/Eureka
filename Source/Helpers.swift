@@ -47,7 +47,7 @@ extension UIView {
 
 extension NSPredicate {
     
-    internal var predicateVars: [String] {
+    var predicateVars: [String] {
         var ret = [String]()
         if let compoundPredicate = self as? NSCompoundPredicate{
             for subPredicate in compoundPredicate.subpredicates{
@@ -64,7 +64,7 @@ extension NSPredicate {
 
 extension NSExpression {
     
-    internal var expressionVars: [String] {
+    var expressionVars: [String] {
         switch expressionType{
             case .FunctionExpressionType, .VariableExpressionType:
                 let str = "\(self)"
