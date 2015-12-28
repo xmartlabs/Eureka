@@ -533,12 +533,117 @@ public class _AlertRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>, Prese
     }
 }
 
+public struct ImageRowSourceTypes : OptionSetType{
+    
+    public  let rawValue : Int
+    public  init(rawValue:Int){ self.rawValue = rawValue}
+    private init(_ sourceType: UIImagePickerControllerSourceType){ self.rawValue = sourceType.rawValue }
+    
+    static let Camera  = ImageRowSourceTypes(UIImagePickerControllerSourceType.Camera)
+    static let PhotoLibrary  = ImageRowSourceTypes(UIImagePickerControllerSourceType.PhotoLibrary)
+    static let SavedPhotosAlbum = ImageRowSourceTypes(UIImagePickerControllerSourceType.SavedPhotosAlbum)
+    static let All : ImageRowSourceTypes = [Camera, PhotoLibrary, SavedPhotosAlbum]
+}
+
 public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
+
+    public var sourceTypes: ImageRowSourceTypes?
+    
     public required init(tag: String?) {
         super.init(tag: tag)
         presentationMode = .PresentModally(controllerProvider: ControllerProvider.Callback { return ImagePickerController() }, completionCallback: { vc in vc.dismissViewControllerAnimated(true, completion: nil) })
         self.displayValueFor = nil
+        self.sourceTypes = ImageRowSourceTypes.All
     }
+    
+    // copy over the existing logic from the SelectorRow
+    private func displayImagePickerController(sourceType: UIImagePickerControllerSourceType) {
+        if let presentationMode = presentationMode where !isDisabled {
+            if let controller = presentationMode.createController(){
+                controller.row = self
+                controller.sourceType = sourceType
+                onPresentCallback?(cell.formViewController()!, controller)
+                presentationMode.presentViewController(controller, row: self, presentingViewController: cell.formViewController()!)
+            }
+            else{
+                presentationMode.presentViewController(nil, row: self, presentingViewController: cell.formViewController()!)
+            }
+        }
+    }
+    
+    public override func customDidSelect() {
+        
+        if let sourceTypes = sourceTypes {
+            
+            // default behaviour when the option set is empty
+            if sourceTypes.isEmpty {
+                super.customDidSelect()
+                return
+            }
+            
+            // check if we have only one source type given
+            let sourceActionSheet = UIAlertController(title: nil, message: selectorTitle, preferredStyle: UIAlertControllerStyle.ActionSheet)
+            if sourceTypes.contains(ImageRowSourceTypes.Camera) {
+                let cameraOption = UIAlertAction(title: "Take Photo", style: UIAlertActionStyle.Default, handler: { (alert: UIAlertAction!) -> Void in
+                    self.displayImagePickerController(UIImagePickerControllerSourceType.Camera)
+                })
+                
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) == true {
+                    sourceActionSheet.addAction(cameraOption)
+                }
+            }
+            
+            if sourceTypes.contains(ImageRowSourceTypes.PhotoLibrary) {
+                let photoLibraryOption = UIAlertAction(title: "Photo Library", style: UIAlertActionStyle.Default, handler: { (alert: UIAlertAction!) -> Void in
+                    self.displayImagePickerController(UIImagePickerControllerSourceType.PhotoLibrary)
+                })
+                
+                
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary) == true {
+                    sourceActionSheet.addAction(photoLibraryOption)
+                }
+            }
+            
+            if sourceTypes.contains(ImageRowSourceTypes.SavedPhotosAlbum) {
+                let savedPhotosOption = UIAlertAction(title: "Saved Photos", style: UIAlertActionStyle.Default, handler: { (alert: UIAlertAction!) -> Void in
+                    self.displayImagePickerController(UIImagePickerControllerSourceType.SavedPhotosAlbum)
+                })
+                
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum) == true {
+                    sourceActionSheet.addAction(savedPhotosOption)
+                }
+            }
+            
+            if false == sourceActionSheet.actions.isEmpty {
+                
+                // now that we know the number of actions aren't emopty
+                if sourceActionSheet.actions.count == 1 {
+                    if let imagePickerSourceType = UIImagePickerControllerSourceType(rawValue: sourceTypes.rawValue) {
+                        self.displayImagePickerController(imagePickerSourceType)
+                    }
+                    
+                    return
+                }
+                
+                let cancelOption = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: {
+                    (alert: UIAlertAction!) -> Void in
+                    print("Cancel")
+                })
+                
+                sourceActionSheet.addAction(cancelOption)
+            } else {
+                // action sheet is empty
+                return
+            }
+            
+            
+            if let presentingViewController = self.cell.formViewController() {
+                presentingViewController.presentViewController(sourceActionSheet, animated: true, completion: {})
+            }
+        }
+    }
+    
+    
     
     public override func customUpdateCell() {
         super.customUpdateCell()
