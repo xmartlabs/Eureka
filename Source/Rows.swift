@@ -468,14 +468,14 @@ public class _ActionSheetRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>,
     
     public var onPresentCallback : ((FormViewController, SelectorAlertController<T>)->())?
     lazy public var presentationMode: PresentationMode<SelectorAlertController<T>>? = {
-        return .PresentModally(controllerProvider: ControllerProvider.Callback { [unowned self] in
-            let vc = SelectorAlertController<T>(title: self.selectorTitle, message: nil, preferredStyle: .ActionSheet)
+        return .PresentModally(controllerProvider: ControllerProvider.Callback { [weak self] in
+            let vc = SelectorAlertController<T>(title: self?.selectorTitle, message: nil, preferredStyle: .ActionSheet)
             vc.row = self
             return vc
             },
-            completionCallback: { [unowned self] in
+            completionCallback: { [weak self] in
                 $0.dismissViewControllerAnimated(true, completion: nil)
-                self.cell?.formViewController()?.tableView?.reloadData()
+                self?.cell?.formViewController()?.tableView?.reloadData()
             })
         }()
     
@@ -502,16 +502,15 @@ public class _AlertRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>, Prese
     
     public var onPresentCallback : ((FormViewController, SelectorAlertController<T>)->())?
     lazy public var presentationMode: PresentationMode<SelectorAlertController<T>>? = {
-        return .PresentModally(controllerProvider: ControllerProvider.Callback { [unowned self] in
-            let vc = SelectorAlertController<T>(title: self.selectorTitle, message: nil, preferredStyle: .Alert)
+        return .PresentModally(controllerProvider: ControllerProvider.Callback { [weak self] in
+            let vc = SelectorAlertController<T>(title: self?.selectorTitle, message: nil, preferredStyle: .Alert)
             vc.row = self
             return vc
-            }, completionCallback: { [unowned self] in
+            }, completionCallback: { [weak self] in
                 $0.dismissViewControllerAnimated(true, completion: nil)
-                self.cell?.formViewController()?.tableView?.reloadData()
+                self?.cell?.formViewController()?.tableView?.reloadData()
             }
         )
-        
         }()
         
     public required init(tag: String?) {
