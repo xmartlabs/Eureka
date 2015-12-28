@@ -441,7 +441,7 @@ public class ZipCodeCell : _FieldCell<String>, CellType {
         super.update()
         textField.autocorrectionType = .No
         textField.autocapitalizationType = .AllCharacters
-        textField.keyboardType = .ASCIICapable
+        textField.keyboardType = .NumbersAndPunctuation
     }
 }
 
