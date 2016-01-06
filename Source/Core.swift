@@ -892,7 +892,6 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
         v.setNeedsUpdateConstraints()
         v.updateConstraintsIfNeeded()
         v.setNeedsLayout()
-        v.layoutIfNeeded()
         return v
     }
     

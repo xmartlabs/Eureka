@@ -399,6 +399,8 @@ public class URLCell : _FieldCell<NSURL>, CellType {
     
     public override func setup() {
         super.setup()
+        textField.autocorrectionType = .No
+        textField.autocapitalizationType = .None
         textField.keyboardType = .URL
     }
 }
