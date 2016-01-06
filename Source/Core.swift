@@ -859,7 +859,7 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
 
     lazy var staticView : ViewType? = {
         guard let view = self.viewProvider?.createView() else { return nil }
-        return view;
+        return view
     }()
     
     /**
@@ -2202,7 +2202,7 @@ public enum PresentationMode<VCType: UIViewController> {
                 }
                 return controller
             default:
-                return nil;
+                return nil
         }
     }
 }
@@ -2388,7 +2388,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
             _form.delegate = nil
             tableView?.endEditing(false)
             _form = newValue
-            _form.delegate = self;
+            _form.delegate = self
             if isViewLoaded() && tableView?.window != nil {
                 tableView?.reloadData()
             }
