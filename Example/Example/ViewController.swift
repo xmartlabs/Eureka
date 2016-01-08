@@ -40,7 +40,7 @@ class HomeViewController : FormViewController {
         
         form  +++=
             
-            Section(footer: "These are 9 ButtonRow rows") {
+            Section(footer: "These are 10 ButtonRow rows") {
                 $0.header = HeaderFooterView<EurekaLogoView>(HeaderFooterProvider.Class)
             }
         
@@ -87,7 +87,11 @@ class HomeViewController : FormViewController {
                 <<< ButtonRow("Inline rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
                     row.presentationMode = .SegueName(segueName: "InlineRowsControllerSegue", completionCallback: nil)
-        }
+                }
+                <<< ButtonRow("List Sections") { (row: ButtonRow) -> Void in
+                    row.title = row.tag
+                    row.presentationMode = .SegueName(segueName: "ListSectionsControllerSegue", completionCallback: nil)
+                }
     }
 }
 
@@ -139,6 +143,20 @@ class RowsExampleViewController: FormViewController {
                         $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻 ]
                         $0.value = 🍐
                     }
+            
+                <<< SegmentedRow<String>(){
+                    $0.title = "SegmentedRow"
+                    $0.options = ["One", "Two"]
+                    }.cellSetup { cell, row in
+                        cell.imageView?.image = UIImage(named: "plus_image")
+                }
+            
+                <<< SegmentedRow<String>(){
+                    $0.options = ["One", "Two", "Three", "Four"]
+                    $0.value = "Three"
+                    }.cellSetup { cell, row in
+                        cell.imageView?.image = UIImage(named: "plus_image")
+                }
             
             +++ Section("Selectors Rows Examples")
                 
@@ -863,10 +881,8 @@ class FormatterExample : FormViewController {
         override func getObjectValue(obj: AutoreleasingUnsafeMutablePointer<AnyObject?>, forString string: String, errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>) -> Bool {
             guard obj != nil else { return false }
             var str : String
-            str = string.stringByReplacingOccurrencesOfString(currencySymbol, withString: "")
-            str = str.stringByReplacingOccurrencesOfString(currencyGroupingSeparator, withString: "")
-            guard let i = Float(str) else { return false }
-            obj.memory = NSNumber(float: i)
+            str = string.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet).joinWithSeparator("")
+            obj.memory = NSNumber(float: (Float(str) ?? 0.0)/Float(100))
             return true
         }
         
@@ -960,6 +976,50 @@ class InlineRowsController: FormViewController {
                     }
                     row.value = row.options[0]
                 }
+    }
+}
+
+class ListSectionsController: FormViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let continents = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
+        
+        form +++= SelectableSection<ImageCheckRow<String>, String>() { section in
+            section.header = HeaderFooterView(title: "Where do you live?")
+        }
+        
+        for option in continents {
+            form.last! <<< ImageCheckRow<String>(option){ lrow in
+                lrow.title = option
+                lrow.selectableValue = option
+                lrow.value = nil
+            }
+        }
+        
+        let oceans = ["Arctic", "Atlantic", "Indian", "Pacific", "Southern"]
+        
+        form +++= SelectableSection<ImageCheckRow<String>, String>("And which of the following oceans have you taken a bath in?", selectionType: .MultipleSelection)
+        for option in oceans {
+            form.last! <<< ImageCheckRow<String>(option){ lrow in
+                lrow.title = option
+                lrow.selectableValue = option
+                lrow.value = nil
+            }.cellSetup { cell, _ in
+                cell.trueImage = UIImage(named: "selectedRectangle")!
+                cell.falseImage = UIImage(named: "unselectedRectangle")!
+            }
+        }
+    }
+    
+    override func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {
+        if row.section === form[0] {
+            print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>, String>).selectedRow()?.baseValue)")
+        }
+        else if row.section === form[1] {
+            print("Mutiple Selection:\((row.section as! SelectableSection<ImageCheckRow<String>, String>).selectedRows().map({$0.baseValue}))")
+        }
     }
 }
 

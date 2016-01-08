@@ -10,7 +10,7 @@
 </p>
 
 By [XMARTLABS](http://xmartlabs.com).
-This is the re-creation of [XLForm] in Swift 2. If you have been using it then many terms will result familiar to you.
+This is the re-creation of [XLForm] in Swift 2.
 
 * [Introduction]
 * [Requirements]
@@ -34,6 +34,8 @@ This is the re-creation of [XLForm] in Swift 2. If you have been using it then m
 
 **Eureka!** is a library to create dynamic table-view forms from a [DSL] specification in Swift. This DSL basically consists of *Rows*, *Sections* and *Forms*. A *Form* is a collection of *Sections* and a *Section* is a collection of *Rows*.
 
+If you have been using `XLForm` then many terms will result familiar to you.
+
 Both `Form` and `Section` classes conform to `MutableCollectionType` and `RangeReplaceableCollectionType` protocols. This makes a whole bunch of functions available to be executed on them.
 
 **For more information look at [our blog post] that introduces *Eureka!*.**
@@ -47,7 +49,7 @@ Both `Form` and `Section` classes conform to `MutableCollectionType` and `RangeR
 ## Getting involved
 * If you **want to contribute** please feel free to **submit pull requests**.
 * If you **have a feature request** please **open an issue**.
-* If you **found a bug** or **need help** please **check older issues or threads on [StackOverflow] (tag 'eureka') before submitting an issue**.
+* If you **found a bug** or **need help** please **check older issues or threads on [StackOverflow] before submitting an issue**.
 
 If you use **Eureka** in your app We would love to hear about it! Drop us a line on [twitter].
 
@@ -403,6 +405,44 @@ To disable rows, each row has an `disabled` variable which is also an optional C
 
 Note that if you want to disable a row permanently you can also set `disabled` variable to `true`.
 
+### List sections
+It happens quite often when developing apps you want the user to choose among a list of options. Therefore we created a special section that accomplishes this.
+These sections are called `SelectableSection`.
+When instancing a SelectableSection you have to pass the type of row you will use in the section as well as the type of that row. These sections have a variable called `selectionStyle` that defines if multiple selection is allowed. `selectionStyle` is an enum which can be either `MultipleSelection` or `SingleSelection(enableDeselection: Bool)` where the enableDeselection paramter determines if the selected rows can be deselected or not.
+
+This sections can be created, as it is done in the Examples project, like this:
+
+``` 
+let oceans = ["Arctic", "Atlantic", "Indian", "Pacific", "Southern"]
+     
+form +++= SelectableSection<ImageCheckRow<String>, String>("And which of the following oceans have you taken a bath in?", selectionType: .MultipleSelection)
+      
+for option in oceans {
+    form.last! <<< ImageCheckRow<String>(option){ lrow in
+        lrow.title = option
+        lrow.selectableValue = option
+        lrow.value = nil
+    }.cellSetup { cell, _ in
+        cell.trueImage = UIImage(named: "selectedRectangle")!
+        cell.falseImage = UIImage(named: "unselectedRectangle")!
+    }
+}
+```
+
+##### What kind of rows can be used?
+To create such a Section you have to create a row that conforms the `SelectableRowType` protocol. 
+```
+public protocol SelectableRowType : RowType {
+    var selectableValue : Value? { get set }
+}
+```
+This `selectableValue` is where the value of the row will be permanently stored. The `value` variable will be used to determine if the row is selected or not, being 'selectableValue' if selected or nil otherwise.
+
+Eureka includes the `ListCheckRow` which is used for example in the SelectorViewController. In the custom rows of the Examples project you can also find the `ImageCheckRow`
+
+##### Helpers
+To easily get the selected row of a `SelectableSection` there are two methods: `selectedRow()` and `selectedRows()` which can be called to get the selected row in case it is a `SingleSelection` section or all the selected rows if it is a `MultipleSelection` section.
+
 ## Extensibility
 
 ### How to create custom rows and cells  <a name="custom-rows"></a>
@@ -572,7 +612,7 @@ $ git submodule add https://github.com/xmartlabs/Eureka.git
 ## Authors
 
 * [Martin Barreto](https://github.com/mtnBarreto) ([@mtnBarreto](https://twitter.com/mtnBarreto))
-* [Mathias Claassen](https://github.com/mats-claassen)
+* [Mathias Claassen](https://github.com/mats-claassen) ([@mClaassen26](https://twitter.com/mClaassen26))
 
 ## FAQ
 
@@ -692,19 +732,5 @@ Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
 
 # Change Log
 
-### master branch
+This can be found in the [CHANGELOG.md](CHANGELOG.md) file.
 
- * Memory leak fix.
- * Removed HeaderFooterView inits from Section.
-
-### 1.2.0
-
- * Added PickerRow.
- * Added PickerInlineRow.
- * Added ZipCodeRow.
- * Fix bug when inserting hidden row in midst of a section.
- * Example project: Added ability to set up a formatter to FloatLabelRow.
- * `rowValueHasBeenChanged` signature has been changed to `override func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?)`.
- * Added `@noescape` attribute to initializer closures.
- * Fixed issue with tableView's bottom inset when keyboard was dismissed.
- * Changed NameRow keyboardType to make autocapitalization works.

@@ -25,9 +25,13 @@
 import Foundation
 import UIKit
 
+/// Selector Controller (used to select one option among a list)
 public class SelectorViewController<T:Equatable> : FormViewController, TypedRowControllerType {
     
+    /// The row that pushed or presented this controller
     public var row: RowOf<T>!
+    
+    /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -46,24 +50,32 @@ public class SelectorViewController<T:Equatable> : FormViewController, TypedRowC
     public override func viewDidLoad() {
         super.viewDidLoad()
         guard let options = row.dataProvider?.arrayData else { return }
-        form +++= Section()
-        for o in options {
-            form.first! <<< CheckRow(){ [weak self] in
-                                $0.title = self?.row.displayValueFor?(o)
-                                $0.value = self?.row.value == o
-                            }
-                            .onCellSelection { [weak self] _, _ in
-                                self?.row.value = o
-                                self?.completionCallback?(self!)
-                            }
+            
+        form +++= SelectableSection<ListCheckRow<T>, T>(row.title ?? "", selectionType: .SingleSelection(enableDeselection: true)) { [weak self] section in
+            if let sec = section as? SelectableSection<ListCheckRow<T>, T> {
+                sec.onSelectSelectableRow = { _, row in
+                    self?.row.value = row.value
+                    self?.completionCallback?(self!)
+                }
+            }
         }
-        form.first?.header = HeaderFooterView<UITableViewHeaderFooterView>(title: row.title)
+        for option in options {
+            form.first! <<< ListCheckRow<T>(String(option)){ lrow in
+                    lrow.title = row.displayValueFor?(option)
+                    lrow.selectableValue = option
+                    lrow.value = row.value == option ? option : nil
+                }
+        }
     }
 }
 
+/// Selector Controller that enables multiple selection
 public class MultipleSelectorViewController<T:Hashable> : FormViewController, TypedRowControllerType {
 
+    /// The row that pushed or presented this controller
     public var row: RowOf<Set<T>>!
+    
+    /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -106,10 +118,13 @@ public class MultipleSelectorViewController<T:Hashable> : FormViewController, Ty
     
 }
 
-
+/// Selector UIAlertController
 public class SelectorAlertController<T: Equatable> : UIAlertController, TypedRowControllerType {
     
+    /// The row that pushed or presented this controller
     public var row: RowOf<T>!
+    
+    /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -139,9 +154,13 @@ public class SelectorAlertController<T: Equatable> : UIAlertController, TypedRow
     
 }
 
+/// Selector Controller used to pick an image
 public class ImagePickerController : UIImagePickerController, TypedRowControllerType, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    /// The row that pushed or presented this controller
     public var row: RowOf<UIImage>!
+    
+    /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
     public override func viewDidLoad() {
