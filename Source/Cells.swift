@@ -276,7 +276,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     }
     
     public func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        return formViewController()?.textInputShouldEndEditing(textField, cell: self) ?? true
+        return formViewController()?.textInput(textField, shouldChangeCharactersInRange:range, replacementString:string, cell: self) ?? true
     }
     
     public func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
