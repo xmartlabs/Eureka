@@ -111,10 +111,10 @@ class RowsExampleViewController: FormViewController {
         LabelRow.defaultCellUpdate = { cell, row in cell.detailTextLabel?.textColor = .orangeColor()  }
         CheckRow.defaultCellSetup = { cell, row in cell.tintColor = .orangeColor() }
         DateRow.defaultRowInitializer = { row in row.minimumDate = NSDate() }
-        
+
         form =
-            
-            Section()
+			
+			Section()
             
                 <<< LabelRow () {
                         $0.title = "LabelRow"
@@ -271,8 +271,27 @@ class RowsExampleViewController: FormViewController {
                         $0.title = "ZipCodeRow"
                         $0.placeholder = "90210"
                     }
+		
+			+++ Section("PostalAddressRow example")
+				
+				<<< PostalAddressRow<PostalAddress>(){
+					$0.title = "Address"
+					$0.streetPlaceholder = "Street"
+					$0.statePlaceholder = "State"
+					$0.postalCodePlaceholder = "ZipCode"
+					$0.cityPlaceholder = "City"
+					$0.countryPlaceholder = "Country"
+					
+					$0.value = PostalAddress(
+						street: "Dr. Mario Cassinoni 1011",
+						state: nil,
+						postalCode: "11200",
+						city: "Montevideo",
+						country: "Uruguay"
+					)
+				}
     }
-    
+	
     func multipleSelectorDone(item:UIBarButtonItem) {
         navigationController?.popViewControllerAnimated(true)
     }

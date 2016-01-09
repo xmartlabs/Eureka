@@ -35,9 +35,36 @@ protocol TextAreaConformance : FormatterConformance {
     var placeholder : String? { get set }
 }
 
+public protocol PostalAddressRowConformance: PostalAddressFormatterConformance {
+	var postalAddressPercentage : CGFloat? { get set }
+	var placeholderColor : UIColor? { get set }
+	var streetPlaceholder : String? { get set }
+	var statePlaceholder : String? { get set }
+	var postalCodePlaceholder : String? { get set }
+	var cityPlaceholder : String? { get set }
+	var countryPlaceholder : String? { get set }
+}
+
 public protocol FormatterConformance: class {
     var formatter: NSFormatter? { get set }
     var useFormatterDuringInput: Bool { get set }
+}
+
+public protocol PostalAddressFormatterConformance: class {
+	var streetUseFormatterDuringInput: Bool { get set }
+	var streetFormatter: NSFormatter? { get set }
+	
+	var stateUseFormatterDuringInput: Bool { get set }
+	var stateFormatter: NSFormatter? { get set }
+	
+	var postalCodeUseFormatterDuringInput: Bool { get set }
+	var postalCodeFormatter: NSFormatter? { get set }
+	
+	var cityUseFormatterDuringInput: Bool { get set }
+	var cityFormatter: NSFormatter? { get set }
+	
+	var countryUseFormatterDuringInput: Bool { get set }
+	var countryFormatter: NSFormatter? { get set }
 }
 
 public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TextFieldCell, Cell.Value == T>: Row<T, Cell>, FieldRowConformance, KeyboardReturnHandler {
@@ -85,6 +112,73 @@ public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TextFie
     }
 }
 
+public class _PostalAddressRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: PostalAddressCell, Cell.Value == T>: Row<T, Cell>, PostalAddressRowConformance, KeyboardReturnHandler {
+	
+	/// Configuration for the keyboardReturnType of this row
+	public var keyboardReturnType : KeyboardReturnTypeConfiguration?
+	
+	/// The percentage of the cell that should be occupied by the postal address
+	public var postalAddressPercentage: CGFloat?
+	
+	/// The textColor for the textField's placeholder
+	public var placeholderColor : UIColor?
+	
+	/// The placeholder for the street textField
+	public var streetPlaceholder : String?
+	
+	/// The placeholder for the state textField
+	public var statePlaceholder : String?
+	
+	/// The placeholder for the zip textField
+	public var postalCodePlaceholder : String?
+	
+	/// The placeholder for the city textField
+	public var cityPlaceholder : String?
+	
+	/// The placeholder for the country textField
+	public var countryPlaceholder : String?
+	
+	/// A formatter to be used to format the user's input for street
+	public var streetFormatter: NSFormatter?
+	
+	/// A formatter to be used to format the user's input for state
+	public var stateFormatter: NSFormatter?
+	
+	/// A formatter to be used to format the user's input for zip
+	public var postalCodeFormatter: NSFormatter?
+	
+	/// A formatter to be used to format the user's input for city
+	public var cityFormatter: NSFormatter?
+	
+	/// A formatter to be used to format the user's input for country
+	public var countryFormatter: NSFormatter?
+	
+	/// If the formatter should be used while the user is editing the street.
+	public var streetUseFormatterDuringInput: Bool
+	
+	/// If the formatter should be used while the user is editing the state.
+	public var stateUseFormatterDuringInput: Bool
+	
+	/// If the formatter should be used while the user is editing the zip.
+	public var postalCodeUseFormatterDuringInput: Bool
+	
+	/// If the formatter should be used while the user is editing the city.
+	public var cityUseFormatterDuringInput: Bool
+	
+	/// If the formatter should be used while the user is editing the country.
+	public var countryUseFormatterDuringInput: Bool
+	
+	public required init(tag: String?) {
+		streetUseFormatterDuringInput = false
+		stateUseFormatterDuringInput = false
+		postalCodeUseFormatterDuringInput = false
+		cityUseFormatterDuringInput = false
+		countryUseFormatterDuringInput = false
+		
+		super.init(tag: tag)
+	}
+}
+
 public protocol _DatePickerRowProtocol {
     var minimumDate : NSDate? { get set }
     var maximumDate : NSDate? { get set }
@@ -92,7 +186,7 @@ public protocol _DatePickerRowProtocol {
 }
 
 public class _DateFieldRow: Row<NSDate, DateCell>, _DatePickerRowProtocol {
-    
+	
     /// The minimum value for this row's UIDatePicker
     public var minimumDate : NSDate?
     
@@ -1204,4 +1298,18 @@ public final class PickerRow<T where T: Equatable>: _PickerRow<T>, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
+}
+
+/// A String valued row where the user can enter arbitrary text.
+public final class PostalAddressRow<T: PostalAddress>: _PostalAddressRow<T, DefaultPostalAddressCell<T>>, RowType {
+	public required init(tag: String? = nil) {
+		super.init(tag: tag)
+		onCellHighlight { cell, row  in
+			let color = cell.textLabel?.textColor
+			row.onCellUnHighlight { cell, _ in
+				cell.textLabel?.textColor = color
+			}
+			cell.textLabel?.textColor = cell.tintColor
+		}
+	}
 }

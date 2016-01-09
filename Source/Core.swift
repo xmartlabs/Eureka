@@ -1909,6 +1909,18 @@ public protocol AreaCell {
     var textView: UITextView { get }
 }
 
+
+/**
+*  Protocol for cells that contain a postal address
+*/
+public protocol PostalAddressCell{
+	var streetTextField: UITextField { get }
+	var stateTextField: UITextField { get }
+	var postalCodeTextField: UITextField { get }
+	var cityTextField: UITextField { get }
+	var countryTextField: UITextField { get }
+}
+
 extension CellType where Self: UITableViewCell {
 }
 
@@ -2965,4 +2977,45 @@ public class SelectableSection<Row, T where Row: BaseRow, Row: SelectableRowType
     public override func rowsHaveBeenAdded(rows: [BaseRow], atIndexes: NSIndexSet) {
         prepareSelectableRows(rows)
     }
+}
+
+
+/**
+*  Protocol to be implemented by PostalAddress types.
+*/
+
+public protocol PostalAddressType: Equatable{
+	var street: String? { get set }
+	var state: String? { get set }
+	var postalCode: String? { get set }
+	var city: String? { get set }
+	var country: String? { get set }
+}
+
+extension PostalAddressType{
+	public func identifier() -> String{
+		return "\(street)\(state)\(postalCode)\(city)\(country)"
+	}
+}
+
+public func == <T: PostalAddressType>(lhs: T, rhs: T) -> Bool{
+	return lhs.identifier() == rhs.identifier()
+}
+
+public class PostalAddress: PostalAddressType {
+	public var street: String?
+	public var state: String?
+	public var postalCode: String?
+	public var city: String?
+	public var country: String?
+	
+	public init(){}
+	
+	public init(street: String?, state: String?, postalCode: String?, city: String?, country: String?){
+		self.street = street
+		self.state = state
+		self.postalCode = postalCode
+		self.city = city
+		self.country = country
+	}
 }
