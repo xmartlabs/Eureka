@@ -11,7 +11,7 @@ import Eureka
 
 //: Any **Eureka** form must extend from `FromViewController`
 let formController = FormViewController()
-XCPShowView("Form VC", view: formController.view)
+XCPlaygroundPage.currentPage.liveView = formController.view
 
 
 //: ## Operators
