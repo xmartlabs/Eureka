@@ -119,6 +119,11 @@ public protocol BaseRowType : Taggable {
      Method called when the cell belonging to this row was selected. Must call the corresponding method in its cell.
      */
     func didSelect()
+	
+	/**
+	Method called when the title belonging to this row was selected. Must call the corresponding method in its cell.
+	*/
+	func titleDidSelect()
 }
 
 public protocol TypedRowType : BaseRowType {
@@ -305,7 +310,12 @@ public protocol BaseCellType : class {
      Method called each time the cell is selected (tapped on by the user).
      */
     func didSelect()
-    
+	
+	/**
+	Method called each time the title is selected (tapped on by the user).
+	*/
+	func titleDidSelect()
+	
     /**
      Method called each time the cell is selected (tapped on by the user).
      */
@@ -1247,7 +1257,17 @@ extension RowType where Self : BaseRow, Cell : TypedCellType, Cell.Value == Valu
         callbackOnChange = { [unowned self] in callback(self) }
         return self
     }
-    
+	
+	/**
+	Sets a block to be called when the title of this row was selected.
+	
+	- returns: this row
+	*/
+	public func titleDidSelect(callback: Self -> ()) -> Self{
+		callbackTitleDidSelect = { [unowned self] in callback(self) }
+		return self
+	}
+	
     /**
      Sets a block to be called when the cell corresponding to this row is refreshed.
      
@@ -1303,6 +1323,7 @@ extension RowType where Self : BaseRow, Cell : TypedCellType, Cell.Value == Valu
 public class BaseRow : BaseRowType {
 
     private var callbackOnChange: (()->Void)?
+	private var callbackTitleDidSelect: (()->Void)?
     private var callbackCellUpdate: (()->Void)?
     private var callbackCellSetup: Any?
     private var callbackCellOnSelection: (()->Void)?
@@ -1359,11 +1380,16 @@ public class BaseRow : BaseRowType {
      Method that reloads the cell
      */
     public func updateCell() {}
-    
+	
     /**
      Method called when the cell belonging to this row was selected. Must call the corresponding method in its cell.
      */
     public func didSelect() {}
+	
+	/**
+	Method called when the title belonging to this row was selected. Must call the corresponding method in its cell.
+	*/
+	public func titleDidSelect() {}
     
     /**
      Method that is responsible for highlighting the cell.
@@ -1549,7 +1575,15 @@ public class RowOf<T: Equatable>: BaseRow {
         }
         return nil
     }
-    
+	
+	/// Block variable used to get the String that should be displayed for the title of this row.
+	public var displayTitleFor : (String? -> String?)? = {
+		if let t = $0 {
+			return String(t)
+		}
+		return nil
+	}
+	
     public required init(tag: String?){
         super.init(tag: tag)
     }
@@ -1614,7 +1648,22 @@ public class Row<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value =
         customDidSelect()
         callbackCellOnSelection?()
     }
-    
+	
+	/**
+	Method called when the title belonging to this row was selected. Must call the corresponding method in its cell.
+	*/
+	public override func titleDidSelect() {
+		super.titleDidSelect()
+		
+		if !isDisabled, let titleDidSelect = callbackTitleDidSelect{
+			titleDidSelect()
+			cell?.cellResignFirstResponder()
+		
+		} else {
+			self.didSelect()
+		}
+	}
+	
     /**
      Method that is responsible for highlighting the cell.
      */
@@ -1947,6 +1996,7 @@ public class BaseCell : UITableViewCell, BaseCellType {
     public func update() {}
     
     public func didSelect() {}
+	public func titleDidSelect() {}
     
     public func highlight() {}
     public func unhighlight() {}
@@ -2010,7 +2060,8 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
      */
     public override func update(){
         super.update()
-        textLabel?.text = row.title
+		
+		textLabel?.text = row.displayTitleFor?(row.title)
         textLabel?.textColor = row.isDisabled ? .grayColor() : .blackColor()
         detailTextLabel?.text = row.displayValueFor?(row.value)
     }
@@ -2019,7 +2070,12 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
      Called when the cell was selected.
      */
     public override func didSelect() {}
-    
+	
+	/**
+	Called when the titleLabel was selected.
+	*/
+	public override func titleDidSelect() {}
+	
     public override func canBecomeFirstResponder() -> Bool {
         return false
     }

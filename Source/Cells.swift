@@ -112,6 +112,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         textLabel?.translatesAutoresizingMaskIntoConstraints = false
         textLabel?.setContentHuggingPriority(500, forAxis: .Horizontal)
         textLabel?.setContentCompressionResistancePriority(1000, forAxis: .Horizontal)
+		textLabel?.userInteractionEnabled = true
         return textLabel
     }
 
@@ -135,7 +136,8 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         titleLabel?.addObserver(self, forKeyPath: "text", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
         imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
         textField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
-        
+		
+		titleLabel?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "titleDidSelect:"))
     }
     
     public override func update() {
@@ -219,6 +221,29 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         contentView.addConstraints(dynamicConstraints)
         super.updateConstraints()
     }
+	
+	public func titleDidSelect(gestureRecognizer: UIGestureRecognizer){
+		let titleDidSelect = {
+			if !self.cellCanBecomeFirstResponder() || !self.cellBecomeFirstResponder(){
+				self.formViewController()?.tableView?.endEditing(true)
+			}
+			
+			self.titleLabel?.alpha = 1.0
+			self.row.titleDidSelect()
+		}
+		
+		if row.isDisabled {
+			titleDidSelect()
+		
+		} else {
+			UIView.animateWithDuration(0.1, animations: { () -> Void in
+				self.titleLabel?.alpha = 0.4
+				
+			}) { (NSComparisonResult) -> Void in
+				titleDidSelect()
+			}
+		}
+	}
     
     public func textFieldDidChange(textField : UITextField){
         guard let textValue = textField.text else {
