@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [1.3.1](https://github.com/xmartlabs/Eureka/releases/tag/1.3.1)
+Released on 2016-01-11.
+
+ * Bug fixes and stability improvements.
+
 ### [1.3.0](https://github.com/xmartlabs/Eureka/releases/tag/1.3.0)
 Released on 2015-12-08.
 
@@ -10,7 +15,7 @@ Released on 2015-12-08.
  * Added documentation for Section Header and Footer
  * Added documentation for Implementing custom Presenter row
  * Inject table view style on init (by [mikaoj])
- * Modified observeValueForKeyPath functions on FieldCell and SegmentedCell to correctly update constraints (by [dernster] and [estebansotoara]) 
+ * Modified observeValueForKeyPath functions on FieldCell and SegmentedCell to correctly update constraints (by [dernster] and [estebansotoara])
  * Added Keyboard next button
  * Fixed bug with minimum dates [#111](https://github.com/xmartlabs/Eureka/issues/111)
  * Fixed bug where autocorrected value would not be saved in row.value

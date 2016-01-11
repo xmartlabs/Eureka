@@ -5,7 +5,7 @@
 <img src="https://img.shields.io/badge/platform-iOS-blue.svg?style=flat" alt="Platform iOS" />
 <a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift2-compatible-4BC51D.svg?style=flat" alt="Swift 2 compatible" /></a>
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible" /></a>
-<a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/badge/pod-1.2.0-blue.svg" alt="CocoaPods compatible" /></a>
+<a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/badge/pod-1.3.1-blue.svg" alt="CocoaPods compatible" /></a>
 <a href="https://raw.githubusercontent.com/xmartlabs/Eureka/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License: MIT" /></a>
 </p>
 
@@ -412,11 +412,11 @@ When instancing a SelectableSection you have to pass the type of row you will us
 
 This sections can be created, as it is done in the Examples project, like this:
 
-``` 
+```
 let oceans = ["Arctic", "Atlantic", "Indian", "Pacific", "Southern"]
-     
+
 form +++= SelectableSection<ImageCheckRow<String>, String>("And which of the following oceans have you taken a bath in?", selectionType: .MultipleSelection)
-      
+
 for option in oceans {
     form.last! <<< ImageCheckRow<String>(option){ lrow in
         lrow.title = option
@@ -430,7 +430,7 @@ for option in oceans {
 ```
 
 ##### What kind of rows can be used?
-To create such a Section you have to create a row that conforms the `SelectableRowType` protocol. 
+To create such a Section you have to create a row that conforms the `SelectableRowType` protocol.
 ```
 public protocol SelectableRowType : RowType {
     var selectableValue : Value? { get set }
@@ -574,7 +574,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'Eureka', '~> 1.2'
+pod 'Eureka', '~> 1.3'
 ```
 
 Then run the following command:
@@ -694,7 +694,7 @@ After setting a condition, this condition is not automatically evaluated. If you
 
 This functions are just called when a row is added to the form and when a row it depends on changes. If the condition is changed when the row is being displayed then it must be reevaluated manually.
 
-### onCellUnHighlight doesn't get called unless onCellHighlight is also defined
+#### onCellUnHighlight doesn't get called unless onCellHighlight is also defined
 
 Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
 
@@ -733,4 +733,3 @@ Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
 # Change Log
 
 This can be found in the [CHANGELOG.md](CHANGELOG.md) file.
-
