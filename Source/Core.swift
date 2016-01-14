@@ -2117,7 +2117,7 @@ public enum ControllerProvider<VCType: UIViewController>{
  */
 public struct DataProvider<T: Equatable> {
     
-    var arrayData: [T]?
+    public let arrayData: [T]?
     
     public init(arrayData: [T]){
         self.arrayData = arrayData
