@@ -591,13 +591,15 @@ extension Form {
     
     private func addRowObservers(taggable: Taggable, rowTags: [String], type: ConditionType) {
         for rowTag in rowTags{
+            if rowObservers[rowTag] == nil {
+              rowObservers[rowTag] = Dictionary()
+            }
             if let _ = rowObservers[rowTag]?[type]{
                 if !rowObservers[rowTag]![type]!.contains({ $0 === taggable }){
                     rowObservers[rowTag]?[type]!.append(taggable)
                 }
             }
             else{
-                rowObservers[rowTag] = Dictionary()
                 rowObservers[rowTag]?[type] = [taggable]
             }
         }
