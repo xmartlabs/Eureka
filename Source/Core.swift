@@ -513,11 +513,13 @@ extension Form : RangeReplaceableCollectionType {
         kvoWrapper.sections.replaceObjectsInRange(NSMakeRange(subRange.startIndex, subRange.endIndex - subRange.startIndex), withObjectsFromArray: newElements.map { $0 })
         kvoWrapper._allSections.insertContentsOf(newElements, at: indexForInsertionAtIndex(subRange.startIndex))
         
-        for section in newElements{
-            section.wasAddedToForm(self)
-        }
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
+			for section in newElements{
+				section.wasAddedToForm(self)
+			}
+		}
     }
-    
+	
     public func removeAll(keepCapacity keepCapacity: Bool = false) {
         // not doing anything with capacity
         for section in kvoWrapper._allSections{
@@ -1443,8 +1445,10 @@ extension BaseRow {
             self.section?.form?.rowsByTag[t] = self
         }
         addToRowObservers()
-        evaluateHidden()
-        evaluateDisabled()
+		dispatch_async(dispatch_get_main_queue()) { [weak self] () -> Void in
+			self?.evaluateHidden()
+			self?.evaluateDisabled()
+		}
     }
     
     private final func addToHiddenRowObservers() {
