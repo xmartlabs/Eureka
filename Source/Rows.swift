@@ -473,8 +473,8 @@ public class _ActionSheetRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>,
 			if let popView = vc.popoverPresentationController, cell = self?.cell {
 				popView.sourceView = cell.formViewController()?.tableView
 				popView.sourceRect = cell.frame
-				vc.row = self
 			}
+			vc.row = self
             return vc
             },
             completionCallback: { [weak self] in
