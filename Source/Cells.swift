@@ -630,6 +630,7 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
         super.update()
         textLabel?.text = nil
         detailTextLabel?.text = nil
+        picker.reloadAllComponents()
         if let selectedValue = pickerRow.value, let index = pickerRow.options.indexOf(selectedValue){
             picker.selectRow(index, inComponent: 0, animated: true)
         }
