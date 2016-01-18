@@ -1444,10 +1444,12 @@ extension BaseRow {
             assert(section.form?.rowsByTag[t] == nil, "Duplicate tag \(t)")
             self.section?.form?.rowsByTag[t] = self
         }
-        addToRowObservers()
-		dispatch_async(dispatch_get_main_queue()) { [weak self] () -> Void in
-			self?.evaluateHidden()
-			self?.evaluateDisabled()
+		if self.section?.form != nil {
+			self.addToRowObservers()
+			dispatch_async(dispatch_get_main_queue()) { [weak self] () -> Void in
+				self?.evaluateHidden()
+				self?.evaluateDisabled()
+			}
 		}
     }
     
