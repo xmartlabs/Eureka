@@ -63,16 +63,18 @@ class FormValuesTests: BaseEurekaTests {
         let textRowInvisible = TextRow("InvisibleRowTag")
         textRowInvisible.hidden = true
         form +++ Section() <<< textRowInvisible
-        
-        XCTAssertEqual(form.values(includeHidden: true).count, 2)
-        XCTAssertTrue(form.values(includeHidden: true)["RowTag"] is String)
-        
-        XCTAssertEqual(form.allRows.count, 3)
-        XCTAssertEqual(form.rows.count, 2)
-        XCTAssertEqual(form.values().count, 1)
-        XCTAssertEqual(form.values(includeHidden: true).count, 2)
+		
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+			XCTAssertEqual(form.values(includeHidden: true).count, 2)
+			XCTAssertTrue(form.values(includeHidden: true)["RowTag"] is String)
+			
+			XCTAssertEqual(form.allRows.count, 3)
+			XCTAssertEqual(form.rows.count, 2)
+			XCTAssertEqual(form.values().count, 1)
+			XCTAssertEqual(form.values(includeHidden: true).count, 2)
+		}
     }
-    
+	
     func testIncludeHiddenFormValues() {
         let form = Form()
         
@@ -100,16 +102,18 @@ class FormValuesTests: BaseEurekaTests {
         textRowInvisible.hidden = true
         textRowInvisible.value = "Bye!"
         form +++ Section() <<< textRowInvisible
-        
-        XCTAssertEqual(form.values(includeHidden: true).count, 2)
-        XCTAssertTrue(form.values(includeHidden: true)["RowTag"] is String)
-        XCTAssertTrue(form.values(includeHidden: true)["InvisibleRowTag"] is String)
-        
-        XCTAssertEqual(form.allRows.count, 3)
-        XCTAssertEqual(form.rows.count, 2)
-        XCTAssertEqual(form.values().count, 1)
-        XCTAssertEqual(form.values(includeHidden: true).count, 2)
+		
+		dispatch_async(dispatch_get_main_queue()) { () -> Void in
+			XCTAssertEqual(form.values(includeHidden: true).count, 2)
+			XCTAssertTrue(form.values(includeHidden: true)["RowTag"] is String)
+			XCTAssertTrue(form.values(includeHidden: true)["InvisibleRowTag"] is String)
+			
+			XCTAssertEqual(form.allRows.count, 3)
+			XCTAssertEqual(form.rows.count, 2)
+			XCTAssertEqual(form.values().count, 1)
+			XCTAssertEqual(form.values(includeHidden: true).count, 2)
+		}
     }
-    
-    
+	
+	
 }

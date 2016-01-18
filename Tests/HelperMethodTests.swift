@@ -96,20 +96,21 @@ class HelperMethodTests: BaseEurekaTests {
         let intRow = IntRow("int"){ $0.disabled = true }
         
         formVC.form +++ checkRow <<< switchRow <<< segmentedRow <<< intRow
-        
-        checkRow.updateCell()
-        XCTAssertTrue(checkRow.cell.selectionStyle == .None)
-        
-        switchRow.updateCell()
-        XCTAssertNotNil(switchRow.cell.switchControl)
-        XCTAssertFalse(switchRow.cell.switchControl!.enabled)
-        
-        segmentedRow.updateCell()
-        XCTAssertFalse(segmentedRow.cell.segmentedControl.enabled)
-        
-        intRow.updateCell()
-        XCTAssertFalse(intRow.cell.cellCanBecomeFirstResponder())
-        
+		
+		dispatch_async(dispatch_get_main_queue()) { () -> Void in
+			checkRow.updateCell()
+			XCTAssertTrue(checkRow.cell.selectionStyle == .None)
+			
+			switchRow.updateCell()
+			XCTAssertNotNil(switchRow.cell.switchControl)
+			XCTAssertFalse(switchRow.cell.switchControl!.enabled)
+			
+			segmentedRow.updateCell()
+			XCTAssertFalse(segmentedRow.cell.segmentedControl.enabled)
+			
+			intRow.updateCell()
+			XCTAssertFalse(intRow.cell.cellCanBecomeFirstResponder())
+		}
     }
-    
+	
 }
