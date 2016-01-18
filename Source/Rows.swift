@@ -671,17 +671,22 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
     }
     
     public override func customDidSelect() {
+        guard !isDisabled else {
+            super.customDidSelect()
+            return
+        }
+        
         var availableSources: ImageRowSourceTypes {
             var result: ImageRowSourceTypes = []
             
             if UIImagePickerController.isSourceTypeAvailable(.PhotoLibrary) {
-                result.insert(ImageRowSourceTypes.PhotoLibrary)
+                result.insert(.PhotoLibrary)
             }
             if UIImagePickerController.isSourceTypeAvailable(.Camera) {
-                result.insert(ImageRowSourceTypes.Camera)
+                result.insert(.Camera)
             }
             if UIImagePickerController.isSourceTypeAvailable(.SavedPhotosAlbum) {
-                result.insert(ImageRowSourceTypes.SavedPhotosAlbum)
+                result.insert(.SavedPhotosAlbum)
             }
             return result
         }
