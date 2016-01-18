@@ -602,7 +602,11 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
         
         // now that we know the number of actions aren't empty
         let sourceActionSheet = UIAlertController(title: nil, message: selectorTitle, preferredStyle: .ActionSheet)
-        
+		if let popView = sourceActionSheet.popoverPresentationController {
+			popView.sourceView = self.cell.formViewController()?.tableView
+			popView.sourceRect = self.cell.frame
+		}
+
         if sourceTypes.contains(.Camera) {
             let cameraOption = UIAlertAction(title: "Take Photo", style: .Default, handler: { [weak self] (alert: UIAlertAction) -> Void in
                 self?.displayImagePickerController(.Camera)
