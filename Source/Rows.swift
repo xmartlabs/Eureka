@@ -653,7 +653,10 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
     public required init(tag: String?) {
         sourceTypes = .All
         super.init(tag: tag)
-        presentationMode = .PresentModally(controllerProvider: ControllerProvider.Callback { return ImagePickerController() }, completionCallback: { vc in vc.dismissViewControllerAnimated(true, completion: nil) })
+        presentationMode = .PresentModally(controllerProvider: ControllerProvider.Callback { return ImagePickerController() }, completionCallback: { [weak self] vc in
+                self?.cell?.formViewController()?.tableView?.selectRowAtIndexPath(self?.indexPath(), animated: false,  scrollPosition: .None)
+                vc.dismissViewControllerAnimated(true, completion: nil)
+            })
         self.displayValueFor = nil
 
     }
@@ -679,6 +682,7 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
             super.customDidSelect()
             return
         }
+        cell?.formViewController()?.tableView?.deselectRowAtIndexPath(indexPath()!, animated: true)
         
         var availableSources: ImageRowSourceTypes {
             var result: ImageRowSourceTypes = []
@@ -706,8 +710,8 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
         // now that we know the number of actions aren't empty
         let sourceActionSheet = UIAlertController(title: nil, message: selectorTitle, preferredStyle: .ActionSheet)
 		if let popView = sourceActionSheet.popoverPresentationController {
-			popView.sourceView = self.cell.formViewController()?.tableView
-			popView.sourceRect = self.cell.frame
+			popView.sourceView = cell.formViewController()?.tableView
+			popView.sourceRect = cell.frame
 		}
 
         if sourceTypes.contains(.Camera) {
