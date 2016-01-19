@@ -1332,6 +1332,8 @@ public class BaseRow : BaseRowType {
         get { return nil }
     }
     
+    public static var estimatedRowHeight: CGFloat = 44.0
+    
     /// Condition that determines if the row should be disabled or not.
     public var disabled : Condition? {
         willSet { removeFromDisabledRowObservers() }
@@ -2453,8 +2455,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         if tableView?.dataSource == nil {
             tableView?.dataSource = self
         }
-        tableView?.rowHeight = UITableViewAutomaticDimension
-        tableView?.estimatedRowHeight = 44.0
+        tableView?.estimatedRowHeight = BaseRow.estimatedRowHeight
     }
     
     public override func viewWillAppear(animated: Bool) {
