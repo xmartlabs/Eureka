@@ -34,7 +34,7 @@ public class SelectorViewController<T:Equatable> : FormViewController, TypedRowC
     /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -78,7 +78,7 @@ public class MultipleSelectorViewController<T:Hashable> : FormViewController, Ty
     /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -127,7 +127,7 @@ public class SelectorAlertController<T: Equatable> : UIAlertController, TypedRow
     /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
