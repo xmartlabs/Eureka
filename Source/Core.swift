@@ -1601,7 +1601,9 @@ public class Row<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value =
     
     /// Allow cell to cleanup (opposite of setup)
     deinit{
-        cell.teardown()
+        if let cell = _cell {
+            cell.teardown()
+        }
     }
     
     /**
