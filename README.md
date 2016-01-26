@@ -726,7 +726,7 @@ Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
 <!--- External -->
 [XLForm]: http://github.com/xmartlabs/XLForm
 [DSL]: https://en.wikipedia.org/wiki/Domain-specific_language
-[StackOverflow]: http://stackoverflow.com/questions/tagged/eureka
+[StackOverflow]: http://stackoverflow.com/questions/tagged/eureka-forms
 [our blog post]: http://blog.xmartlabs.com/2015/09/29/Introducing-Eureka-iOS-form-library-written-in-pure-Swift/
 [twitter]: https://twitter.com/xmartlabs
 
