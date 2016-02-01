@@ -504,7 +504,7 @@ extension Form : RangeReplaceableCollectionType {
     public func reserveCapacity(n: Int){}
 
     public func replaceRange<C : CollectionType where C.Generator.Element == Section>(subRange: Range<Int>, with newElements: C) {
-        for (var i = subRange.startIndex; i < subRange.endIndex; i++) {
+        for i in subRange {
             if let section = kvoWrapper.sections.objectAtIndex(i) as? Section {
                 section.willBeRemovedFromForm()
                 kvoWrapper._allSections.removeAtIndex(kvoWrapper._allSections.indexOf(section)!)
@@ -635,10 +635,11 @@ extension Form {
         guard var index = kvoWrapper._allSections.indexOf(section) else { return }
         var formIndex = NSNotFound
         while (formIndex == NSNotFound && index > 0){
-            let previous = kvoWrapper._allSections[--index]
+            index = index - 1
+            let previous = kvoWrapper._allSections[index]
             formIndex = kvoWrapper.sections.indexOfObject(previous)
         }
-        kvoWrapper.sections.insertObject(section, atIndex: formIndex == NSNotFound ? 0 : ++formIndex)
+        kvoWrapper.sections.insertObject(section, atIndex: formIndex == NSNotFound ? 0 : formIndex + 1 )
     }
 }
 
@@ -765,7 +766,7 @@ extension Section : RangeReplaceableCollectionType {
     public func reserveCapacity(n: Int){}
     
     public func replaceRange<C : CollectionType where C.Generator.Element == BaseRow>(subRange: Range<Int>, with newElements: C) {
-        for (var i = subRange.startIndex; i < subRange.endIndex; i++) {
+        for i in subRange.startIndex..<subRange.endIndex {
             if let row = kvoWrapper.rows.objectAtIndex(i) as? BaseRow {
                 row.willBeRemovedFromForm()
                 kvoWrapper._allRows.removeAtIndex(kvoWrapper._allRows.indexOf(row)!)
@@ -1087,10 +1088,11 @@ extension Section /* Condition */{
         guard var index = kvoWrapper._allRows.indexOf(row) else { return }
         var formIndex = NSNotFound
         while (formIndex == NSNotFound && index > 0){
-            let previous = kvoWrapper._allRows[--index]
+            index = index - 1
+            let previous = kvoWrapper._allRows[index]
             formIndex = kvoWrapper.rows.indexOfObject(previous)
         }
-        kvoWrapper.rows.insertObject(row, atIndex: formIndex == NSNotFound ? 0 : ++formIndex)
+        kvoWrapper.rows.insertObject(row, atIndex: formIndex == NSNotFound ? 0 : formIndex + 1)
     }
 }
 
