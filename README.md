@@ -501,6 +501,19 @@ public class SwitchCell : Cell<Bool> {
 }
 ```
 
+We can use a xib file to specify the cell view by setting up `cellProvider` row property as illustrated bellow:
+
+```swift
+public final class SwitchRow: Row<Bool, SwitchCell>, RowType {
+
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        displayValueFor = nil
+        cellProvider = CellProvider<WeekDayCell>(nibName: "WeekDayCell")
+    }
+}
+```
+
 The setup and update methods are similar to the cellSetup and cellUpdate callbacks and that is where the cell should be customized.
 
 Note: ValueType and CellType are illustrative. You have to replace them with the type your value will have and the type of your cell (like Bool and SwitchCell in this example)
