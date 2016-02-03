@@ -186,6 +186,21 @@ class RowsExampleViewController: FormViewController {
                         $0.selectorTitle = "Choose an Emoji!"
                     }
             
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            let section = form.last!
+        
+            section <<< PopoverSelectorRow<Emoji>() {
+                    $0.title = "PopoverSelectorRow"
+                    $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
+                    $0.value = 💁🏻
+                    $0.selectorTitle = "Choose an Emoji!"
+                }
+        }
+        
+        let section = form.last!
+                    
+        section
                 <<< LocationRow(){
                         $0.title = "LocationRow"
                         $0.value = CLLocation(latitude: -34.91, longitude: -56.1646)
@@ -204,7 +219,7 @@ class RowsExampleViewController: FormViewController {
                         to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: from, action: "multipleSelectorDone:")
                     }
             
-            +++ Section("Generic picker")
+        form +++ Section("Generic picker")
             
                 <<< PickerRow<String>("Picker Row") { (row : PickerRow<String>) -> Void in
                 

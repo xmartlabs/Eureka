@@ -603,8 +603,9 @@ public class ImageCheckCell<T: Equatable> : Cell<T>, CellType {
     }
     
     public override func didSelect() {
-        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
-        row.updateCell()
+        row.reload()
+        row.select()
+        row.deselect()
     }
     
 }

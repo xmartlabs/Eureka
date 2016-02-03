@@ -682,8 +682,7 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
             super.customDidSelect()
             return
         }
-        cell?.formViewController()?.tableView?.deselectRowAtIndexPath(indexPath()!, animated: true)
-        
+        deselect()        
         var availableSources: ImageRowSourceTypes {
             var result: ImageRowSourceTypes = []
             
@@ -1274,6 +1273,31 @@ public final class PushRow<T: Equatable> : _PushRow<T>, RowType {
         super.init(tag: tag)
     }
 }
+
+public final class PopoverSelectorRow<T: Equatable> : _PushRow<T>, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+        onPresentCallback = { [weak self] (_, viewController) -> Void in
+            guard let porpoverController = viewController.popoverPresentationController else {
+                fatalError()
+            }
+            guard let me = self, tableView = me.baseCell.formViewController()?.tableView, cell = me.cell  else { return }
+            porpoverController.sourceRect = tableView.convertRect(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.frame, fromView: cell)
+            porpoverController.sourceView = tableView
+        }
+        presentationMode = .Popover(controllerProvider: ControllerProvider.Callback { return SelectorViewController<T>(){ _ in } }, completionCallback: { [weak self] in
+            $0.dismissViewControllerAnimated(true, completion: nil)
+            self?.reload()
+        })
+    }
+    
+    public override func didSelect() {
+        deselect()
+        super.didSelect()
+    }
+}
+
+
 
 /// A selector row where the user can pick several options from a pushed view controller
 public final class MultipleSelectorRow<T: Hashable> : _MultipleSelectorRow<T>, RowType {

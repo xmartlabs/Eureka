@@ -1403,6 +1403,27 @@ public class BaseRow : BaseRowType {
 
 extension BaseRow: Equatable, Hidable, Disableable {}
 
+
+extension BaseRow {
+    
+    public func reload(rowAnimation: UITableViewRowAnimation = .None) {
+        guard let tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView, indexPath = indexPath() else { return }
+        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: rowAnimation)
+    }
+    
+    public func deselect(animated: Bool = true) {
+        guard let indexPath = indexPath(), tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView  else {
+            return
+        }
+        tableView.deselectRowAtIndexPath(indexPath, animated: animated)
+    }
+    
+    public func select(animated: Bool = false) {
+        guard let indexPath = indexPath(), tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView  else { return }
+        tableView.selectRowAtIndexPath(indexPath, animated: animated, scrollPosition: .None)
+    }
+}
+
 public func ==(lhs: BaseRow, rhs: BaseRow) -> Bool{
     return lhs === rhs
 }
@@ -2172,6 +2193,9 @@ public enum PresentationMode<VCType: UIViewController> {
     case SegueClass(segueClass: UIStoryboardSegue.Type, completionCallback: (UIViewController->())?)
     
     
+    case Popover(controllerProvider: ControllerProvider<VCType>, completionCallback: (UIViewController->())?)
+    
+    
     var completionHandler: (UIViewController ->())? {
         switch self{
             case .Show(_, let completionCallback):
@@ -2182,6 +2206,8 @@ public enum PresentationMode<VCType: UIViewController> {
                 return completionCallback
             case .SegueClass(_, let completionCallback):
                 return completionCallback
+            case .Popover(_, let completionCallback):
+                return completionCallback
         }
     }
     
@@ -2189,7 +2215,7 @@ public enum PresentationMode<VCType: UIViewController> {
         switch self {
             case .Show(_, _):
                 presentingViewController.showViewController(viewController, sender: row)
-            case .PresentModally:
+            case .PresentModally(_, _):
                 presentingViewController.presentViewController(viewController, animated: true, completion: nil)
             case .SegueName(let segueName, _):
                 presentingViewController.performSegueWithIdentifier(segueName, sender: row)
@@ -2197,7 +2223,14 @@ public enum PresentationMode<VCType: UIViewController> {
                 let segue = segueClass.init(identifier: row.tag, source: presentingViewController, destination: viewController)
                 presentingViewController.prepareForSegue(segue, sender: row)
                 segue.perform()
-        }
+            case .Popover(_, _):
+                guard let porpoverController = viewController.popoverPresentationController else {
+                    fatalError()
+                }
+                porpoverController.sourceView = porpoverController.sourceView ?? presentingViewController.tableView
+                porpoverController.sourceRect = porpoverController.sourceRect ?? row.baseCell.frame
+                presentingViewController.presentViewController(viewController, animated: true, completion: nil)
+            }
         
     }
     
@@ -2212,6 +2245,14 @@ public enum PresentationMode<VCType: UIViewController> {
                 return controller
             case .PresentModally(let controllerProvider, let completionCallback):
                 let controller = controllerProvider.createController()
+                let completionController = controller as? RowControllerType
+                if let callback = completionCallback {
+                    completionController?.completionCallback = callback
+                }
+                return controller
+            case .Popover(let controllerProvider, let completionCallback):
+                let controller = controllerProvider.createController()
+                controller.modalPresentationStyle = .Popover
                 let completionController = controller as? RowControllerType
                 if let callback = completionCallback {
                     completionController?.completionCallback = callback
