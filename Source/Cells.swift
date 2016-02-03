@@ -69,7 +69,7 @@ public class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
     
     public override func didSelect() {
         super.didSelect()
-        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
+        row.deselect()
     }
 }
 
@@ -477,7 +477,7 @@ public class DateCell : Cell<NSDate>, CellType {
     
     public override func didSelect() {
         super.didSelect()
-        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
+        row.deselect()
     }
     
     override public var inputView : UIView? {
@@ -537,7 +537,7 @@ public class DateInlineCell : Cell<NSDate>, CellType {
     
     public override func didSelect() {
         super.didSelect()
-        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
+        row.deselect()
     }
 }
 
@@ -820,7 +820,7 @@ public class CheckCell : Cell<Bool>, CellType {
     
     public override func didSelect() {
         row.value = row.value ?? false ? false : true
-        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
+        row.deselect()
         row.updateCell()
     }
     
@@ -856,7 +856,7 @@ public class ListCheckCell<T: Equatable> : Cell<T>, CellType {
     }
     
     public override func didSelect() {
-        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
+        row.deselect()
         row.updateCell()
     }
     
@@ -1023,7 +1023,7 @@ public class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
     
     public override func didSelect() {
         super.didSelect()
-        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
+        row.deselect()
     }
 }
 

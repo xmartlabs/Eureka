@@ -47,9 +47,11 @@ Both `Form` and `Section` classes conform to `MutableCollectionType` and `RangeR
 
 
 ## Getting involved
+
 * If you **want to contribute** please feel free to **submit pull requests**.
 * If you **have a feature request** please **open an issue**.
-* If you **found a bug** or **need help** please **check older issues or threads on [StackOverflow] before submitting an issue**.
+* If you **found a bug** check older issues before submitting an issue.
+* If you **need help** or would like to **ask general question**, use [StackOverflow]. (Tag `eureka-forms`).
 
 **Before contribute check the [CONTRIBUTING](CONTRIBUTING.md) file for more info.**
 
@@ -199,6 +201,10 @@ This is a list of the rows that are provided by default:
 	+ **PushRow**
 
 		This row will push to a new controller from where to choose options listed using Check rows.
+
+  + **PopoverSelectorRow**
+
+  	This row will show a popover from where to choose options listed using Check rows.
 
 	+ **ImageRow**
 
