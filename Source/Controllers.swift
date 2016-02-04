@@ -170,6 +170,7 @@ public class ImagePickerController : UIImagePickerController, TypedRowController
     
     public func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]){
         row.value = info[UIImagePickerControllerOriginalImage] as? UIImage
+        (row as? ImageRow)?.imageURL = info[UIImagePickerControllerReferenceURL] as? NSURL
         completionCallback?(self)
     }
     
