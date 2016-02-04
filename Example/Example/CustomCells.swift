@@ -408,15 +408,51 @@ public class FloatFieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: Te
 }
 
 
-public final class TextFloatLabelRow: FloatFieldRow<String, TextFloatLabelCell>, RowType {}
-public final class IntFloatLabelRow: FloatFieldRow<Int, IntFloatLabelCell>, RowType {}
-public final class DecimalFloatLabelRow: FloatFieldRow<Float, DecimalFloatLabelCell>, RowType {}
-public final class URLFloatLabelRow: FloatFieldRow<NSURL, URLFloatLabelCell>, RowType {}
-public final class TwitterFloatLabelRow: FloatFieldRow<String, TwitterFloatLabelCell>, RowType {}
-public final class AccountFloatLabelRow: FloatFieldRow<String, AccountFloatLabelCell>, RowType {}
-public final class PasswordFloatLabelRow: FloatFieldRow<String, PasswordFloatLabelCell>, RowType {}
-public final class NameFloatLabelRow: FloatFieldRow<String, NameFloatLabelCell>, RowType {}
-public final class EmailFloatLabelRow: FloatFieldRow<String, EmailFloatLabelCell>, RowType {}
+public final class TextFloatLabelRow: FloatFieldRow<String, TextFloatLabelCell>, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+public final class IntFloatLabelRow: FloatFieldRow<Int, IntFloatLabelCell>, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+public final class DecimalFloatLabelRow: FloatFieldRow<Float, DecimalFloatLabelCell>, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+public final class URLFloatLabelRow: FloatFieldRow<NSURL, URLFloatLabelCell>, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+public final class TwitterFloatLabelRow: FloatFieldRow<String, TwitterFloatLabelCell>, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+public final class AccountFloatLabelRow: FloatFieldRow<String, AccountFloatLabelCell>, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+public final class PasswordFloatLabelRow: FloatFieldRow<String, PasswordFloatLabelCell>, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+public final class NameFloatLabelRow: FloatFieldRow<String, NameFloatLabelCell>, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+public final class EmailFloatLabelRow: FloatFieldRow<String, EmailFloatLabelCell>, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
 
 //MARK: LocationRow
 
