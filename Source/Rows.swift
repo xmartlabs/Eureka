@@ -513,6 +513,30 @@ public class _PushRow<T: Equatable> : SelectorRow<T, SelectorViewController<T>> 
     }
 }
 
+public class _PopoverSelectorRow<T: Equatable> : SelectorRow<T, SelectorViewController<T>> {
+    
+    public required init(tag: String?) {
+        super.init(tag: tag)
+        onPresentCallback = { [weak self] (_, viewController) -> Void in
+            guard let porpoverController = viewController.popoverPresentationController else {
+                fatalError()
+            }
+            guard let me = self, tableView = me.baseCell.formViewController()?.tableView, cell = me.cell  else { return }
+            porpoverController.sourceRect = tableView.convertRect(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.frame, fromView: cell)
+            porpoverController.sourceView = tableView
+        }
+        presentationMode = .Popover(controllerProvider: ControllerProvider.Callback { return SelectorViewController<T>(){ _ in } }, completionCallback: { [weak self] in
+            $0.dismissViewControllerAnimated(true, completion: nil)
+            self?.reload()
+            })
+    }
+    
+    public override func didSelect() {
+        deselect()
+        super.didSelect()
+    }
+}
+
 public class AreaRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: AreaCell, Cell.Value == T>: Row<T, Cell>, TextAreaConformance {
     
     public var placeholder : String?
@@ -647,6 +671,7 @@ public struct ImageRowSourceTypes : OptionSetType {
 public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
 
     public var sourceTypes: ImageRowSourceTypes
+    public internal(set) var  imageURL: NSURL?
     
     private var _sourceType: UIImagePickerControllerSourceType = .Camera
     
@@ -654,7 +679,7 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
         sourceTypes = .All
         super.init(tag: tag)
         presentationMode = .PresentModally(controllerProvider: ControllerProvider.Callback { return ImagePickerController() }, completionCallback: { [weak self] vc in
-                self?.cell?.formViewController()?.tableView?.selectRowAtIndexPath(self?.indexPath(), animated: false,  scrollPosition: .None)
+                self?.select()
                 vc.dismissViewControllerAnimated(true, completion: nil)
             })
         self.displayValueFor = nil
@@ -735,7 +760,7 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
         // check if we have only one source type given
         if sourceActionSheet.actions.count == 1 {
             if let imagePickerSourceType = UIImagePickerControllerSourceType(rawValue: sourceTypes.imagePickerControllerSourceTypeRawValue) {
-                self.displayImagePickerController(imagePickerSourceType)
+                displayImagePickerController(imagePickerSourceType)
             }
         } else {
             let cancelOption = UIAlertAction(title: "Cancel", style: .Cancel, handler:nil)
@@ -1274,29 +1299,11 @@ public final class PushRow<T: Equatable> : _PushRow<T>, RowType {
     }
 }
 
-public final class PopoverSelectorRow<T: Equatable> : _PushRow<T>, RowType {
+public final class PopoverSelectorRow<T: Equatable> : _PopoverSelectorRow<T>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
-        onPresentCallback = { [weak self] (_, viewController) -> Void in
-            guard let porpoverController = viewController.popoverPresentationController else {
-                fatalError()
-            }
-            guard let me = self, tableView = me.baseCell.formViewController()?.tableView, cell = me.cell  else { return }
-            porpoverController.sourceRect = tableView.convertRect(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.frame, fromView: cell)
-            porpoverController.sourceView = tableView
-        }
-        presentationMode = .Popover(controllerProvider: ControllerProvider.Callback { return SelectorViewController<T>(){ _ in } }, completionCallback: { [weak self] in
-            $0.dismissViewControllerAnimated(true, completion: nil)
-            self?.reload()
-        })
-    }
-    
-    public override func didSelect() {
-        deselect()
-        super.didSelect()
     }
 }
-
 
 
 /// A selector row where the user can pick several options from a pushed view controller
