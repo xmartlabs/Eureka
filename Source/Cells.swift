@@ -624,7 +624,7 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
         return picker
         }()
     
-    private var pickerRow : _PickerRow<T> { return row as! _PickerRow<T> }
+    private var pickerRow : _PickerRow<T>? { return row as? _PickerRow<T> }
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?){
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -649,7 +649,7 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
         textLabel?.text = nil
         detailTextLabel?.text = nil
         picker.reloadAllComponents()
-        if let selectedValue = pickerRow.value, let index = pickerRow.options.indexOf(selectedValue){
+        if let selectedValue = pickerRow?.value, let index = pickerRow?.options.indexOf(selectedValue){
             picker.selectRow(index, inComponent: 0, animated: true)
         }
     }
@@ -658,16 +658,16 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
         return 1
     }
     
-    public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
-        return pickerRow.options.count
+    public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerRow?.options.count ?? 0
     }
     
-    public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?{
-        return pickerRow.displayValueFor?(pickerRow.options[row])
+    public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerRow?.displayValueFor?(pickerRow?.options[row])
     }
     
     public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        pickerRow.value = pickerRow.options[row]
+        pickerRow?.value = pickerRow?.options[row]
     }
     
 }
