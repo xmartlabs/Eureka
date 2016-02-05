@@ -98,6 +98,11 @@ extension String: InputTypeInitiable {
     }
 }
 extension NSURL: InputTypeInitiable {}
+extension Double: InputTypeInitiable {
+    public init?(string stringValue: String){
+        self.init(stringValue)
+    }
+}
 
 public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, UITextFieldDelegate, TextFieldCell {
     lazy public var textField : UITextField = {
@@ -376,7 +381,7 @@ public class PasswordCell : _FieldCell<String>, CellType {
     }
 }
 
-public class DecimalCell : _FieldCell<Float>, CellType {
+public class DecimalCell : _FieldCell<Double>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
