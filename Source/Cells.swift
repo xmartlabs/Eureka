@@ -125,6 +125,8 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     }
     
     deinit {
+        textField.delegate = nil
+        textField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
         titleLabel?.removeObserver(self, forKeyPath: "text")
         imageView?.removeObserver(self, forKeyPath: "image")
     }
@@ -139,12 +141,6 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
         textField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
         
-    }
-    
-    public override func teardown() {
-        super.teardown()
-        textField.delegate=nil
-        textField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
     }
     
     public override func update() {
@@ -473,8 +469,7 @@ public class DateCell : Cell<NSDate>, CellType {
         datePicker.addTarget(self, action: Selector("datePickerValueChanged:"), forControlEvents: .ValueChanged)
     }
     
-    public override func teardown() {
-        super.teardown()
+    deinit {
         datePicker.removeTarget(self, action: nil, forControlEvents: .AllEvents)
     }
     
@@ -580,8 +575,7 @@ public class DatePickerCell : Cell<NSDate>, CellType {
         datePicker.datePickerMode = datePickerMode()
     }
     
-    public override func teardown() {
-        super.teardown()
+    deinit {
         datePicker.removeTarget(self, action: nil, forControlEvents: .AllEvents)
     }
     
@@ -645,8 +639,7 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
         picker.dataSource = self
     }
     
-    public override func teardown() {
-        super.teardown()
+    deinit {
         picker.delegate = nil
         picker.dataSource = nil
     }
@@ -721,9 +714,8 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[label]-|", options: [], metrics: nil, views: views))
     }
     
-    public override func teardown() {
-        super.teardown()
-        textView.delegate=nil
+    deinit {
+        textView.delegate = nil
     }
     
     public override func update() {
@@ -912,8 +904,7 @@ public class SwitchCell : Cell<Bool>, CellType {
         switchControl?.addTarget(self, action: "valueChanged", forControlEvents: .ValueChanged)
     }
     
-    public override func teardown() {
-        super.teardown()
+    deinit {
         switchControl?.removeTarget(self, action: nil, forControlEvents: .AllEvents)
     }
     
@@ -949,6 +940,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     }
     
     deinit {
+        segmentedControl.removeTarget(self, action: nil, forControlEvents: .AllEvents)
         titleLabel?.removeObserver(self, forKeyPath: "text")
         imageView?.removeObserver(self, forKeyPath: "image")
     }
@@ -962,11 +954,6 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         imageView?.addObserver(self, forKeyPath: "image", options: [.Old, .New], context: nil)
         segmentedControl.addTarget(self, action: "valueChanged", forControlEvents: .ValueChanged)
         contentView.addConstraint(NSLayoutConstraint(item: segmentedControl, attribute: .CenterY, relatedBy: .Equal, toItem: contentView, attribute: .CenterY, multiplier: 1, constant: 0))
-    }
-    
-    public override func teardown() {
-        super.teardown()
-        segmentedControl.removeTarget(self, action: nil, forControlEvents: .AllEvents)
     }
     
     public override func update() {
@@ -1156,6 +1143,16 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 	}
 	
 	deinit {
+        streetTextField.delegate = nil
+        streetTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
+        stateTextField.delegate = nil
+        stateTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
+        postalCodeTextField.delegate = nil
+        postalCodeTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
+        cityTextField.delegate = nil
+        cityTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
+        countryTextField.delegate = nil
+        countryTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
 		titleLabel?.removeObserver(self, forKeyPath: "text")
 		imageView?.removeObserver(self, forKeyPath: "image")
 	}
@@ -1186,20 +1183,6 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 		countryTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
 	}
     
-    public override func teardown() {
-        super.teardown()
-        streetTextField.delegate=nil
-        streetTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
-        stateTextField.delegate=nil
-        stateTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
-        postalCodeTextField.delegate=nil
-        postalCodeTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
-        cityTextField.delegate=nil
-        cityTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
-        countryTextField.delegate=nil
-        countryTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
-    }
-	
 	public override func update() {
 		super.update()
 		detailTextLabel?.text = nil

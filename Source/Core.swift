@@ -297,11 +297,6 @@ public protocol BaseCellType : class {
     func setup()
     
     /**
-     Method called once when destroying a cell. Responsible for cleaning up.
-     */
-    func teardown()
-    
-    /**
      Method called each time the cell is updated (e.g. 'cellForRowAtIndexPath' is called). Responsible for updating the cell.
      */
     func update()
@@ -1622,13 +1617,6 @@ public class Row<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value =
         super.init(tag: tag)
     }
     
-    /// Allow cell to cleanup (opposite of setup)
-    deinit{
-        if let cell = _cell {
-            cell.teardown()
-        }
-    }
-    
     /**
      Method that reloads the cell
      */
@@ -1994,7 +1982,6 @@ public class BaseCell : UITableViewCell, BaseCellType {
     }
     
     public func setup(){}
-    public func teardown(){}
     public func update() {}
     
     public func didSelect() {}
@@ -2055,14 +2042,7 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
     public override func setup(){
         super.setup()
     }
-    
-    /**
-     Function responsible for tearing down the cell at destruction time of the Row
-     */
-    public override func teardown(){
-        super.teardown()
-    }
-    
+        
     /**
      Function responsible for updating the cell each time it is reloaded.
      */
