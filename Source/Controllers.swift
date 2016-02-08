@@ -43,7 +43,7 @@ public class SelectorViewController<T:Equatable> : FormViewController, TypedRowC
     }
     
     convenience public init(_ callback: (UIViewController) -> ()){
-        self.init()
+        self.init(nibName: nil, bundle: nil)
         completionCallback = callback
     }
     
@@ -87,7 +87,7 @@ public class MultipleSelectorViewController<T:Hashable> : FormViewController, Ty
     }
     
     convenience public init(_ callback: (UIViewController) -> ()){
-        self.init()
+        self.init(nibName: nil, bundle: nil)
         completionCallback = callback
     }
 

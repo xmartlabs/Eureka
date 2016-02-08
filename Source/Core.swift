@@ -2470,8 +2470,8 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     public var navigationOptions : RowNavigationOptions?
     private var tableViewStyle: UITableViewStyle = .Grouped
     
-    public convenience init(style: UITableViewStyle) {
-        self.init(nibName: nil, bundle: nil)
+    public init(style: UITableViewStyle) {
+        super.init(nibName: nil, bundle: nil)
         tableViewStyle = style
     }
     
