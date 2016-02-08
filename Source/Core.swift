@@ -1726,7 +1726,7 @@ public class SelectorRow<T: Equatable, VCType: TypedRowControllerType where VCTy
         if let title = selectorTitle {
             rowVC.title = title
         }
-        if let callback = self.presentationMode?.completionHandler{
+        if let callback = self.presentationMode?.completionHandler {
             rowVC.completionCallback = callback
         }
         onPresentCallback?(cell.formViewController()!, rowVC)
@@ -2211,7 +2211,15 @@ public enum PresentationMode<VCType: UIViewController> {
         }
     }
     
-    func presentViewController(viewController: VCType!, row: BaseRow, presentingViewController:FormViewController){
+    
+    /**
+     Present the view controller provided by PresentationMode. Should only be used from custom row implementation.
+     
+     - parameter viewController:           viewController to present if it makes sense (normally provided by createController method)
+     - parameter row:                      associated row
+     - parameter presentingViewController: form view controller
+     */
+    public func presentViewController(viewController: VCType!, row: BaseRow, presentingViewController:FormViewController){
         switch self {
             case .Show(_, _):
                 presentingViewController.showViewController(viewController, sender: row)
@@ -2234,7 +2242,12 @@ public enum PresentationMode<VCType: UIViewController> {
         
     }
     
-    func createController() -> VCType? {
+    /**
+     Creates the view controller specified by presentation mode. Should only be used from custom row implementation.
+     
+     - returns: the created view controller or nil depending on the PresentationMode type.
+     */
+    public func createController() -> VCType? {
         switch self {
             case .Show(let controllerProvider, let completionCallback):
                 let controller = controllerProvider.createController()
