@@ -654,6 +654,14 @@ public func ==(lhs: Section, rhs: Section) -> Bool{
 
 extension Section : Hidable, SectionDelegate {}
 
+extension Section {
+    
+    public func reload(rowAnimation: UITableViewRowAnimation = .None) {
+        guard let tableView = (form?.delegate as? FormViewController)?.tableView, index = index else { return }
+        tableView.reloadSections(NSIndexSet(index: index), withRowAnimation: rowAnimation)
+    }
+}
+
 /// The class representing the sections in a Eureka form.
 public class Section {
 
