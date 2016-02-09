@@ -719,6 +719,29 @@ This functions are just called when a row is added to the form and when a row it
 
 Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
 
+#### How to update a Section header/footer
+
+* Set up a new header/footer data ....
+
+```swift
+section.header = "Header Title" // use string literal as a header/footer data. HeaderFooterView conforms to StringLiteralConvertible.
+//or
+section.header = HeaderFooterView(title: "Header title \(variable)") // use String interpolation
+//or
+var header = HeaderFooterView<UIView>(.Class) // most flexible way to set up a header using any view type
+header.height = { 60 }  // height can be calculated
+header.onSetupView = { view, section, formVC in  // each time the view is about to be displayed onSetupView is invoked.
+    view.backgroundColor = .orangeColor()
+}
+section.header = header
+```
+
+* Reload the Section to perform the changes
+
+```swift
+section.reload()
+```
+
 <!--- In file -->
 [Introduction]: #introduction
 [Requirements]: #requirements
