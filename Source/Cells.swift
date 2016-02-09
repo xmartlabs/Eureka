@@ -707,15 +707,17 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         contentView.addSubview(textView)
         contentView.addSubview(placeholderLabel)
         
+        imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
+        
         let views : [String: AnyObject] =  ["textView": textView, "label": placeholderLabel]
         contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[label]", options: [], metrics: nil, views: views))
         contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[textView]-|", options: [], metrics: nil, views: views))
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textView]-|", options: [], metrics: nil, views: views))
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[label]-|", options: [], metrics: nil, views: views))
     }
     
     deinit {
         textView.delegate = nil
+        imageView?.removeObserver(self, forKeyPath: "image")
+        
     }
     
     public override func update() {
@@ -740,6 +742,13 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     
     public override func cellResignFirstResponder() -> Bool {
         return textView.resignFirstResponder()
+    }
+    
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKindKey] where obj === imageView && keyPathValue == "image" && changeType.unsignedLongValue == NSKeyValueChange.Setting.rawValue {
+            setNeedsUpdateConstraints()
+            updateConstraintsIfNeeded()
+        }
     }
     
     public func textViewDidBeginEditing(textView: UITextView) {
@@ -803,6 +812,24 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     public func textViewShouldEndEditing(textView: UITextView) -> Bool {
         return formViewController()?.textInputShouldEndEditing(textView, cell: self) ?? true
     }
+    
+    public override func updateConstraints(){
+        contentView.removeConstraints(dynamicConstraints)
+        dynamicConstraints = []
+        var views : [String: AnyObject] = ["textView": textView, "label": placeholderLabel]
+        if let imageView = imageView, let _ = imageView.image {
+            views["imageView"] = imageView
+            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[textView]-|", options: [], metrics: nil, views: views)
+            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[label]-|", options: [], metrics: nil, views: views)
+        }
+        else{
+            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textView]-|", options: [], metrics: nil, views: views))
+            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[label]-|", options: [], metrics: nil, views: views))
+        }
+        contentView.addConstraints(dynamicConstraints)
+        super.updateConstraints()
+    }
+    
 }
 
 public class TextAreaCell : _TextAreaCell<String>, CellType {
