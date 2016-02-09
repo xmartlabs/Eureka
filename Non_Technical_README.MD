@@ -26,12 +26,7 @@ ___
 
 Let's look at the following text,
 
-<p style="color:red;font-size:24px;line-height:100%;">This sentence is red and uses a larger font</p>
-<p style= "color:blue;font-size:14px;line-height:0;">This sentence is blue and uses a smaller font</p>
-<p style="color:red;font-size:24px;line-height:100%;">This sentence is also red and uses a larger font</p>
-<p style= "color:blue;font-size:14px;line-height:0;">This sentence is also blue and uses a smaller font</p>
-<p style="color:red;font-size:24px;line-height:100%;">This sentence is the third red sentence that uses a larger font</p>
-<p style= "color:blue;font-size:14px;line-height:0;">This sentence is the third blue sentence that uses a smaller font</p>
+![Color_Text](http://i.imgur.com/xdyeOXF.jpg)
 
 
 
