@@ -74,7 +74,7 @@ Sure, take a look at this object here:
 
 ![Vacuum](http://i.imgur.com/rCh30L7m.png)
 
-The bottom of the vacuum is fairly versatile.  It works for floors, stairs, technically and you could even use it on a couch or your bed (clean the bottom first if you decide you must do this).  If you move any objects in its path out of the way, there's no reason this vacuum can't reach room corners.
+The bottom of the vacuum is fairly versatile.  It works for floors, stairs, and technically you could even use it on a couch or your bed (clean the bottom first if you decide you must do this).  If you move any objects in its path out of the way, there's no reason this vacuum can't reach room corners.
 
 Let's say, however, you are in fact cleaning the stairs.
 
