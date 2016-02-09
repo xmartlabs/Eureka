@@ -2836,14 +2836,12 @@ extension FormViewController {
      Called when the keyboard will disappear. Adjusts insets of the tableView.
      */
     public func keyboardWillHide(notification: NSNotification){
-        guard let table = tableView,  let _ = table.findFirstResponder()?.formCell() else  { return }
+        guard let table = tableView,  let oldBottom = oldBottomInset else  { return }
         let keyBoardInfo = notification.userInfo!
         var tableInsets = table.contentInset
         var scrollIndicatorInsets = table.scrollIndicatorInsets
-        if let oldBottomInset = oldBottomInset {
-            tableInsets.bottom = oldBottomInset
-            scrollIndicatorInsets.bottom = tableInsets.bottom
-        }
+        tableInsets.bottom = oldBottom
+        scrollIndicatorInsets.bottom = tableInsets.bottom
         oldBottomInset = nil
         UIView.beginAnimations(nil, context: nil)
         UIView.setAnimationDuration(keyBoardInfo[UIKeyboardAnimationDurationUserInfoKey]!.doubleValue)
