@@ -1,8 +1,9 @@
+![Eureka: Elegant form builder in Swift](https://github.com/NathanJPlummer/Eureka/raw/master/Eureka.png)
 ___
 #Eureka: A Non-Technical Introduction
 ___
 
-Eureka! is a library to create dynamic table-view forms from a DSL specification in Swift...
+Eureka is a library to create dynamic table-view forms from a DSL specification in Swift...
 
 ___
 ###Whoa, you said, "Non-Technical" Introduction!
@@ -47,7 +48,7 @@ It looks like this:
 
 If you can't read code, that's okay.  Just realize that's a lot of repeated syntax.  HTML does not have a built in way to say, *in a single phrase*, "Make this sentence red, with a larger font, and single line spacing."
 
-The reason for this is that  need for versatility.  Your work may have patterns, but HTML is designed to give you control over every line.  As far as the programming language is concerned, you may want you third line purple, your fifth line orange, and your sixth line green.  HTML is designed to allow you to do that.
+The reason for this is that  need for versatility.  Your work may have patterns, but HTML is designed to give you control over every line.  As far as the programming language is concerned, you may want your third line purple, your fifth line orange, and your sixth line green.  HTML is designed to allow you to do that.
 
 ___
 ###You still haven't explained DSL protocols
