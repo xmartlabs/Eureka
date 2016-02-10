@@ -654,6 +654,14 @@ public func ==(lhs: Section, rhs: Section) -> Bool{
 
 extension Section : Hidable, SectionDelegate {}
 
+extension Section {
+    
+    public func reload(rowAnimation: UITableViewRowAnimation = .None) {
+        guard let tableView = (form?.delegate as? FormViewController)?.tableView, index = index else { return }
+        tableView.reloadSections(NSIndexSet(index: index), withRowAnimation: rowAnimation)
+    }
+}
+
 /// The class representing the sections in a Eureka form.
 public class Section {
 
@@ -1726,7 +1734,7 @@ public class SelectorRow<T: Equatable, VCType: TypedRowControllerType where VCTy
         if let title = selectorTitle {
             rowVC.title = title
         }
-        if let callback = self.presentationMode?.completionHandler{
+        if let callback = self.presentationMode?.completionHandler {
             rowVC.completionCallback = callback
         }
         onPresentCallback?(cell.formViewController()!, rowVC)
@@ -2211,7 +2219,15 @@ public enum PresentationMode<VCType: UIViewController> {
         }
     }
     
-    func presentViewController(viewController: VCType!, row: BaseRow, presentingViewController:FormViewController){
+    
+    /**
+     Present the view controller provided by PresentationMode. Should only be used from custom row implementation.
+     
+     - parameter viewController:           viewController to present if it makes sense (normally provided by createController method)
+     - parameter row:                      associated row
+     - parameter presentingViewController: form view controller
+     */
+    public func presentViewController(viewController: VCType!, row: BaseRow, presentingViewController:FormViewController){
         switch self {
             case .Show(_, _):
                 presentingViewController.showViewController(viewController, sender: row)
@@ -2234,7 +2250,12 @@ public enum PresentationMode<VCType: UIViewController> {
         
     }
     
-    func createController() -> VCType? {
+    /**
+     Creates the view controller specified by presentation mode. Should only be used from custom row implementation.
+     
+     - returns: the created view controller or nil depending on the PresentationMode type.
+     */
+    public func createController() -> VCType? {
         switch self {
             case .Show(let controllerProvider, let completionCallback):
                 let controller = controllerProvider.createController()
@@ -2470,8 +2491,8 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     public var navigationOptions : RowNavigationOptions?
     private var tableViewStyle: UITableViewStyle = .Grouped
     
-    public convenience init(style: UITableViewStyle) {
-        self.init(nibName: nil, bundle: nil)
+    public init(style: UITableViewStyle) {
+        super.init(nibName: nil, bundle: nil)
         tableViewStyle = style
     }
     
@@ -2659,10 +2680,12 @@ extension FormViewController : UITableViewDelegate {
     
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard tableView == self.tableView else { return }
-        if !form[indexPath].baseCell.cellCanBecomeFirstResponder() || !form[indexPath].baseCell.cellBecomeFirstResponder() {
+        let row = form[indexPath]
+// fix issue: row.baseCell.cellBecomeFirstResponder() may be cause InlineRow collapsed then section count will be changed. Use orignal indexPath will out of  section's bounds.
+        if !row.baseCell.cellCanBecomeFirstResponder() || !row.baseCell.cellBecomeFirstResponder() {
             self.tableView?.endEditing(true)
         }
-        form[indexPath].didSelect()
+        row.didSelect()
     }
     
     public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -2821,14 +2844,12 @@ extension FormViewController {
      Called when the keyboard will disappear. Adjusts insets of the tableView.
      */
     public func keyboardWillHide(notification: NSNotification){
-        guard let table = tableView,  let _ = table.findFirstResponder()?.formCell() else  { return }
+        guard let table = tableView,  let oldBottom = oldBottomInset else  { return }
         let keyBoardInfo = notification.userInfo!
         var tableInsets = table.contentInset
         var scrollIndicatorInsets = table.scrollIndicatorInsets
-        if let oldBottomInset = oldBottomInset {
-            tableInsets.bottom = oldBottomInset
-            scrollIndicatorInsets.bottom = tableInsets.bottom
-        }
+        tableInsets.bottom = oldBottom
+        scrollIndicatorInsets.bottom = tableInsets.bottom
         oldBottomInset = nil
         UIView.beginAnimations(nil, context: nil)
         UIView.setAnimationDuration(keyBoardInfo[UIKeyboardAnimationDurationUserInfoKey]!.doubleValue)
