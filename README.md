@@ -742,6 +742,53 @@ section.header = header
 section.reload()
 ```
 
+#### Don't want to use Eureka custom operators?
+
+As we've said `Form` and `Section` types conform to `MutableCollectionType` and `RangeReplaceableCollectionType`. A Form is a collection of Sections and a Section is a collection of Rows.
+
+`RangeReplaceableCollectionType` protocol extension provides many useful methods to modify collection.
+
+```swift
+extension RangeReplaceableCollectionType {
+    public mutating func append(newElement: Self.Generator.Element)
+    public mutating func appendContentsOf<S : SequenceType where S.Generator.Element == Generator.Element>(newElements: S)
+    public mutating func insert(newElement: Self.Generator.Element, atIndex i: Self.Index)
+    public mutating func insertContentsOf<C : CollectionType where C.Generator.Element == Generator.Element>(newElements: C, at i: Self.Index)
+    public mutating func removeAtIndex(index: Self.Index) -> Self.Generator.Element
+    public mutating func removeRange(subRange: Range<Self.Index>)
+    public mutating func removeFirst(n: Int)
+    public mutating func removeFirst() -> Self.Generator.Element
+    public mutating func removeAll(keepCapacity keepCapacity: Bool = default)
+    public mutating func reserveCapacity(n: Self.Index.Distance)
+}
+```
+
+These methods are used internally to implement the custom operators as shown bellow:
+
+```swift
+public func +++(left: Form, right: Section) -> Form {
+    left.append(right)
+    return left
+}
+
+public func +=< C : CollectionType where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
+    lhs.appendContentsOf(rhs)
+}
+
+public func <<<(left: Section, right: BaseRow) -> Section {
+    left.append(right)
+    return left
+}
+
+public func +=< C : CollectionType where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
+    lhs.appendContentsOf(rhs)
+}
+```
+
+You can see how the rest of custom operators are implemented [here](https://github.com/xmartlabs/Eureka/blob/master/Source/Core.swift#L1816).
+
+It's up to you to decide if you want to use Eureka custom operators or not.
+
 <!--- In file -->
 [Introduction]: #introduction
 [Requirements]: #requirements
