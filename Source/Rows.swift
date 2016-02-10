@@ -36,13 +36,13 @@ protocol TextAreaConformance : FormatterConformance {
 }
 
 public protocol PostalAddressRowConformance: PostalAddressFormatterConformance {
-	var postalAddressPercentage : CGFloat? { get set }
-	var placeholderColor : UIColor? { get set }
-	var streetPlaceholder : String? { get set }
-	var statePlaceholder : String? { get set }
-	var postalCodePlaceholder : String? { get set }
-	var cityPlaceholder : String? { get set }
-	var countryPlaceholder : String? { get set }
+    var postalAddressPercentage : CGFloat? { get set }
+    var placeholderColor : UIColor? { get set }
+    var streetPlaceholder : String? { get set }
+    var statePlaceholder : String? { get set }
+    var postalCodePlaceholder : String? { get set }
+    var cityPlaceholder : String? { get set }
+    var countryPlaceholder : String? { get set }
 }
 
 public protocol FormatterConformance: class {
@@ -51,20 +51,20 @@ public protocol FormatterConformance: class {
 }
 
 public protocol PostalAddressFormatterConformance: class {
-	var streetUseFormatterDuringInput: Bool { get set }
-	var streetFormatter: NSFormatter? { get set }
-	
-	var stateUseFormatterDuringInput: Bool { get set }
-	var stateFormatter: NSFormatter? { get set }
-	
-	var postalCodeUseFormatterDuringInput: Bool { get set }
-	var postalCodeFormatter: NSFormatter? { get set }
-	
-	var cityUseFormatterDuringInput: Bool { get set }
-	var cityFormatter: NSFormatter? { get set }
-	
-	var countryUseFormatterDuringInput: Bool { get set }
-	var countryFormatter: NSFormatter? { get set }
+    var streetUseFormatterDuringInput: Bool { get set }
+    var streetFormatter: NSFormatter? { get set }
+    
+    var stateUseFormatterDuringInput: Bool { get set }
+    var stateFormatter: NSFormatter? { get set }
+    
+    var postalCodeUseFormatterDuringInput: Bool { get set }
+    var postalCodeFormatter: NSFormatter? { get set }
+    
+    var cityUseFormatterDuringInput: Bool { get set }
+    var cityFormatter: NSFormatter? { get set }
+    
+    var countryUseFormatterDuringInput: Bool { get set }
+    var countryFormatter: NSFormatter? { get set }
 }
 
 public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TextFieldCell, Cell.Value == T>: Row<T, Cell>, FieldRowConformance, KeyboardReturnHandler {
@@ -113,70 +113,70 @@ public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TextFie
 }
 
 public class _PostalAddressRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: PostalAddressCell, Cell.Value == T>: Row<T, Cell>, PostalAddressRowConformance, KeyboardReturnHandler {
-	
-	/// Configuration for the keyboardReturnType of this row
-	public var keyboardReturnType : KeyboardReturnTypeConfiguration?
-	
-	/// The percentage of the cell that should be occupied by the postal address
-	public var postalAddressPercentage: CGFloat?
-	
-	/// The textColor for the textField's placeholder
-	public var placeholderColor : UIColor?
-	
-	/// The placeholder for the street textField
-	public var streetPlaceholder : String?
-	
-	/// The placeholder for the state textField
-	public var statePlaceholder : String?
-	
-	/// The placeholder for the zip textField
-	public var postalCodePlaceholder : String?
-	
-	/// The placeholder for the city textField
-	public var cityPlaceholder : String?
-	
-	/// The placeholder for the country textField
-	public var countryPlaceholder : String?
-	
-	/// A formatter to be used to format the user's input for street
-	public var streetFormatter: NSFormatter?
-	
-	/// A formatter to be used to format the user's input for state
-	public var stateFormatter: NSFormatter?
-	
-	/// A formatter to be used to format the user's input for zip
-	public var postalCodeFormatter: NSFormatter?
-	
-	/// A formatter to be used to format the user's input for city
-	public var cityFormatter: NSFormatter?
-	
-	/// A formatter to be used to format the user's input for country
-	public var countryFormatter: NSFormatter?
-	
-	/// If the formatter should be used while the user is editing the street.
-	public var streetUseFormatterDuringInput: Bool
-	
-	/// If the formatter should be used while the user is editing the state.
-	public var stateUseFormatterDuringInput: Bool
-	
-	/// If the formatter should be used while the user is editing the zip.
-	public var postalCodeUseFormatterDuringInput: Bool
-	
-	/// If the formatter should be used while the user is editing the city.
-	public var cityUseFormatterDuringInput: Bool
-	
-	/// If the formatter should be used while the user is editing the country.
-	public var countryUseFormatterDuringInput: Bool
-	
-	public required init(tag: String?) {
-		streetUseFormatterDuringInput = false
-		stateUseFormatterDuringInput = false
-		postalCodeUseFormatterDuringInput = false
-		cityUseFormatterDuringInput = false
-		countryUseFormatterDuringInput = false
-		
-		super.init(tag: tag)
-	}
+    
+    /// Configuration for the keyboardReturnType of this row
+    public var keyboardReturnType : KeyboardReturnTypeConfiguration?
+    
+    /// The percentage of the cell that should be occupied by the postal address
+    public var postalAddressPercentage: CGFloat?
+    
+    /// The textColor for the textField's placeholder
+    public var placeholderColor : UIColor?
+    
+    /// The placeholder for the street textField
+    public var streetPlaceholder : String?
+    
+    /// The placeholder for the state textField
+    public var statePlaceholder : String?
+    
+    /// The placeholder for the zip textField
+    public var postalCodePlaceholder : String?
+    
+    /// The placeholder for the city textField
+    public var cityPlaceholder : String?
+    
+    /// The placeholder for the country textField
+    public var countryPlaceholder : String?
+    
+    /// A formatter to be used to format the user's input for street
+    public var streetFormatter: NSFormatter?
+    
+    /// A formatter to be used to format the user's input for state
+    public var stateFormatter: NSFormatter?
+    
+    /// A formatter to be used to format the user's input for zip
+    public var postalCodeFormatter: NSFormatter?
+    
+    /// A formatter to be used to format the user's input for city
+    public var cityFormatter: NSFormatter?
+    
+    /// A formatter to be used to format the user's input for country
+    public var countryFormatter: NSFormatter?
+    
+    /// If the formatter should be used while the user is editing the street.
+    public var streetUseFormatterDuringInput: Bool
+    
+    /// If the formatter should be used while the user is editing the state.
+    public var stateUseFormatterDuringInput: Bool
+    
+    /// If the formatter should be used while the user is editing the zip.
+    public var postalCodeUseFormatterDuringInput: Bool
+    
+    /// If the formatter should be used while the user is editing the city.
+    public var cityUseFormatterDuringInput: Bool
+    
+    /// If the formatter should be used while the user is editing the country.
+    public var countryUseFormatterDuringInput: Bool
+    
+    public required init(tag: String?) {
+        streetUseFormatterDuringInput = false
+        stateUseFormatterDuringInput = false
+        postalCodeUseFormatterDuringInput = false
+        cityUseFormatterDuringInput = false
+        countryUseFormatterDuringInput = false
+        
+        super.init(tag: tag)
+    }
 }
 
 public protocol _DatePickerRowProtocol {
@@ -251,7 +251,7 @@ public class _DateInlineRow: _DateInlineFieldRow {
 }
 
 public class _DateTimeInlineRow: _DateInlineFieldRow {
-
+    
     public typealias InlineRow = DateTimePickerRow
     
     public required init(tag: String?) {
@@ -465,7 +465,7 @@ public class _PickerInlineRow<T where T: Equatable> : Row<T, LabelCellOf<T>>{
     
     public typealias InlineRow = PickerRow<T>
     public var options = [T]()
-
+    
     required public init(tag: String?) {
         super.init(tag: tag)
     }
@@ -588,18 +588,18 @@ public class _ActionSheetRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>,
     lazy public var presentationMode: PresentationMode<SelectorAlertController<T>>? = {
         return .PresentModally(controllerProvider: ControllerProvider.Callback { [weak self] in
             let vc = SelectorAlertController<T>(title: self?.selectorTitle, message: nil, preferredStyle: .ActionSheet)
-			if let popView = vc.popoverPresentationController, cell = self?.cell {
-				popView.sourceView = cell.formViewController()?.tableView
-				popView.sourceRect = cell.frame
-			}
-			vc.row = self
+            if let popView = vc.popoverPresentationController, cell = self?.cell {
+                popView.sourceView = cell.formViewController()?.tableView
+                popView.sourceRect = cell.frame
+            }
+            vc.row = self
             return vc
             },
             completionCallback: { [weak self] in
                 $0.dismissViewControllerAnimated(true, completion: nil)
                 self?.cell?.formViewController()?.tableView?.reloadData()
             })
-        }()
+    }()
     
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -633,8 +633,8 @@ public class _AlertRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>, Prese
                 self?.cell?.formViewController()?.tableView?.reloadData()
             }
         )
-        }()
-        
+    }()
+    
     public required init(tag: String?) {
         super.init(tag: tag)
     }
@@ -669,7 +669,7 @@ public struct ImageRowSourceTypes : OptionSetType {
 }
 
 public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
-
+    
     public var sourceTypes: ImageRowSourceTypes
     public internal(set) var  imageURL: NSURL?
     
@@ -679,11 +679,11 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
         sourceTypes = .All
         super.init(tag: tag)
         presentationMode = .PresentModally(controllerProvider: ControllerProvider.Callback { return ImagePickerController() }, completionCallback: { [weak self] vc in
-                self?.select()
-                vc.dismissViewControllerAnimated(true, completion: nil)
+            self?.select()
+            vc.dismissViewControllerAnimated(true, completion: nil)
             })
         self.displayValueFor = nil
-
+        
     }
     
     // copy over the existing logic from the SelectorRow
@@ -707,7 +707,7 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
             super.customDidSelect()
             return
         }
-        deselect()        
+        deselect()
         var availableSources: ImageRowSourceTypes {
             var result: ImageRowSourceTypes = []
             
@@ -731,29 +731,38 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
             return
         }
         
+        
         // now that we know the number of actions aren't empty
         let sourceActionSheet = UIAlertController(title: nil, message: selectorTitle, preferredStyle: .ActionSheet)
-		if let popView = sourceActionSheet.popoverPresentationController {
-			popView.sourceView = cell.formViewController()?.tableView
-			popView.sourceRect = cell.frame
-		}
-
+        if let popView = sourceActionSheet.popoverPresentationController {
+            popView.sourceView = cell.formViewController()?.tableView
+            popView.sourceRect = cell.frame
+        }
+        
+        if let _ = value {
+            let clearPhotoOption = UIAlertAction(title: "Clear Photo", style: .Default, handler: { [weak self] (alert: UIAlertAction) -> Void in
+                self?.value=nil;
+                self?.updateCell();
+                })
+            sourceActionSheet.addAction(clearPhotoOption)
+        }
+        
         if sourceTypes.contains(.Camera) {
             let cameraOption = UIAlertAction(title: "Take Photo", style: .Default, handler: { [weak self] (alert: UIAlertAction) -> Void in
                 self?.displayImagePickerController(.Camera)
-            })
+                })
             sourceActionSheet.addAction(cameraOption)
         }
         if sourceTypes.contains(.PhotoLibrary) {
             let photoLibraryOption = UIAlertAction(title: "Photo Library", style: .Default, handler: { [weak self] (alert: UIAlertAction) -> Void in
                 self?.displayImagePickerController(.PhotoLibrary)
-            })
+                })
             sourceActionSheet.addAction(photoLibraryOption)
         }
         if sourceTypes.contains(.SavedPhotosAlbum) {
             let savedPhotosOption = UIAlertAction(title: "Saved Photos", style: .Default, handler: { [weak self] (alert: UIAlertAction) -> Void in
                 self?.displayImagePickerController(.SavedPhotosAlbum)
-            })
+                })
             sourceActionSheet.addAction(savedPhotosOption)
         }
         
@@ -779,7 +788,7 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
         }
         rowVC.sourceType = _sourceType
     }
-
+    
     public override func customUpdateCell() {
         super.customUpdateCell()
         cell.accessoryType = .None
@@ -1367,14 +1376,14 @@ public final class PickerRow<T where T: Equatable>: _PickerRow<T>, RowType {
 
 /// A PostalAddress valued row where the user can enter a postal address.
 public final class PostalAddressRow<T: PostalAddress>: _PostalAddressRow<T, DefaultPostalAddressCell<T>>, RowType {
-	public required init(tag: String? = nil) {
-		super.init(tag: tag)
-		onCellHighlight { cell, row  in
-			let color = cell.textLabel?.textColor
-			row.onCellUnHighlight { cell, _ in
-				cell.textLabel?.textColor = color
-			}
-			cell.textLabel?.textColor = cell.tintColor
-		}
-	}
+    public required init(tag: String? = nil) {
+        super.init(tag: tag)
+        onCellHighlight { cell, row  in
+            let color = cell.textLabel?.textColor
+            row.onCellUnHighlight { cell, _ in
+                cell.textLabel?.textColor = color
+            }
+            cell.textLabel?.textColor = cell.tintColor
+        }
+    }
 }
