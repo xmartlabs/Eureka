@@ -193,8 +193,17 @@ public class ImagePickerController : UIImagePickerController, TypedRowController
     }
     
     public func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]){
-        row.value = info[UIImagePickerControllerOriginalImage] as? UIImage
-        (row as? ImageRow)?.imageURL = info[UIImagePickerControllerReferenceURL] as? NSURL
+        let theImage=info[UIImagePickerControllerOriginalImage] as? UIImage;
+        var pickerDict=[String:AnyObject]();
+        
+        for(key,value) in info{
+            if !(key == "UIImagePickerControllerOriginalImage"){
+                pickerDict[key]=value;
+            }
+        }
+        theImage!.pickerDict=pickerDict;
+        
+        row.value = theImage;
         completionCallback?(self)
     }
     
