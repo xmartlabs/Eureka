@@ -2509,6 +2509,9 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         if tableView == nil {
             tableView = UITableView(frame: view.bounds, style: tableViewStyle)
             tableView?.autoresizingMask = UIViewAutoresizing.FlexibleWidth.union(.FlexibleHeight)
+            if #available(iOS 9.0, *){
+                tableView?.cellLayoutMarginsFollowReadableWidth = false
+            }
         }
         if tableView?.superview == nil {
             view.addSubview(tableView!)
