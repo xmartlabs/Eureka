@@ -746,6 +746,14 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
 				})
 			sourceActionSheet.addAction(clearPhotoOption)
 		}
+		
+		if let _ = value{
+			let clearPhotoOption = UIAlertAction(title: "Clear Photo", style: .Default, handler: { [weak self] (alert: UIAlertAction) -> Void in
+				self?.value=nil;
+				self?.updateCell();
+				})
+			sourceActionSheet.addAction(clearPhotoOption)
+		}
 
         if sourceTypes.contains(.Camera) {
             let cameraOption = UIAlertAction(title: "Take Photo", style: .Default, handler: { [weak self] (alert: UIAlertAction) -> Void in
