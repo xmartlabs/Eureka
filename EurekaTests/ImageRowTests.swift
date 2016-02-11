@@ -91,10 +91,6 @@ class ImageRowTests: XCTestCase {
         XCTAssert(defaultImageRow.sourceTypes == ImageRowSourceTypes.All)
         XCTAssert(singleSourceImageRow.sourceTypes == ImageRowSourceTypes.Camera)
         XCTAssert(twoSourcesImageRow.sourceTypes == ImageRowSourceTypes([ImageRowSourceTypes.SavedPhotosAlbum, ImageRowSourceTypes.PhotoLibrary]))
-        
-        let sourceTypes = defaultImageRow.sourceTypes.intersect(availableSources)
-        formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))
-        XCTAssert(defaultImageRow.sourceTypes == sourceTypes)
     }
     
     
