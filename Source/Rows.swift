@@ -518,12 +518,11 @@ public class _PopoverSelectorRow<T: Equatable> : SelectorRow<T, SelectorViewCont
     public required init(tag: String?) {
         super.init(tag: tag)
         onPresentCallback = { [weak self] (_, viewController) -> Void in
-            guard let porpoverController = viewController.popoverPresentationController else {
+            guard let porpoverController = viewController.popoverPresentationController, tableView = self?.baseCell.formViewController()?.tableView, cell = self?.cell else {
                 fatalError()
             }
-            guard let me = self, tableView = me.baseCell.formViewController()?.tableView, cell = me.cell  else { return }
-            porpoverController.sourceRect = tableView.convertRect(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.frame, fromView: cell)
             porpoverController.sourceView = tableView
+            porpoverController.sourceRect = tableView.convertRect(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.contentView.frame, fromView: cell)
         }
         presentationMode = .Popover(controllerProvider: ControllerProvider.Callback { return SelectorViewController<T>(){ _ in } }, completionCallback: { [weak self] in
             $0.dismissViewControllerAnimated(true, completion: nil)
@@ -588,9 +587,10 @@ public class _ActionSheetRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>,
     lazy public var presentationMode: PresentationMode<SelectorAlertController<T>>? = {
         return .PresentModally(controllerProvider: ControllerProvider.Callback { [weak self] in
             let vc = SelectorAlertController<T>(title: self?.selectorTitle, message: nil, preferredStyle: .ActionSheet)
-			if let popView = vc.popoverPresentationController, cell = self?.cell {
-				popView.sourceView = cell.formViewController()?.tableView
-				popView.sourceRect = cell.frame
+			if let popView = vc.popoverPresentationController {
+                guard let cell = self?.cell, tableView = cell.formViewController()?.tableView else { fatalError() }
+				popView.sourceView = tableView
+                popView.sourceRect = tableView.convertRect(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.contentView.frame, fromView: cell)
 			}
 			vc.row = self
             return vc
@@ -733,9 +733,10 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
         
         // now that we know the number of actions aren't empty
         let sourceActionSheet = UIAlertController(title: nil, message: selectorTitle, preferredStyle: .ActionSheet)
+        guard let tableView = cell.formViewController()?.tableView  else { fatalError() }
 		if let popView = sourceActionSheet.popoverPresentationController {
-			popView.sourceView = cell.formViewController()?.tableView
-			popView.sourceRect = cell.frame
+			popView.sourceView = tableView
+			popView.sourceRect = tableView.convertRect(cell.accessoryView?.frame ?? cell.contentView.frame, fromView: cell)
 		}
 
         if sourceTypes.contains(.Camera) {
