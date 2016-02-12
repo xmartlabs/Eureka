@@ -355,7 +355,7 @@ public class _PasswordRow: FieldRow<String, PasswordCell> {
     }
 }
 
-public class _DecimalRow: FieldRow<Float, DecimalCell> {
+public class _DecimalRow: FieldRow<Double, DecimalCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
         let numberFormatter = NSNumberFormatter()
@@ -513,6 +513,29 @@ public class _PushRow<T: Equatable> : SelectorRow<T, SelectorViewController<T>> 
     }
 }
 
+public class _PopoverSelectorRow<T: Equatable> : SelectorRow<T, SelectorViewController<T>> {
+    
+    public required init(tag: String?) {
+        super.init(tag: tag)
+        onPresentCallback = { [weak self] (_, viewController) -> Void in
+            guard let porpoverController = viewController.popoverPresentationController, tableView = self?.baseCell.formViewController()?.tableView, cell = self?.cell else {
+                fatalError()
+            }
+            porpoverController.sourceView = tableView
+            porpoverController.sourceRect = tableView.convertRect(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.contentView.frame, fromView: cell)
+        }
+        presentationMode = .Popover(controllerProvider: ControllerProvider.Callback { return SelectorViewController<T>(){ _ in } }, completionCallback: { [weak self] in
+            $0.dismissViewControllerAnimated(true, completion: nil)
+            self?.reload()
+            })
+    }
+    
+    public override func didSelect() {
+        deselect()
+        super.didSelect()
+    }
+}
+
 public class AreaRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: AreaCell, Cell.Value == T>: Row<T, Cell>, TextAreaConformance {
     
     public var placeholder : String?
@@ -564,9 +587,10 @@ public class _ActionSheetRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>,
     lazy public var presentationMode: PresentationMode<SelectorAlertController<T>>? = {
         return .PresentModally(controllerProvider: ControllerProvider.Callback { [weak self] in
             let vc = SelectorAlertController<T>(title: self?.selectorTitle, message: nil, preferredStyle: .ActionSheet)
-			if let popView = vc.popoverPresentationController, cell = self?.cell {
-				popView.sourceView = cell.formViewController()?.tableView
-				popView.sourceRect = cell.frame
+			if let popView = vc.popoverPresentationController {
+                guard let cell = self?.cell, tableView = cell.formViewController()?.tableView else { fatalError() }
+				popView.sourceView = tableView
+                popView.sourceRect = tableView.convertRect(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.contentView.frame, fromView: cell)
 			}
 			vc.row = self
             return vc
@@ -647,6 +671,7 @@ public struct ImageRowSourceTypes : OptionSetType {
 public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
 
     public var sourceTypes: ImageRowSourceTypes
+    public internal(set) var  imageURL: NSURL?
     
     private var _sourceType: UIImagePickerControllerSourceType = .Camera
     
@@ -654,7 +679,7 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
         sourceTypes = .All
         super.init(tag: tag)
         presentationMode = .PresentModally(controllerProvider: ControllerProvider.Callback { return ImagePickerController() }, completionCallback: { [weak self] vc in
-                self?.cell?.formViewController()?.tableView?.selectRowAtIndexPath(self?.indexPath(), animated: false,  scrollPosition: .None)
+                self?.select()
                 vc.dismissViewControllerAnimated(true, completion: nil)
             })
         self.displayValueFor = nil
@@ -682,8 +707,7 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
             super.customDidSelect()
             return
         }
-        cell?.formViewController()?.tableView?.deselectRowAtIndexPath(indexPath()!, animated: true)
-        
+        deselect()        
         var availableSources: ImageRowSourceTypes {
             var result: ImageRowSourceTypes = []
             
@@ -709,9 +733,10 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
         
         // now that we know the number of actions aren't empty
         let sourceActionSheet = UIAlertController(title: nil, message: selectorTitle, preferredStyle: .ActionSheet)
+        guard let tableView = cell.formViewController()?.tableView  else { fatalError() }
 		if let popView = sourceActionSheet.popoverPresentationController {
-			popView.sourceView = cell.formViewController()?.tableView
-			popView.sourceRect = cell.frame
+			popView.sourceView = tableView
+			popView.sourceRect = tableView.convertRect(cell.accessoryView?.frame ?? cell.contentView.frame, fromView: cell)
 		}
 
         if sourceTypes.contains(.Camera) {
@@ -736,7 +761,7 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
         // check if we have only one source type given
         if sourceActionSheet.actions.count == 1 {
             if let imagePickerSourceType = UIImagePickerControllerSourceType(rawValue: sourceTypes.imagePickerControllerSourceTypeRawValue) {
-                self.displayImagePickerController(imagePickerSourceType)
+                displayImagePickerController(imagePickerSourceType)
             }
         } else {
             let cancelOption = UIAlertAction(title: "Cancel", style: .Cancel, handler:nil)
@@ -1274,6 +1299,13 @@ public final class PushRow<T: Equatable> : _PushRow<T>, RowType {
         super.init(tag: tag)
     }
 }
+
+public final class PopoverSelectorRow<T: Equatable> : _PopoverSelectorRow<T>, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+
 
 /// A selector row where the user can pick several options from a pushed view controller
 public final class MultipleSelectorRow<T: Hashable> : _MultipleSelectorRow<T>, RowType {

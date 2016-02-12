@@ -48,6 +48,7 @@ class CallbacksTests: XCTestCase {
         onChangeTest(URLRow(), value: NSURL(string: "http://xmartlabs.com")!)
         onChangeTest(DateRow(), value: NSDate().dateByAddingTimeInterval(100))
         onChangeTest(DateInlineRow(), value: NSDate().dateByAddingTimeInterval(100))
+        onChangeTest(PopoverSelectorRow<String>(), value: "text")
     }
     
     func testCellSetup() {
@@ -57,6 +58,7 @@ class CallbacksTests: XCTestCase {
         cellSetupTest(URLRow())
         cellSetupTest(DateRow())
         cellSetupTest(DateInlineRow())
+        cellSetupTest(PopoverSelectorRow<String>())
     }
     
     func testCellUpdate() {
@@ -66,6 +68,7 @@ class CallbacksTests: XCTestCase {
         cellUpdateTest(URLRow())
         cellUpdateTest(DateRow())
         cellUpdateTest(DateInlineRow())
+        cellUpdateTest(PopoverSelectorRow<String>())
     }
     
     func testDefaultCellSetup() {
@@ -75,6 +78,7 @@ class CallbacksTests: XCTestCase {
         defaultCellSetupTest(URLRow())
         defaultCellSetupTest(DateRow())
         defaultCellSetupTest(DateInlineRow())
+        defaultCellSetupTest(PopoverSelectorRow<String>())
     }
     
     func testDefaultCellUpdate() {
@@ -84,6 +88,7 @@ class CallbacksTests: XCTestCase {
         defaultCellUpdateTest(URLRow())
         defaultCellUpdateTest(DateRow())
         defaultCellUpdateTest(DateInlineRow())
+        defaultCellUpdateTest(PopoverSelectorRow<String>())
     }
     
     func testDefaultInitializers() {
@@ -93,6 +98,7 @@ class CallbacksTests: XCTestCase {
         defaultInitializerTest(URLRow())
         defaultInitializerTest(DateRow())
         defaultInitializerTest(DateInlineRow())
+        defaultInitializerTest(PopoverSelectorRow<String>())
     }
     
     private func onChangeTest<Row, Value where  Row: BaseRow, Row : RowType, Row.Value == Row.Cell.Value, Value == Row.Value>(row:Row, value:Value){

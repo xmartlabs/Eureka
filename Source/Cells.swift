@@ -69,7 +69,7 @@ public class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
     
     public override func didSelect() {
         super.didSelect()
-        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
+        row.deselect()
     }
 }
 
@@ -98,6 +98,11 @@ extension String: InputTypeInitiable {
     }
 }
 extension NSURL: InputTypeInitiable {}
+extension Double: InputTypeInitiable {
+    public init?(string stringValue: String){
+        self.init(stringValue)
+    }
+}
 
 public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, UITextFieldDelegate, TextFieldCell {
     lazy public var textField : UITextField = {
@@ -120,6 +125,8 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     }
     
     deinit {
+        textField.delegate = nil
+        textField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
         titleLabel?.removeObserver(self, forKeyPath: "text")
         imageView?.removeObserver(self, forKeyPath: "image")
     }
@@ -134,12 +141,6 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
         textField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
         
-    }
-    
-    public override func teardown() {
-        super.teardown()
-        textField.delegate=nil
-        textField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
     }
     
     public override func update() {
@@ -382,7 +383,7 @@ public class PasswordCell : _FieldCell<String>, CellType {
     }
 }
 
-public class DecimalCell : _FieldCell<Float>, CellType {
+public class DecimalCell : _FieldCell<Double>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -468,8 +469,7 @@ public class DateCell : Cell<NSDate>, CellType {
         datePicker.addTarget(self, action: Selector("datePickerValueChanged:"), forControlEvents: .ValueChanged)
     }
     
-    public override func teardown() {
-        super.teardown()
+    deinit {
         datePicker.removeTarget(self, action: nil, forControlEvents: .AllEvents)
     }
     
@@ -487,7 +487,7 @@ public class DateCell : Cell<NSDate>, CellType {
     
     public override func didSelect() {
         super.didSelect()
-        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
+        row.deselect()
     }
     
     override public var inputView : UIView? {
@@ -547,7 +547,7 @@ public class DateInlineCell : Cell<NSDate>, CellType {
     
     public override func didSelect() {
         super.didSelect()
-        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
+        row.deselect()
     }
 }
 
@@ -575,8 +575,7 @@ public class DatePickerCell : Cell<NSDate>, CellType {
         datePicker.datePickerMode = datePickerMode()
     }
     
-    public override func teardown() {
-        super.teardown()
+    deinit {
         datePicker.removeTarget(self, action: nil, forControlEvents: .AllEvents)
     }
     
@@ -625,7 +624,7 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
         return picker
         }()
     
-    private var pickerRow : _PickerRow<T> { return row as! _PickerRow<T> }
+    private var pickerRow : _PickerRow<T>? { return row as? _PickerRow<T> }
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?){
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -640,8 +639,7 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
         picker.dataSource = self
     }
     
-    public override func teardown() {
-        super.teardown()
+    deinit {
         picker.delegate = nil
         picker.dataSource = nil
     }
@@ -651,7 +649,7 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
         textLabel?.text = nil
         detailTextLabel?.text = nil
         picker.reloadAllComponents()
-        if let selectedValue = pickerRow.value, let index = pickerRow.options.indexOf(selectedValue){
+        if let selectedValue = pickerRow?.value, let index = pickerRow?.options.indexOf(selectedValue){
             picker.selectRow(index, inComponent: 0, animated: true)
         }
     }
@@ -660,16 +658,16 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
         return 1
     }
     
-    public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
-        return pickerRow.options.count
+    public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerRow?.options.count ?? 0
     }
     
-    public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?{
-        return pickerRow.displayValueFor?(pickerRow.options[row])
+    public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerRow?.displayValueFor?(pickerRow?.options[row])
     }
     
     public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        pickerRow.value = pickerRow.options[row]
+        pickerRow?.value = pickerRow?.options[row]
     }
     
 }
@@ -709,16 +707,17 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         contentView.addSubview(textView)
         contentView.addSubview(placeholderLabel)
         
+        imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
+        
         let views : [String: AnyObject] =  ["textView": textView, "label": placeholderLabel]
         contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[label]", options: [], metrics: nil, views: views))
         contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[textView]-|", options: [], metrics: nil, views: views))
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textView]-|", options: [], metrics: nil, views: views))
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[label]-|", options: [], metrics: nil, views: views))
     }
     
-    public override func teardown() {
-        super.teardown()
-        textView.delegate=nil
+    deinit {
+        textView.delegate = nil
+        imageView?.removeObserver(self, forKeyPath: "image")
+        
     }
     
     public override func update() {
@@ -743,6 +742,13 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     
     public override func cellResignFirstResponder() -> Bool {
         return textView.resignFirstResponder()
+    }
+    
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKindKey] where obj === imageView && keyPathValue == "image" && changeType.unsignedLongValue == NSKeyValueChange.Setting.rawValue {
+            setNeedsUpdateConstraints()
+            updateConstraintsIfNeeded()
+        }
     }
     
     public func textViewDidBeginEditing(textView: UITextView) {
@@ -806,6 +812,24 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     public func textViewShouldEndEditing(textView: UITextView) -> Bool {
         return formViewController()?.textInputShouldEndEditing(textView, cell: self) ?? true
     }
+    
+    public override func updateConstraints(){
+        contentView.removeConstraints(dynamicConstraints)
+        dynamicConstraints = []
+        var views : [String: AnyObject] = ["textView": textView, "label": placeholderLabel]
+        if let imageView = imageView, let _ = imageView.image {
+            views["imageView"] = imageView
+            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[textView]-|", options: [], metrics: nil, views: views)
+            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[label]-|", options: [], metrics: nil, views: views)
+        }
+        else{
+            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textView]-|", options: [], metrics: nil, views: views))
+            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[label]-|", options: [], metrics: nil, views: views))
+        }
+        contentView.addConstraints(dynamicConstraints)
+        super.updateConstraints()
+    }
+    
 }
 
 public class TextAreaCell : _TextAreaCell<String>, CellType {
@@ -846,7 +870,7 @@ public class CheckCell : Cell<Bool>, CellType {
     
     public override func didSelect() {
         row.value = row.value ?? false ? false : true
-        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
+        row.deselect()
         row.updateCell()
     }
     
@@ -882,7 +906,7 @@ public class ListCheckCell<T: Equatable> : Cell<T>, CellType {
     }
     
     public override func didSelect() {
-        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
+        row.deselect()
         row.updateCell()
     }
     
@@ -907,8 +931,7 @@ public class SwitchCell : Cell<Bool>, CellType {
         switchControl?.addTarget(self, action: "valueChanged", forControlEvents: .ValueChanged)
     }
     
-    public override func teardown() {
-        super.teardown()
+    deinit {
         switchControl?.removeTarget(self, action: nil, forControlEvents: .AllEvents)
     }
     
@@ -944,6 +967,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     }
     
     deinit {
+        segmentedControl.removeTarget(self, action: nil, forControlEvents: .AllEvents)
         titleLabel?.removeObserver(self, forKeyPath: "text")
         imageView?.removeObserver(self, forKeyPath: "image")
     }
@@ -957,11 +981,6 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         imageView?.addObserver(self, forKeyPath: "image", options: [.Old, .New], context: nil)
         segmentedControl.addTarget(self, action: "valueChanged", forControlEvents: .ValueChanged)
         contentView.addConstraint(NSLayoutConstraint(item: segmentedControl, attribute: .CenterY, relatedBy: .Equal, toItem: contentView, attribute: .CenterY, multiplier: 1, constant: 0))
-    }
-    
-    public override func teardown() {
-        super.teardown()
-        segmentedControl.removeTarget(self, action: nil, forControlEvents: .AllEvents)
     }
     
     public override func update() {
@@ -1059,7 +1078,7 @@ public class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
     
     public override func didSelect() {
         super.didSelect()
-        formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
+        row.deselect()
     }
 }
 
@@ -1078,7 +1097,8 @@ public class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
     }
 }
 
-public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, UITextFieldDelegate, PostalAddressCell{
+public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, UITextFieldDelegate, PostalAddressCell {
+    
 	lazy public var streetTextField : UITextField = {
 		let textField = UITextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
@@ -1088,7 +1108,7 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 	lazy public var streetSeparatorView : UIView = {
 		let separatorView = UIView()
 		separatorView.translatesAutoresizingMaskIntoConstraints = false
-		separatorView.backgroundColor = UIColor.lightGrayColor()
+		separatorView.backgroundColor = .lightGrayColor()
 		return separatorView
 	}()
 	
@@ -1101,7 +1121,7 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 	lazy public var stateSeparatorView : UIView = {
 		let separatorView = UIView()
 		separatorView.translatesAutoresizingMaskIntoConstraints = false
-		separatorView.backgroundColor = UIColor.lightGrayColor()
+		separatorView.backgroundColor = .lightGrayColor()
 		return separatorView
 	}()
 	
@@ -1114,7 +1134,7 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 	lazy public var postalCodeSeparatorView : UIView = {
 		let separatorView = UIView()
 		separatorView.translatesAutoresizingMaskIntoConstraints = false
-		separatorView.backgroundColor = UIColor.lightGrayColor()
+		separatorView.backgroundColor = .lightGrayColor()
 		return separatorView
 	}()
 	
@@ -1127,7 +1147,7 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 	lazy public var citySeparatorView : UIView = {
 		let separatorView = UIView()
 		separatorView.translatesAutoresizingMaskIntoConstraints = false
-		separatorView.backgroundColor = UIColor.lightGrayColor()
+		separatorView.backgroundColor = .lightGrayColor()
 		return separatorView
 	}()
 	
@@ -1151,6 +1171,16 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 	}
 	
 	deinit {
+        streetTextField.delegate = nil
+        streetTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
+        stateTextField.delegate = nil
+        stateTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
+        postalCodeTextField.delegate = nil
+        postalCodeTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
+        cityTextField.delegate = nil
+        cityTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
+        countryTextField.delegate = nil
+        countryTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
 		titleLabel?.removeObserver(self, forKeyPath: "text")
 		imageView?.removeObserver(self, forKeyPath: "image")
 	}
@@ -1181,20 +1211,6 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 		countryTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
 	}
     
-    public override func teardown() {
-        super.teardown()
-        streetTextField.delegate=nil
-        streetTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
-        stateTextField.delegate=nil
-        stateTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
-        postalCodeTextField.delegate=nil
-        postalCodeTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
-        cityTextField.delegate=nil
-        cityTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
-        countryTextField.delegate=nil
-        countryTextField.removeTarget(self, action: nil, forControlEvents: .AllEvents)
-    }
-	
 	public override func update() {
 		super.update()
 		detailTextLabel?.text = nil
@@ -1340,6 +1356,68 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 			&& cityTextField.resignFirstResponder()
 			&& countryTextField.resignFirstResponder()
 	}
+    
+    override public var inputAccessoryView: UIView? {
+        
+        if let v = formViewController()?.inputAccessoryViewForRow(row) as? NavigationAccessoryView {
+            if streetTextField.isFirstResponder() {
+                v.nextButton.enabled = true
+                v.nextButton.target = self
+                v.nextButton.action = "internalNavigationAction:"
+            }
+            else if stateTextField.isFirstResponder() {
+                v.previousButton.target = self
+                v.previousButton.action = "internalNavigationAction:"
+                v.nextButton.target = self
+                v.nextButton.action = "internalNavigationAction:"
+                v.previousButton.enabled = true
+                v.nextButton.enabled = true
+            }
+            else if postalCodeTextField.isFirstResponder() {
+                v.previousButton.target = self
+                v.previousButton.action = "internalNavigationAction:"
+                v.nextButton.target = self
+                v.nextButton.action = "internalNavigationAction:"
+                v.previousButton.enabled = true
+                v.nextButton.enabled = true
+            } else if cityTextField.isFirstResponder() {
+                v.previousButton.target = self
+                v.previousButton.action = "internalNavigationAction:"
+                v.nextButton.target = self
+                v.nextButton.action = "internalNavigationAction:"
+                v.previousButton.enabled = true
+                v.nextButton.enabled = true
+            }
+            else if countryTextField.isFirstResponder() {
+                v.previousButton.target = self
+                v.previousButton.action = "internalNavigationAction:"
+                v.previousButton.enabled = true
+            }
+            return v
+        }
+        return super.inputAccessoryView
+    }
+    
+    func internalNavigationAction(sender: UIBarButtonItem) {
+        guard let inputAccesoryView  = inputAccessoryView as? NavigationAccessoryView else { return }
+        
+        if streetTextField.isFirstResponder() {
+            stateTextField.becomeFirstResponder()
+        }
+        else if stateTextField.isFirstResponder()  {
+            sender == inputAccesoryView.previousButton ? streetTextField.becomeFirstResponder() : postalCodeTextField.becomeFirstResponder()
+        }
+        else if postalCodeTextField.isFirstResponder() {
+            sender == inputAccesoryView.previousButton ? stateTextField.becomeFirstResponder() : cityTextField.becomeFirstResponder()
+        }
+        else if cityTextField.isFirstResponder() {
+            sender == inputAccesoryView.previousButton ? postalCodeTextField.becomeFirstResponder() : countryTextField.becomeFirstResponder()
+        }
+        else if countryTextField.isFirstResponder() {
+            cityTextField.becomeFirstResponder()
+        }
+    }
+
 	
 	public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
 		if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKindKey] where ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && changeType.unsignedLongValue == NSKeyValueChange.Setting.rawValue {

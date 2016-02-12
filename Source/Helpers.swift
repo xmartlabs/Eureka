@@ -69,7 +69,7 @@ extension NSExpression {
             case .FunctionExpressionType, .VariableExpressionType:
                 let str = "\(self)"
                 if let range = str.rangeOfString("."){
-                    return [str.substringWithRange(Range(start: str.startIndex.advancedBy(1), end:range.startIndex))]
+                    return [str.substringWithRange(str.startIndex.advancedBy(1)..<range.startIndex)]
                 }
                 else{
                     return [str.substringFromIndex(str.startIndex.advancedBy(1))]

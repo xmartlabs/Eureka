@@ -7,6 +7,7 @@
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible" /></a>
 <a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/badge/pod-1.3.1-blue.svg" alt="CocoaPods compatible" /></a>
 <a href="https://raw.githubusercontent.com/xmartlabs/Eureka/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License: MIT" /></a>
+<a href="https://codebeat.co/projects/github-com-xmartlabs-eureka"><img alt="codebeat badge" src="https://codebeat.co/badges/16f29afb-f072-4633-9497-333c6eb71263" /></a>
 </p>
 
 By [XMARTLABS](http://xmartlabs.com).
@@ -47,9 +48,13 @@ Both `Form` and `Section` classes conform to `MutableCollectionType` and `RangeR
 
 
 ## Getting involved
+
 * If you **want to contribute** please feel free to **submit pull requests**.
 * If you **have a feature request** please **open an issue**.
-* If you **found a bug** or **need help** please **check older issues or threads on [StackOverflow] before submitting an issue**.
+* If you **found a bug** check older issues before submitting an issue.
+* If you **need help** or would like to **ask general question**, use [StackOverflow]. (Tag `eureka-forms`).
+
+**Before contribute check the [CONTRIBUTING](CONTRIBUTING.md) file for more info.**
 
 If you use **Eureka** in your app We would love to hear about it! Drop us a line on [twitter].
 
@@ -197,6 +202,10 @@ This is a list of the rows that are provided by default:
 	+ **PushRow**
 
 		This row will push to a new controller from where to choose options listed using Check rows.
+
+  + **PopoverSelectorRow**
+
+  	This row will show a popover from where to choose options listed using Check rows.
 
 	+ **ImageRow**
 
@@ -493,6 +502,19 @@ public class SwitchCell : Cell<Bool> {
 }
 ```
 
+We can use a xib file to specify the cell view by setting up `cellProvider` row property as illustrated bellow:
+
+```swift
+public final class SwitchRow: Row<Bool, SwitchCell>, RowType {
+
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        displayValueFor = nil
+        cellProvider = CellProvider<WeekDayCell>(nibName: "WeekDayCell")
+    }
+}
+```
+
 The setup and update methods are similar to the cellSetup and cellUpdate callbacks and that is where the cell should be customized.
 
 Note: ValueType and CellType are illustrative. You have to replace them with the type your value will have and the type of your cell (like Bool and SwitchCell in this example)
@@ -698,6 +720,76 @@ This functions are just called when a row is added to the form and when a row it
 
 Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
 
+#### How to update a Section header/footer
+
+* Set up a new header/footer data ....
+
+```swift
+section.header = "Header Title" // use string literal as a header/footer data. HeaderFooterView conforms to StringLiteralConvertible.
+//or
+section.header = HeaderFooterView(title: "Header title \(variable)") // use String interpolation
+//or
+var header = HeaderFooterView<UIView>(.Class) // most flexible way to set up a header using any view type
+header.height = { 60 }  // height can be calculated
+header.onSetupView = { view, section, formVC in  // each time the view is about to be displayed onSetupView is invoked.
+    view.backgroundColor = .orangeColor()
+}
+section.header = header
+```
+
+* Reload the Section to perform the changes
+
+```swift
+section.reload()
+```
+
+#### Don't want to use Eureka custom operators?
+
+As we've said `Form` and `Section` types conform to `MutableCollectionType` and `RangeReplaceableCollectionType`. A Form is a collection of Sections and a Section is a collection of Rows.
+
+`RangeReplaceableCollectionType` protocol extension provides many useful methods to modify collection.
+
+```swift
+extension RangeReplaceableCollectionType {
+    public mutating func append(newElement: Self.Generator.Element)
+    public mutating func appendContentsOf<S : SequenceType where S.Generator.Element == Generator.Element>(newElements: S)
+    public mutating func insert(newElement: Self.Generator.Element, atIndex i: Self.Index)
+    public mutating func insertContentsOf<C : CollectionType where C.Generator.Element == Generator.Element>(newElements: C, at i: Self.Index)
+    public mutating func removeAtIndex(index: Self.Index) -> Self.Generator.Element
+    public mutating func removeRange(subRange: Range<Self.Index>)
+    public mutating func removeFirst(n: Int)
+    public mutating func removeFirst() -> Self.Generator.Element
+    public mutating func removeAll(keepCapacity keepCapacity: Bool = default)
+    public mutating func reserveCapacity(n: Self.Index.Distance)
+}
+```
+
+These methods are used internally to implement the custom operators as shown bellow:
+
+```swift
+public func +++(left: Form, right: Section) -> Form {
+    left.append(right)
+    return left
+}
+
+public func +=< C : CollectionType where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
+    lhs.appendContentsOf(rhs)
+}
+
+public func <<<(left: Section, right: BaseRow) -> Section {
+    left.append(right)
+    return left
+}
+
+public func +=< C : CollectionType where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
+    lhs.appendContentsOf(rhs)
+}
+```
+
+You can see how the rest of custom operators are implemented [here](https://github.com/xmartlabs/Eureka/blob/master/Source/Core.swift#L1816).
+
+It's up to you to decide if you want to use Eureka custom operators or not.
+
 <!--- In file -->
 [Introduction]: #introduction
 [Requirements]: #requirements
@@ -726,7 +818,7 @@ Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
 <!--- External -->
 [XLForm]: http://github.com/xmartlabs/XLForm
 [DSL]: https://en.wikipedia.org/wiki/Domain-specific_language
-[StackOverflow]: http://stackoverflow.com/questions/tagged/eureka
+[StackOverflow]: http://stackoverflow.com/questions/tagged/eureka-forms
 [our blog post]: http://blog.xmartlabs.com/2015/09/29/Introducing-Eureka-iOS-form-library-written-in-pure-Swift/
 [twitter]: https://twitter.com/xmartlabs
 
