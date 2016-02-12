@@ -1097,7 +1097,8 @@ public class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
     }
 }
 
-public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, UITextFieldDelegate, PostalAddressCell{
+public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, UITextFieldDelegate, PostalAddressCell {
+    
 	lazy public var streetTextField : UITextField = {
 		let textField = UITextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
@@ -1107,7 +1108,7 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 	lazy public var streetSeparatorView : UIView = {
 		let separatorView = UIView()
 		separatorView.translatesAutoresizingMaskIntoConstraints = false
-		separatorView.backgroundColor = UIColor.lightGrayColor()
+		separatorView.backgroundColor = .lightGrayColor()
 		return separatorView
 	}()
 	
@@ -1120,7 +1121,7 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 	lazy public var stateSeparatorView : UIView = {
 		let separatorView = UIView()
 		separatorView.translatesAutoresizingMaskIntoConstraints = false
-		separatorView.backgroundColor = UIColor.lightGrayColor()
+		separatorView.backgroundColor = .lightGrayColor()
 		return separatorView
 	}()
 	
@@ -1133,7 +1134,7 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 	lazy public var postalCodeSeparatorView : UIView = {
 		let separatorView = UIView()
 		separatorView.translatesAutoresizingMaskIntoConstraints = false
-		separatorView.backgroundColor = UIColor.lightGrayColor()
+		separatorView.backgroundColor = .lightGrayColor()
 		return separatorView
 	}()
 	
@@ -1146,7 +1147,7 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 	lazy public var citySeparatorView : UIView = {
 		let separatorView = UIView()
 		separatorView.translatesAutoresizingMaskIntoConstraints = false
-		separatorView.backgroundColor = UIColor.lightGrayColor()
+		separatorView.backgroundColor = .lightGrayColor()
 		return separatorView
 	}()
 	
@@ -1355,6 +1356,68 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 			&& cityTextField.resignFirstResponder()
 			&& countryTextField.resignFirstResponder()
 	}
+    
+    override public var inputAccessoryView: UIView? {
+        
+        if let v = formViewController()?.inputAccessoryViewForRow(row) as? NavigationAccessoryView {
+            if streetTextField.isFirstResponder() {
+                v.nextButton.enabled = true
+                v.nextButton.target = self
+                v.nextButton.action = "internalNavigationAction:"
+            }
+            else if stateTextField.isFirstResponder() {
+                v.previousButton.target = self
+                v.previousButton.action = "internalNavigationAction:"
+                v.nextButton.target = self
+                v.nextButton.action = "internalNavigationAction:"
+                v.previousButton.enabled = true
+                v.nextButton.enabled = true
+            }
+            else if postalCodeTextField.isFirstResponder() {
+                v.previousButton.target = self
+                v.previousButton.action = "internalNavigationAction:"
+                v.nextButton.target = self
+                v.nextButton.action = "internalNavigationAction:"
+                v.previousButton.enabled = true
+                v.nextButton.enabled = true
+            } else if cityTextField.isFirstResponder() {
+                v.previousButton.target = self
+                v.previousButton.action = "internalNavigationAction:"
+                v.nextButton.target = self
+                v.nextButton.action = "internalNavigationAction:"
+                v.previousButton.enabled = true
+                v.nextButton.enabled = true
+            }
+            else if countryTextField.isFirstResponder() {
+                v.previousButton.target = self
+                v.previousButton.action = "internalNavigationAction:"
+                v.previousButton.enabled = true
+            }
+            return v
+        }
+        return super.inputAccessoryView
+    }
+    
+    func internalNavigationAction(sender: UIBarButtonItem) {
+        guard let inputAccesoryView  = inputAccessoryView as? NavigationAccessoryView else { return }
+        
+        if streetTextField.isFirstResponder() {
+            stateTextField.becomeFirstResponder()
+        }
+        else if stateTextField.isFirstResponder()  {
+            sender == inputAccesoryView.previousButton ? streetTextField.becomeFirstResponder() : postalCodeTextField.becomeFirstResponder()
+        }
+        else if postalCodeTextField.isFirstResponder() {
+            sender == inputAccesoryView.previousButton ? stateTextField.becomeFirstResponder() : cityTextField.becomeFirstResponder()
+        }
+        else if cityTextField.isFirstResponder() {
+            sender == inputAccesoryView.previousButton ? postalCodeTextField.becomeFirstResponder() : countryTextField.becomeFirstResponder()
+        }
+        else if countryTextField.isFirstResponder() {
+            cityTextField.becomeFirstResponder()
+        }
+    }
+
 	
 	public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
 		if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKindKey] where ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && changeType.unsignedLongValue == NSKeyValueChange.Setting.rawValue {

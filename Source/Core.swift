@@ -2477,12 +2477,6 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     lazy public var navigationAccessoryView : NavigationAccessoryView = {
         [unowned self] in
         let naview = NavigationAccessoryView(frame: CGRectMake(0, 0, self.view.frame.width, 44.0))
-        naview.doneButton.target = self
-        naview.doneButton.action = "navigationDone:"
-        naview.previousButton.target = self
-        naview.previousButton.action = "navigationAction:"
-        naview.nextButton.target = self
-        naview.nextButton.action = "navigationAction:"
         naview.tintColor = self.view.tintColor
         return naview
         }()
@@ -2912,6 +2906,12 @@ extension FormViewController {
         guard options.contains(.Enabled) else { return nil }
         guard row.baseCell.cellCanBecomeFirstResponder() else { return nil}
         navigationAccessoryView.previousButton.enabled = nextRowForRow(row, withDirection: .Up) != nil
+        navigationAccessoryView.doneButton.target = self
+        navigationAccessoryView.doneButton.action = "navigationDone:"
+        navigationAccessoryView.previousButton.target = self
+        navigationAccessoryView.previousButton.action = "navigationAction:"
+        navigationAccessoryView.nextButton.target = self
+        navigationAccessoryView.nextButton.action = "navigationAction:"
         navigationAccessoryView.nextButton.enabled = nextRowForRow(row, withDirection: .Down) != nil
         return navigationAccessoryView
     }
