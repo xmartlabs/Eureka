@@ -180,7 +180,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
         return !row.isDisabled && floatLabelTextField.canBecomeFirstResponder()
     }
     
-    public override func cellBecomeFirstResponder() -> Bool {
+    public override func cellBecomeFirstResponder(direction: Direction) -> Bool {
         return floatLabelTextField.becomeFirstResponder()
     }
     

@@ -326,7 +326,7 @@ public protocol BaseCellType : class {
     /**
      Method called when the cell becomes first responder
      */
-    func cellBecomeFirstResponder() -> Bool
+    func cellBecomeFirstResponder(direction: Direction) -> Bool
     
     /**
      Method called when the cell resigns first responder
@@ -1947,7 +1947,7 @@ public protocol AreaCell {
 /**
 *  Protocol for cells that contain a postal address
 */
-public protocol PostalAddressCell{
+public protocol PostalAddressCell {
 	var streetTextField: UITextField { get }
 	var stateTextField: UITextField { get }
 	var postalCodeTextField: UITextField { get }
@@ -2008,7 +2008,7 @@ public class BaseCell : UITableViewCell, BaseCellType {
     /**
      Called when the cell becomes first responder
      */
-    public func cellBecomeFirstResponder() -> Bool {
+    public func cellBecomeFirstResponder(direction: Direction = .Down) -> Bool {
         return becomeFirstResponder()
     }
     
@@ -2678,7 +2678,7 @@ extension FormViewController : UITableViewDelegate {
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard tableView == self.tableView else { return }
         let row = form[indexPath]
-// fix issue: row.baseCell.cellBecomeFirstResponder() may be cause InlineRow collapsed then section count will be changed. Use orignal indexPath will out of  section's bounds.
+        // row.baseCell.cellBecomeFirstResponder() may be cause InlineRow collapsed then section count will be changed. Use orignal indexPath will out of  section's bounds.
         if !row.baseCell.cellCanBecomeFirstResponder() || !row.baseCell.cellBecomeFirstResponder() {
             self.tableView?.endEditing(true)
         }
@@ -2857,11 +2857,11 @@ extension FormViewController {
     }
 }
 
+public enum Direction { case Up, Down }
+
 extension FormViewController {
     
     //MARK: Navigation Methods
-    
-    private enum Direction { case Up, Down }
     
     func navigationDone(sender: UIBarButtonItem) {
         tableView?.endEditing(true)
@@ -2877,7 +2877,7 @@ extension FormViewController {
         guard let nextRow = nextRowForRow(form[currentIndexPath], withDirection: direction) else { return }
         if nextRow.baseCell.cellCanBecomeFirstResponder(){
             tableView?.scrollToRowAtIndexPath(nextRow.indexPath()!, atScrollPosition: .None, animated: false)
-            nextRow.baseCell.cellBecomeFirstResponder()
+            nextRow.baseCell.cellBecomeFirstResponder(direction)
         }
     }
     
@@ -3052,8 +3052,7 @@ public class SelectableSection<Row, T where Row: BaseRow, Row: SelectableRowType
 /**
 *  Protocol to be implemented by PostalAddress types.
 */
-
-public protocol PostalAddressType: Equatable{
+public protocol PostalAddressType: Equatable {
 	var street: String? { get set }
 	var state: String? { get set }
 	var postalCode: String? { get set }
@@ -3061,17 +3060,11 @@ public protocol PostalAddressType: Equatable{
 	var country: String? { get set }
 }
 
-extension PostalAddressType{
-	public func identifier() -> String{
-		return "\(street)\(state)\(postalCode)\(city)\(country)"
-	}
+public func == <T: PostalAddressType>(lhs: T, rhs: T) -> Bool {
+	return lhs.street == rhs.street && lhs.state == rhs.state && lhs.postalCode == rhs.postalCode && lhs.city == rhs.city && lhs.country == rhs.country
 }
 
-public func == <T: PostalAddressType>(lhs: T, rhs: T) -> Bool{
-	return lhs.identifier() == rhs.identifier()
-}
-
-public class PostalAddress: PostalAddressType {
+public struct PostalAddress: PostalAddressType {
 	public var street: String?
 	public var state: String?
 	public var postalCode: String?
@@ -3080,7 +3073,7 @@ public class PostalAddress: PostalAddressType {
 	
 	public init(){}
 	
-	public init(street: String?, state: String?, postalCode: String?, city: String?, country: String?){
+	public init(street: String?, state: String?, postalCode: String?, city: String?, country: String?) {
 		self.street = street
 		self.state = state
 		self.postalCode = postalCode

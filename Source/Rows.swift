@@ -1367,7 +1367,7 @@ public final class PickerRow<T where T: Equatable>: _PickerRow<T>, RowType {
 }
 
 /// A PostalAddress valued row where the user can enter a postal address.
-public final class PostalAddressRow<T: PostalAddress>: _PostalAddressRow<T, DefaultPostalAddressCell<T>>, RowType {
+public final class PostalAddressRow: _PostalAddressRow<PostalAddress, DefaultPostalAddressCell<PostalAddress>>, RowType {
 	public required init(tag: String? = nil) {
 		super.init(tag: tag)
 		onCellHighlight { cell, row  in

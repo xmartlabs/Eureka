@@ -173,7 +173,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         return !row.isDisabled && textField.canBecomeFirstResponder()
     }
     
-    public override func cellBecomeFirstResponder() -> Bool {
+    public override func cellBecomeFirstResponder(direction: Direction) -> Bool {
         return textField.becomeFirstResponder()
     }
     
@@ -736,7 +736,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         return !row.isDisabled && textView.canBecomeFirstResponder()
     }
     
-    public override func cellBecomeFirstResponder() -> Bool {
+    public override func cellBecomeFirstResponder(fromDiretion: Direction) -> Bool {
         return textView.becomeFirstResponder()
     }
     
@@ -1344,8 +1344,8 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 		)
 	}
 	
-	public override func cellBecomeFirstResponder() -> Bool {
-		return streetTextField.becomeFirstResponder()
+    public override func cellBecomeFirstResponder(direction: Direction) -> Bool {
+        return direction == .Down ? streetTextField.becomeFirstResponder() : countryTextField.becomeFirstResponder()
 	}
 	
 	public override func cellResignFirstResponder() -> Bool {

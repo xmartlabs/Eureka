@@ -235,6 +235,7 @@ This is a list of the rows that are provided by default:
 	+ **LabelRow**
 	+ **SwitchRow**
 	+ **TextAreaRow**
+  + **PostalAddressRow**
 
 There are also some custom rows in the examples project.
 

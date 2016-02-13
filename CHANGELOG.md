@@ -1,10 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-### 1.3.2 - Master branch 
+### 1.4.0 - Master branch
 
  * PopoverSelectorRow added.
  * BaseRow reload, select, deselect helpers added.
+
+ ##### Breaking Changes
+
+`BaseCellType` protocol method `func cellBecomeFirstResponder() -> Bool`  was renamed to `func cellBecomeFirstResponder(direction: Direction) -> Bool`
+
+If you are using custom rows you may have to fix the compiler error by adding the new parameter.
 
 ### [1.3.1](https://github.com/xmartlabs/Eureka/releases/tag/1.3.1)
 Released on 2016-01-11.

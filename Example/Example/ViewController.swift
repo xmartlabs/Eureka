@@ -289,7 +289,7 @@ class RowsExampleViewController: FormViewController {
 			
 			+++ Section("PostalAddressRow example")
 			
-				<<< PostalAddressRow<PostalAddress>(){
+				<<< PostalAddressRow(){
 					$0.title = "Address"
 					$0.streetPlaceholder = "Street"
 					$0.statePlaceholder = "State"
