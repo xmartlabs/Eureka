@@ -7,13 +7,14 @@
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible" /></a>
 <a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/badge/pod-1.3.1-blue.svg" alt="CocoaPods compatible" /></a>
 <a href="https://raw.githubusercontent.com/xmartlabs/Eureka/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License: MIT" /></a>
-<a href="https://codebeat.co/projects/github-com-xmartlabs-eureka"><img alt="codebeat badge" src="https://codebeat.co/badges/16f29afb-f072-4633-9497-333c6eb71263" /></a>
 </p>
 
 Made with ❤️  by [XMARTLABS](http://xmartlabs.com).
 This is the re-creation of [XLForm] in Swift 2.
 
 * [Introduction]
+* [Non-Technical Introduction]
+* [When to Use Eureka!]
 * [Requirements]
 * [Examples]
 * [Usage]
@@ -40,6 +41,16 @@ If you have been using `XLForm` then many terms will result familiar to you.
 Both `Form` and `Section` classes conform to `MutableCollectionType` and `RangeReplaceableCollectionType` protocols. This makes a whole bunch of functions available to be executed on them.
 
 **For more information look at [our blog post] that introduces *Eureka!*.**
+
+## Non-Technical Introduction
+<a name="non-technical-introduction"></a>
+<!-- Part A notes: Should talk about not what the technical terms like what an DSL specification is. That's not the goal of the repository. What is should talk about is what Eureka tries to improve - and that's forms, and form building, especially form-building to a specific pattern, or DSL specification (which, in this case, is rows make a section, and sections make forms). Building forms by hand/from scratch for iOS apps is a very tedious process, and this library speeds up development time. -->
+
+## When To Use Eureka!
+<a name="when-to-use-eureka"></a>
+Collecting user input by using forms is a common goal in many iOS apps. If you have forms, and want to customize them without having to coding by hand, and you're using Swift, then Eureka is the library for you.
+
+If you're using Objective-C, check out [XLForm].
 
 ## Requirements
 
@@ -245,7 +256,6 @@ public protocol FormatterProtocol {
 	+ **LabelRow**
 	+ **SwitchRow**
 	+ **TextAreaRow**
-  + **PostalAddressRow**
 
 There are also some custom rows in the examples project.
 
@@ -804,7 +814,8 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 <!--- In file -->
 [Introduction]: #introduction
 [Requirements]: #requirements
-
+[Non-Technical Introduction]: #non-technical-introduction
+[When To Use Eureka!]: #when-to-use-eureka
 [How to create a Form]: #how-to-create-a-form
 [Examples]: #examples
 [Usage]: #usage
