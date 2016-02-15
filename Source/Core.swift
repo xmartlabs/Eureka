@@ -2288,7 +2288,7 @@ public enum PresentationMode<VCType: UIViewController> {
 /**
  *  Protocol to be implemented by custom formatters.
  */
-public protocol FormatterProtocol{
+public protocol FormatterProtocol {
     func getNewPosition(forPosition forPosition: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition
 }
 
