@@ -240,6 +240,8 @@ class RowsExampleViewController: FormViewController {
                 <<< DecimalRow() {
                         $0.title = "DecimalRow"
                         $0.value = 5
+                        $0.formatter = DecimalFormatter()
+                        $0.useFormatterDuringInput = true
                     }
                 
                 <<< URLRow() {
@@ -914,9 +916,8 @@ class FormatterExample : FormViewController {
     class CurrencyFormatter : NSNumberFormatter, FormatterProtocol {
         override func getObjectValue(obj: AutoreleasingUnsafeMutablePointer<AnyObject?>, forString string: String, errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>) -> Bool {
             guard obj != nil else { return false }
-            var str : String
-            str = string.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet).joinWithSeparator("")
-            obj.memory = NSNumber(float: (Float(str) ?? 0.0)/Float(100))
+            let str = string.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet).joinWithSeparator("")
+            obj.memory = NSNumber(double: (Double(str) ?? 0.0)/Double(pow(10.0, Double(minimumFractionDigits))))
             return true
         }
         

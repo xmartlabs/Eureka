@@ -168,6 +168,16 @@ This is a list of the rows that are provided by default:
 	+ **AccountRow**
 	+ **ZipCodeRow**
 
+Typically we want to show a field row value using a formatter, for instance a currency formatter. To do so the previous rows have a `formatter` property that can be used to set up any formatter.
+`useFormatterDuringInput` determines if the formatter also should be used during row editing, this means, when the row's textfield is the first responder. The main challenge of using the formatting when the row is being edited is keeping updated the cursor position accordingly. Eureka provides the following protocol that your formatter should conform to in order to handle cursor position.
+
+For more information take a look at `DecimalFormatter` and `CurrencyFormatter` in the Example project.
+
+```swift
+public protocol FormatterProtocol {
+    func getNewPosition(forPosition forPosition: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition
+}
+```
 
 * **Date Rows**
   Date Rows hold a NSDate and allow us to set up a new value through UIDatePicker control. The mode of the UIDatePicker and the way how the date picker view is shown is what changes between them.
