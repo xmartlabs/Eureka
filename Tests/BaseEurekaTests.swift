@@ -71,7 +71,7 @@ class BaseEurekaTests: XCTestCase {
             <<< ZipCodeRow("ZipCodeRow_f1"){ $0.title = "Zip Code" }
 		
 		postalAddressForm +++= Section("Postal Address Section")
-			<<< PostalAddressRow<PostalAddress>("PostalAddressRow_f1"){
+			<<< PostalAddressRow("PostalAddressRow_f1"){
 				$0.title = "Postal Address"
 			}
 		
