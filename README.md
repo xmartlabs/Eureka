@@ -44,7 +44,12 @@ Both `Form` and `Section` classes conform to `MutableCollectionType` and `RangeR
 
 ## Non-Technical Introduction
 <a name="non-technical-introduction"></a>
-<!-- Part A notes: Should talk about not what the technical terms like what an DSL specification is. That's not the goal of the repository. What is should talk about is what Eureka tries to improve - and that's forms, and form building, especially form-building to a specific pattern, or DSL specification (which, in this case, is rows make a section, and sections make forms). Building forms by hand/from scratch for iOS apps is a very tedious process, and this library speeds up development time. -->
+
+Most programming languages are designed to be versatile- they can be used for a large variety of tasks.  That same versatility can make them cumbersome for more specific tasks.
+
+A DSL specification is typically a smaller language designed to address a specific need.
+
+**Eureka!** is such a specification for building forms in iOS.  Building forms from scratch in iOS can be a very tedious process.  **Eureka!** is designed to speed up development.
 
 ## When To Use Eureka!
 <a name="when-to-use-eureka"></a>
