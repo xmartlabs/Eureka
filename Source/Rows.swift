@@ -698,8 +698,9 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
 
     public var sourceTypes: ImageRowSourceTypes
     public internal(set) var  imageURL: NSURL?
-    
-    private var _sourceType: UIImagePickerControllerSourceType = .Camera
+	public var allowImageClear:Bool = true
+	
+	private var _sourceType: UIImagePickerControllerSourceType = .Camera
     
     public required init(tag: String?) {
         sourceTypes = .All
@@ -765,7 +766,15 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
 			popView.sourceRect = tableView.convertRect(cell.accessoryView?.frame ?? cell.contentView.frame, fromView: cell)
 		}
 
-        if sourceTypes.contains(.Camera) {
+		if let _ = value{
+			let clearPhotoOption = UIAlertAction(title: "Clear Photo", style: .Default, handler: { [weak self] (alert: UIAlertAction) -> Void in
+				self?.value=nil;
+				self?.updateCell();
+				})
+			sourceActionSheet.addAction(clearPhotoOption)
+		}
+		
+		if sourceTypes.contains(.Camera) {
             let cameraOption = UIAlertAction(title: "Take Photo", style: .Default, handler: { [weak self] (alert: UIAlertAction) -> Void in
                 self?.displayImagePickerController(.Camera)
             })
