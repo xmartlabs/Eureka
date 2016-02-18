@@ -696,10 +696,16 @@ public struct ImageRowSourceTypes : OptionSetType {
 
 public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
 
+    public enum ImageClearAction {
+        case No
+        case Yes(style: UIAlertActionStyle)
+    }
+    
+    
     public var sourceTypes: ImageRowSourceTypes
-    public internal(set) var  imageURL: NSURL?
-	public var allowImageClear:Bool = true
-	
+    public internal(set) var imageURL: NSURL?
+	public var clearAction = ImageClearAction.Yes(style: .Destructive)
+    
 	private var _sourceType: UIImagePickerControllerSourceType = .Camera
     
     public required init(tag: String?) {
@@ -765,32 +771,37 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
 			popView.sourceView = tableView
 			popView.sourceRect = tableView.convertRect(cell.accessoryView?.frame ?? cell.contentView.frame, fromView: cell)
 		}
-
-		if let _ = value{
-			let clearPhotoOption = UIAlertAction(title: "Clear Photo", style: .Default, handler: { [weak self] (alert: UIAlertAction) -> Void in
-				self?.value=nil;
-				self?.updateCell();
-				})
-			sourceActionSheet.addAction(clearPhotoOption)
-		}
-		
+        
 		if sourceTypes.contains(.Camera) {
-            let cameraOption = UIAlertAction(title: "Take Photo", style: .Default, handler: { [weak self] (alert: UIAlertAction) -> Void in
+            let cameraOption = UIAlertAction(title: NSLocalizedString("Take Photo", comment: ""), style: .Default, handler: { [weak self] _ in
                 self?.displayImagePickerController(.Camera)
             })
             sourceActionSheet.addAction(cameraOption)
         }
         if sourceTypes.contains(.PhotoLibrary) {
-            let photoLibraryOption = UIAlertAction(title: "Photo Library", style: .Default, handler: { [weak self] (alert: UIAlertAction) -> Void in
+            let photoLibraryOption = UIAlertAction(title: NSLocalizedString("Photo Library", comment: ""), style: .Default, handler: { [weak self] _ in
                 self?.displayImagePickerController(.PhotoLibrary)
             })
             sourceActionSheet.addAction(photoLibraryOption)
         }
         if sourceTypes.contains(.SavedPhotosAlbum) {
-            let savedPhotosOption = UIAlertAction(title: "Saved Photos", style: .Default, handler: { [weak self] (alert: UIAlertAction) -> Void in
+            let savedPhotosOption = UIAlertAction(title: NSLocalizedString("Saved Photos", comment: ""), style: .Default, handler: { [weak self] _ in
                 self?.displayImagePickerController(.SavedPhotosAlbum)
             })
             sourceActionSheet.addAction(savedPhotosOption)
+        }
+        
+        switch clearAction {
+        case .Yes(let style):
+            if let _ = value {
+                let clearPhotoOption = UIAlertAction(title: NSLocalizedString("Clear Photo", comment: ""), style: style, handler: { [weak self] _ in
+                    self?.value = nil
+                    self?.updateCell()
+                    })
+                sourceActionSheet.addAction(clearPhotoOption)
+            }
+        case .No:
+            break
         }
         
         // check if we have only one source type given
@@ -799,7 +810,7 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
                 displayImagePickerController(imagePickerSourceType)
             }
         } else {
-            let cancelOption = UIAlertAction(title: "Cancel", style: .Cancel, handler:nil)
+            let cancelOption = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler:nil)
             sourceActionSheet.addAction(cancelOption)
             
             if let presentingViewController = cell.formViewController() {
