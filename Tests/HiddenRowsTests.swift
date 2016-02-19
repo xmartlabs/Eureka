@@ -262,29 +262,32 @@ class HiddenRowsTests: BaseEurekaTests {
         s2
         sec2 (2 rows)
         */
-        
         XCTAssertEqual(form.count, 5)
         XCTAssertEqual(form[0].count, 2)
         XCTAssertEqual(form[1].count, 0)
         XCTAssertEqual(form[2].count, 2)
         XCTAssertEqual(form[3].count, 0)
         XCTAssertEqual(form[4].count, 2)
-        
-        form[0][0].baseValue = "hello, good morning!"
-        
-        XCTAssertEqual(form.count, 3)
-        XCTAssertEqual(form[0].count, 2)
-        XCTAssertEqual(form[1].count, 2)
-        XCTAssertEqual(form[2].count, 2)
-        
-        form[0][0].baseValue = "whatever"
-        
-        XCTAssertEqual(form.count, 5)
-        XCTAssertEqual(form[1].tag, "s1_ths")
-        XCTAssertEqual(form[3].tag, "s2_ths")
-        XCTAssertEqual(form[4].tag, "s3_hrt")
+		
+		form[0][0].baseValue = "hello, good morning!"
+		
+		dispatch_async(dispatch_get_main_queue()) { [weak self] () -> Void in
+			XCTAssertEqual(self?.form.count, 3)
+			XCTAssertEqual(self?.form[0].count, 2)
+			XCTAssertEqual(self?.form[1].count, 2)
+			XCTAssertEqual(self?.form[2].count, 2)
+			
+			self?.form[0][0].baseValue = "whatever"
+			
+			dispatch_async(dispatch_get_main_queue()) { () -> Void in
+				XCTAssertEqual(self?.form.count, 5)
+				XCTAssertEqual(self?.form[1].tag, "s1_ths")
+				XCTAssertEqual(self?.form[3].tag, "s2_ths")
+				XCTAssertEqual(self?.form[4].tag, "s3_hrt")
+			}
+		}
     }
-    
+	
     func testInsertionIndex(){
         let r1 = CheckRow("check1_tii_hrt"){ $0.hidden = "$NameRow_s1 contains 'morning'" }
         let r2 = CheckRow("check2_tii_hrt"){ $0.hidden = "$NameRow_s1 contains 'morning'" }
@@ -309,10 +312,12 @@ class HiddenRowsTests: BaseEurekaTests {
         // insert another row
         form[1].insert(r4, atIndex: 1)
         
-        XCTAssertEqual(form[1].count, 2) // all inserted rows should be hidden
-        XCTAssertEqual(form[1][0].tag, "int1_hrt")
-        XCTAssertEqual(form[1][1].tag, "txt1_hrt")
-        
+		dispatch_async(dispatch_get_main_queue()) { () -> Void in
+			XCTAssertEqual(self.form[1].count, 2) // all inserted rows should be hidden
+			XCTAssertEqual(self.form[1][0].tag, "int1_hrt")
+			XCTAssertEqual(self.form[1][1].tag, "txt1_hrt")
+		}
+		
         form[0][0].baseValue = "whatever"
         
         // we inserted r4 at index 1 but there were two rows hidden before it as well so it shall be at index 3
@@ -331,16 +336,19 @@ class HiddenRowsTests: BaseEurekaTests {
         //inserting 2 rows at the end, deleting 1
         form[2].replaceRange(Range(start: 1, end: 2), with: [r2, r4])
         
-        XCTAssertEqual(form[1].count, 0)
-        XCTAssertEqual(form[2].count, 1)
-        XCTAssertEqual(form[2][0].tag, "txt2_hrt")
-        
-        form[0][0].baseValue = "whatever"
-        
-        XCTAssertEqual(form[2].count, 3)
-        XCTAssertEqual(form[2][0].tag, "txt2_hrt")
-        XCTAssertEqual(form[2][1].tag, "check2_tii_hrt")
-        XCTAssertEqual(form[2][2].tag, "check4_tii_hrt")
-        
+		dispatch_async(dispatch_get_main_queue()) { () -> Void in
+			XCTAssertEqual(self.form[1].count, 0)
+			XCTAssertEqual(self.form[2].count, 1)
+			XCTAssertEqual(self.form[2][0].tag, "txt2_hrt")
+			
+			self.form[0][0].baseValue = "whatever"
+			
+			dispatch_async(dispatch_get_main_queue()) { () -> Void in
+				XCTAssertEqual(self.form[2].count, 3)
+				XCTAssertEqual(self.form[2][0].tag, "txt2_hrt")
+				XCTAssertEqual(self.form[2][1].tag, "check2_tii_hrt")
+				XCTAssertEqual(self.form[2][2].tag, "check4_tii_hrt")
+			}
+		}
     }
 }
