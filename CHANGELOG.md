@@ -1,12 +1,19 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-### 1.4.0 - Master branch
+### Master branch
+
+
+### [1.4.0](https://github.com/xmartlabs/Eureka/releases/tag/1.4.0)
+Released on 2016-02-25.
 
  * PopoverSelectorRow added.
  * BaseRow reload, select, deselect helpers added.
+ * ImageRow update: allows clear button, image sources are public
+ * Added PostalAddressRow
+ * Lots of smaller bug fixes and new documentation
 
- ##### Breaking Changes
+##### Breaking Changes
 
 * `BaseCellType` protocol method `func cellBecomeFirstResponder() -> Bool`  was renamed to `func cellBecomeFirstResponder(direction: Direction) -> Bool`
 
