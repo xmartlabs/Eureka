@@ -49,6 +49,8 @@ class CallbacksTests: XCTestCase {
         onChangeTest(DateRow(), value: NSDate().dateByAddingTimeInterval(100))
         onChangeTest(DateInlineRow(), value: NSDate().dateByAddingTimeInterval(100))
         onChangeTest(PopoverSelectorRow<String>(), value: "text")
+        onChangeTest(PostalAddressRow(), value: PostalAddress(street: "a", state: "b", postalCode: "c", city: "d", country: "e"))
+        onChangeTest(SliderRow(), value: 5.0)
     }
     
     func testCellSetup() {
@@ -59,6 +61,8 @@ class CallbacksTests: XCTestCase {
         cellSetupTest(DateRow())
         cellSetupTest(DateInlineRow())
         cellSetupTest(PopoverSelectorRow<String>())
+        cellSetupTest(PostalAddressRow())
+        cellSetupTest(SliderRow())
     }
     
     func testCellUpdate() {
@@ -69,6 +73,8 @@ class CallbacksTests: XCTestCase {
         cellUpdateTest(DateRow())
         cellUpdateTest(DateInlineRow())
         cellUpdateTest(PopoverSelectorRow<String>())
+        cellUpdateTest(PostalAddressRow())
+        cellUpdateTest(SliderRow())
     }
     
     func testDefaultCellSetup() {
@@ -79,6 +85,8 @@ class CallbacksTests: XCTestCase {
         defaultCellSetupTest(DateRow())
         defaultCellSetupTest(DateInlineRow())
         defaultCellSetupTest(PopoverSelectorRow<String>())
+        defaultCellSetupTest(PostalAddressRow())
+        defaultCellSetupTest(SliderRow())
     }
     
     func testDefaultCellUpdate() {
@@ -89,6 +97,8 @@ class CallbacksTests: XCTestCase {
         defaultCellUpdateTest(DateRow())
         defaultCellUpdateTest(DateInlineRow())
         defaultCellUpdateTest(PopoverSelectorRow<String>())
+        defaultCellUpdateTest(PostalAddressRow())
+        defaultCellUpdateTest(SliderRow())
     }
     
     func testDefaultInitializers() {
@@ -99,6 +109,8 @@ class CallbacksTests: XCTestCase {
         defaultInitializerTest(DateRow())
         defaultInitializerTest(DateInlineRow())
         defaultInitializerTest(PopoverSelectorRow<String>())
+        defaultInitializerTest(PostalAddressRow())
+        defaultInitializerTest(SliderRow())
     }
     
     private func onChangeTest<Row, Value where  Row: BaseRow, Row : RowType, Row.Value == Row.Cell.Value, Value == Row.Value>(row:Row, value:Value){

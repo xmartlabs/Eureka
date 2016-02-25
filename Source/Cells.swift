@@ -1576,18 +1576,14 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 					switch(textField){
 					case streetTextField:
 						row.value?.street = value.memory as? String
-						
 					case stateTextField:
 						row.value?.state = value.memory as? String
-						
 					case postalCodeTextField:
 						row.value?.postalCode = value.memory as? String
 					case cityTextField:
 						row.value?.city = value.memory as? String
-						
 					case countryTextField:
 						row.value?.country = value.memory as? String
-						
 					default:
 						break
 					}
@@ -1609,23 +1605,34 @@ public class DefaultPostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, 
 			switch(textField){
 			case streetTextField:
 				row.value?.street = nil
-				
 			case stateTextField:
 				row.value?.state = nil
-				
 			case postalCodeTextField:
 				row.value?.postalCode = nil
 			case cityTextField:
 				row.value?.city = nil
-				
 			case countryTextField:
 				row.value?.country = nil
-				
 			default:
 				break
 			}
 			return
 		}
+        
+        switch(textField){
+        case streetTextField:
+            row.value?.street = textValue
+        case stateTextField:
+            row.value?.state = textValue
+        case postalCodeTextField:
+            row.value?.postalCode = textValue
+        case cityTextField:
+            row.value?.city = textValue
+        case countryTextField:
+            row.value?.country = textValue
+        default:
+            break
+        }
 	}
 	
 	//MARK: TextFieldDelegate
