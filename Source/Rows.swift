@@ -531,7 +531,7 @@ public class _SwitchRow: Row<Bool, SwitchCell> {
     }
 }
 
-public class _PushRow<T: Equatable> : SelectorRow<T, SelectorViewController<T>> {
+public class _PushRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value == T> : SelectorRow<T, SelectorViewController<T>, Cell> {
     
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -539,7 +539,7 @@ public class _PushRow<T: Equatable> : SelectorRow<T, SelectorViewController<T>> 
     }
 }
 
-public class _PopoverSelectorRow<T: Equatable> : SelectorRow<T, SelectorViewController<T>> {
+public class _PopoverSelectorRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value == T> : SelectorRow<T, SelectorViewController<T>, Cell> {
     
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -607,7 +607,7 @@ public class OptionsRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.
     }
 }
 
-public class _ActionSheetRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>, PresenterRowType {
+public class _ActionSheetRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value == T>: OptionsRow<T, Cell>, PresenterRowType {
     
     public var onPresentCallback : ((FormViewController, SelectorAlertController<T>)->())?
     lazy public var presentationMode: PresentationMode<SelectorAlertController<T>>? = {
@@ -646,7 +646,7 @@ public class _ActionSheetRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>,
     }
 }
 
-public class _AlertRow<T: Equatable>: OptionsRow<T, AlertSelectorCell<T>>, PresenterRowType {
+public class _AlertRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value == T>: OptionsRow<T, Cell>, PresenterRowType {
     
     public var onPresentCallback : ((FormViewController, SelectorAlertController<T>)->())?
     lazy public var presentationMode: PresentationMode<SelectorAlertController<T>>? = {
@@ -694,13 +694,12 @@ public struct ImageRowSourceTypes : OptionSetType {
     public static let All: ImageRowSourceTypes = [Camera, PhotoLibrary, SavedPhotosAlbum]
 }
 
-public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
+public enum ImageClearAction {
+    case No
+    case Yes(style: UIAlertActionStyle)
+}
 
-    public enum ImageClearAction {
-        case No
-        case Yes(style: UIAlertActionStyle)
-    }
-    
+public class _ImageRow<Cell: CellType where Cell: BaseCell, Cell.Value == UIImage> : SelectorRow<UIImage, ImagePickerController, Cell> {
     
     public var sourceTypes: ImageRowSourceTypes
     public internal(set) var imageURL: NSURL?
@@ -740,20 +739,18 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
             super.customDidSelect()
             return
         }
-        deselect()        
-        var availableSources: ImageRowSourceTypes {
-            var result: ImageRowSourceTypes = []
-            
-            if UIImagePickerController.isSourceTypeAvailable(.PhotoLibrary) {
-                result.insert(.PhotoLibrary)
-            }
-            if UIImagePickerController.isSourceTypeAvailable(.Camera) {
-                result.insert(.Camera)
-            }
-            if UIImagePickerController.isSourceTypeAvailable(.SavedPhotosAlbum) {
-                result.insert(.SavedPhotosAlbum)
-            }
-            return result
+        deselect()
+        
+        var availableSources: ImageRowSourceTypes = []
+        
+        if UIImagePickerController.isSourceTypeAvailable(.PhotoLibrary) {
+            availableSources.insert(.PhotoLibrary)
+        }
+        if UIImagePickerController.isSourceTypeAvailable(.Camera) {
+            availableSources.insert(.Camera)
+        }
+        if UIImagePickerController.isSourceTypeAvailable(.SavedPhotosAlbum) {
+            availableSources.insert(.SavedPhotosAlbum)
         }
         
         sourceTypes.intersectInPlace(availableSources)
@@ -843,7 +840,7 @@ public class _ImageRow : SelectorRow<UIImage, ImagePickerController> {
     }
 }
 
-public class _MultipleSelectorRow<T: Hashable> : GenericMultipleSelectorRow<T, MultipleSelectorViewController<T>> {
+public class _MultipleSelectorRow<T: Hashable, Cell: CellType where Cell: BaseCell, Cell.Value == Set<T>> : GenericMultipleSelectorRow<T, MultipleSelectorViewController<T>, Cell> {
     public required init(tag: String?) {
         super.init(tag: tag)
         self.displayValueFor = {
@@ -1319,34 +1316,34 @@ public final class SegmentedRow<T: Equatable>: OptionsRow<T, SegmentedCell<T>>, 
 }
 
 /// An options row where the user can select an option from an ActionSheet
-public final class ActionSheetRow<T: Equatable>: _ActionSheetRow<T>, RowType {
+public final class ActionSheetRow<T: Equatable>: _ActionSheetRow<T, AlertSelectorCell<T>>, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
 /// An options row where the user can select an option from a modal Alert
-public final class AlertRow<T: Equatable>: _AlertRow<T>, RowType {
+public final class AlertRow<T: Equatable>: _AlertRow<T, AlertSelectorCell<T>>, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
 /// A selector row where the user can pick an image
-public final class ImageRow : _ImageRow, RowType {
+public final class ImageRow : _ImageRow<PushSelectorCell<UIImage>>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
 /// A selector row where the user can pick an option from a pushed view controller
-public final class PushRow<T: Equatable> : _PushRow<T>, RowType {
+public final class PushRow<T: Equatable> : _PushRow<T, PushSelectorCell<T>>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public final class PopoverSelectorRow<T: Equatable> : _PopoverSelectorRow<T>, RowType {
+public final class PopoverSelectorRow<T: Equatable> : _PopoverSelectorRow<T, PushSelectorCell<T>>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
@@ -1354,7 +1351,7 @@ public final class PopoverSelectorRow<T: Equatable> : _PopoverSelectorRow<T>, Ro
 
 
 /// A selector row where the user can pick several options from a pushed view controller
-public final class MultipleSelectorRow<T: Hashable> : _MultipleSelectorRow<T>, RowType {
+public final class MultipleSelectorRow<T: Hashable> : _MultipleSelectorRow<T, PushSelectorCell<Set<T>>>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }

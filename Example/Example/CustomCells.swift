@@ -456,7 +456,7 @@ public final class EmailFloatLabelRow: FloatFieldRow<String, EmailFloatLabelCell
 
 //MARK: LocationRow
 
-public final class LocationRow : SelectorRow<CLLocation, MapViewController>, RowType {
+public final class LocationRow : SelectorRow<CLLocation, MapViewController, PushSelectorCell<CLLocation>>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
         presentationMode = .Show(controllerProvider: ControllerProvider.Callback { return MapViewController(){ _ in } }, completionCallback: { vc in vc.navigationController?.popViewControllerAnimated(true) })

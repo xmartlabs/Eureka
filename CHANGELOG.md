@@ -1,7 +1,21 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-### Master branch
+### [1.4.1](https://github.com/xmartlabs/Eureka/releases/tag/1.4.1)
+Released on 2016-02-25.
+
+##### Breaking Changes
+
+* `SelectorRow` now requires the cell among its generic values. This means it is easier to change the cell for a selector row.
+* `_AlertRow` and `_ActionSheetRow` require generic cell parameter
+
+If you are using custom rows that inherit from SelectorRow then you might want to change them as follows (or use your custom cell):
+```
+// before
+// public final class LocationRow : SelectorRow<CLLocation, MapViewController>, RowType
+// now
+public final class LocationRow : SelectorRow<CLLocation, MapViewController, PushSelectorCell<CLLocation>>, RowType
+```
 
 
 ### [1.4.0](https://github.com/xmartlabs/Eureka/releases/tag/1.4.0)

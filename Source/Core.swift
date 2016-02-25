@@ -1683,7 +1683,7 @@ public class Row<T: Equatable, Cell: CellType where Cell: BaseCell, Cell.Value =
 }
 
 /// Generic row type where a user must select a value among several options.
-public class SelectorRow<T: Equatable, VCType: TypedRowControllerType where VCType: UIViewController,  VCType.RowValue == T>: OptionsRow<T, PushSelectorCell<T>>, PresenterRowType {
+public class SelectorRow<T: Equatable, VCType: TypedRowControllerType, Cell: CellType where VCType: UIViewController,  VCType.RowValue == T, Cell: BaseCell, Cell.Value == T >: OptionsRow<T, Cell>, PresenterRowType {
     
     /// Defines how the view controller will be presented, pushed, etc.
     public var presentationMode: PresentationMode<VCType>?
@@ -1695,7 +1695,7 @@ public class SelectorRow<T: Equatable, VCType: TypedRowControllerType where VCTy
         super.init(tag: tag)
     }
     
-    public required convenience init(_ tag: String, @noescape _ initializer: (SelectorRow<T, VCType> -> ()) = { _ in }) {
+    public required convenience init(_ tag: String, @noescape _ initializer: (SelectorRow<T, VCType, Cell> -> ()) = { _ in }) {
         self.init(tag:tag)
         RowDefaults.rowInitialization["\(self.dynamicType)"]?(self)
         initializer(self)
@@ -1743,7 +1743,7 @@ public class SelectorRow<T: Equatable, VCType: TypedRowControllerType where VCTy
 }
 
 /// Generic options selector row that allows multiple selection.
-public class GenericMultipleSelectorRow<T: Hashable, VCType: TypedRowControllerType where VCType: UIViewController,  VCType.RowValue == Set<T>>: Row<Set<T>, PushSelectorCell<Set<T>>>, PresenterRowType {
+public class GenericMultipleSelectorRow<T: Hashable, VCType: TypedRowControllerType, Cell: CellType where VCType: UIViewController,  VCType.RowValue == Set<T>, Cell: BaseCell, Cell.Value == Set<T>>: Row<Set<T>, Cell>, PresenterRowType {
     
     /// Defines how the view controller will be presented, pushed, etc.
     public var presentationMode: PresentationMode<VCType>?
@@ -1765,7 +1765,7 @@ public class GenericMultipleSelectorRow<T: Hashable, VCType: TypedRowControllerT
         presentationMode = .Show(controllerProvider: ControllerProvider.Callback { return VCType() }, completionCallback: { vc in vc.navigationController?.popViewControllerAnimated(true) })
     }
     
-    public required convenience init(_ tag: String, @noescape _ initializer: (GenericMultipleSelectorRow<T, VCType> -> ()) = { _ in }) {
+    public required convenience init(_ tag: String, @noescape _ initializer: (GenericMultipleSelectorRow<T, VCType, Cell> -> ()) = { _ in }) {
         self.init(tag:tag)
         RowDefaults.rowInitialization["\(self.dynamicType)"]?(self)
         initializer(self)
