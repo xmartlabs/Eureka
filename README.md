@@ -18,6 +18,7 @@ This is the re-creation of [XLForm] in Swift 2.
 * [Examples]
 * [Usage]
   + [How to create a Form]
+  + [How to get the form values]
   + [Operators]
   + [Rows]
   + [Customization]
@@ -99,6 +100,17 @@ And this is the product:
 As you may have noticed `CustomCellsController` extends from `FormViewController` which has a `form` property that can be used to declare the form as the example shows.
 `WeekDayRow` and `TextFloatLabelRow` are non-standard rows included in the example project, but the standard rows usage is analog. You can create a form by just setting up the `form` property without extending from `FormViewController` but typically it is more convenient to create a custom view controller that extends from it.
 
+### How to get the form values
+
+We can get all form values by invoking the following `Form` function:
+
+```swift
+public func values(includeHidden includeHidden: Bool = false) -> [String: Any?]
+```
+
+Passing `true` as `includeHidden` parameter value will also include the hidden rows values in the dictionary.
+
+As you may have noticed the result dictionary key is the row tag value and the value is the row value. Only rows with a tag value will be added to the dictionary.
 
 ### Operators
 
@@ -693,18 +705,6 @@ let labelRow2: BaseRow? = form.rowByTag("labelRowTag")
 let section: Section?  = form.sectionByTag("sectionTag")
 ```
 
-#### How to get the form values
-
-We can get all form values by invoking the following `Form` function:
-
-```swift
-public func values(includeHidden includeHidden: Bool = false) -> [String: Any?]
-```
-
-Passing `true` as `includeHidden` parameter value will also include the hidden rows values in the dictionary.
-
-As you may have noticed the result dictionary key is the row tag value and the value is the row value. Only rows with a tag value will be added to the dictionary.
-
 #### How to set the form values using a dictionary
 
 Invoking `setValues(values: [String: Any?])` which is exposed by `Form` class.
@@ -806,6 +806,7 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [Requirements]: #requirements
 
 [How to create a Form]: #how-to-create-a-form
+[How to get the form values]: #how-to-get-the-form-values
 [Examples]: #examples
 [Usage]: #usage
 [Operators]: #operators
