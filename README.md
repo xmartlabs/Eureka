@@ -213,9 +213,9 @@ public protocol FormatterProtocol {
 
 		This row will push to a new controller from where to choose options listed using Check rows.
 
-  + **PopoverSelectorRow**
+  	+ **PopoverSelectorRow**
 
-  	This row will show a popover from where to choose options listed using Check rows.
+  		This row will show a popover from where to choose options listed using Check rows.
 
 	+ **ImageRow**
 
