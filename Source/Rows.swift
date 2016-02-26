@@ -838,6 +838,17 @@ public class _ImageRow<Cell: CellType where Cell: BaseCell, Cell.Value == UIImag
             cell.accessoryView = nil
         }
     }
+    
+    public func setImage(url: NSURL){
+        let req = NSURLRequest(URL: url)
+        NSURLConnection.sendAsynchronousRequest(req, queue:NSOperationQueue.mainQueue()){(res, data, err) in
+            let imageView = UIImageView(frame: CGRectMake(0, 0, 44, 44))
+            imageView.contentMode = .ScaleAspectFill
+            imageView.image = UIImage(data: data!)
+            imageView.clipsToBounds = true
+            self.cell.accessoryView = imageView
+        }
+    }
 }
 
 public class _MultipleSelectorRow<T: Hashable, Cell: CellType where Cell: BaseCell, Cell.Value == Set<T>> : GenericMultipleSelectorRow<T, MultipleSelectorViewController<T>, Cell> {
@@ -1340,6 +1351,10 @@ public final class ImageRow : _ImageRow<PushSelectorCell<UIImage>>, RowType {
 public final class PushRow<T: Equatable> : _PushRow<T, PushSelectorCell<T>>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
+    }
+    public func setImage(url: NSURL) -> ImageRow{
+        super.setImage(url)
+        return self
     }
 }
 
