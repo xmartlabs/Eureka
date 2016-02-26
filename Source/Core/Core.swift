@@ -486,8 +486,8 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
             tableView?.selectRowAtIndexPath(selectedIndexPath, animated: false, scrollPosition: .None)
             tableView?.deselectRowAtIndexPath(selectedIndexPath, animated: true)
         }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FormViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FormViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     public override func viewDidDisappear(animated: Bool) {
@@ -867,11 +867,11 @@ extension FormViewController {
         guard row.baseCell.cellCanBecomeFirstResponder() else { return nil}
         navigationAccessoryView.previousButton.enabled = nextRowForRow(row, withDirection: .Up) != nil
         navigationAccessoryView.doneButton.target = self
-        navigationAccessoryView.doneButton.action = "navigationDone:"
+        navigationAccessoryView.doneButton.action = #selector(FormViewController.navigationDone(_:))
         navigationAccessoryView.previousButton.target = self
-        navigationAccessoryView.previousButton.action = "navigationAction:"
+        navigationAccessoryView.previousButton.action = #selector(FormViewController.navigationAction(_:))
         navigationAccessoryView.nextButton.target = self
-        navigationAccessoryView.nextButton.action = "navigationAction:"
+        navigationAccessoryView.nextButton.action = #selector(FormViewController.navigationAction(_:))
         navigationAccessoryView.nextButton.enabled = nextRowForRow(row, withDirection: .Down) != nil
         return navigationAccessoryView
     }

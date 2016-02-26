@@ -29,7 +29,7 @@ public class DateCell : Cell<NSDate>, CellType {
         accessoryType = .None
         editingAccessoryType =  .None
         datePicker.datePickerMode = datePickerMode()
-        datePicker.addTarget(self, action: "datePickerValueChanged:", forControlEvents: .ValueChanged)
+        datePicker.addTarget(self, action: #selector(DateCell.datePickerValueChanged(_:)), forControlEvents: .ValueChanged)
     }
     
     deinit {

@@ -13,7 +13,7 @@ import Foundation
  *  Protocol that view controllers pushed or presented by a row should conform to.
  */
 public protocol TypedRowControllerType : RowControllerType {
-    typealias RowValue: Equatable
+    associatedtype RowValue: Equatable
     
     /// The row that pushed or presented this controller
     var row : RowOf<Self.RowValue>! { get set }

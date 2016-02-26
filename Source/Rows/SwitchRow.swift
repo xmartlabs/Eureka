@@ -28,7 +28,7 @@ public class SwitchCell : Cell<Bool>, CellType {
         selectionStyle = .None
         accessoryView = UISwitch()
         editingAccessoryView = accessoryView
-        switchControl?.addTarget(self, action: "valueChanged", forControlEvents: .ValueChanged)
+        switchControl?.addTarget(self, action: #selector(SwitchCell.valueChanged), forControlEvents: .ValueChanged)
     }
     
     deinit {

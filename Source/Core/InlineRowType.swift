@@ -30,7 +30,7 @@ public protocol BaseInlineRowType {
  */
 public protocol InlineRowType: TypedRowType, BaseInlineRowType {
     
-    typealias InlineRow: BaseRow, RowType, TypedRowType
+    associatedtype InlineRow: BaseRow, RowType, TypedRowType
     
     /**
      This function is responsible for setting up an inline row before it is first shown.

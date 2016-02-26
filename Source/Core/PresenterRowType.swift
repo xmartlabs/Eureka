@@ -14,7 +14,7 @@ import Foundation
  */
 public protocol PresenterRowType: TypedRowType {
     
-    typealias ProviderType : UIViewController, TypedRowControllerType
+    associatedtype ProviderType : UIViewController, TypedRowControllerType
     
     /// Defines how the view controller will be presented, pushed, etc.
     var presentationMode: PresentationMode<ProviderType>? { get set }

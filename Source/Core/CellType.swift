@@ -67,7 +67,7 @@ public protocol BaseCellType : class {
 
 public protocol TypedCellType : BaseCellType {
     
-    typealias Value: Equatable
+    associatedtype Value: Equatable
     
     /// The row associated to this cell.
     var row : RowOf<Value>! { get set }
