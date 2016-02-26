@@ -378,6 +378,13 @@ public struct KeyboardReturnTypeConfiguration {
     
     /// Used if next row is not available.
     public var defaultKeyboardType = UIReturnKeyType.Default
+    
+    public init(){}
+    
+    public init(nextKeyboardType: UIReturnKeyType, defaultKeyboardType: UIReturnKeyType){
+        self.nextKeyboardType = nextKeyboardType
+        self.defaultKeyboardType = defaultKeyboardType
+    }
 }
 
 /**
