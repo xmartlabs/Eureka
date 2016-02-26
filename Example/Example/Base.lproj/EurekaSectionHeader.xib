@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A279b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10112" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10083"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,10 +13,8 @@
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Eureka" translatesAutoresizingMaskIntoConstraints="NO" id="Bjs-Pe-yeM">
                     <rect key="frame" x="0.0" y="0.0" width="365" height="130"/>
-                    <animations/>
                 </imageView>
             </subviews>
-            <animations/>
             <constraints>
                 <constraint firstItem="Bjs-Pe-yeM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="4fF-WE-lgN"/>
                 <constraint firstItem="Bjs-Pe-yeM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="BZC-rI-vHR"/>

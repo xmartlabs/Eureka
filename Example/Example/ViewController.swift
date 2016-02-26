@@ -547,7 +547,7 @@ class NativeEventFormViewController : FormViewController {
                 }
         
             +++
-            
+    
                 SwitchRow("All-day") {
                     $0.title = $0.tag
                 }.onChange { [weak self] row in
@@ -571,7 +571,7 @@ class NativeEventFormViewController : FormViewController {
                     startDate.inlineRow?.updateCell()
                     endDate.inlineRow?.updateCell()
                 }
-            
+        
             <<< DateTimeInlineRow("Starts") {
                     $0.title = $0.tag
                     $0.value = NSDate().dateByAddingTimeInterval(60*60*24)
