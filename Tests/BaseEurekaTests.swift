@@ -121,7 +121,7 @@ public class MyFormDelegate : FormDelegate {
     public var sectionsReplacedOut = 0
     
     public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {
-        valuesChanged++
+        valuesChanged += 1
     }
     
     public func sectionsHaveBeenAdded(sections: [Section], atIndexes: NSIndexSet){

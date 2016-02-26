@@ -329,7 +329,7 @@ class HiddenRowsTests: BaseEurekaTests {
         form[1].removeAll()
         
         //inserting 2 rows at the end, deleting 1
-        form[2].replaceRange(Range(start: 1, end: 2), with: [r2, r4])
+        form[2].replaceRange(1..<2, with: [r2, r4])
         
         XCTAssertEqual(form[1].count, 0)
         XCTAssertEqual(form[2].count, 1)

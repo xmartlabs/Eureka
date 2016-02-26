@@ -377,7 +377,7 @@ public class AccountFloatLabelCell : _FloatLabelCell<String>, CellType {
 
 //MARK: FloatLabelRow
 
-public class FloatFieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TextFieldCell, Cell.Value == T>: Row<T, Cell> {
+public class FloatFieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: TextFieldCell, Cell.Value == T>: Row<T, Cell> {
 
     public var formatter: NSFormatter?
     public var useFormatterDuringInput: Bool
@@ -456,7 +456,7 @@ public final class EmailFloatLabelRow: FloatFieldRow<String, EmailFloatLabelCell
 
 //MARK: LocationRow
 
-public final class LocationRow : SelectorRow<CLLocation, MapViewController, PushSelectorCell<CLLocation>>, RowType {
+public final class LocationRow : SelectorRow<CLLocation, PushSelectorCell<CLLocation>, MapViewController>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
         presentationMode = .Show(controllerProvider: ControllerProvider.Callback { return MapViewController(){ _ in } }, completionCallback: { vc in vc.navigationController?.popViewControllerAnimated(true) })
