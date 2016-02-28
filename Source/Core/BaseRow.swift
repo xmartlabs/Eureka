@@ -27,6 +27,7 @@ import Foundation
 public class BaseRow : BaseRowType {
     
     var callbackOnChange: (()->Void)?
+    var callbackOnValidate: ((validationResults: [ValidationResult]) -> Void)?
     var callbackCellUpdate: (()->Void)?
     var callbackCellSetup: Any?
     var callbackCellOnSelection: (()->Void)?
@@ -73,7 +74,13 @@ public class BaseRow : BaseRowType {
     
     /// Returns if this row is currently hidden or not
     public var isHidden : Bool { return hiddenCache }
-    
+
+    /// Returns the validators applied to this row.
+    public var validations: [RowValidator]?
+
+    /// Indicates if the row is optional or not.
+    public var optional: Bool = false
+
     /// The section to which this row belongs.
     public weak var section: Section?
     
@@ -105,7 +112,26 @@ public class BaseRow : BaseRowType {
     public func unhighlightCell() {}
     
     public func prepareForSegue(segue: UIStoryboardSegue) {}
-    
+
+    /**
+     Runs all validators and returns `ValidationResult`s.
+     */
+    public func validate() -> [ValidationResult] {
+        if optional && baseValue == nil {
+            return []
+        }
+
+        let results = (validations ?? []).map { $0.validate(self) }
+
+        if let delegate = section?.form?.delegate {
+            delegate.rowValueHasBeenValidated(self, validationResults: results)
+        }
+
+        callbackOnValidate?(validationResults: results)
+
+        return results
+    }
+
     /**
      Returns the NSIndexPath where this row is in the current form.
      */

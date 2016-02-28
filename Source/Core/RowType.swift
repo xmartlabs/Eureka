@@ -203,7 +203,17 @@ extension RowType where Self: TypedRowType, Self: BaseRow, Self.Cell.Value == Se
         callbackOnChange = { [unowned self] in callback(self) }
         return self
     }
-    
+
+    /**
+     Sets a block to be called when the cell corresponding to this row is validated.
+
+     - returns: this row
+     */
+    public func onValidate(callback: (Self, validationResults: [ValidationResult]) -> ()) -> Self {
+        callbackOnValidate = { [unowned self] in callback(self, validationResults: $0) }
+        return self
+    }
+
     /**
      Sets a block to be called when the cell corresponding to this row is refreshed.
      

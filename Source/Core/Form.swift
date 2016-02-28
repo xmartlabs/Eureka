@@ -35,6 +35,7 @@ public protocol FormDelegate : class {
     func rowsHaveBeenRemoved(rows: [BaseRow], atIndexPaths:[NSIndexPath])
     func rowsHaveBeenReplaced(oldRows oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [NSIndexPath])
     func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?)
+    func rowValueHasBeenValidated(row: BaseRow, validationResults: [ValidationResult])
 }
 
 
@@ -155,7 +156,13 @@ public final class Form {
             }
         }
     }
-    
+
+    public func validationErrors() -> [ValidationResult] {
+        return rows
+            .flatMap { $0.validate() }
+            .filter { !$0.valid }
+    }
+
     //MARK: Private
     
     var rowObservers = [String: [ConditionType: [Taggable]]]()

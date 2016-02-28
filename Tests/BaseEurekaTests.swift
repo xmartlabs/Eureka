@@ -111,6 +111,7 @@ class BaseEurekaTests: XCTestCase {
 
 public class MyFormDelegate : FormDelegate {
     public var valuesChanged = 0
+    public var valuesValidated = 0
     public var rowsAdded = 0
     public var sectionsAdded = 0
     public var rowsRemoved = 0
@@ -122,6 +123,10 @@ public class MyFormDelegate : FormDelegate {
     
     public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {
         valuesChanged += 1
+    }
+
+    public func rowValueHasBeenValidated(row: BaseRow, validationResults: [ValidationResult]) {
+        valuesValidated += 1
     }
     
     public func sectionsHaveBeenAdded(sections: [Section], atIndexes: NSIndexSet){
