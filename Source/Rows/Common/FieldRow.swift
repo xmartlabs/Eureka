@@ -109,7 +109,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         return textLabel
     }
     
-    private var dynamicConstraints = [NSLayoutConstraint]()
+    public var dynamicConstraints = [NSLayoutConstraint]()
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -181,7 +181,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     
     // Mark: Helpers
     
-    public override func updateConstraints(){
+    public func customConstraints() {
         contentView.removeConstraints(dynamicConstraints)
         dynamicConstraints = []
         var views : [String: AnyObject] =  ["textField": textField]
@@ -213,6 +213,10 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
             }
         }
         contentView.addConstraints(dynamicConstraints)
+    }
+    
+    public override func updateConstraints(){
+        customConstraints()
         super.updateConstraints()
     }
     
