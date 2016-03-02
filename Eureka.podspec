@@ -9,6 +9,6 @@ Pod::Spec.new do |s|
   s.source = { :git => 'https://github.com/xmartlabs/Eureka.git', :tag => s.version }
   s.ios.deployment_target = '8.0'
   s.ios.frameworks = 'UIKit', 'Foundation'
-  s.source_files = 'Source/*.swift'
+  s.source_files = 'Source/**/*.swift'
   s.requires_arc = true
 end
