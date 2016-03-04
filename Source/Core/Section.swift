@@ -71,20 +71,20 @@ extension Section {
                 delegateValue?.rowsHaveBeenAdded(newRows, atIndexPaths:[NSIndexPath(index: 0)])
             case NSKeyValueChange.Insertion.rawValue:
                 let indexSet = change![NSKeyValueChangeIndexesKey] as! NSIndexSet
+                section?.rowsHaveBeenAdded(newRows, atIndexes: indexSet)
                 if let _index = section?.index {
-                    section?.rowsHaveBeenAdded(newRows, atIndexes: indexSet)
                     delegateValue?.rowsHaveBeenAdded(newRows, atIndexPaths: indexSet.map { NSIndexPath(forRow: $0, inSection: _index ) } )
                 }
             case NSKeyValueChange.Removal.rawValue:
                 let indexSet = change![NSKeyValueChangeIndexesKey] as! NSIndexSet
+                section?.rowsHaveBeenRemoved(oldRows, atIndexes: indexSet)
                 if let _index = section?.index {
-                    section?.rowsHaveBeenRemoved(oldRows, atIndexes: indexSet)
                     delegateValue?.rowsHaveBeenRemoved(oldRows, atIndexPaths: indexSet.map { NSIndexPath(forRow: $0, inSection: _index ) } )
                 }
             case NSKeyValueChange.Replacement.rawValue:
                 let indexSet = change![NSKeyValueChangeIndexesKey] as! NSIndexSet
+                section?.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, atIndexes: indexSet)
                 if let _index = section?.index {
-                    section?.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, atIndexes: indexSet)
                     delegateValue?.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, atIndexPaths: indexSet.map { NSIndexPath(forRow: $0, inSection: _index)})
                 }
             default:
