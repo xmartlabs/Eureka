@@ -71,6 +71,7 @@
 		28EEC02F1C7E49BF00300699 /* SelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CE101C7E01EE0002982F /* SelectorViewController.swift */; };
 		28EEC0321C7E64A400300699 /* DatePickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDFC1C7DF9430002982F /* DatePickerRow.swift */; };
 		28EEC0331C7E64AB00300699 /* PopoverSelectorRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CE1D1C7E08300002982F /* PopoverSelectorRow.swift */; };
+		49ADC7F91C8A83240073952B /* StepperRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADC7F81C8A83240073952B /* StepperRow.swift */; };
 		51729DF61B9A4F5E004A00EB /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51729DEB1B9A4F5E004A00EB /* Eureka.framework */; };
 		51729E671B9A5FA5004A00EB /* Eureka.h in Headers */ = {isa = PBXBuildFile; fileRef = 51729E661B9A5FA5004A00EB /* Eureka.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -150,6 +151,7 @@
 		28EEBFF71C7E241200300699 /* SelectableRowType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectableRowType.swift; sourceTree = "<group>"; };
 		28EEBFFA1C7E25C500300699 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		28EEBFFC1C7E25F100300699 /* Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		49ADC7F81C8A83240073952B /* StepperRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepperRow.swift; sourceTree = "<group>"; };
 		51729DEB1B9A4F5E004A00EB /* Eureka.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Eureka.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51729DF01B9A4F5E004A00EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Source/Info.plist; sourceTree = "<group>"; };
 		51729DF51B9A4F5E004A00EB /* EurekaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EurekaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -229,6 +231,7 @@
 				2859CE061C7DFBFA0002982F /* FieldsRow.swift */,
 				2859CE1D1C7E08300002982F /* PopoverSelectorRow.swift */,
 				2859CE1F1C7E092B0002982F /* MultipleSelectorRow.swift */,
+				49ADC7F81C8A83240073952B /* StepperRow.swift */,
 			);
 			name = Rows;
 			path = Source/Rows;
@@ -460,6 +463,7 @@
 				2859CDC61C7D1A2E0002982F /* NavigationAccessoryView.swift in Sources */,
 				28EEC01E1C7E3A9000300699 /* PostalAddressRow.swift in Sources */,
 				283D16D71C80B2AD00DD6347 /* ImagePickerController.swift in Sources */,
+				49ADC7F91C8A83240073952B /* StepperRow.swift in Sources */,
 				28EE46AC1C7F712300EFF4A2 /* DateInlineRow.swift in Sources */,
 				28EEC01C1C7E3A7400300699 /* ButtonRowWithPresent.swift in Sources */,
 				28EEBFF41C7E240000300699 /* RowProtocols.swift in Sources */,

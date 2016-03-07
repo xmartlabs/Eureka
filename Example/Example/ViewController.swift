@@ -139,6 +139,11 @@ class RowsExampleViewController: FormViewController {
                     $0.value = 5.0
                 }
             
+                <<< StepperRow() {
+                    $0.title = "StepperRow"
+                    $0.value = 1.0
+                }
+            
             +++ Section("SegmentedRow examples")
             
                 <<< SegmentedRow<String>() { $0.options = ["One", "Two", "Three"] }
