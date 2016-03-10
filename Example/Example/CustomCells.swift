@@ -204,7 +204,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
                 let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
                 let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
                 if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                    row.value = value.memory as? T ?? row.value
+                    row.value = value.memory as? T
                     if var selStartPos = textField.selectedTextRange?.start {
                         let oldVal = textField.text
                         textField.text = row.displayValueFor?(row.value)
@@ -220,7 +220,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
                 let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
                 let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
                 if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                    row.value = value.memory as? T ?? row.value
+                    row.value = value.memory as? T
                 }
                 return
             }
@@ -235,19 +235,33 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
         row.value = newValue
     }
     
+    
+    //Mark: Helpers
+    
+    private func displayValue(useFormatter useFormatter: Bool) -> String? {
+        guard let v = row.value else { return nil }
+        if let formatter = (row as? FormatterConformance)?.formatter where useFormatter {
+            return textField.isFirstResponder() ? formatter.editingStringForObjectValue(v as! AnyObject) : formatter.stringForObjectValue(v as! AnyObject)
+        }
+        return String(v)
+    }
+    
     //MARK: TextFieldDelegate
     
     public func textFieldDidBeginEditing(textField: UITextField) {
         formViewController()?.beginEditing(self)
-        if let fieldRowConformance = row as? FormatterConformance, let _ = fieldRowConformance.formatter where fieldRowConformance.useFormatterOnDidBeginEditing {
-            textField.text = row.displayValueFor?(row.value)
+        if let fieldRowConformance = row as? FormatterConformance, let _ = fieldRowConformance.formatter where fieldRowConformance.useFormatterOnDidBeginEditing ?? fieldRowConformance.useFormatterDuringInput {
+            textField.text = displayValue(useFormatter: true)
         } else {
-            textField.text = row.value != nil ? String(row.value!) : nil
+            textField.text = displayValue(useFormatter: false)
         }
     }
     
     public func textFieldDidEndEditing(textField: UITextField) {
         formViewController()?.endEditing(self)
+        formViewController()?.textInputDidEndEditing(textField, cell: self)
+        textFieldDidChange(textField)
+        textField.text = displayValue(useFormatter: (row as? FormatterConformance)?.formatter != nil)
     }
 }
 
@@ -395,7 +409,7 @@ public class FloatFieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: Ty
 
     public var formatter: NSFormatter?
     public var useFormatterDuringInput = false
-    public var useFormatterOnDidBeginEditing = false
+    public var useFormatterOnDidBeginEditing: Bool?
     
     public required init(tag: String?) {
         super.init(tag: tag)

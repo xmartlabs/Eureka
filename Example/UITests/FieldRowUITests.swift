@@ -44,7 +44,7 @@ class FieldRowUITests: XCTestCase {
         super.tearDown()
     }
     
-    func testDecimalRowWithFormatter() {
+    func testDecimalRowWithFormatterDuringInput() {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
         let app = XCUIApplication()
@@ -85,6 +85,48 @@ class FieldRowUITests: XCTestCase {
     }
     
     
+    func testIntRowWithFormatterButNotDUringInput() {
+        
+        let app = XCUIApplication()
+        let tablesQuery = app.tables
+        tablesQuery.cells.staticTexts["Rows"].tap()
+        
+        let textField = tablesQuery.cells.containingType(.StaticText, identifier:"IntRow").childrenMatchingType(.TextField).element
+        
+        // chack initial value
+        XCTAssertEqual(textField.value as? String, intFormatter.stringForObjectValue(Int(2015)), "Initial Int Row value is wrong, should be 2,015 or 2.015")
+        
+        textField.tap()
+        // should be 2015
+        XCTAssertEqual(textField.value as? String, "2015", "Editing Initial Int Row value is wrong, should be 2015")
+    
+        let deleteKey = app.keyboards.keys["Delete"]
+        
+        deleteKey.tap()
+        // sould be 201
+        XCTAssertEqual(textField.value as? String, intFormatter.stringForObjectValue(Int(201)), "Int Row value is wrong, should be 201")
+        
+        deleteKey.tap()
+        deleteKey.tap()
+        deleteKey.tap()
+        // should be empty
+        XCTAssertEqual(textField.value as? String, "", "Int Row value is wrong, should be \"\"")
+        
+        
+        textField.typeText("1")
+        // should be 1
+        XCTAssertEqual(textField.value as? String, intFormatter.stringForObjectValue(Int(1)), "Int Row value is wrong, should be 1")
+        
+        
+        textField.typeText("2345")
+        // regign firest responder
+        app.toolbars.buttons["Done"].tap()
+        
+    
+        // should be 12,345
+        XCTAssertEqual(textField.value as? String, intFormatter.stringForObjectValue(Int(12345)), "Int Row value is wrong, should be 12,345 or 12.345")
+    }
+    
     
     
     //MARK: Helpers
@@ -94,6 +136,15 @@ class FieldRowUITests: XCTestCase {
         numberFormatter.locale = .currentLocale()
         numberFormatter.numberStyle = .DecimalStyle
         numberFormatter.minimumFractionDigits = 2
+        return numberFormatter
+    }()
+    
+    lazy var intFormatter: NSNumberFormatter = {
+        let numberFormatter = NSNumberFormatter()
+        numberFormatter.locale = .currentLocale()
+        numberFormatter.numberStyle = .DecimalStyle
+        numberFormatter.minimumFractionDigits = 0
+        numberFormatter.maximumFractionDigits = 0
         return numberFormatter
     }()
 

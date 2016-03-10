@@ -99,11 +99,27 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         }
     }
     
+    //Mark: Helpers
+    
+    private func displayValue(useFormatter useFormatter: Bool) -> String? {
+        guard let v = row.value else { return nil }
+        if let formatter = (row as? FormatterConformance)?.formatter where useFormatter {
+            return textView.isFirstResponder() ? formatter.editingStringForObjectValue(v as! AnyObject) : formatter.stringForObjectValue(v as! AnyObject)
+        }
+        return String(v)
+    }
+    
+    //MARK: TextFieldDelegate
+    
+    
     public func textViewDidBeginEditing(textView: UITextView) {
         formViewController()?.beginEditing(self)
         formViewController()?.textInputDidBeginEditing(textView, cell: self)
-        if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter where !textAreaConformance.useFormatterDuringInput {
-            textView.text = row.displayValueFor?(row.value)
+        if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter where textAreaConformance.useFormatterOnDidBeginEditing ?? textAreaConformance.useFormatterDuringInput {
+            textView.text = self.displayValue(useFormatter: true)
+        }
+        else {
+            textView.text = self.displayValue(useFormatter: false)
         }
     }
     
@@ -111,11 +127,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         formViewController()?.endEditing(self)
         formViewController()?.textInputDidEndEditing(textView, cell: self)
         textViewDidChange(textView)
-        if let fieldRowConformance = row as? FieldRowConformance, let _ = fieldRowConformance.formatter where fieldRowConformance.useFormatterOnDidBeginEditing {
-            textView.text = row.displayValueFor?(row.value)
-        } else {
-            textView.text = row.value != nil ? String(row.value!) : nil
-        }
+        textView.text = displayValue(useFormatter: (row as? FormatterConformance)?.formatter != nil)
     }
     
     public func textViewDidChange(textView: UITextView) {
@@ -129,7 +141,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
                 let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
                 let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
                 if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                    row.value = value.memory as? T ?? row.value
+                    row.value = value.memory as? T
                     if var selStartPos = textView.selectedTextRange?.start {
                         let oldVal = textView.text
                         textView.text = row.displayValueFor?(row.value)
@@ -145,7 +157,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
                 let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
                 let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
                 if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                    row.value = value.memory as? T ?? row.value
+                    row.value = value.memory as? T
                 }
                 return
             }
@@ -203,7 +215,7 @@ public class AreaRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: Ty
     public var placeholder : String?
     public var formatter: NSFormatter?
     public var useFormatterDuringInput = false
-    public var useFormatterOnDidBeginEditing = false
+    public var useFormatterOnDidBeginEditing: Bool?
     
     public required init(tag: String?) {
         super.init(tag: tag)
