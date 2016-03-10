@@ -15,6 +15,8 @@ public class MultipleSelectorViewController<T:Hashable> : FormViewController, Ty
     /// The row that pushed or presented this controller
     public var row: RowOf<Set<T>>!
     
+    public var displayValueFor : (T? -> String?)?
+
     /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
@@ -37,10 +39,9 @@ public class MultipleSelectorViewController<T:Hashable> : FormViewController, Ty
         form +++= Section()
         for o in options {
             form.first! <<< CheckRow() { [weak self] in
-                $0.title = String(o.first!)
-                $0.value = self?.row.value?.contains(o.first!) ?? false
-                }
-                .onCellSelection { [weak self] _, _ in
+                    $0.title = self?.displayValueFor?(o.first!) ?? String(o.first!)
+                    $0.value = self?.row.value?.contains(o.first!) ?? false
+                }.onCellSelection { [weak self] _, _ in
                     guard let set = self?.row.value else {
                         self?.row.value = [o.first!]
                         return
