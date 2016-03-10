@@ -99,11 +99,27 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         }
     }
     
+    //Mark: Helpers
+    
+    private func displayValue(useFormatter useFormatter: Bool) -> String? {
+        guard let v = row.value else { return nil }
+        if let formatter = (row as? FormatterConformance)?.formatter where useFormatter {
+            return textView.isFirstResponder() ? formatter.editingStringForObjectValue(v as! AnyObject) : formatter.stringForObjectValue(v as! AnyObject)
+        }
+        return String(v)
+    }
+    
+    //MARK: TextFieldDelegate
+    
+    
     public func textViewDidBeginEditing(textView: UITextView) {
         formViewController()?.beginEditing(self)
         formViewController()?.textInputDidBeginEditing(textView, cell: self)
-        if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter where !textAreaConformance.useFormatterDuringInput {
-            textView.text = row.displayValueFor?(row.value)
+        if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter where textAreaConformance.useFormatterOnDidBeginEditing ?? textAreaConformance.useFormatterDuringInput {
+            textView.text = self.displayValue(useFormatter: true)
+        }
+        else {
+            textView.text = self.displayValue(useFormatter: false)
         }
     }
     
@@ -111,9 +127,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         formViewController()?.endEditing(self)
         formViewController()?.textInputDidEndEditing(textView, cell: self)
         textViewDidChange(textView)
-        if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter where !textAreaConformance.useFormatterDuringInput {
-            textView.text = row.displayValueFor?(row.value)
-        }
+        textView.text = displayValue(useFormatter: (row as? FormatterConformance)?.formatter != nil)
     }
     
     public func textViewDidChange(textView: UITextView) {
@@ -122,18 +136,28 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
             row.value = nil
             return
         }
-        if let fieldRow = row as? TextAreaConformance, let formatter = fieldRow.formatter where fieldRow.useFormatterDuringInput {
-            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
-            let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
-            if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                row.value = value.memory as? T
-                if var selStartPos = textView.selectedTextRange?.start {
-                    let oldVal = textView.text
-                    textView.text = row.displayValueFor?(row.value)
-                    if let f = formatter as? FormatterProtocol {
-                        selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textView, oldValue: oldVal, newValue: textView.text)
+        if let fieldRow = row as? FieldRowConformance, let formatter = fieldRow.formatter {
+            if fieldRow.useFormatterDuringInput {
+                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
+                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
+                if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
+                    row.value = value.memory as? T
+                    if var selStartPos = textView.selectedTextRange?.start {
+                        let oldVal = textView.text
+                        textView.text = row.displayValueFor?(row.value)
+                        if let f = formatter as? FormatterProtocol {
+                            selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textView, oldValue: oldVal, newValue: textView.text)
+                        }
+                        textView.selectedTextRange = textView.textRangeFromPosition(selStartPos, toPosition: selStartPos)
                     }
-                    textView.selectedTextRange = textView.textRangeFromPosition(selStartPos, toPosition: selStartPos)
+                    return
+                }
+            }
+            else {
+                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
+                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
+                if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
+                    row.value = value.memory as? T
                 }
                 return
             }
@@ -143,7 +167,6 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
             return
         }
         guard let newValue = T.init(string: textValue) else {
-            row.updateCell()
             return
         }
         row.value = newValue
@@ -191,29 +214,20 @@ public class AreaRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: Ty
     
     public var placeholder : String?
     public var formatter: NSFormatter?
-    public var useFormatterDuringInput: Bool
+    public var useFormatterDuringInput = false
+    public var useFormatterOnDidBeginEditing: Bool?
     
     public required init(tag: String?) {
-        useFormatterDuringInput = false
         super.init(tag: tag)
         self.displayValueFor = { [unowned self] value in
-            guard let v = value else {
-                return nil
-            }
+            guard let v = value else { return nil }
             if let formatter = self.formatter {
-                if self.cell.textView.isFirstResponder() {
-                    if self.useFormatterDuringInput {
-                        return formatter.editingStringForObjectValue(v as! AnyObject)
-                    }
-                    else {
-                        return String(v)
-                    }
+                if self.cell.textView.isFirstResponder(){
+                    return self.useFormatterDuringInput ? formatter.editingStringForObjectValue(v as! AnyObject) : String(v)
                 }
                 return formatter.stringForObjectValue(v as! AnyObject)
             }
-            else{
-                return String(v)
-            }
+            return String(v)
         }
     }
 }

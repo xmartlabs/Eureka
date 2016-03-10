@@ -252,6 +252,9 @@ class RowsExampleViewController: FormViewController {
                         $0.value = 5
                         $0.formatter = DecimalFormatter()
                         $0.useFormatterDuringInput = true
+                        //$0.useFormatterOnDidBeginEditing = true
+                    }.cellSetup { cell, _  in
+                        cell.textField.keyboardType = .NumberPad
                     }
                 
                 <<< URLRow() {

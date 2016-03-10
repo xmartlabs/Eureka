@@ -60,29 +60,20 @@ public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TypedCe
     public var formatter: NSFormatter?
     
     /// If the formatter should be used while the user is editing the text.
-    public var useFormatterDuringInput: Bool
+    public var useFormatterDuringInput = false
+    public var useFormatterOnDidBeginEditing: Bool?
     
     public required init(tag: String?) {
-        useFormatterDuringInput = false
         super.init(tag: tag)
         self.displayValueFor = { [unowned self] value in
-            guard let v = value else {
-                return nil
-            }
+            guard let v = value else { return nil }
             if let formatter = self.formatter {
-                if self.cell.textField.isFirstResponder() {
-                    if self.useFormatterDuringInput {
-                        return formatter.editingStringForObjectValue(v as! AnyObject)
-                    }
-                    else {
-                        return String(v)
-                    }
+                if self.cell.textField.isFirstResponder(){
+                    return self.useFormatterDuringInput ? formatter.editingStringForObjectValue(v as! AnyObject) : String(v)
                 }
                 return formatter.stringForObjectValue(v as! AnyObject)
             }
-            else{
-                return String(v)
-            }
+            return String(v)
         }
     }
 }
@@ -225,18 +216,28 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
             row.value = nil
             return
         }
-        if let fieldRow = row as? FieldRowConformance, let formatter = fieldRow.formatter where fieldRow.useFormatterDuringInput {
-            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
-            let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
-            if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                row.value = value.memory as? T
-                if var selStartPos = textField.selectedTextRange?.start {
-                    let oldVal = textField.text
-                    textField.text = row.displayValueFor?(row.value)
-                    if let f = formatter as? FormatterProtocol {
-                        selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text)
+        if let fieldRow = row as? FieldRowConformance, let formatter = fieldRow.formatter {
+            if fieldRow.useFormatterDuringInput {
+                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
+                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
+                if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
+                    row.value = value.memory as? T
+                    if var selStartPos = textField.selectedTextRange?.start {
+                        let oldVal = textField.text
+                        textField.text = row.displayValueFor?(row.value)
+                        if let f = formatter as? FormatterProtocol {
+                            selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text)
+                        }
+                        textField.selectedTextRange = textField.textRangeFromPosition(selStartPos, toPosition: selStartPos)
                     }
-                    textField.selectedTextRange = textField.textRangeFromPosition(selStartPos, toPosition: selStartPos)
+                    return
+                }
+            }
+            else {
+                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
+                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
+                if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
+                    row.value = value.memory as? T
                 }
                 return
             }
@@ -246,10 +247,19 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
             return
         }
         guard let newValue = T.init(string: textValue) else {
-            row.updateCell()
             return
         }
         row.value = newValue
+    }
+    
+    //Mark: Helpers
+    
+    private func displayValue(useFormatter useFormatter: Bool) -> String? {
+        guard let v = row.value else { return nil }
+        if let formatter = (row as? FormatterConformance)?.formatter where useFormatter {
+            return textField.isFirstResponder() ? formatter.editingStringForObjectValue(v as! AnyObject) : formatter.stringForObjectValue(v as! AnyObject)
+        }
+        return String(v)
     }
     
     //MARK: TextFieldDelegate
@@ -257,8 +267,10 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     public func textFieldDidBeginEditing(textField: UITextField) {
         formViewController()?.beginEditing(self)
         formViewController()?.textInputDidBeginEditing(textField, cell: self)
-        if let fieldRowConformance = (row as? FieldRowConformance), let _ = fieldRowConformance.formatter where !fieldRowConformance.useFormatterDuringInput {
-            textField.text = row.displayValueFor?(row.value)
+        if let fieldRowConformance = row as? FormatterConformance, let _ = fieldRowConformance.formatter where fieldRowConformance.useFormatterOnDidBeginEditing ?? fieldRowConformance.useFormatterDuringInput {
+            textField.text = displayValue(useFormatter: true)
+        } else {
+            textField.text = displayValue(useFormatter: false)
         }
     }
     
@@ -266,9 +278,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         formViewController()?.endEditing(self)
         formViewController()?.textInputDidEndEditing(textField, cell: self)
         textFieldDidChange(textField)
-        if let fieldRowConformance = (row as? FieldRowConformance), let _ = fieldRowConformance.formatter where !fieldRowConformance.useFormatterDuringInput {
-            textField.text = row.displayValueFor?(row.value)
-        }
+        textField.text = displayValue(useFormatter: (row as? FormatterConformance)?.formatter != nil)
     }
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {
