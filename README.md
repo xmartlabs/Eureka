@@ -5,7 +5,7 @@
 <img src="https://img.shields.io/badge/platform-iOS-blue.svg?style=flat" alt="Platform iOS" />
 <a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift2-compatible-4BC51D.svg?style=flat" alt="Swift 2 compatible" /></a>
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible" /></a>
-<a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/badge/pod-1.3.1-blue.svg" alt="CocoaPods compatible" /></a>
+<a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/badge/pod-1.4.1-blue.svg" alt="CocoaPods compatible" /></a>
 <a href="https://raw.githubusercontent.com/xmartlabs/Eureka/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License: MIT" /></a>
 <a href="https://codebeat.co/projects/github-com-xmartlabs-eureka"><img alt="codebeat badge" src="https://codebeat.co/badges/16f29afb-f072-4633-9497-333c6eb71263" /></a>
 </p>
@@ -619,7 +619,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'Eureka', '~> 1.3'
+pod 'Eureka', '~> 1.4'
 ```
 
 Then run the following command:
@@ -635,7 +635,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 1.0
+github "xmartlabs/Eureka" ~> 1.4
 ```
 
 #### Manually as Embedded Framework
