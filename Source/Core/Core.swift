@@ -790,9 +790,7 @@ extension FormViewController {
             UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: keyBoardInfo[UIKeyboardAnimationCurveUserInfoKey]!.integerValue)!)
             table.contentInset = tableInsets
             table.scrollIndicatorInsets = scrollIndicatorInsets
-            if let selectedRow = table.indexPathForCell(cell) {
-                table.scrollToRowAtIndexPath(selectedRow, atScrollPosition: .None, animated: false)
-            }
+            table.scrollRectToVisible(cell.frame, animated: false)
             UIView.commitAnimations()
         }
     }
@@ -836,7 +834,10 @@ extension FormViewController {
         guard let currentIndexPath = tableView?.indexPathForCell(currentCell) else { assertionFailure(); return }
         guard let nextRow = nextRowForRow(form[currentIndexPath], withDirection: direction) else { return }
         if nextRow.baseCell.cellCanBecomeFirstResponder(){
-            tableView?.scrollToRowAtIndexPath(nextRow.indexPath()!, atScrollPosition: .None, animated: false)
+            if let table = tableView,
+                contains = table.indexPathsForVisibleRows?.contains(nextRow.indexPath()!) where !contains {
+                    table.scrollToRowAtIndexPath(nextRow.indexPath()!, atScrollPosition: .None, animated: true)
+            }
             nextRow.baseCell.cellBecomeFirstResponder(direction)
         }
     }
