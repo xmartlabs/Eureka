@@ -258,6 +258,8 @@ public protocol FormatterProtocol {
 	+ **SwitchRow**
 	+ **TextAreaRow**
   + **PostalAddressRow**
+  + **SliderRow**
+  + **StepperRow**
 
 There are also some custom rows in the examples project.
 
