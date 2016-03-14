@@ -600,15 +600,6 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
         title = "\(latitude), \(longitude)"
     }
     
-    public func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        
-        let pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "annotation")
-        pinAnnotationView.pinColor = MKPinAnnotationColor.Red
-        pinAnnotationView.draggable = false
-        pinAnnotationView.animatesDrop = true
-        return pinAnnotationView
-    }
-    
     public func mapView(mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
         ellipsisLayer.transform = CATransform3DMakeScale(0.5, 0.5, 1)
         UIView.animateWithDuration(0.2, animations: { [weak self] in
