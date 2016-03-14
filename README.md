@@ -170,7 +170,7 @@ This is a list of the rows that are provided by default:
 	This rows have a textfield on the right side of the cell. The difference between each one of them consists in a different capitalization, autocorrection and keyboard type configuration.
 	+ **TextRow**
 	+ **NameRow**
-	+ **UrlRow**
+	+ **URLRow**
 	+ **IntRow**
 	+ **PhoneRow**
 	+ **PasswordRow**
