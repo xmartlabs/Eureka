@@ -181,24 +181,24 @@
 		2859CD901C7CF1FD0002982F /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				28EEBFF71C7E241200300699 /* SelectableRowType.swift */,
+				2859CDE81C7DD78E0002982F /* BaseRow.swift */,
+				28EEBFFC1C7E25F100300699 /* Cell.swift */,
+				28EEBFE41C7E1B3B00300699 /* CellType.swift */,
+				2859CD921C7CF1FD0002982F /* Core.swift */,
+				2859CDBD1C7D137D0002982F /* Form.swift */,
+				2859CDC31C7D19C50002982F /* HeaderFooterView.swift */,
+				2859CD931C7CF1FD0002982F /* Helpers.swift */,
 				28EEBFF51C7E240B00300699 /* InlineRowType.swift */,
+				2859CDC51C7D1A2E0002982F /* NavigationAccessoryView.swift */,
+				28EEBFFA1C7E25C500300699 /* Operators.swift */,
+				28EEBFEB1C7E224200300699 /* PresenterRowType.swift */,
+				28EEBFEF1C7E23F400300699 /* Row.swift */,
+				28EEBFED1C7E231C00300699 /* RowControllerType.swift */,
 				28EEBFF31C7E240000300699 /* RowProtocols.swift */,
 				28EEBFF11C7E23FA00300699 /* RowType.swift */,
-				28EEBFEF1C7E23F400300699 /* Row.swift */,
-				2859CDE81C7DD78E0002982F /* BaseRow.swift */,
-				28EEBFEB1C7E224200300699 /* PresenterRowType.swift */,
-				2859CD921C7CF1FD0002982F /* Core.swift */,
-				2859CD931C7CF1FD0002982F /* Helpers.swift */,
-				2859CDBD1C7D137D0002982F /* Form.swift */,
+				28EEBFF71C7E241200300699 /* SelectableRowType.swift */,
 				2859CDBF1C7D138D0002982F /* Section.swift */,
-				2859CDC31C7D19C50002982F /* HeaderFooterView.swift */,
-				2859CDC51C7D1A2E0002982F /* NavigationAccessoryView.swift */,
 				2859CE231C7E141B0002982F /* SelectableSection.swift */,
-				28EEBFE41C7E1B3B00300699 /* CellType.swift */,
-				28EEBFED1C7E231C00300699 /* RowControllerType.swift */,
-				28EEBFFA1C7E25C500300699 /* Operators.swift */,
-				28EEBFFC1C7E25F100300699 /* Cell.swift */,
 			);
 			name = Core;
 			path = Source/Core;
@@ -210,28 +210,28 @@
 				2859CE1A1C7E04250002982F /* SelectableRows */,
 				2859CE0F1C7E01C70002982F /* Controllers */,
 				2859CDB21C7D0E210002982F /* Common */,
-				2859CD991C7CF2020002982F /* ButtonRowWithPresent.swift */,
-				2859CD9A1C7CF2020002982F /* SliderRow.swift */,
-				2859CD9E1C7CF23D0002982F /* PostalAddressRow.swift */,
-				2859CDA01C7CF3A10002982F /* LabelRow.swift */,
-				2859CDA21C7CF4050002982F /* ButtonRow.swift */,
-				2859CDA41C7CF51A0002982F /* CheckRow.swift */,
-				2859CDA61C7CF5530002982F /* SwitchRow.swift */,
-				2859CDA81C7D0B3C0002982F /* SegmentedRow.swift */,
-				2859CDAC1C7D0BCA0002982F /* TextAreaRow.swift */,
 				2859CDAE1C7D0D990002982F /* ActionSheetRow.swift */,
 				2859CDB01C7D0E010002982F /* AlertRow.swift */,
-				2859CDB51C7D0EC60002982F /* PickerRow.swift */,
-				2859CDB91C7D12210002982F /* ImageRow.swift */,
-				2859CDEC1C7DF0680002982F /* PushRow.swift */,
-				2859CDB71C7D0FE70002982F /* PickerInlineRow.swift */,
+				2859CDA21C7CF4050002982F /* ButtonRow.swift */,
+				2859CD991C7CF2020002982F /* ButtonRowWithPresent.swift */,
+				2859CDA41C7CF51A0002982F /* CheckRow.swift */,
+				2859CDFE1C7DF9A70002982F /* DateRow.swift */,
 				2859CDF41C7DF2740002982F /* DateInlineRow.swift */,
 				2859CDFC1C7DF9430002982F /* DatePickerRow.swift */,
-				2859CDFE1C7DF9A70002982F /* DateRow.swift */,
 				2859CE061C7DFBFA0002982F /* FieldsRow.swift */,
-				2859CE1D1C7E08300002982F /* PopoverSelectorRow.swift */,
+				2859CDB91C7D12210002982F /* ImageRow.swift */,
+				2859CDA01C7CF3A10002982F /* LabelRow.swift */,
 				2859CE1F1C7E092B0002982F /* MultipleSelectorRow.swift */,
+				2859CDB51C7D0EC60002982F /* PickerRow.swift */,
+				2859CDB71C7D0FE70002982F /* PickerInlineRow.swift */,
+				2859CD9E1C7CF23D0002982F /* PostalAddressRow.swift */,
+				2859CE1D1C7E08300002982F /* PopoverSelectorRow.swift */,
+				2859CDEC1C7DF0680002982F /* PushRow.swift */,
+				2859CDA81C7D0B3C0002982F /* SegmentedRow.swift */,
+				2859CD9A1C7CF2020002982F /* SliderRow.swift */,
 				49ADC7F81C8A83240073952B /* StepperRow.swift */,
+				2859CDA61C7CF5530002982F /* SwitchRow.swift */,
+				2859CDAC1C7D0BCA0002982F /* TextAreaRow.swift */,
 			);
 			name = Rows;
 			path = Source/Rows;
@@ -240,13 +240,13 @@
 		2859CDB21C7D0E210002982F /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				2859CE0A1C7E003B0002982F /* DecimalFormatter.swift */,
+				2859CDF01C7DF1620002982F /* FieldRow.swift */,
 				2859CDB31C7D0E4B0002982F /* OptionsRow.swift */,
 				2859CDBB1C7D12930002982F /* SelectorRow.swift */,
 				2859CDEE1C7DF0F70002982F /* DateFieldRow.swift */,
-				2859CDF01C7DF1620002982F /* FieldRow.swift */,
 				2859CDF21C7DF22D0002982F /* DateInlineFieldRow.swift */,
 				2859CE0C1C7E006E0002982F /* FormatterConformance.swift */,
+				2859CE0A1C7E003B0002982F /* DecimalFormatter.swift */,
 				2859CE211C7E13470002982F /* GenericMultipleSelectorRow.swift */,
 			);
 			name = Common;
@@ -255,10 +255,10 @@
 		2859CE0F1C7E01C70002982F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				2859CE101C7E01EE0002982F /* SelectorViewController.swift */,
-				2859CE121C7E02310002982F /* MultipleSelectorViewController.swift */,
-				2859CE141C7E02710002982F /* SelectorAlertController.swift */,
 				2859CE161C7E02D10002982F /* ImagePickerController.swift */,
+				2859CE101C7E01EE0002982F /* SelectorViewController.swift */,
+				2859CE141C7E02710002982F /* SelectorAlertController.swift */,
+				2859CE121C7E02310002982F /* MultipleSelectorViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
