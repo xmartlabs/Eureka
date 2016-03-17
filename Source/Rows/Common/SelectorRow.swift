@@ -36,12 +36,6 @@ public class SelectorRow<T: Equatable, Cell: CellType, VCType: TypedRowControlle
         super.init(tag: tag)
     }
     
-    public required convenience init(_ tag: String, @noescape _ initializer: (SelectorRow<T, Cell, VCType> -> ()) = { _ in }) {
-        self.init(tag:tag)
-        RowDefaults.rowInitialization["\(self.dynamicType)"]?(self)
-        initializer(self)
-    }
-    
     /**
      Extends `didSelect` method
      */

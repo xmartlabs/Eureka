@@ -140,6 +140,7 @@ public final class Form {
     
     var rowObservers = [String: [ConditionType: [Taggable]]]()
     var rowsByTag = [String: BaseRow]()
+    var tagToValues = [String: AnyObject]()
     private lazy var kvoWrapper : KVOWrapper = { [unowned self] in return KVOWrapper(form: self) }()
 }
 
@@ -254,11 +255,7 @@ extension Form {
     }
     
     func dictionaryValuesToEvaluatePredicate() -> [String: AnyObject] {
-        return rowsByTag.reduce([String: AnyObject]()) {
-            var result = $0
-            result[$1.0] = $1.1.baseValue as? AnyObject ?? NSNull()
-            return result
-        }
+        return tagToValues
     }
     
     func addRowObservers(taggable: Taggable, rowTags: [String], type: ConditionType) {

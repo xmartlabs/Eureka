@@ -11,12 +11,6 @@ import Foundation
 public class _MultipleSelectorRow<T: Hashable, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell.Value == Set<T>>: GenericMultipleSelectorRow<T, Cell, MultipleSelectorViewController<T>> {
     public required init(tag: String?) {
         super.init(tag: tag)
-        self.displayValueFor = {
-            if let t = $0 {
-                return t.map({ String($0) }).joinWithSeparator(", ")
-            }
-            return nil
-        }
     }
 }
 

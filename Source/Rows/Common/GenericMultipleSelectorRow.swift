@@ -30,13 +30,13 @@ public class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: Typ
     
     required public init(tag: String?) {
         super.init(tag: tag)
+        displayValueFor = {
+            if let t = $0 {
+                return t.map({ String($0) }).joinWithSeparator(", ")
+            }
+            return nil
+        }
         presentationMode = .Show(controllerProvider: ControllerProvider.Callback { return VCType() }, completionCallback: { vc in vc.navigationController?.popViewControllerAnimated(true) })
-    }
-    
-    public required convenience init(_ tag: String, @noescape _ initializer: (GenericMultipleSelectorRow<T, Cell, VCType> -> ()) = { _ in }) {
-        self.init(tag:tag)
-        RowDefaults.rowInitialization["\(self.dynamicType)"]?(self)
-        initializer(self)
     }
     
     /**
