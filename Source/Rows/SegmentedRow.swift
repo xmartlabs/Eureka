@@ -43,7 +43,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         contentView.addSubview(segmentedControl)
         titleLabel?.addObserver(self, forKeyPath: "text", options: [.Old, .New], context: nil)
         imageView?.addObserver(self, forKeyPath: "image", options: [.Old, .New], context: nil)
-        segmentedControl.addTarget(self, action: "valueChanged", forControlEvents: .ValueChanged)
+        segmentedControl.addTarget(self, action: #selector(SegmentedCell.valueChanged), forControlEvents: .ValueChanged)
         contentView.addConstraint(NSLayoutConstraint(item: segmentedControl, attribute: .CenterY, relatedBy: .Equal, toItem: contentView, attribute: .CenterY, multiplier: 1, constant: 0))
     }
     

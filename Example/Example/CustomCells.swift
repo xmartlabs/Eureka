@@ -161,7 +161,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
         selectionStyle = .None
         contentView.addSubview(floatLabelTextField)
         floatLabelTextField.delegate = self
-        floatLabelTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
+        floatLabelTextField.addTarget(self, action: #selector(_FloatLabelCell.textFieldDidChange(_:)), forControlEvents: .EditingChanged)
         contentView.addConstraints(layoutConstraints())
     }
     
@@ -561,7 +561,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
         mapView.addSubview(pinView)
         mapView.layer.insertSublayer(ellipsisLayer, below: pinView.layer)
         
-        let button = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "tappedDone:")
+        let button = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(MapViewController.tappedDone(_:)))
         button.title = "Done"
         navigationItem.rightBarButtonItem = button
         

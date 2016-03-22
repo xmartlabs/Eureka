@@ -191,11 +191,11 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         titleLabel?.addObserver(self, forKeyPath: "text", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
         imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
         
-        streetTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
-        stateTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
-        postalCodeTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
-        cityTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
-        countryTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
+        streetTextField.addTarget(self, action: #selector(PostalAddressCell.textFieldDidChange(_:)), forControlEvents: .EditingChanged)
+        stateTextField.addTarget(self, action: #selector(PostalAddressCell.textFieldDidChange(_:)), forControlEvents: .EditingChanged)
+        postalCodeTextField.addTarget(self, action: #selector(PostalAddressCell.textFieldDidChange(_:)), forControlEvents: .EditingChanged)
+        cityTextField.addTarget(self, action: #selector(PostalAddressCell.textFieldDidChange(_:)), forControlEvents: .EditingChanged)
+        countryTextField.addTarget(self, action: #selector(PostalAddressCell.textFieldDidChange(_:)), forControlEvents: .EditingChanged)
     }
     
     public override func update() {
@@ -350,34 +350,34 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
             if streetTextField.isFirstResponder() {
                 v.nextButton.enabled = true
                 v.nextButton.target = self
-                v.nextButton.action = "internalNavigationAction:"
+                v.nextButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
             }
             else if stateTextField.isFirstResponder() {
                 v.previousButton.target = self
-                v.previousButton.action = "internalNavigationAction:"
+                v.previousButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
                 v.nextButton.target = self
-                v.nextButton.action = "internalNavigationAction:"
+                v.nextButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
                 v.previousButton.enabled = true
                 v.nextButton.enabled = true
             }
             else if postalCodeTextField.isFirstResponder() {
                 v.previousButton.target = self
-                v.previousButton.action = "internalNavigationAction:"
+                v.previousButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
                 v.nextButton.target = self
-                v.nextButton.action = "internalNavigationAction:"
+                v.nextButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
                 v.previousButton.enabled = true
                 v.nextButton.enabled = true
             } else if cityTextField.isFirstResponder() {
                 v.previousButton.target = self
-                v.previousButton.action = "internalNavigationAction:"
+                v.previousButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
                 v.nextButton.target = self
-                v.nextButton.action = "internalNavigationAction:"
+                v.nextButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
                 v.previousButton.enabled = true
                 v.nextButton.enabled = true
             }
             else if countryTextField.isFirstResponder() {
                 v.previousButton.target = self
-                v.previousButton.action = "internalNavigationAction:"
+                v.previousButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
                 v.previousButton.enabled = true
             }
             return v

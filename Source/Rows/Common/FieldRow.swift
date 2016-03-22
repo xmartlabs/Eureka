@@ -121,7 +121,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         
         titleLabel?.addObserver(self, forKeyPath: "text", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
         imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
-        textField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
+        textField.addTarget(self, action: #selector(_FieldCell.textFieldDidChange(_:)), forControlEvents: .EditingChanged)
         
     }
     

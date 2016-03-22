@@ -55,8 +55,8 @@ public protocol BaseRowType: Taggable {
 
 public protocol TypedRowType: BaseRowType {
     
-    typealias Value: Equatable
-    typealias Cell: BaseCell, TypedCellType
+    associatedtype Value: Equatable
+    associatedtype Cell: BaseCell, TypedCellType
     
     /// The typed cell associated to this row.
     var cell : Self.Cell! { get }
