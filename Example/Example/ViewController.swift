@@ -226,7 +226,7 @@ class RowsExampleViewController: FormViewController {
                         $0.value = [👦🏼, 🍐, 🐗]
                     }
                     .onPresent { from, to in
-                        to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: from, action: "multipleSelectorDone:")
+                        to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
                     }
             
         form +++ Section("Generic picker")
@@ -539,7 +539,7 @@ class NativeEventFormViewController : FormViewController {
         initializeForm()
         
         self.navigationItem.leftBarButtonItem?.target = self
-        self.navigationItem.leftBarButtonItem?.action = "cancelTapped:"
+        self.navigationItem.leftBarButtonItem?.action = #selector(NativeEventFormViewController.cancelTapped(_:))
     }
     
     private func initializeForm() {

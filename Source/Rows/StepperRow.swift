@@ -43,7 +43,7 @@ public class StepperCell : Cell<Double>, CellType {
         addConstraint(NSLayoutConstraint(item: stepper, attribute: .CenterY, relatedBy: .Equal, toItem: contentView, attribute: .CenterY, multiplier: 1.0, constant: 0))
         addConstraint(NSLayoutConstraint(item: valueLabel, attribute: .CenterY, relatedBy: .Equal, toItem: stepper, attribute: .CenterY, multiplier: 1.0, constant: 0))
         
-        stepper.addTarget(self, action: "valueChanged", forControlEvents: .ValueChanged)
+        stepper.addTarget(self, action: #selector(StepperCell.valueChanged), forControlEvents: .ValueChanged)
         stepper.value = row.value ?? 0
         
         valueLabel.textColor = stepper.tintColor

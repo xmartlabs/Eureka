@@ -16,7 +16,7 @@ public class DatePickerCell : Cell<NSDate>, CellType {
         self.contentView.addSubview(picker)
         self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": picker]))
         self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": picker]))
-        picker.addTarget(self, action: "datePickerValueChanged:", forControlEvents: .ValueChanged)
+        picker.addTarget(self, action: #selector(DatePickerCell.datePickerValueChanged(_:)), forControlEvents: .ValueChanged)
         return picker
         }()
     

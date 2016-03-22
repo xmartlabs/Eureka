@@ -33,7 +33,7 @@ public enum SelectionType {
  *  Protocol to be implemented by selectable sections types. Enables easier customization
  */
 public protocol SelectableSectionType: CollectionType {
-    typealias SelectableRow: BaseRow, SelectableRowType
+    associatedtype SelectableRow: BaseRow, SelectableRowType
     
     /// Defines how the selection works (single / multiple selection)
     var selectionType : SelectionType { get set }

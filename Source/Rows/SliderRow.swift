@@ -58,7 +58,7 @@ public class SliderCell: Cell<Float>, CellType {
         
         slider.minimumValue = (row as! SliderRow).minimumValue
         slider.maximumValue = (row as! SliderRow).maximumValue
-        slider.addTarget(self, action: "valueChanged", forControlEvents: .ValueChanged)
+        slider.addTarget(self, action: #selector(SliderCell.valueChanged), forControlEvents: .ValueChanged)
         
         if shouldShowTitle() {
             contentView.addSubview(titleLabel)
