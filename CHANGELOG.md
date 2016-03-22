@@ -1,6 +1,19 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [1.5.0](https://github.com/xmartlabs/Eureka/releases/tag/1.5.0)
+
+* Xcode 7.3 support.
+* Expose a public `KeyboardReturnTypeConfiguration` initializer.
+* Allow to override constraints of FieldRow.
+* Fixed SelectableSection wrong behaviour when the selectable rows was added to the section before adding the selectable section to the form.
+* Implemented StepperRow and added an example to the example project.
+* Allow AlertRow cancel title to be changed.
+* Enabled CI UI testing and added some tests.
+* Fixed "0 after decimal separator (DecimalRow)"
+* Added ability to customize selector and multiple selector view controller option rows. Added `selectableRowCellUpdate` property to `SelectorViewController` and `MultipleSelectorViewController`.
+* Performance improvement. Store values for each tag in a dictionary and do not calculate it every time we evaluateHidden.
+
 ### [1.4.1](https://github.com/xmartlabs/Eureka/releases/tag/1.4.1)
 Released on 2016-02-25.
 
