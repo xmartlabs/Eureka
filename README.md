@@ -45,7 +45,7 @@ Both `Form` and `Section` classes conform to `MutableCollectionType` and `RangeR
 ## Requirements
 
 * iOS 8.0+
-* Xcode 7.0+
+* Xcode 7.3+
 
 
 ## Getting involved
