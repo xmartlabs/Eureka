@@ -123,7 +123,18 @@ class RowsExampleViewController: FormViewController {
                     .onCellSelection { $0.cell.detailTextLabel?.text? += " 🇺🇾 " }
             
                 <<< DateRow() { $0.value = NSDate(); $0.title = "DateRow" }
-                
+            
+                <<< PickerInputRow<String>() {  (row : PickerInputRow<String>) -> Void in
+                    
+                    row.title = "Picker Input"
+                    row.value = ""
+                    
+                    row.options = []
+                    for i in 1...10{
+                        row.options.append("option \(i)")
+                    }
+                }
+            
                 <<< CheckRow() {
                         $0.title = "CheckRow"
                         $0.value = true

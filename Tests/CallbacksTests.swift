@@ -52,6 +52,7 @@ class CallbacksTests: XCTestCase {
         onChangeTest(PostalAddressRow(), value: PostalAddress(street: "a", state: "b", postalCode: "c", city: "d", country: "e"))
         onChangeTest(SliderRow(), value: 5.0)
         onChangeTest(StepperRow(), value: 2.5)
+        onChangeTest(PickerInputRow(), value: "option 2")
     }
     
     func testCellSetup() {
@@ -65,6 +66,7 @@ class CallbacksTests: XCTestCase {
         cellSetupTest(PostalAddressRow())
         cellSetupTest(SliderRow())
         cellSetupTest(StepperRow())
+        cellSetupTest(PickerInputRow<String>())
     }
     
     func testCellUpdate() {
@@ -78,6 +80,7 @@ class CallbacksTests: XCTestCase {
         cellUpdateTest(PostalAddressRow())
         cellUpdateTest(SliderRow())
         cellUpdateTest(StepperRow())
+        cellUpdateTest(PickerInputRow<String>())
     }
     
     func testDefaultCellSetup() {
@@ -91,6 +94,7 @@ class CallbacksTests: XCTestCase {
         defaultCellSetupTest(PostalAddressRow())
         defaultCellSetupTest(SliderRow())
         defaultCellSetupTest(StepperRow())
+        defaultCellSetupTest(PickerInputRow<String>())
     }
     
     func testDefaultCellUpdate() {
@@ -104,6 +108,7 @@ class CallbacksTests: XCTestCase {
         defaultCellUpdateTest(PostalAddressRow())
         defaultCellUpdateTest(SliderRow())
         defaultCellUpdateTest(StepperRow())
+        defaultCellUpdateTest(PickerInputRow<String>())
     }
     
     func testDefaultInitializers() {
@@ -117,6 +122,7 @@ class CallbacksTests: XCTestCase {
         defaultInitializerTest(PostalAddressRow())
         defaultInitializerTest(SliderRow())
         defaultInitializerTest(StepperRow())
+        defaultInitializerTest(PickerInputRow<String>())
     }
     
     private func onChangeTest<Row, Value where Row: BaseRow, Row: RowType, Row: TypedRowType, Row.Value == Row.Cell.Value, Value == Row.Value>(row:Row, value:Value){
