@@ -71,7 +71,7 @@ class BaseEurekaTests: XCTestCase {
             <<< ZipCodeRow("ZipCodeRow_f1"){ $0.title = "Zip Code" }
 		
 		postalAddressForm +++= Section("Postal Address Section")
-			<<< PostalAddressRow<PostalAddress>("PostalAddressRow_f1"){
+			<<< PostalAddressRow("PostalAddressRow_f1"){
 				$0.title = "Postal Address"
 			}
 		
@@ -121,7 +121,7 @@ public class MyFormDelegate : FormDelegate {
     public var sectionsReplacedOut = 0
     
     public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {
-        valuesChanged++
+        valuesChanged += 1
     }
     
     public func sectionsHaveBeenAdded(sections: [Section], atIndexes: NSIndexSet){

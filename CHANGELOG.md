@@ -1,10 +1,52 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-### 1.3.2 - Master branch 
+### [1.5.0](https://github.com/xmartlabs/Eureka/releases/tag/1.5.0)
+
+* Xcode 7.3 support.
+* Expose a public `KeyboardReturnTypeConfiguration` initializer.
+* Allow to override constraints of FieldRow.
+* Fixed SelectableSection wrong behaviour when the selectable rows was added to the section before adding the selectable section to the form.
+* Implemented StepperRow and added an example to the example project.
+* Allow AlertRow cancel title to be changed.
+* Enabled CI UI testing and added some tests.
+* Fixed "0 after decimal separator (DecimalRow)"
+* Added ability to customize selector and multiple selector view controller option rows. Added `selectableRowCellUpdate` property to `SelectorViewController` and `MultipleSelectorViewController`.
+* Performance improvement. Store values for each tag in a dictionary and do not calculate it every time we evaluateHidden.
+
+### [1.4.1](https://github.com/xmartlabs/Eureka/releases/tag/1.4.1)
+Released on 2016-02-25.
+
+##### Breaking Changes
+
+* `SelectorRow` now requires the cell among its generic values. This means it is easier to change the cell for a selector row.
+* `_AlertRow` and `_ActionSheetRow` require generic cell parameter
+
+If you are using custom rows that inherit from SelectorRow then you might want to change them as follows (or use your custom cell):
+```
+// before
+// public final class LocationRow : SelectorRow<CLLocation, MapViewController>, RowType
+// now
+public final class LocationRow : SelectorRow<CLLocation, MapViewController, PushSelectorCell<CLLocation>>, RowType
+```
+
+
+### [1.4.0](https://github.com/xmartlabs/Eureka/releases/tag/1.4.0)
+Released on 2016-02-25.
 
  * PopoverSelectorRow added.
  * BaseRow reload, select, deselect helpers added.
+ * ImageRow update: allows clear button, image sources are public
+ * Added PostalAddressRow
+ * Lots of smaller bug fixes and new documentation
+
+##### Breaking Changes
+
+* `BaseCellType` protocol method `func cellBecomeFirstResponder() -> Bool`  was renamed to `func cellBecomeFirstResponder(direction: Direction) -> Bool`
+
+If you are using custom rows you may have to fix the compiler error by adding the new parameter.
+
+* DecimalRow value type changed from Float to Double.
 
 ### [1.3.1](https://github.com/xmartlabs/Eureka/releases/tag/1.3.1)
 Released on 2016-01-11.

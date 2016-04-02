@@ -50,8 +50,8 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
         selectionStyle = .None
         for subview in contentView.subviews {
             if let button = subview as? UIButton {
-                button.setImage(UIImage(named: "checkedDay"), forState: UIControlState.Selected)
-                button.setImage(UIImage(named: "uncheckedDay"), forState: UIControlState.Normal)
+                button.setImage(UIImage(named: "checkedDay"), forState: .Selected)
+                button.setImage(UIImage(named: "uncheckedDay"), forState: .Normal)
                 button.adjustsImageWhenHighlighted = false
                 imageTopTitleBottom(button)
             }
@@ -161,7 +161,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
         selectionStyle = .None
         contentView.addSubview(floatLabelTextField)
         floatLabelTextField.delegate = self
-        floatLabelTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
+        floatLabelTextField.addTarget(self, action: #selector(_FloatLabelCell.textFieldDidChange(_:)), forControlEvents: .EditingChanged)
         contentView.addConstraints(layoutConstraints())
     }
     
@@ -180,7 +180,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
         return !row.isDisabled && floatLabelTextField.canBecomeFirstResponder()
     }
     
-    public override func cellBecomeFirstResponder() -> Bool {
+    public override func cellBecomeFirstResponder(direction: Direction) -> Bool {
         return floatLabelTextField.becomeFirstResponder()
     }
     
@@ -199,18 +199,28 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
             row.value = nil
             return
         }
-        if let fieldRow = row as? FormatterConformance, let formatter = fieldRow.formatter where fieldRow.useFormatterDuringInput {
-            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
-            let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
-            if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                row.value = value.memory as? T
-                if var selStartPos = textField.selectedTextRange?.start {
-                    let oldVal = textField.text
-                    textField.text = row.displayValueFor?(row.value)
-                    if let f = formatter as? FormatterProtocol {
-                        selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text)
+        if let fieldRow = row as? FormatterConformance, let formatter = fieldRow.formatter {
+            if fieldRow.useFormatterDuringInput {
+                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
+                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
+                if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
+                    row.value = value.memory as? T
+                    if var selStartPos = textField.selectedTextRange?.start {
+                        let oldVal = textField.text
+                        textField.text = row.displayValueFor?(row.value)
+                        if let f = formatter as? FormatterProtocol {
+                            selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text)
+                        }
+                        textField.selectedTextRange = textField.textRangeFromPosition(selStartPos, toPosition: selStartPos)
                     }
-                    textField.selectedTextRange = textField.textRangeFromPosition(selStartPos, toPosition: selStartPos)
+                    return
+                }
+            }
+            else {
+                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
+                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
+                if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
+                    row.value = value.memory as? T
                 }
                 return
             }
@@ -220,20 +230,38 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
             return
         }
         guard let newValue = T.init(string: textValue) else {
-            row.updateCell()
             return
         }
         row.value = newValue
+    }
+    
+    
+    //Mark: Helpers
+    
+    private func displayValue(useFormatter useFormatter: Bool) -> String? {
+        guard let v = row.value else { return nil }
+        if let formatter = (row as? FormatterConformance)?.formatter where useFormatter {
+            return textField.isFirstResponder() ? formatter.editingStringForObjectValue(v as! AnyObject) : formatter.stringForObjectValue(v as! AnyObject)
+        }
+        return String(v)
     }
     
     //MARK: TextFieldDelegate
     
     public func textFieldDidBeginEditing(textField: UITextField) {
         formViewController()?.beginEditing(self)
+        if let fieldRowConformance = row as? FormatterConformance, let _ = fieldRowConformance.formatter where fieldRowConformance.useFormatterOnDidBeginEditing ?? fieldRowConformance.useFormatterDuringInput {
+            textField.text = displayValue(useFormatter: true)
+        } else {
+            textField.text = displayValue(useFormatter: false)
+        }
     }
     
     public func textFieldDidEndEditing(textField: UITextField) {
         formViewController()?.endEditing(self)
+        formViewController()?.textInputDidEndEditing(textField, cell: self)
+        textFieldDidChange(textField)
+        textField.text = displayValue(useFormatter: (row as? FormatterConformance)?.formatter != nil)
     }
 }
 
@@ -377,32 +405,23 @@ public class AccountFloatLabelCell : _FloatLabelCell<String>, CellType {
 
 //MARK: FloatLabelRow
 
-public class FloatFieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TextFieldCell, Cell.Value == T>: Row<T, Cell> {
+public class FloatFieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: TextFieldCell, Cell.Value == T>: Row<T, Cell> {
 
     public var formatter: NSFormatter?
-    public var useFormatterDuringInput: Bool
+    public var useFormatterDuringInput = false
+    public var useFormatterOnDidBeginEditing: Bool?
     
     public required init(tag: String?) {
-        useFormatterDuringInput = false
         super.init(tag: tag)
         self.displayValueFor = { [unowned self] value in
-            guard let v = value else {
-                return nil
-            }
+            guard let v = value else { return nil }
             if let formatter = self.formatter {
-                if self.cell.textField.isFirstResponder() {
-                    if self.useFormatterDuringInput {
-                        return formatter.editingStringForObjectValue(v as! AnyObject)
-                    }
-                    else {
-                        return String(v)
-                    }
+                if self.cell.textField.isFirstResponder(){
+                    return self.useFormatterDuringInput ? formatter.editingStringForObjectValue(v as! AnyObject) : String(v)
                 }
                 return formatter.stringForObjectValue(v as! AnyObject)
             }
-            else{
-                return String(v)
-            }
+            return String(v)
         }
     }
 }
@@ -456,7 +475,7 @@ public final class EmailFloatLabelRow: FloatFieldRow<String, EmailFloatLabelCell
 
 //MARK: LocationRow
 
-public final class LocationRow : SelectorRow<CLLocation, MapViewController>, RowType {
+public final class LocationRow : SelectorRow<CLLocation, PushSelectorCell<CLLocation>, MapViewController>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
         presentationMode = .Show(controllerProvider: ControllerProvider.Callback { return MapViewController(){ _ in } }, completionCallback: { vc in vc.navigationController?.popViewControllerAnimated(true) })
@@ -542,7 +561,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
         mapView.addSubview(pinView)
         mapView.layer.insertSublayer(ellipsisLayer, below: pinView.layer)
         
-        let button = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "tappedDone:")
+        let button = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(MapViewController.tappedDone(_:)))
         button.title = "Done"
         navigationItem.rightBarButtonItem = button
         
@@ -579,15 +598,6 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
         let latitude = fmt.stringFromNumber(mapView.centerCoordinate.latitude)!
         let longitude = fmt.stringFromNumber(mapView.centerCoordinate.longitude)!
         title = "\(latitude), \(longitude)"
-    }
-    
-    public func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        
-        let pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "annotation")
-        pinAnnotationView.pinColor = MKPinAnnotationColor.Red
-        pinAnnotationView.draggable = false
-        pinAnnotationView.animatesDrop = true
-        return pinAnnotationView
     }
     
     public func mapView(mapView: MKMapView, regionWillChangeAnimated animated: Bool) {

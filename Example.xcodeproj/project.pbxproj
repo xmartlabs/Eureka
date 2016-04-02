@@ -12,7 +12,7 @@
 		28C777241BA14A52000ED936 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51729E471B9A5841004A00EB /* Eureka.framework */; };
 		28C777251BA14A52000ED936 /* Eureka.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51729E471B9A5841004A00EB /* Eureka.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		28CD97C21BB32F0E00AFDA67 /* EurekaSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28CD97C01BB32F0E00AFDA67 /* EurekaSectionHeader.xib */; };
-		28E8554C1B9EA46F004E5189 /* ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E8554A1B9EA400004E5189 /* ExampleUITests.swift */; };
+		28E8554C1B9EA46F004E5189 /* FieldRowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E8554A1B9EA400004E5189 /* FieldRowUITests.swift */; };
 		51729E1E1B9A54F1004A00EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51729E1D1B9A54F1004A00EB /* AppDelegate.swift */; };
 		51729E201B9A54F1004A00EB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51729E1F1B9A54F1004A00EB /* ViewController.swift */; };
 		51729E231B9A54F1004A00EB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51729E211B9A54F1004A00EB /* Main.storyboard */; };
@@ -78,7 +78,7 @@
 		2837E29E1BA3A5A800A1952C /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FloatLabelTextField.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		285F2B431BB79B86005991BA /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		28CD97C11BB32F0E00AFDA67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Example/Base.lproj/EurekaSectionHeader.xib; sourceTree = "<group>"; };
-		28E8554A1B9EA400004E5189 /* ExampleUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExampleUITests.swift; path = Example/UITests/ExampleUITests.swift; sourceTree = SOURCE_ROOT; };
+		28E8554A1B9EA400004E5189 /* FieldRowUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FieldRowUITests.swift; path = Example/UITests/FieldRowUITests.swift; sourceTree = SOURCE_ROOT; };
 		51729E1A1B9A54F1004A00EB /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51729E1D1B9A54F1004A00EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Example/AppDelegate.swift; sourceTree = "<group>"; };
 		51729E1F1B9A54F1004A00EB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = ViewController.swift; path = Example/ViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -176,7 +176,7 @@
 		51729E311B9A54F1004A00EB /* UITests */ = {
 			isa = PBXGroup;
 			children = (
-				28E8554A1B9EA400004E5189 /* ExampleUITests.swift */,
+				28E8554A1B9EA400004E5189 /* FieldRowUITests.swift */,
 				51729E341B9A54F1004A00EB /* Info.plist */,
 			);
 			name = UITests;
@@ -341,7 +341,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28E8554C1B9EA46F004E5189 /* ExampleUITests.swift in Sources */,
+				28E8554C1B9EA46F004E5189 /* FieldRowUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
