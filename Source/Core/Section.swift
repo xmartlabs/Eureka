@@ -203,6 +203,7 @@ extension Section : RangeReplaceableCollectionType {
         kvoWrapper.rows.insertObject(formRow, atIndex: kvoWrapper.rows.count)
         kvoWrapper._allRows.append(formRow)
         formRow.wasAddedToFormInSection(self)
+        formRow.updateRowInSection()
     }
     
     public func appendContentsOf<S : SequenceType where S.Generator.Element == BaseRow>(newElements: S) {
@@ -210,6 +211,10 @@ extension Section : RangeReplaceableCollectionType {
         kvoWrapper._allRows.appendContentsOf(newElements)
         for row in newElements{
             row.wasAddedToFormInSection(self)
+        }
+        
+        for row in newElements {
+            row.updateRowInSection()
         }
     }
     
@@ -227,6 +232,10 @@ extension Section : RangeReplaceableCollectionType {
         kvoWrapper._allRows.insertContentsOf(newElements, at: indexForInsertionAtIndex(subRange.startIndex))
         for row in newElements{
             row.wasAddedToFormInSection(self)
+        }
+        
+        for row in newElements {
+            row.updateRowInSection()
         }
     }
     
@@ -283,6 +292,10 @@ extension Section /* Condition */{
         evaluateHidden()
         for row in kvoWrapper._allRows {
             row.wasAddedToFormInSection(self)
+        }
+        
+        for row in kvoWrapper._allRows {
+            row.updateRowInSection()
         }
     }
     
