@@ -406,7 +406,7 @@ class FieldRowCustomizationController : FormViewController {
             
                 <<< NameRow() {
                     $0.title = "Title"
-                    $0.textFieldPercentage = 0.6
+//                    $0.textFieldLeftConst = 0.6
                     $0.placeholder = "textFieldPercentage = 0.6"
                 }
                 .cellUpdate {
@@ -415,7 +415,7 @@ class FieldRowCustomizationController : FormViewController {
                 }
                 <<< NameRow() {
                     $0.title = "Another Title"
-                    $0.textFieldPercentage = 0.6
+//                    $0.textFieldPercentage = 0.6
                     $0.placeholder = "textFieldPercentage = 0.6"
                 }
                 .cellUpdate {
@@ -424,7 +424,7 @@ class FieldRowCustomizationController : FormViewController {
                 }
                 <<< NameRow() {
                     $0.title = "One more"
-                    $0.textFieldPercentage = 0.7
+//                    $0.textFieldPercentage = 0.7
                     $0.placeholder = "textFieldPercentage = 0.7"
                 }
                 .cellUpdate {
@@ -873,6 +873,7 @@ class FormatterExample : FormViewController {
             <<< DecimalRow(){
                 $0.useFormatterDuringInput = true
                 $0.title = "Currency style"
+                $0.textFieldLeftConst = 110
                 $0.value = 2015
                 let formatter = CurrencyFormatter()
                 formatter.locale = .currentLocale()
@@ -882,6 +883,7 @@ class FormatterExample : FormViewController {
             <<< DecimalRow(){
                 $0.title = "Scientific style"
                 $0.value = 2015
+                $0.textFieldLeftConst = 110
                 let formatter = NSNumberFormatter()
                 formatter.locale = .currentLocale()
                 formatter.numberStyle = .ScientificStyle
@@ -890,6 +892,7 @@ class FormatterExample : FormViewController {
             <<< IntRow(){
                 $0.title = "Spell out style"
                 $0.value = 2015
+                $0.textFieldLeftConst = 110
                 let formatter = NSNumberFormatter()
                 formatter.locale = .currentLocale()
                 formatter.numberStyle = .SpellOutStyle
@@ -916,6 +919,7 @@ class FormatterExample : FormViewController {
             <<< DecimalRow(){
                 $0.title = "Energy: Jules to calories"
                 $0.value = 100.0
+                $0.textFieldLeftConst = 230
                 let formatter = NSEnergyFormatter()
                 $0.formatter = formatter
             }
