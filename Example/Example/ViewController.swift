@@ -120,7 +120,11 @@ class RowsExampleViewController: FormViewController {
                         $0.title = "LabelRow"
                         $0.value = "tap the row"
                     }
-                    .onCellSelection { $0.cell.detailTextLabel?.text? += " 🇺🇾 " }
+                    .onCellSelection { cell, row in
+                        row.title = (row.title ?? "") + " 🇺🇾 "
+                        row.reload() // or row.updateCell()
+                    }
+            
             
                 <<< DateRow() { $0.value = NSDate(); $0.title = "DateRow" }
                 
