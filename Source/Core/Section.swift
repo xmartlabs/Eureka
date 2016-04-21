@@ -114,10 +114,18 @@ public class Section {
     public private(set) weak var form: Form?
     
     /// The header of this section.
-    public var header: HeaderFooterViewRepresentable?
+    public var header: HeaderFooterViewRepresentable? {
+        willSet {
+            headerView = nil
+        }
+    }
     
     /// The footer of this section
-    public var footer: HeaderFooterViewRepresentable?
+    public var footer: HeaderFooterViewRepresentable? {
+        willSet {
+            footerView = nil
+        }
+    }
     
     /// Index of this section in the form it belongs to.
     public var index: Int? { return form?.indexOf(self) }
