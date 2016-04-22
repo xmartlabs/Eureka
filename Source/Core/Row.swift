@@ -74,14 +74,13 @@ public class Row<T: Equatable, Cell: CellType where Cell: TypedCellType, Cell: B
     
     /// The cell associated to this row.
     public var cell : Cell! {
-        guard _cell == nil else{
+        return _cell ?? {
+            let result = cellProvider.createCell(self.cellStyle)
+            result.row = self
+            result.setup()
+            _cell = result
             return _cell
-        }
-        let result = cellProvider.createCell(self.cellStyle)
-        result.row = self
-        result.setup()
-        _cell = result
-        return _cell
+        }()
     }
     
     /// The untyped cell associated to this row
