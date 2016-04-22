@@ -85,18 +85,18 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
     public func viewForSection(section: Section, type: HeaderFooterType, controller: FormViewController) -> UIView? {
         var view: ViewType?
         if type == .Header {
-            view = section.headerView as? ViewType
-            if view == nil {
-                view = viewProvider?.createView()
-                section.headerView = view
-            }
+            view = section.headerView as? ViewType ?? {
+                            let result = viewProvider?.createView()
+                            section.headerView = result
+                            return result
+                        }()
         }
         else {
-            view = section.footerView as? ViewType
-            if view == nil {
-                view = viewProvider?.createView()
-                section.footerView = view
-            }
+            view = section.footerView as? ViewType ?? {
+                            let result = viewProvider?.createView()
+                            section.footerView = result
+                            return result
+                        }()
         }
         guard let v = view else { return nil }
         onSetupView?(view: v, section: section, form: controller)
@@ -141,4 +141,14 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
     public init(stringLiteral value: String) {
         self.title = value
     }
+}
+
+extension UIView {
+    
+    func eurekaInvalidate() {
+        setNeedsUpdateConstraints()
+        updateConstraintsIfNeeded()
+        setNeedsLayout()
+    }
+    
 }

@@ -48,7 +48,7 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
      Method that can be called to expand (open) an inline row.
      */
     public func expandInlineRow() {
-        guard inlineRow == nil else { return }
+        if let _ = inlineRow  { return } 
         if var section = section, let form = section.form {
             let inline = InlineRow.init() { _ in }
             inline.value = value
