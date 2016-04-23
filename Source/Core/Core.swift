@@ -831,7 +831,7 @@ extension FormViewController {
         navigateToDirection(sender == navigationAccessoryView.previousButton ? .Up : .Down)
     }
     
-    private func navigateToDirection(direction: Direction){
+    public func navigateToDirection(direction: Direction){
         guard let currentCell = tableView?.findFirstResponder()?.formCell() else { return }
         guard let currentIndexPath = tableView?.indexPathForCell(currentCell) else { assertionFailure(); return }
         guard let nextRow = nextRowForRow(form[currentIndexPath], withDirection: direction) else { return }
