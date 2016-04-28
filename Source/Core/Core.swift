@@ -626,11 +626,6 @@ extension FormViewController : UITableViewDelegate {
     
     //MARK: UITableViewDelegate
     
-    public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        guard tableView == self.tableView else { return }
-        form[indexPath].updateCell()
-    }
-    
     public func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         return indexPath
     }
@@ -705,6 +700,7 @@ extension FormViewController : UITableViewDataSource {
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    	form[indexPath].updateCell()
         return form[indexPath].baseCell
     }
     
