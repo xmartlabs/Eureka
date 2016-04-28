@@ -99,8 +99,6 @@ public class Row<T: Equatable, Cell: CellType where Cell: TypedCellType, Cell: B
         customUpdateCell()
         RowDefaults.cellUpdate["\(self.dynamicType)"]?(cell, self)
         callbackCellUpdate?()
-        cell.setNeedsLayout()
-        cell.setNeedsUpdateConstraints()
     }
     
     /**
