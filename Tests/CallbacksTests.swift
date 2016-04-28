@@ -145,7 +145,7 @@ class CallbacksTests: XCTestCase {
             invoked = true
         }
         formVC.form +++ Section() <<< row
-        formVC.tableView(formVC.tableView!, willDisplayCell: row.cell, forRowAtIndexPath: row.indexPath()!) // should invoke cell update
+        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: row.indexPath()!) // should invoke cell update
         XCTAssertTrue(invoked)
     }
     
@@ -174,7 +174,7 @@ class CallbacksTests: XCTestCase {
             invoked = true
         }
         formVC.form +++= row
-        formVC.tableView(formVC.tableView!, willDisplayCell: row.cell, forRowAtIndexPath: row.indexPath()!) // should invoke cell update
+        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: row.indexPath()!) // should invoke cell update
         XCTAssertTrue(invoked)
     }
 }

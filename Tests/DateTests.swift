@@ -35,34 +35,31 @@ class DateTests: BaseEurekaTests {
     
     func testMinMax(){
         
-        let minRow : DateRow? = formVC.form.rowByTag("MinDateRow_d1")
-        let maxRow : DateRow?  = formVC.form.rowByTag("MaxDateRow_d1")
-        let minMaxRow : DateRow? = formVC.form.rowByTag("MinMaxDateRow_d1")
+        let minRow : DateRow! = formVC.form.rowByTag("MinDateRow_d1")
+        let maxRow : DateRow!  = formVC.form.rowByTag("MaxDateRow_d1")
+        let minMaxRow : DateRow! = formVC.form.rowByTag("MinMaxDateRow_d1")
         
-        XCTAssertNotNil(minRow?.indexPath())
-        XCTAssertNotNil(maxRow?.indexPath())
-        XCTAssertNotNil(minMaxRow?.indexPath())
+        XCTAssertNotNil(minRow.indexPath())
+        XCTAssertNotNil(maxRow.indexPath())
+        XCTAssertNotNil(minMaxRow.indexPath())
         
         // make sure cellSetup is called for each cell
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: minRow!.indexPath()!)
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: maxRow!.indexPath()!)
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: minMaxRow!.indexPath()!)
+        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: minRow.indexPath()!)
+        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: maxRow.indexPath()!)
+        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: minMaxRow.indexPath()!)
         
         //make sure cell update is called for each cell
-        formVC.tableView(formVC.tableView!, willDisplayCell: minRow!.cell, forRowAtIndexPath: minRow!.indexPath()!)
-        formVC.tableView(formVC.tableView!, willDisplayCell: maxRow!.cell, forRowAtIndexPath: maxRow!.indexPath()!)
-        formVC.tableView(formVC.tableView!, willDisplayCell: minMaxRow!.cell, forRowAtIndexPath: minMaxRow!.indexPath()!)
+        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: minRow.indexPath()!)
+        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: maxRow.indexPath()!)
+        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: minMaxRow.indexPath()!)
         
+        XCTAssertNil(minRow.cell.datePicker.maximumDate)
+        XCTAssertEqual(minRow.cell.datePicker.minimumDate, minRow.value?.dateByAddingTimeInterval(-60*60*24))
+        XCTAssertNil(maxRow.cell.datePicker.minimumDate)
+        XCTAssertEqual(maxRow.cell.datePicker.maximumDate, maxRow.value?.dateByAddingTimeInterval(60*60*24))
         
-        XCTAssertNil(minRow?.cell.datePicker.maximumDate)
-        XCTAssertEqual(minRow?.cell.datePicker.minimumDate, minRow?.value?.dateByAddingTimeInterval(-60*60*24))
-        XCTAssertNil(maxRow?.cell.datePicker.minimumDate)
-        XCTAssertEqual(maxRow?.cell.datePicker.maximumDate, maxRow?.value?.dateByAddingTimeInterval(60*60*24))
-        
-        XCTAssertNotNil(minMaxRow?.cell.datePicker.minimumDate)
-        XCTAssertEqual(minMaxRow?.cell.datePicker.maximumDate, minMaxRow?.cell.datePicker.minimumDate!.dateByAddingTimeInterval(2*60*60*24))
-        
-        
+        XCTAssertNotNil(minMaxRow.cell.datePicker.minimumDate)
+        XCTAssertEqual(minMaxRow.cell.datePicker.maximumDate, minMaxRow.cell.datePicker.minimumDate!.dateByAddingTimeInterval(2*60*60*24))
     }
     
     func testInterval(){
@@ -74,7 +71,7 @@ class DateTests: BaseEurekaTests {
         formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: row!.indexPath()!)
         
         //make sure cell update is called for each cell
-        formVC.tableView(formVC.tableView!, willDisplayCell: row!.cell, forRowAtIndexPath: row!.indexPath()!)
+        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: row!.indexPath()!)
         
         XCTAssertEqual(row?.cell.datePicker.minuteInterval, 15)
 
