@@ -40,7 +40,7 @@ class HomeViewController : FormViewController {
         
         form  +++=
             
-            Section(footer: "These are 10 ButtonRow rows") {
+            Section() {
                 $0.header = HeaderFooterView<EurekaLogoView>(HeaderFooterProvider.Class)
             }
         
@@ -92,9 +92,24 @@ class HomeViewController : FormViewController {
                     row.title = row.tag
                     row.presentationMode = .SegueName(segueName: "ListSectionsControllerSegue", completionCallback: nil)
                 }
+        +++ Section()
+                <<< ButtonRow() { (row: ButtonRow) -> Void in
+                   row.title = "About"
+                }  .onCellSelection({ (cell, row) in
+                    self.showAlert()
+                })
     }
+    
+    
+    @IBAction func showAlert() {
+        let alertController = UIAlertController(title: "OnCellSelection", message: "Button Row Action", preferredStyle: .Alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        alertController.addAction(defaultAction)
+        presentViewController(alertController, animated: true, completion: nil)
+        
+    }
+    
 }
-
 //MARK: Emoji
 
 typealias Emoji = String
