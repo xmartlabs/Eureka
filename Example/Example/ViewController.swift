@@ -38,7 +38,7 @@ class HomeViewController : FormViewController {
            cell.accessoryView?.frame = CGRectMake(0, 0, 34, 34)
         }
         
-        form  +++=
+        form =
             
             Section() {
                 $0.header = HeaderFooterView<EurekaLogoView>(HeaderFooterProvider.Class)
