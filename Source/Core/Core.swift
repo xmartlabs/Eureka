@@ -481,11 +481,36 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if let selectedIndexPath = tableView?.indexPathForSelectedRow {
-            tableView?.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
-            tableView?.selectRowAtIndexPath(selectedIndexPath, animated: false, scrollPosition: .None)
-            tableView?.deselectRowAtIndexPath(selectedIndexPath, animated: true)
+
+        let selectedIndexPaths = tableView?.indexPathsForSelectedRows ?? []
+        tableView?.reloadRowsAtIndexPaths(selectedIndexPaths, withRowAnimation: .None)
+        selectedIndexPaths.forEach {
+            tableView?.selectRowAtIndexPath($0, animated: false, scrollPosition: .None)
         }
+
+        let deselectionAnimation = { (context: UIViewControllerTransitionCoordinatorContext) in
+            selectedIndexPaths.forEach {
+                self.tableView?.deselectRowAtIndexPath($0, animated: context.isAnimated())
+            }
+        }
+
+        let reselection = { (context: UIViewControllerTransitionCoordinatorContext) in
+            if context.isCancelled() {
+                selectedIndexPaths.forEach {
+                    self.tableView?.selectRowAtIndexPath($0, animated: false, scrollPosition: .None)
+                }
+            }
+        }
+
+        if let coordinator = self.transitionCoordinator() {
+            coordinator.animateAlongsideTransitionInView(parentViewController?.view, animation: deselectionAnimation, completion: reselection)
+        }
+        else {
+            selectedIndexPaths.forEach {
+                self.tableView?.deselectRowAtIndexPath($0, animated: false)
+            }
+        }
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FormViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FormViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
