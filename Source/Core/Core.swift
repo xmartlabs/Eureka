@@ -488,26 +488,26 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
             tableView?.selectRowAtIndexPath($0, animated: false, scrollPosition: .None)
         }
 
-        let deselectionAnimation = { (context: UIViewControllerTransitionCoordinatorContext) in
+        let deselectionAnimation = { [weak self] (context: UIViewControllerTransitionCoordinatorContext) in
             selectedIndexPaths.forEach {
-                self.tableView?.deselectRowAtIndexPath($0, animated: context.isAnimated())
+                self?.tableView?.deselectRowAtIndexPath($0, animated: context.isAnimated())
             }
         }
 
-        let reselection = { (context: UIViewControllerTransitionCoordinatorContext) in
+        let reselection = { [weak self] (context: UIViewControllerTransitionCoordinatorContext) in
             if context.isCancelled() {
                 selectedIndexPaths.forEach {
-                    self.tableView?.selectRowAtIndexPath($0, animated: false, scrollPosition: .None)
+                    self?.tableView?.selectRowAtIndexPath($0, animated: false, scrollPosition: .None)
                 }
             }
         }
 
-        if let coordinator = self.transitionCoordinator() {
+        if let coordinator = transitionCoordinator() {
             coordinator.animateAlongsideTransitionInView(parentViewController?.view, animation: deselectionAnimation, completion: reselection)
         }
         else {
             selectedIndexPaths.forEach {
-                self.tableView?.deselectRowAtIndexPath($0, animated: false)
+                tableView?.deselectRowAtIndexPath($0, animated: false)
             }
         }
 
