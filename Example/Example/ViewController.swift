@@ -282,13 +282,16 @@ class RowsExampleViewController: FormViewController {
                     }
                 
                 <<< PhoneRow() {
-                        $0.title = "PhoneRow (disabled)"
-                        $0.value = "+598 9898983510"
-                        $0.disabled = true
+                        $0.title = "PhoneRow"
+                        $0.value = "15144226688"
+                        $0.formatter = PhoneFormatter()
+                    }.cellSetup { cell, _  in
+                        cell.textField.keyboardType = .PhonePad
                     }
             
                 <<< NameRow() {
-                        $0.title =  "NameRow"
+                        $0.title =  "NameRow (disabled)"
+                        $0.disabled = true
                     }
         
                 <<< PasswordRow() {

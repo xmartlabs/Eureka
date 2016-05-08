@@ -74,6 +74,7 @@
 		49ADC7F91C8A83240073952B /* StepperRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADC7F81C8A83240073952B /* StepperRow.swift */; };
 		51729DF61B9A4F5E004A00EB /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51729DEB1B9A4F5E004A00EB /* Eureka.framework */; };
 		51729E671B9A5FA5004A00EB /* Eureka.h in Headers */ = {isa = PBXBuildFile; fileRef = 51729E661B9A5FA5004A00EB /* Eureka.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9B890FFD1CDEF4F7007F283B /* PhoneFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B890FFC1CDEF4F7007F283B /* PhoneFormatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -157,6 +158,7 @@
 		51729DF51B9A4F5E004A00EB /* EurekaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EurekaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		51729DFC1B9A4F5E004A00EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Tests/Info.plist; sourceTree = "<group>"; };
 		51729E661B9A5FA5004A00EB /* Eureka.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Eureka.h; path = Source/Eureka.h; sourceTree = SOURCE_ROOT; };
+		9B890FFC1CDEF4F7007F283B /* PhoneFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneFormatter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,6 +248,7 @@
 				2859CDEE1C7DF0F70002982F /* DateFieldRow.swift */,
 				2859CDF21C7DF22D0002982F /* DateInlineFieldRow.swift */,
 				2859CE0C1C7E006E0002982F /* FormatterConformance.swift */,
+				9B890FFC1CDEF4F7007F283B /* PhoneFormatter.swift */,
 				2859CE0A1C7E003B0002982F /* DecimalFormatter.swift */,
 				2859CE211C7E13470002982F /* GenericMultipleSelectorRow.swift */,
 			);
@@ -452,6 +455,7 @@
 				28EEBFEC1C7E224200300699 /* PresenterRowType.swift in Sources */,
 				28EEC0211C7E3AD700300699 /* TextAreaRow.swift in Sources */,
 				28EEBFFD1C7E25F100300699 /* Cell.swift in Sources */,
+				9B890FFD1CDEF4F7007F283B /* PhoneFormatter.swift in Sources */,
 				28EEC0321C7E64A400300699 /* DatePickerRow.swift in Sources */,
 				28EEBFE81C7E1D7E00300699 /* CellType.swift in Sources */,
 				28EEC0241C7E3B1D00300699 /* PickerRow.swift in Sources */,
