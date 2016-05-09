@@ -8,8 +8,14 @@
 
 import Foundation
 
+public enum TextAreaHeight {
+    case Fixed(cellHeight: CGFloat)
+    case Dynamic(initialTextViewHeight: CGFloat)
+}
+
 protocol TextAreaConformance : FormatterConformance {
     var placeholder : String? { get set }
+    var textAreaHeight : TextAreaHeight { get set }
 }
 
 
@@ -44,7 +50,14 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     
     public override func setup() {
         super.setup()
-        height = { 110 }
+        let textAreaRow = row as! TextAreaConformance
+        switch textAreaRow.textAreaHeight {
+        case .Dynamic(_):
+            height = { UITableViewAutomaticDimension }
+            textView.scrollEnabled = false
+        case .Fixed(let cellHeight):
+            height = { cellHeight }
+        }
         textView.keyboardType = .Default
         textView.delegate = self
         textView.font = .preferredFontForTextStyle(UIFontTextStyleBody)
@@ -56,6 +69,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         contentView.addSubview(placeholderLabel)
         
         imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.Old.union(.New), context: nil)
+        setNeedsUpdateConstraints()
     }
     
     deinit {
@@ -127,6 +141,16 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     }
     
     public func textViewDidChange(textView: UITextView) {
+        
+        if let textAreaConformance = row as? TextAreaConformance, case .Dynamic = textAreaConformance.textAreaHeight, let tableView = formViewController()?.tableView {
+            let currentOffset = tableView.contentOffset
+            UIView.setAnimationsEnabled(false)
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            UIView.setAnimationsEnabled(true)
+            tableView.setContentOffset(currentOffset, animated: false)
+        }
+        
         placeholderLabel.hidden = textView.text.characters.count != 0
         guard let textValue = textView.text else {
             row.value = nil
@@ -191,7 +215,13 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         var views : [String: AnyObject] = ["textView": textView, "label": placeholderLabel]
         
         dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-[label]", options: [], metrics: nil, views: views)
-        dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-[textView]-|", options: [], metrics: nil, views: views)
+        if let textAreaConformance = row as? TextAreaConformance, case .Dynamic(let initialTextViewHeight) = textAreaConformance.textAreaHeight {
+            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-[textView(>=initialHeight@800)]-|", options: [], metrics: ["initialHeight": initialTextViewHeight], views: views)
+        }
+        else {
+            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-[textView]-|", options: [], metrics: nil, views: views)
+        }
+        
         
         if let imageView = imageView, let _ = imageView.image {
             views["imageView"] = imageView
@@ -220,6 +250,8 @@ public class AreaRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: Ty
     public var formatter: NSFormatter?
     public var useFormatterDuringInput = false
     public var useFormatterOnDidBeginEditing: Bool?
+    
+    public var textAreaHeight = TextAreaHeight.Fixed(cellHeight: 110)
     
     public required init(tag: String?) {
         super.init(tag: tag)

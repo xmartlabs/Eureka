@@ -453,7 +453,10 @@ class FieldRowCustomizationController : FormViewController {
         
             +++ Section("TextAreaRow")
         
-                <<< TextAreaRow() { $0.placeholder = "TextAreaRow" }
+                <<< TextAreaRow() {
+                    $0.placeholder = "TextAreaRow"
+                    $0.textAreaHeight = .Dynamic(initialTextViewHeight: 110)
+                }
         
             }
 }
@@ -708,6 +711,7 @@ class NativeEventFormViewController : FormViewController {
         
             <<< TextAreaRow("notes") {
                     $0.placeholder = "Notes"
+                    $0.textAreaHeight = .Dynamic(initialTextViewHeight: 50)
                 }
         
     }
