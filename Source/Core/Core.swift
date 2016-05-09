@@ -527,6 +527,24 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         baseRow?.prepareForSegue(segue)
     }
     
+    /**
+     Returns the navigation accessory view if it is enabled. Returns nil otherwise.
+     */
+    public func inputAccessoryViewForRow(row: BaseRow) -> UIView? {
+        let options = navigationOptions ?? Form.defaultNavigationOptions
+        guard options.contains(.Enabled) else { return nil }
+        guard row.baseCell.cellCanBecomeFirstResponder() else { return nil}
+        navigationAccessoryView.previousButton.enabled = nextRowForRow(row, withDirection: .Up) != nil
+        navigationAccessoryView.doneButton.target = self
+        navigationAccessoryView.doneButton.action = #selector(FormViewController.navigationDone(_:))
+        navigationAccessoryView.previousButton.target = self
+        navigationAccessoryView.previousButton.action = #selector(FormViewController.navigationAction(_:))
+        navigationAccessoryView.nextButton.target = self
+        navigationAccessoryView.nextButton.action = #selector(FormViewController.navigationAction(_:))
+        navigationAccessoryView.nextButton.enabled = nextRowForRow(row, withDirection: .Down) != nil
+        return navigationAccessoryView
+    }
+    
     //MARK: FormDelegate
     
     public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {}
@@ -877,23 +895,5 @@ extension FormViewController {
             return nextRow
         }
         return nextRowForRow(nextRow, withDirection:direction)
-    }
-    
-    /**
-     Returns the navigation accessory view if it is enabled. Returns nil otherwise.
-     */
-    public func inputAccessoryViewForRow(row: BaseRow) -> UIView? {
-        let options = navigationOptions ?? Form.defaultNavigationOptions
-        guard options.contains(.Enabled) else { return nil }
-        guard row.baseCell.cellCanBecomeFirstResponder() else { return nil}
-        navigationAccessoryView.previousButton.enabled = nextRowForRow(row, withDirection: .Up) != nil
-        navigationAccessoryView.doneButton.target = self
-        navigationAccessoryView.doneButton.action = #selector(FormViewController.navigationDone(_:))
-        navigationAccessoryView.previousButton.target = self
-        navigationAccessoryView.previousButton.action = #selector(FormViewController.navigationAction(_:))
-        navigationAccessoryView.nextButton.target = self
-        navigationAccessoryView.nextButton.action = #selector(FormViewController.navigationAction(_:))
-        navigationAccessoryView.nextButton.enabled = nextRowForRow(row, withDirection: .Down) != nil
-        return navigationAccessoryView
     }
 }
