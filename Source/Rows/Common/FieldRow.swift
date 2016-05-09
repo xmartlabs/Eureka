@@ -12,7 +12,7 @@ public protocol InputTypeInitiable {
     init?(string stringValue: String)
 }
 
-protocol FieldRowConformance : FormatterConformance {
+public protocol FieldRowConformance : FormatterConformance {
     var textFieldPercentage : CGFloat? { get set }
     var placeholder : String? { get set }
     var placeholderColor : UIColor? { get set }
