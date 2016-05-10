@@ -280,7 +280,22 @@ class RowsExampleViewController: FormViewController {
                         $0.title = "URLRow"
                         $0.value = NSURL(string: "http://xmartlabs.com")
                     }
-                
+            
+                /* Https only by default. To load http as well, set NSAppTransportSecurity's NSAllowsArbitraryLoads=true in info.plist. */
+                <<< URLRow() {
+                    $0.title = "URLRow (tap to open link)"
+                    $0.value = NSURL(string: "https://google.com")
+                    $0.disabled = true
+                    }.cellUpdate { cell, _ in
+                        cell.textLabel?.textColor = UIColor.blackColor()
+                        cell.textField.textColor = UIColor.blueColor()
+                    }.onCellSelection { cell, row in
+                        guard let url: NSURL = row.value else { return }
+                        let cwvc = CustomWebViewController()
+                        cwvc.url = url
+                        self.navigationController?.pushViewController(cwvc, animated: true)
+                    }
+            
                 <<< PhoneRow() {
                         $0.title = "PhoneRow (disabled)"
                         $0.value = "+598 9898983510"
