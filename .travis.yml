@@ -4,6 +4,8 @@ env:
   - DESTINATION="OS=9.3,name=iPhone 6s" SCHEME="Eureka" SDK=iphonesimulator9.3
 before_install:
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+  - brew update
+  - brew outdated carthage || brew upgrade carthage
 script:
   - set -o pipefail
   - xcodebuild -version
@@ -11,3 +13,11 @@ script:
     -configuration Debug ONLY_ACTIVE_ARCH=NO test | xcpretty -c
   - xcodebuild -project Example.xcodeproj -scheme "Example" -sdk "$SDK" -destination "$DESTINATION"
     -configuration Debug ONLY_ACTIVE_ARCH=NO test | xcpretty -c
+before_deploy:
+  - carthage build --no-skip-current
+  - carthage archive Eureka
+deploy:
+  file: Eureka.framework.zip
+  skip_cleanup: true
+  on:
+    tags: true
