@@ -10,10 +10,11 @@ import Foundation
 
 //MARK: PickerInlineRow
 
-public class _PickerInlineRow<T where T: Equatable> : Row<T, LabelCellOf<T>>{
+public class _PickerInlineRow<T where T: Equatable> : Row<T, LabelCellOf<T>>, NoValueDisplayTextConformance {
     
     public typealias InlineRow = PickerRow<T>
     public var options = [T]()
+    public var noValueDisplayText: String?
     
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -21,7 +22,7 @@ public class _PickerInlineRow<T where T: Equatable> : Row<T, LabelCellOf<T>>{
 }
 
 /// A generic inline row where the user can pick an option from a picker view
-public final class PickerInlineRow<T where T: Equatable> : _PickerInlineRow<T>, RowType, InlineRowType{
+public final class PickerInlineRow<T where T: Equatable> : _PickerInlineRow<T>, RowType, InlineRowType {
     
     required public init(tag: String?) {
         super.init(tag: tag)

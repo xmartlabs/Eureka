@@ -108,7 +108,7 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
         super.update()
         textLabel?.text = row.title
         textLabel?.textColor = row.isDisabled ? .grayColor() : .blackColor()
-        detailTextLabel?.text = row.displayValueFor?(row.value)
+        detailTextLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
     }
     
     /**

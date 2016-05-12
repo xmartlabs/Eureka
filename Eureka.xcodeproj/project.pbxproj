@@ -28,6 +28,7 @@
 		28B1D78F1C7F911900605EB3 /* RowByTagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1D7791C7F90C900605EB3 /* RowByTagTests.swift */; };
 		28B1D7901C7F911900605EB3 /* RowCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1D77A1C7F90C900605EB3 /* RowCallbackTests.swift */; };
 		28B1D7911C7F911900605EB3 /* SetValuesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1D77B1C7F90C900605EB3 /* SetValuesTests.swift */; };
+		28DB37301CE4F864009E46BA /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DB372F1CE4F864009E46BA /* Protocols.swift */; };
 		28EE46A81C7F5D5200EFF4A2 /* SelectableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CE231C7E141B0002982F /* SelectableSection.swift */; };
 		28EE46A91C7F685900EFF4A2 /* PushRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDEC1C7DF0680002982F /* PushRow.swift */; };
 		28EE46AC1C7F712300EFF4A2 /* DateInlineRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDF41C7DF2740002982F /* DateInlineRow.swift */; };
@@ -50,7 +51,6 @@
 		28EEC00E1C7E398A00300699 /* DateFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDEE1C7DF0F70002982F /* DateFieldRow.swift */; };
 		28EEC00F1C7E398D00300699 /* FieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDF01C7DF1620002982F /* FieldRow.swift */; };
 		28EEC0101C7E399500300699 /* DateInlineFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDF21C7DF22D0002982F /* DateInlineFieldRow.swift */; };
-		28EEC0111C7E399500300699 /* FormatterConformance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CE0C1C7E006E0002982F /* FormatterConformance.swift */; };
 		28EEC0121C7E399500300699 /* GenericMultipleSelectorRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CE211C7E13470002982F /* GenericMultipleSelectorRow.swift */; };
 		28EEC0151C7E39C100300699 /* DateRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDFE1C7DF9A70002982F /* DateRow.swift */; };
 		28EEC0161C7E3A3200300699 /* ListCheckRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CE1B1C7E04630002982F /* ListCheckRow.swift */; };
@@ -119,7 +119,6 @@
 		2859CDFE1C7DF9A70002982F /* DateRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateRow.swift; sourceTree = "<group>"; };
 		2859CE061C7DFBFA0002982F /* FieldsRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldsRow.swift; sourceTree = "<group>"; };
 		2859CE0A1C7E003B0002982F /* DecimalFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DecimalFormatter.swift; path = Common/DecimalFormatter.swift; sourceTree = "<group>"; };
-		2859CE0C1C7E006E0002982F /* FormatterConformance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FormatterConformance.swift; path = Common/FormatterConformance.swift; sourceTree = "<group>"; };
 		2859CE101C7E01EE0002982F /* SelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectorViewController.swift; path = Controllers/SelectorViewController.swift; sourceTree = "<group>"; };
 		2859CE121C7E02310002982F /* MultipleSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultipleSelectorViewController.swift; path = Controllers/MultipleSelectorViewController.swift; sourceTree = "<group>"; };
 		2859CE141C7E02710002982F /* SelectorAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectorAlertController.swift; path = Controllers/SelectorAlertController.swift; sourceTree = "<group>"; };
@@ -141,6 +140,7 @@
 		28B1D7791C7F90C900605EB3 /* RowByTagTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RowByTagTests.swift; path = Tests/RowByTagTests.swift; sourceTree = SOURCE_ROOT; };
 		28B1D77A1C7F90C900605EB3 /* RowCallbackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RowCallbackTests.swift; path = Tests/RowCallbackTests.swift; sourceTree = SOURCE_ROOT; };
 		28B1D77B1C7F90C900605EB3 /* SetValuesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SetValuesTests.swift; path = Tests/SetValuesTests.swift; sourceTree = SOURCE_ROOT; };
+		28DB372F1CE4F864009E46BA /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Protocols.swift; path = Common/Protocols.swift; sourceTree = "<group>"; };
 		28EEBFE41C7E1B3B00300699 /* CellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellType.swift; sourceTree = "<group>"; };
 		28EEBFEB1C7E224200300699 /* PresenterRowType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresenterRowType.swift; sourceTree = "<group>"; };
 		28EEBFED1C7E231C00300699 /* RowControllerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowControllerType.swift; sourceTree = "<group>"; };
@@ -245,9 +245,9 @@
 				2859CDBB1C7D12930002982F /* SelectorRow.swift */,
 				2859CDEE1C7DF0F70002982F /* DateFieldRow.swift */,
 				2859CDF21C7DF22D0002982F /* DateInlineFieldRow.swift */,
-				2859CE0C1C7E006E0002982F /* FormatterConformance.swift */,
 				2859CE0A1C7E003B0002982F /* DecimalFormatter.swift */,
 				2859CE211C7E13470002982F /* GenericMultipleSelectorRow.swift */,
+				28DB372F1CE4F864009E46BA /* Protocols.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -455,7 +455,6 @@
 				28EEC0321C7E64A400300699 /* DatePickerRow.swift in Sources */,
 				28EEBFE81C7E1D7E00300699 /* CellType.swift in Sources */,
 				28EEC0241C7E3B1D00300699 /* PickerRow.swift in Sources */,
-				28EEC0111C7E399500300699 /* FormatterConformance.swift in Sources */,
 				28EEC0281C7E3B4B00300699 /* FieldsRow.swift in Sources */,
 				2859CD961C7CF1FD0002982F /* Helpers.swift in Sources */,
 				28EEBFF21C7E23FA00300699 /* RowType.swift in Sources */,
@@ -477,6 +476,7 @@
 				28EE46A81C7F5D5200EFF4A2 /* SelectableSection.swift in Sources */,
 				28EEBFF61C7E240B00300699 /* InlineRowType.swift in Sources */,
 				28EEBFFB1C7E25C500300699 /* Operators.swift in Sources */,
+				28DB37301CE4F864009E46BA /* Protocols.swift in Sources */,
 				2859CDC01C7D138D0002982F /* Section.swift in Sources */,
 				28EEC0151C7E39C100300699 /* DateRow.swift in Sources */,
 				2859CDE91C7DD78E0002982F /* BaseRow.swift in Sources */,
