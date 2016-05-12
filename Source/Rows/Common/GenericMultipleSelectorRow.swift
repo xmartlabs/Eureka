@@ -11,7 +11,7 @@ import Foundation
 
 
 /// Generic options selector row that allows multiple selection.
-public class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: TypedRowControllerType where Cell: BaseCell, Cell: TypedCellType, Cell.Value == Set<T>, VCType: UIViewController, VCType.RowValue == Set<T>>: Row<Set<T>, Cell>, PresenterRowType {
+public class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: TypedRowControllerType where Cell: BaseCell, Cell: TypedCellType, Cell.Value == Set<T>, VCType: UIViewController, VCType.RowValue == Set<T>>: Row<Set<T>, Cell>, PresenterRowType, NoValueDisplayTextConformance {
     
     /// Defines how the view controller will be presented, pushed, etc.
     public var presentationMode: PresentationMode<VCType>?
@@ -21,6 +21,8 @@ public class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: Typ
     
     /// Title to be displayed for the options
     public var selectorTitle: String?
+    
+    public var noValueDisplayText: String?
     
     /// Options from which the user will choose
     public var options: [T] {

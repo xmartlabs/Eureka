@@ -25,7 +25,6 @@ public class DateInlineCell : Cell<NSDate>, CellType {
     public override func update() {
         super.update()
         selectionStyle = row.isDisabled ? .None : .Default
-        detailTextLabel?.text = row.displayValueFor?(row.value)
     }
     
     public override func didSelect() {
@@ -35,7 +34,7 @@ public class DateInlineCell : Cell<NSDate>, CellType {
 }
 
 
-public class _DateInlineFieldRow: Row<NSDate, DateInlineCell>, DatePickerRowProtocol {
+public class _DateInlineFieldRow: Row<NSDate, DateInlineCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
     
     /// The minimum value for this row's UIDatePicker
     public var minimumDate : NSDate?
@@ -48,6 +47,8 @@ public class _DateInlineFieldRow: Row<NSDate, DateInlineCell>, DatePickerRowProt
     
     /// The formatter for the date picked by the user
     public var dateFormatter: NSDateFormatter?
+    
+    public var noValueDisplayText: String?
     
     required public init(tag: String?) {
         super.init(tag: tag)
