@@ -27,7 +27,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        height = { BaseRow.estimatedRowHeight }
+        height = { UITableViewAutomaticDimension }
     }
     
     deinit {

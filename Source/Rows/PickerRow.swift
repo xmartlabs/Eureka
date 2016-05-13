@@ -29,7 +29,7 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
     
     public override func setup() {
         super.setup()
-        height = { 213 }
+        height = { UITableViewAutomaticDimension }
         accessoryType = .None
         editingAccessoryType = .None
         picker.delegate = self
