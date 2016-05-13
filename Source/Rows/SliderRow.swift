@@ -52,7 +52,7 @@ public class SliderCell: Cell<Float>, CellType {
     
     public override func setup() {
         super.setup()
-        height = shouldShowTitle() ? { 88 } : { UITableViewAutomaticDimension }
+        height = { UITableViewAutomaticDimension }
         
         selectionStyle = .None
         
