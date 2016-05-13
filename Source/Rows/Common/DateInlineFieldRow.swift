@@ -13,7 +13,7 @@ public class DateInlineCell : Cell<NSDate>, CellType {
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        height = { BaseRow.estimatedRowHeight }
+        height = { UITableViewAutomaticDimension }
     }
     
     public override func setup() {

@@ -26,7 +26,7 @@ public class DatePickerCell : Cell<NSDate>, CellType {
     
     public override func setup() {
         super.setup()
-        height = { 213 }
+        height = { UITableViewAutomaticDimension }
         accessoryType = .None
         editingAccessoryType =  .None
         datePicker.datePickerMode = datePickerMode()
