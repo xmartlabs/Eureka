@@ -356,7 +356,7 @@ class CustomCellsController : FormViewController {
         form +++
             Section() {
                 var header = HeaderFooterView<EurekaLogoViewNib>(HeaderFooterProvider.NibFile(name: "EurekaSectionHeader", bundle: nil))
-                header.onSetupView = { (view, section, form) -> () in
+                header.onSetupView = { (view, section) -> () in
                                             view.imageView.alpha = 0;
                                             UIView.animateWithDuration(2.0, animations: { [weak view] in
                                                 view?.imageView.alpha = 1

@@ -38,7 +38,7 @@ public protocol HeaderFooterViewRepresentable {
      
      - returns: The header or footer of the specified section.
      */
-    func viewForSection(section: Section, type: HeaderFooterType, controller: FormViewController) -> UIView?
+    func viewForSection(section: Section, type: HeaderFooterType) -> UIView?
     
     /// If the header or footer of a section was created with a String then it will be stored in the title.
     var title: String? { get set }

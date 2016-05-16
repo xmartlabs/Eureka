@@ -63,15 +63,11 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
     public var viewProvider: HeaderFooterProvider<ViewType>?
     
     /// Closure called when the view is created. Useful to customize its appearance.
-    public var onSetupView: ((view: ViewType, section: Section, form: FormViewController) -> ())?
+    public var onSetupView: ((view: ViewType, section: Section) -> ())?
     
     /// A closure that returns the height for the header or footer view.
     public var height: (()->CGFloat)?
     
-    lazy var staticView : ViewType? = {
-        guard let view = self.viewProvider?.createView() else { return nil }
-        return view
-    }()
     
     /**
      This method can be called to get the view corresponding to the header or footer of a section in a specific controller.
@@ -82,7 +78,7 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
      
      - returns: The header or footer of the specified section.
      */
-    public func viewForSection(section: Section, type: HeaderFooterType, controller: FormViewController) -> UIView? {
+    public func viewForSection(section: Section, type: HeaderFooterType) -> UIView? {
         var view: ViewType?
         if type == .Header {
             view = section.headerView as? ViewType ?? {
@@ -99,10 +95,7 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
                         }()
         }
         guard let v = view else { return nil }
-        onSetupView?(view: v, section: section, form: controller)
-        v.setNeedsUpdateConstraints()
-        v.updateConstraintsIfNeeded()
-        v.setNeedsLayout()
+        onSetupView?(view: v, section: section)
         return v
     }
     
