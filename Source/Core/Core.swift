@@ -696,18 +696,18 @@ extension FormViewController : UITableViewDelegate {
     }
     
     public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return form[section].header?.viewForSection(form[section], type: .Header, controller: self)
+        return form[section].header?.viewForSection(form[section], type: .Header)
     }
     
     public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return form[section].footer?.viewForSection(form[section], type:.Footer, controller: self)
+        return form[section].footer?.viewForSection(form[section], type:.Footer)
     }
     
     public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if let height = form[section].header?.height {
             return height()
         }
-        guard let view = form[section].header?.viewForSection(form[section], type: .Header, controller: self) else{
+        guard let view = form[section].header?.viewForSection(form[section], type: .Header) else{
             return UITableViewAutomaticDimension
         }
         guard view.bounds.height != 0 else {
@@ -720,7 +720,7 @@ extension FormViewController : UITableViewDelegate {
         if let height = form[section].footer?.height {
             return height()
         }
-        guard let view = form[section].footer?.viewForSection(form[section], type: .Footer, controller: self) else{
+        guard let view = form[section].footer?.viewForSection(form[section], type: .Footer) else{
             return UITableViewAutomaticDimension
         }
         guard view.bounds.height != 0 else {
