@@ -1,0 +1,10 @@
+PODS:
+  - PhoneNumberKit (0.8.3)
+
+DEPENDENCIES:
+  - PhoneNumberKit (~> 0.8)
+
+SPEC CHECKSUMS:
+  PhoneNumberKit: ff0be2a7078dda5ef7f3f1264d5e946124304880
+
+COCOAPODS: 0.39.0

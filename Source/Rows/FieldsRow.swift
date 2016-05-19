@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PhoneNumberKit
 
 public class TextCell : _FieldCell<String>, CellType {
     
@@ -37,7 +38,7 @@ public class IntCell : _FieldCell<Int>, CellType {
     }
 }
 
-public class PhoneCell : _FieldCell<String>, CellType {
+public class PhoneCell : _PhoneNumberFieldCell<String>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -178,7 +179,7 @@ public class _IntRow: FieldRow<Int, IntCell> {
     }
 }
 
-public class _PhoneRow: FieldRow<String, PhoneCell> {
+public class _PhoneRow: PhoneNumberFieldRow<String, PhoneCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }

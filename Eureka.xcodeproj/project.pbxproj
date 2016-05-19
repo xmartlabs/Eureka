@@ -74,7 +74,7 @@
 		49ADC7F91C8A83240073952B /* StepperRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADC7F81C8A83240073952B /* StepperRow.swift */; };
 		51729DF61B9A4F5E004A00EB /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51729DEB1B9A4F5E004A00EB /* Eureka.framework */; };
 		51729E671B9A5FA5004A00EB /* Eureka.h in Headers */ = {isa = PBXBuildFile; fileRef = 51729E661B9A5FA5004A00EB /* Eureka.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9B890FFF1CDEF8C9007F283B /* PhoneFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B890FFE1CDEF8C9007F283B /* PhoneFormatter.swift */; };
+		837EF570288573595D3FC1A9 /* Pods_Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80E8231892056F4FE6F1DE24 /* Pods_Eureka.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -152,13 +152,15 @@
 		28EEBFF71C7E241200300699 /* SelectableRowType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectableRowType.swift; sourceTree = "<group>"; };
 		28EEBFFA1C7E25C500300699 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		28EEBFFC1C7E25F100300699 /* Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		3D717E87A1345DD6CAA479B5 /* Pods-Eureka.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eureka.release.xcconfig"; path = "Pods/Target Support Files/Pods-Eureka/Pods-Eureka.release.xcconfig"; sourceTree = "<group>"; };
 		49ADC7F81C8A83240073952B /* StepperRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepperRow.swift; sourceTree = "<group>"; };
 		51729DEB1B9A4F5E004A00EB /* Eureka.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Eureka.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51729DF01B9A4F5E004A00EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Source/Info.plist; sourceTree = "<group>"; };
 		51729DF51B9A4F5E004A00EB /* EurekaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EurekaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		51729DFC1B9A4F5E004A00EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Tests/Info.plist; sourceTree = "<group>"; };
 		51729E661B9A5FA5004A00EB /* Eureka.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Eureka.h; path = Source/Eureka.h; sourceTree = SOURCE_ROOT; };
-		9B890FFE1CDEF8C9007F283B /* PhoneFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhoneFormatter.swift; path = Common/PhoneFormatter.swift; sourceTree = "<group>"; };
+		80E8231892056F4FE6F1DE24 /* Pods_Eureka.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Eureka.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E12CA3DA45DB55D8EF7B6173 /* Pods-Eureka.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eureka.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Eureka/Pods-Eureka.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +168,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				837EF570288573595D3FC1A9 /* Pods_Eureka.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,7 +251,6 @@
 				2859CDEE1C7DF0F70002982F /* DateFieldRow.swift */,
 				2859CDF21C7DF22D0002982F /* DateInlineFieldRow.swift */,
 				2859CE0C1C7E006E0002982F /* FormatterConformance.swift */,
-				9B890FFE1CDEF8C9007F283B /* PhoneFormatter.swift */,
 				2859CE0A1C7E003B0002982F /* DecimalFormatter.swift */,
 				2859CE211C7E13470002982F /* GenericMultipleSelectorRow.swift */,
 			);
@@ -274,12 +276,31 @@
 			name = SelectableRows;
 			sourceTree = "<group>";
 		};
+		2987FEC4F204D5EB92B0F85A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				80E8231892056F4FE6F1DE24 /* Pods_Eureka.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		45B254314659CB2ACD942E65 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E12CA3DA45DB55D8EF7B6173 /* Pods-Eureka.debug.xcconfig */,
+				3D717E87A1345DD6CAA479B5 /* Pods-Eureka.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		51729DE11B9A4F5E004A00EB = {
 			isa = PBXGroup;
 			children = (
 				51729DED1B9A4F5E004A00EB /* Source */,
 				51729DF91B9A4F5E004A00EB /* Tests */,
 				51729DEC1B9A4F5E004A00EB /* Products */,
+				45B254314659CB2ACD942E65 /* Pods */,
+				2987FEC4F204D5EB92B0F85A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -343,10 +364,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 51729DFF1B9A4F5E004A00EB /* Build configuration list for PBXNativeTarget "Eureka" */;
 			buildPhases = (
+				F7D9D8271FF923D6F8D6CE2F /* Check Pods Manifest.lock */,
 				51729DE61B9A4F5E004A00EB /* Sources */,
 				51729DE71B9A4F5E004A00EB /* Frameworks */,
 				51729DE81B9A4F5E004A00EB /* Headers */,
 				51729DE91B9A4F5E004A00EB /* Resources */,
+				A3B6305BA47CFFD03C3F3FAD /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -429,6 +452,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A3B6305BA47CFFD03C3F3FAD /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Eureka/Pods-Eureka-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F7D9D8271FF923D6F8D6CE2F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		51729DE61B9A4F5E004A00EB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -455,7 +511,6 @@
 				28EEBFEC1C7E224200300699 /* PresenterRowType.swift in Sources */,
 				28EEC0211C7E3AD700300699 /* TextAreaRow.swift in Sources */,
 				28EEBFFD1C7E25F100300699 /* Cell.swift in Sources */,
-				9B890FFF1CDEF8C9007F283B /* PhoneFormatter.swift in Sources */,
 				28EEC0321C7E64A400300699 /* DatePickerRow.swift in Sources */,
 				28EEBFE81C7E1D7E00300699 /* CellType.swift in Sources */,
 				28EEC0241C7E3B1D00300699 /* PickerRow.swift in Sources */,
@@ -611,6 +666,7 @@
 		};
 		51729E001B9A4F5E004A00EB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E12CA3DA45DB55D8EF7B6173 /* Pods-Eureka.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
@@ -629,6 +685,7 @@
 		};
 		51729E011B9A4F5E004A00EB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3D717E87A1345DD6CAA479B5 /* Pods-Eureka.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
