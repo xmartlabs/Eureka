@@ -51,7 +51,7 @@ public class DatePickerCell : Cell<NSDate>, CellType {
     }
     
     func datePickerValueChanged(sender: UIDatePicker){
-        row.value = sender.date
+        row?.value = sender.date
     }
     
     private func datePickerMode() -> UIDatePickerMode{

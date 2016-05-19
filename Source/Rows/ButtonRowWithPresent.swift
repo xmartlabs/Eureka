@@ -75,8 +75,8 @@ public class _ButtonRowWithPresent<T: Equatable, VCType: TypedRowControllerType 
         if let callback = self.presentationMode?.completionHandler{
             rowVC.completionCallback = callback
         }
-        onPresentCallback?(cell.formViewController()!, rowVC)
         rowVC.row = self
+        onPresentCallback?(cell.formViewController()!, rowVC)
     }
     
 }
