@@ -329,6 +329,8 @@ public enum EurekaError : ErrorType {
 *  A protocol implemented by FormViewController
 */
 public protocol FormViewControllerProtocol {
+    var tableView: UITableView? { get }
+    
     func beginEditing<T:Equatable>(cell: Cell<T>)
     func endEditing<T:Equatable>(cell: Cell<T>)
     
@@ -895,5 +897,17 @@ extension FormViewController {
             return nextRow
         }
         return nextRowForRow(nextRow, withDirection:direction)
+    }
+}
+
+extension FormViewControllerProtocol {
+    
+    //MARK: Helpers
+    
+    func makeRowVisible(row: BaseRow){
+        guard let inlineCell = row.baseCell, indexPath = row.indexPath(), tableView = tableView else { return }
+        if inlineCell.window == nil || (tableView.contentOffset.y + tableView.frame.size.height <= inlineCell.frame.origin.y + inlineCell.frame.size.height){
+            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Bottom, animated: true)
+        }
     }
 }
