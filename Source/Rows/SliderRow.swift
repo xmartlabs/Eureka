@@ -1,9 +1,8 @@
-//
 //  SliderRow.swift
-//  Eureka
+//  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Created by Bruno Scheele on 27/10/15.
-//  Copyright © 2015 Noodlewerk Apps. All rights reserved.
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
+//
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -53,11 +52,9 @@ public class SliderCell: Cell<Float>, CellType {
     public override func setup() {
         super.setup()
         height = { UITableViewAutomaticDimension }
-        
         selectionStyle = .None
-        
-        slider.minimumValue = (row as! SliderRow).minimumValue
-        slider.maximumValue = (row as! SliderRow).maximumValue
+        slider.minimumValue = sliderRow.minimumValue
+        slider.maximumValue = sliderRow.maximumValue
         slider.addTarget(self, action: #selector(SliderCell.valueChanged), forControlEvents: .ValueChanged)
         
         if shouldShowTitle() {
@@ -66,16 +63,8 @@ public class SliderCell: Cell<Float>, CellType {
         }
         contentView.addSubview(slider)
         
-        let views = [
-            "titleLabel" : titleLabel,
-            "valueLabel" : valueLabel,
-            "slider" : slider
-        ]
-        let metrics = [
-            "hPadding" : 16.0,
-            "vPadding" : 12.0,
-            "spacing" : 12.0,
-        ]
+        let views = ["titleLabel" : titleLabel, "valueLabel" : valueLabel, "slider" : slider]
+        let metrics = ["hPadding" : 16.0, "vPadding" : 12.0, "spacing" : 12.0]
         
         if shouldShowTitle() {
             contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-hPadding-[titleLabel]-[valueLabel]-hPadding-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: metrics, views: views))
@@ -98,7 +87,7 @@ public class SliderCell: Cell<Float>, CellType {
     
     func valueChanged() {
         let roundedValue: Float
-        let steps = Float((row as! SliderRow).steps)
+        let steps = Float(sliderRow.steps)
         if steps > 0 {
             let stepValue = round((slider.value - slider.minimumValue) / (slider.maximumValue - slider.minimumValue) * steps)
             let stepAmount = (slider.maximumValue - slider.minimumValue) / steps
@@ -113,8 +102,12 @@ public class SliderCell: Cell<Float>, CellType {
         }
     }
     
-    func shouldShowTitle() -> Bool {
+    private func shouldShowTitle() -> Bool {
         return row.title?.isEmpty == false
+    }
+    
+    private var sliderRow: SliderRow {
+        return row as! SliderRow
     }
 }
 

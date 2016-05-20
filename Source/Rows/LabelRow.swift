@@ -21,10 +21,6 @@ public class LabelCellOf<T: Equatable>: Cell<T>, CellType {
         super.setup()
         selectionStyle = .None
     }
-    
-    public override func update() {
-        super.update()
-    }
 }
 
 public typealias LabelCell = LabelCellOf<String>
