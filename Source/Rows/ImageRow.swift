@@ -20,6 +20,25 @@ public struct ImageRowSourceTypes : OptionSetType {
     public static let Camera  = ImageRowSourceTypes(.Camera)
     public static let SavedPhotosAlbum = ImageRowSourceTypes(.SavedPhotosAlbum)
     public static let All: ImageRowSourceTypes = [Camera, PhotoLibrary, SavedPhotosAlbum]
+    
+}
+
+extension ImageRowSourceTypes {
+    
+// MARK: Helpers
+    
+    private var localizedString: String {
+        switch self {
+        case ImageRowSourceTypes.Camera:
+            return "Take photo"
+        case ImageRowSourceTypes.PhotoLibrary:
+            return "Photo Library"
+        case ImageRowSourceTypes.SavedPhotosAlbum:
+            return "Saved Photos"
+        default:
+            return ""
+        }
+    }
 }
 
 public enum ImageClearAction {
@@ -97,39 +116,14 @@ public class _ImageRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType,
             popView.sourceView = tableView
             popView.sourceRect = tableView.convertRect(cell.accessoryView?.frame ?? cell.contentView.frame, fromView: cell)
         }
-        
-        if sourceTypes.contains(.Camera) {
-            let cameraOption = UIAlertAction(title: NSLocalizedString("Take Photo", comment: ""), style: .Default, handler: { [weak self] _ in
-                self?.displayImagePickerController(.Camera)
+        createOptionsForAlertController(sourceActionSheet)
+        if case .Yes(let style) = clearAction where value != nil {
+            let clearPhotoOption = UIAlertAction(title: NSLocalizedString("Clear Photo", comment: ""), style: style, handler: { [weak self] _ in
+                self?.value = nil
+                self?.updateCell()
                 })
-            sourceActionSheet.addAction(cameraOption)
+            sourceActionSheet.addAction(clearPhotoOption)
         }
-        if sourceTypes.contains(.PhotoLibrary) {
-            let photoLibraryOption = UIAlertAction(title: NSLocalizedString("Photo Library", comment: ""), style: .Default, handler: { [weak self] _ in
-                self?.displayImagePickerController(.PhotoLibrary)
-                })
-            sourceActionSheet.addAction(photoLibraryOption)
-        }
-        if sourceTypes.contains(.SavedPhotosAlbum) {
-            let savedPhotosOption = UIAlertAction(title: NSLocalizedString("Saved Photos", comment: ""), style: .Default, handler: { [weak self] _ in
-                self?.displayImagePickerController(.SavedPhotosAlbum)
-                })
-            sourceActionSheet.addAction(savedPhotosOption)
-        }
-        
-        switch clearAction {
-        case .Yes(let style):
-            if let _ = value {
-                let clearPhotoOption = UIAlertAction(title: NSLocalizedString("Clear Photo", comment: ""), style: style, handler: { [weak self] _ in
-                    self?.value = nil
-                    self?.updateCell()
-                    })
-                sourceActionSheet.addAction(clearPhotoOption)
-            }
-        case .No:
-            break
-        }
-        
         // check if we have only one source type given
         if sourceActionSheet.actions.count == 1 {
             if let imagePickerSourceType = UIImagePickerControllerSourceType(rawValue: sourceTypes.imagePickerControllerSourceTypeRawValue) {
@@ -166,6 +160,27 @@ public class _ImageRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType,
         else{
             cell.accessoryView = nil
         }
+    }
+    
+
+}
+
+extension _ImageRow {
+    
+//MARK: Helpers
+    
+    private func createOptionForAlertController(alertController: UIAlertController, sourceType: ImageRowSourceTypes) {
+        guard let pickerSourceType = UIImagePickerControllerSourceType(rawValue: sourceTypes.imagePickerControllerSourceTypeRawValue) where sourceTypes.contains(sourceType) else { return }
+        let option = UIAlertAction(title: NSLocalizedString(sourceType.localizedString, comment: ""), style: .Default, handler: { [weak self] _ in
+            self?.displayImagePickerController(pickerSourceType)
+            })
+        alertController.addAction(option)
+    }
+    
+    private func createOptionsForAlertController(alertController: UIAlertController) {
+        createOptionForAlertController(alertController, sourceType: .Camera)
+        createOptionForAlertController(alertController, sourceType: .PhotoLibrary)
+        createOptionForAlertController(alertController, sourceType: .SavedPhotosAlbum)
     }
 }
 

@@ -905,8 +905,8 @@ extension FormViewControllerProtocol {
     //MARK: Helpers
     
     func makeRowVisible(row: BaseRow){
-        guard let inlineCell = row.baseCell, indexPath = row.indexPath(), tableView = tableView else { return }
-        if inlineCell.window == nil || (tableView.contentOffset.y + tableView.frame.size.height <= inlineCell.frame.origin.y + inlineCell.frame.size.height){
+        guard let cell = row.baseCell, indexPath = row.indexPath(), tableView = tableView else { return }
+        if cell.window == nil || (tableView.contentOffset.y + tableView.frame.size.height <= cell.frame.origin.y + cell.frame.size.height){
             tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Bottom, animated: true)
         }
     }
