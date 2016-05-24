@@ -1029,16 +1029,10 @@ class InlineRowsController: FormViewController {
         +++ Section("Generic inline picker")
             
             <<< PickerInlineRow<NSDate>("PickerInlineRow") { (row : PickerInlineRow<NSDate>) -> Void in
-            
                     row.title = row.tag
-                    row.displayValueFor = {
-                        guard let date = $0 else{
-                            return nil
-                        }
-                        let year = NSCalendar.currentCalendar().component(.Year, fromDate: date)
-                        return "Year \(year)"
+                    row.displayValueFor = { (rowValue: NSDate?) in
+                        return rowValue.map { "Year \(NSCalendar.currentCalendar().component(.Year, fromDate: $0))" }
                     }
-                
                     row.options = []
                     var date = NSDate()
                     for _ in 1...10{

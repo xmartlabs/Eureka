@@ -41,20 +41,15 @@ public class SelectorRow<T: Equatable, Cell: CellType, VCType: TypedRowControlle
      */
     public override func customDidSelect() {
         super.customDidSelect()
-        if !isDisabled {
-            if let presentationMode = presentationMode {
-                if let controller = presentationMode.createController(){
-                    controller.row = self
-                    if let title = selectorTitle {
-                        controller.title = title
-                    }
-                    onPresentCallback?(cell.formViewController()!, controller)
-                    presentationMode.presentViewController(controller, row: self, presentingViewController: self.cell.formViewController()!)
-                }
-                else{
-                    presentationMode.presentViewController(nil, row: self, presentingViewController: self.cell.formViewController()!)
-                }
-            }
+        guard let presentationMode = presentationMode where !isDisabled else { return }
+        if let controller = presentationMode.createController(){
+            controller.row = self
+            controller.title = selectorTitle ?? controller.title
+            onPresentCallback?(cell.formViewController()!, controller)
+            presentationMode.presentViewController(controller, row: self, presentingViewController: self.cell.formViewController()!)
+        }
+        else{
+            presentationMode.presentViewController(nil, row: self, presentingViewController: self.cell.formViewController()!)
         }
     }
     
@@ -63,15 +58,9 @@ public class SelectorRow<T: Equatable, Cell: CellType, VCType: TypedRowControlle
      */
     public override func prepareForSegue(segue: UIStoryboardSegue) {
         super.prepareForSegue(segue)
-        guard let rowVC = segue.destinationViewController as? VCType else {
-            return
-        }
-        if let title = selectorTitle {
-            rowVC.title = title
-        }
-        if let callback = self.presentationMode?.completionHandler {
-            rowVC.completionCallback = callback
-        }
+        guard let rowVC = segue.destinationViewController as? VCType else { return }
+        rowVC.title = selectorTitle ?? rowVC.title
+        rowVC.completionCallback = presentationMode?.completionHandler ?? rowVC.completionCallback
         onPresentCallback?(cell.formViewController()!, rowVC)
         rowVC.row = self
     }
