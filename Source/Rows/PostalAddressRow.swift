@@ -504,6 +504,10 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
     }
     
     public func textFieldDidChange(textField : UITextField){
+		if row.baseValue == nil{
+			row.baseValue = PostalAddress()
+		}
+		
         guard let textValue = textField.text else {
             switch(textField){
             case streetTextField:
@@ -529,7 +533,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         if let rowConformance = row as? PostalAddressRowConformance{
             var useFormatterDuringInput = false
             var valueFormatter: NSFormatter?
-            
+			
             switch(textField){
             case streetTextField:
                 useFormatterDuringInput = rowConformance.streetUseFormatterDuringInput
