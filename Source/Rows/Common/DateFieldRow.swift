@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol DatePickerRowProtocol {
+public protocol DatePickerRowProtocol: class {
     var minimumDate : NSDate? { get set }
     var maximumDate : NSDate? { get set }
     var minuteInterval : Int? { get set }

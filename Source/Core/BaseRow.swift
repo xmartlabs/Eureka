@@ -207,7 +207,6 @@ extension BaseRow {
         }
     }
     
-    
     final func removeFromRowObservers(){
         removeFromHiddenRowObservers()
         removeFromDisabledRowObservers()
@@ -225,9 +224,7 @@ extension BaseRow {
     }
     
     public func deselect(animated: Bool = true) {
-        guard let indexPath = indexPath(), tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView  else {
-            return
-        }
+        guard let indexPath = indexPath(), tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView  else { return }
         tableView.deselectRowAtIndexPath(indexPath, animated: animated)
     }
     

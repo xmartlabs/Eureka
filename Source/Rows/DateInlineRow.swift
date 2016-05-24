@@ -9,6 +9,15 @@
 import Foundation
 
 
+extension DatePickerRowProtocol {
+    
+    func configureInlineRow(inlineRow: DatePickerRowProtocol){
+        inlineRow.minimumDate = minimumDate
+        inlineRow.maximumDate = maximumDate
+        inlineRow.minuteInterval = minuteInterval
+    }
+    
+}
 
 
 public class _DateInlineRow: _DateInlineFieldRow {
@@ -17,16 +26,12 @@ public class _DateInlineRow: _DateInlineFieldRow {
     
     public required init(tag: String?) {
         super.init(tag: tag)
-        dateFormatter = NSDateFormatter()
         dateFormatter?.timeStyle = .NoStyle
         dateFormatter?.dateStyle = .MediumStyle
-        dateFormatter?.locale = .currentLocale()
     }
     
     public func setupInlineRow(inlineRow: DatePickerRow) {
-        inlineRow.minimumDate = minimumDate
-        inlineRow.maximumDate = maximumDate
-        inlineRow.minuteInterval = minuteInterval
+        configureInlineRow(inlineRow)
     }
 }
 
@@ -36,16 +41,12 @@ public class _TimeInlineRow: _DateInlineFieldRow {
     
     public required init(tag: String?) {
         super.init(tag: tag)
-        dateFormatter = NSDateFormatter()
         dateFormatter?.timeStyle = .ShortStyle
         dateFormatter?.dateStyle = .NoStyle
-        dateFormatter?.locale = .currentLocale()
     }
     
     public func setupInlineRow(inlineRow: TimePickerRow) {
-        inlineRow.minimumDate = minimumDate
-        inlineRow.maximumDate = maximumDate
-        inlineRow.minuteInterval = minuteInterval
+        configureInlineRow(inlineRow)
     }
 }
 
@@ -55,16 +56,12 @@ public class _DateTimeInlineRow: _DateInlineFieldRow {
     
     public required init(tag: String?) {
         super.init(tag: tag)
-        dateFormatter = NSDateFormatter()
         dateFormatter?.timeStyle = .ShortStyle
         dateFormatter?.dateStyle = .ShortStyle
-        dateFormatter?.locale = .currentLocale()
     }
     
     public func setupInlineRow(inlineRow: DateTimePickerRow) {
-        inlineRow.minimumDate = minimumDate
-        inlineRow.maximumDate = maximumDate
-        inlineRow.minuteInterval = minuteInterval
+        configureInlineRow(inlineRow)
     }
 }
 
@@ -88,9 +85,7 @@ public class _CountDownInlineRow: _DateInlineFieldRow {
     }
     
     public func setupInlineRow(inlineRow: CountDownPickerRow) {
-        inlineRow.minimumDate = minimumDate
-        inlineRow.maximumDate = maximumDate
-        inlineRow.minuteInterval = minuteInterval
+        configureInlineRow(inlineRow)
     }
 }
 

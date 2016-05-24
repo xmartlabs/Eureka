@@ -52,6 +52,8 @@ public class _DateInlineFieldRow: Row<NSDate, DateInlineCell>, DatePickerRowProt
     
     required public init(tag: String?) {
         super.init(tag: tag)
+        dateFormatter = NSDateFormatter()
+        dateFormatter?.locale = .currentLocale()
         displayValueFor = { [unowned self] value in
             guard let val = value, let formatter = self.dateFormatter else { return nil }
             return formatter.stringFromDate(val)
