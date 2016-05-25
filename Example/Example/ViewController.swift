@@ -25,6 +25,7 @@
 import UIKit
 import Eureka
 import CoreLocation
+import PhoneNumberKit
 
 //MARK: HomeViewController
 
@@ -280,15 +281,21 @@ class RowsExampleViewController: FormViewController {
                         $0.title = "URLRow"
                         $0.value = NSURL(string: "http://xmartlabs.com")
                     }
-                
+            
+                // Automatically detects the device's region and formats phone numbers according to the region.
                 <<< PhoneRow() {
-                        $0.title = "PhoneRow (disabled)"
-                        $0.value = "+598 9898983510"
-                        $0.disabled = true
+                        $0.title = "PhoneRow"
+                        do {
+                            let phoneNumber = try PhoneNumber(rawNumber:"+15144226688")
+                            $0.value = phoneNumber.toNational()
+                        } catch { }
+                    }.cellSetup { cell, _  in
+                        cell.textField.keyboardType = .PhonePad
                     }
             
                 <<< NameRow() {
-                        $0.title =  "NameRow"
+                        $0.title =  "NameRow (disabled)"
+                        $0.disabled = true
                     }
         
                 <<< PasswordRow() {
