@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [1.6.0](https://github.com/xmartlabs/Eureka/releases/tag/1.6.0)
+
+*
+*
+* 
+
+
 ### [1.5.0](https://github.com/xmartlabs/Eureka/releases/tag/1.5.0)
 
 * Xcode 7.3 support.

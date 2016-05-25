@@ -14,7 +14,6 @@ public final class CheckCell : Cell<Bool>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        height = { UITableViewAutomaticDimension }
     }
     
     public override func update() {
