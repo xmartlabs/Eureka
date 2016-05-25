@@ -5,7 +5,7 @@
 <img src="https://img.shields.io/badge/platform-iOS-blue.svg?style=flat" alt="Platform iOS" />
 <a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift2-compatible-4BC51D.svg?style=flat" alt="Swift 2 compatible" /></a>
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible" /></a>
-<a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/badge/pod-1.5.0-blue.svg" alt="CocoaPods compatible" /></a>
+<a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/badge/pod-1.6.0-blue.svg" alt="CocoaPods compatible" /></a>
 <a href="https://raw.githubusercontent.com/xmartlabs/Eureka/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License: MIT" /></a>
 <a href="https://codebeat.co/projects/github-com-xmartlabs-eureka"><img alt="codebeat badge" src="https://codebeat.co/badges/16f29afb-f072-4633-9497-333c6eb71263" /></a>
 </p>
@@ -347,7 +347,7 @@ You can also set the header or footer using a custom view. This is best done by 
 ```swift
 Section() { section in
 	var header = HeaderFooterView<MyHeaderNibFile>(.NibFile(name: "MyHeaderNibFile", bundle: nil))
-	header.onSetupView = { view, _, _ in
+	header.onSetupView = { view, _ in
     	 // customize header
 	 }
 	header.height = { 100 }
@@ -494,10 +494,10 @@ public final class SwitchRow: Row<Bool, SwitchCell>, RowType {
 }
 ```
 
-Most times you will want to create a custom cell as well as most of the specific logic is here. What you have to do is subclassing Cell<ValueType>:
+Most times you will want to create a custom cell as well as most of the specific logic is here. What you have to do is subclassing `Cell<ValueType>`` and conforming to `CellType`:
 
 ```swift
-public class SwitchCell : Cell<Bool> {
+public class SwitchCell: Cell<Bool>, CellType {
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -517,12 +517,12 @@ public class SwitchCell : Cell<Bool> {
 
     public override func update() {
         super.update()
-        switchControl?.on = formRow.value ?? false
-        switchControl?.enabled = !formRow.isDisabled
+        switchControl?.on = row.value ?? false
+        switchControl?.enabled = !row.isDisabled
     }
 
     func valueChanged() {
-        formRow.value = switchControl?.on.boolValue ?? false
+        row.value = switchControl?.on.boolValue ?? false
     }
 }
 ```
@@ -621,7 +621,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'Eureka', '~> 1.5'
+pod 'Eureka', '~> 1.6'
 ```
 
 Then run the following command:
@@ -637,7 +637,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 1.5
+github "xmartlabs/Eureka" ~> 1.6
 ```
 
 #### Manually as Embedded Framework
@@ -744,7 +744,7 @@ section.header = HeaderFooterView(title: "Header title \(variable)") // use Stri
 //or
 var header = HeaderFooterView<UIView>(.Class) // most flexible way to set up a header using any view type
 header.height = { 60 }  // height can be calculated
-header.onSetupView = { view, section, formVC in  // each time the view is about to be displayed onSetupView is invoked.
+header.onSetupView = { view, section in  // each time the view is about to be displayed onSetupView is invoked.
     view.backgroundColor = .orangeColor()
 }
 section.header = header

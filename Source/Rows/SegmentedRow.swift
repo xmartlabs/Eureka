@@ -27,7 +27,6 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        height = { UITableViewAutomaticDimension }
     }
     
     deinit {
@@ -69,9 +68,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     
     func updateSegmentedControl() {
         segmentedControl.removeAllSegments()
-        for item in items().enumerate() {
-            segmentedControl.insertSegmentWithTitle(item.element, atIndex: item.index, animated: false)
-        }
+        items().enumerate().forEach { segmentedControl.insertSegmentWithTitle($0.element, atIndex: $0.index, animated: false) }
     }
     
     public override func updateConstraints() {
@@ -90,20 +87,20 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         if let titleLabel = titleLabel, text = titleLabel.text where !text.isEmpty {
             views["titleLabel"] = titleLabel
             hasTitleLabel = true
+            dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .CenterY, relatedBy: .Equal, toItem: contentView, attribute: .CenterY, multiplier: 1, constant: 0))
         }
         
+        dynamicConstraints.append(NSLayoutConstraint(item: segmentedControl, attribute: .Width, relatedBy: .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: 0.3, constant: 0.0))
+        
+        
         if hasImageView && hasTitleLabel {
-            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[titleLabel]-[segmentedControl]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views)
-            dynamicConstraints.append(NSLayoutConstraint(item: segmentedControl, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
-            dynamicConstraints.append(NSLayoutConstraint(item: titleLabel!, attribute: .CenterY, relatedBy: .Equal, toItem: contentView, attribute: .CenterY, multiplier: 1, constant: 0))
+            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[titleLabel]-[segmentedControl]-|", options: [], metrics: nil, views: views)
         }
         else if hasImageView && !hasTitleLabel {
             dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[segmentedControl]-|", options: [], metrics: nil, views: views)
         }
         else if !hasImageView && hasTitleLabel {
-            dynamicConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[titleLabel]-16-[segmentedControl]-|", options: .AlignAllCenterY, metrics: nil, views: views)
-            
-            dynamicConstraints.append(NSLayoutConstraint(item: titleLabel!, attribute: .CenterY, relatedBy: .Equal, toItem: contentView, attribute: .CenterY, multiplier: 1, constant: 0))
+            dynamicConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[titleLabel]-[segmentedControl]-|", options: .AlignAllCenterY, metrics: nil, views: views)
         }
         else {
             dynamicConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[segmentedControl]-|", options: .AlignAllCenterY, metrics: nil, views: views)
@@ -114,7 +111,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     
     func items() -> [String] {// or create protocol for options
         var result = [String]()
-        for object in (row as! SegmentedRow<T>).options{
+        for object in (row as! SegmentedRow<T>).options {
             result.append(row.displayValueFor?(object) ?? "")
         }
         return result
