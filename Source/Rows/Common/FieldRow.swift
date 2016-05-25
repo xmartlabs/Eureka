@@ -42,19 +42,8 @@ extension Double: InputTypeInitiable {
 }
 
 
-public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: TextFieldCell, Cell.Value == T>: Row<T, Cell>, FieldRowConformance, KeyboardReturnHandler {
+public class FormatteableRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: TextInputCell, Cell.Value == T>: Row<T, Cell>, FormatterConformance {
     
-    /// Configuration for the keyboardReturnType of this row
-    public var keyboardReturnType : KeyboardReturnTypeConfiguration?
-    
-    /// The percentage of the cell that should be occupied by the textField
-    public var textFieldPercentage : CGFloat?
-    
-    /// The placeholder for the textField
-    public var placeholder : String?
-    
-    /// The textColor for the textField's placeholder
-    public var placeholderColor : UIColor?
     
     /// A formatter to be used to format the user's input
     public var formatter: NSFormatter?
@@ -68,23 +57,56 @@ public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TypedCe
         displayValueFor = { [unowned self] value in
             guard let v = value else { return nil }
             guard let formatter = self.formatter else { return String(v) }
-            if self.cell.textField.isFirstResponder(){
+            if (self.cell.textInput as? UIView)?.isFirstResponder() == true {
                 return self.useFormatterDuringInput ? formatter.editingStringForObjectValue(v as! AnyObject) : String(v)
             }
             return formatter.stringForObjectValue(v as! AnyObject)
         }
+    }
+
+}
+
+
+public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: TextFieldCell, Cell.Value == T>: FormatteableRow<T, Cell>, FieldRowConformance, KeyboardReturnHandler {
+    
+    /// Configuration for the keyboardReturnType of this row
+    public var keyboardReturnType : KeyboardReturnTypeConfiguration?
+    
+    /// The percentage of the cell that should be occupied by the textField
+    public var textFieldPercentage : CGFloat?
+    
+    /// The placeholder for the textField
+    public var placeholder : String?
+    
+    /// The textColor for the textField's placeholder
+    public var placeholderColor : UIColor?
+    
+    public required init(tag: String?) {
+        super.init(tag: tag)
     }
 }
 
 /**
  *  Protocol for cells that contain a UITextField
  */
-public protocol TextFieldCell {
-    var textField : UITextField { get }
+public protocol TextInputCell {
+    var textInput : UITextInput { get }
 }
 
+public protocol TextFieldCell: TextInputCell {
+    
+    var textField: UITextField { get }
+}
+
+extension TextFieldCell {
+    
+    public var textInput: UITextInput {
+        return textField
+    }
+}
 
 public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, UITextFieldDelegate, TextFieldCell {
+    
     lazy public var textField : UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false

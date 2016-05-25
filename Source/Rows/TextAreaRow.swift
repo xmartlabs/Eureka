@@ -13,7 +13,7 @@ public enum TextAreaHeight {
     case Dynamic(initialTextViewHeight: CGFloat)
 }
 
-protocol TextAreaConformance : FormatterConformance {
+protocol TextAreaConformance: FormatterConformance {
     var placeholder : String? { get set }
     var textAreaHeight : TextAreaHeight { get set }
 }
@@ -22,8 +22,14 @@ protocol TextAreaConformance : FormatterConformance {
 /**
  *  Protocol for cells that contain a UITextView
  */
-public protocol AreaCell {
+public protocol AreaCell : TextInputCell {
     var textView: UITextView { get }
+}
+
+extension AreaCell {
+    public var textInput: UITextInput {
+        return textView
+    }
 }
 
 public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, UITextViewDelegate, AreaCell {
@@ -244,25 +250,13 @@ public class TextAreaCell : _TextAreaCell<String>, CellType {
     }
 }
 
-public class AreaRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: AreaCell, Cell.Value == T>: Row<T, Cell>, TextAreaConformance {
+public class AreaRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: AreaCell, Cell.Value == T>: FormatteableRow<T, Cell>, TextAreaConformance {
     
     public var placeholder : String?
-    public var formatter: NSFormatter?
-    public var useFormatterDuringInput = false
-    public var useFormatterOnDidBeginEditing: Bool?
-    
     public var textAreaHeight = TextAreaHeight.Fixed(cellHeight: 110)
     
     public required init(tag: String?) {
         super.init(tag: tag)
-        displayValueFor = { [unowned self] value in
-            guard let v = value else { return nil }
-            guard let formatter = self.formatter else { return String(v) }
-            if self.cell.textView.isFirstResponder(){
-                return self.useFormatterDuringInput ? formatter.editingStringForObjectValue(v as! AnyObject) : String(v)
-            }
-            return formatter.stringForObjectValue(v as! AnyObject)
-        }
     }
 }
 

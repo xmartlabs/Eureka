@@ -405,25 +405,13 @@ public class AccountFloatLabelCell : _FloatLabelCell<String>, CellType {
 
 //MARK: FloatLabelRow
 
-public class FloatFieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: TextFieldCell, Cell.Value == T>: Row<T, Cell> {
+public class FloatFieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: TextFieldCell, Cell.Value == T>: FormatteableRow<T, Cell> {
 
-    public var formatter: NSFormatter?
-    public var useFormatterDuringInput = false
-    public var useFormatterOnDidBeginEditing: Bool?
-    
+
     public required init(tag: String?) {
         super.init(tag: tag)
-        self.displayValueFor = { [unowned self] value in
-            guard let v = value else { return nil }
-            guard let formatter = self.formatter else { return String(v) }
-            if self.cell.textView.isFirstResponder(){
-                return self.useFormatterDuringInput ? formatter.editingStringForObjectValue(v as! AnyObject) : String(v)
-            }
-            return formatter.stringForObjectValue(v as! AnyObject)
-        }
     }
 }
-
 
 public final class TextFloatLabelRow: FloatFieldRow<String, TextFloatLabelCell>, RowType {
     public required init(tag: String?) {
