@@ -3,10 +3,26 @@ All notable changes to this project will be documented in this file.
 
 ### [1.6.0](https://github.com/xmartlabs/Eureka/releases/tag/1.6.0)
 
-*
-*
-* 
+* **Breaking change**. Remove controller: FormViewController parameter from HeaderFooterViewRepresentable `viewForSection` method.
 
+
+* Support for Xcode 7.3.1.
+* Fixed ImageRow issue when trying to access imageURL after selecting image. Now imageURL is properly set up. #346
+* Made FieldRowConformance protocol public.
+* Added ability to override TextAreaRow constraints.
+* Fix. Now section headerView/footerView cache is deleted whenever section header/footer is assigned.
+* Made public `navigateToDirection(direction: Direction)` method.
+* Fixed autolayout in cells. #396
+* Removed cell.setNeedsLayout() and cell.setNeedsUpdateConstraints() from updateCell process.
+* Added `ButtonRow` `onCellSelecttion` example.
+* Improve row deselection behavior during interactive transitions. #406
+* Autosize TextAreaRow functionality added.
+* Moved `inputAccessoryViewForRow` method from extension to FormViewController allowing it to be overridden.
+* Added ability to show a text when there is no value selected to some rows.
+* Fixed: The top divider of a PickerInlineRow disappears upon selection.
+* Fixed crash when selecting a date. DatePickerRow.
+* Ensure inline row is visible when it’s expanded.
+* Fixed PostalAddressRow - When a long form is scrolled up/down, values in Address box disappears.
 
 ### [1.5.0](https://github.com/xmartlabs/Eureka/releases/tag/1.5.0)
 
