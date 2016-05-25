@@ -13,7 +13,7 @@ public class _DateRow: _DateFieldRow {
         super.init(tag: tag)
         dateFormatter = NSDateFormatter()
         dateFormatter?.timeStyle = .NoStyle
-        dateFormatter?.dateStyle = .MediumStyle
+        dateFormatter?.dateFormat = "yyyy-MM-dd"
         dateFormatter?.locale = NSLocale.currentLocale()
     }
 }
