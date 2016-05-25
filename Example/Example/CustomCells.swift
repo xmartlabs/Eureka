@@ -415,13 +415,11 @@ public class FloatFieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: Ty
         super.init(tag: tag)
         self.displayValueFor = { [unowned self] value in
             guard let v = value else { return nil }
-            if let formatter = self.formatter {
-                if self.cell.textField.isFirstResponder(){
-                    return self.useFormatterDuringInput ? formatter.editingStringForObjectValue(v as! AnyObject) : String(v)
-                }
-                return formatter.stringForObjectValue(v as! AnyObject)
+            guard let formatter = self.formatter else { return String(v) }
+            if self.cell.textView.isFirstResponder(){
+                return self.useFormatterDuringInput ? formatter.editingStringForObjectValue(v as! AnyObject) : String(v)
             }
-            return String(v)
+            return formatter.stringForObjectValue(v as! AnyObject)
         }
     }
 }
