@@ -1,10 +1,26 @@
-//
 //  FieldRow.swift
-//  Eureka
+//  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Created by Martin Barreto on 2/24/16.
-//  Copyright © 2016 Xmartlabs. All rights reserved.
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 import Foundation
 
@@ -232,44 +248,35 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     }
     
     public func textFieldDidChange(textField : UITextField){
+        
         guard let textValue = textField.text else {
             row.value = nil
             return
         }
-        if let fieldRow = row as? FieldRowConformance, let formatter = fieldRow.formatter {
-            if fieldRow.useFormatterDuringInput {
-                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
-                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
-                if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                    row.value = value.memory as? T
-                    if var selStartPos = textField.selectedTextRange?.start {
-                        let oldVal = textField.text
-                        textField.text = row.displayValueFor?(row.value)
-                        if let f = formatter as? FormatterProtocol {
-                            selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text)
-                        }
-                        textField.selectedTextRange = textField.textRangeFromPosition(selStartPos, toPosition: selStartPos)
-                    }
-                    return
-                }
-            }
-            else {
-                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
-                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
-                if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                    row.value = value.memory as? T
-                }
+        guard let fieldRow = row as? FieldRowConformance, let formatter = fieldRow.formatter else {
+            row.value = textValue.isEmpty ? nil : (T.init(string: textValue) ?? row.value)
+            return
+        }
+        if fieldRow.useFormatterDuringInput {
+            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
+            let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
+            if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
+                row.value = value.memory as? T
+                guard var selStartPos = textField.selectedTextRange?.start else { return }
+                let oldVal = textField.text
+                textField.text = row.displayValueFor?(row.value)
+                selStartPos = (formatter as? FormatterProtocol)?.getNewPosition(forPosition: selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text) ?? selStartPos
+                textField.selectedTextRange = textField.textRangeFromPosition(selStartPos, toPosition: selStartPos)
                 return
             }
         }
-        guard !textValue.isEmpty else {
-            row.value = nil
-            return
+        else {
+            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
+            let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
+            if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
+                row.value = value.memory as? T
+            }
         }
-        guard let newValue = T.init(string: textValue) else {
-            return
-        }
-        row.value = newValue
     }
     
     //Mark: Helpers
