@@ -51,7 +51,6 @@ public class SliderCell: Cell<Float>, CellType {
     
     public override func setup() {
         super.setup()
-        height = { UITableViewAutomaticDimension }
         selectionStyle = .None
         slider.minimumValue = sliderRow.minimumValue
         slider.maximumValue = sliderRow.maximumValue

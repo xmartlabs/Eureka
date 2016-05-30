@@ -170,10 +170,10 @@ extension _ImageRow {
 //MARK: Helpers
     
     private func createOptionForAlertController(alertController: UIAlertController, sourceType: ImageRowSourceTypes) {
-        guard let pickerSourceType = UIImagePickerControllerSourceType(rawValue: sourceTypes.imagePickerControllerSourceTypeRawValue) where sourceTypes.contains(sourceType) else { return }
+        guard let pickerSourceType = UIImagePickerControllerSourceType(rawValue: sourceType.imagePickerControllerSourceTypeRawValue) where sourceTypes.contains(sourceType) else { return }
         let option = UIAlertAction(title: NSLocalizedString(sourceType.localizedString, comment: ""), style: .Default, handler: { [weak self] _ in
             self?.displayImagePickerController(pickerSourceType)
-            })
+        })
         alertController.addAction(option)
     }
     

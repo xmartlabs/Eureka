@@ -16,7 +16,6 @@ public class SwitchCell : Cell<Bool>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        height = { UITableViewAutomaticDimension }
     }
     
     public var switchControl: UISwitch? {

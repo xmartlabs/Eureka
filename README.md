@@ -347,7 +347,7 @@ You can also set the header or footer using a custom view. This is best done by 
 ```swift
 Section() { section in
 	var header = HeaderFooterView<MyHeaderNibFile>(.NibFile(name: "MyHeaderNibFile", bundle: nil))
-	header.onSetupView = { view, _, _ in
+	header.onSetupView = { view, _ in
     	 // customize header
 	 }
 	header.height = { 100 }
@@ -744,7 +744,7 @@ section.header = HeaderFooterView(title: "Header title \(variable)") // use Stri
 //or
 var header = HeaderFooterView<UIView>(.Class) // most flexible way to set up a header using any view type
 header.height = { 60 }  // height can be calculated
-header.onSetupView = { view, section, formVC in  // each time the view is about to be displayed onSetupView is invoked.
+header.onSetupView = { view, section in  // each time the view is about to be displayed onSetupView is invoked.
     view.backgroundColor = .orangeColor()
 }
 section.header = header
