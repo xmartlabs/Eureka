@@ -112,4 +112,22 @@ class HelperMethodTests: BaseEurekaTests {
         
     }
     
+    func testAllSectionsMethod(){
+        let form = manySectionsForm
+        
+        let sections = form
+        let allSections = form.allSections
+        
+        XCTAssertEqual(sections.count, 6)
+        XCTAssertEqual(sections.count, allSections.count)
+        
+        let section1 = form[0]
+        let section4 = form[3]
+        form.hideSection(section1)
+        form.hideSection(section4)
+        
+        XCTAssertEqual(sections.count, 4)
+        XCTAssertEqual(allSections.count, 6)
+    }
+    
 }
