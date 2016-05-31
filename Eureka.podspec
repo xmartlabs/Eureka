@@ -10,5 +10,6 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
   s.ios.frameworks = 'UIKit', 'Foundation'
   s.source_files = 'Source/**/*.swift'
+  s.resources = 'Source/Resources/Eureka.bundle'
   s.requires_arc = true
 end
