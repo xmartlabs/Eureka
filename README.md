@@ -1,4 +1,6 @@
-![Eureka: Elegant form builder in Swift](Eureka.png)
+<center>![Eureka: Elegant form builder in Swift](Eureka.jpg)</center>
+
+## **Eureka** is a UITableView dynamic forms library written in Swift 2.
 
 <p align="center">
 <a href="https://travis-ci.org/xmartlabs/Eureka"><img src="https://travis-ci.org/xmartlabs/Eureka.svg?branch=master" alt="Build status" /></a>
@@ -10,51 +12,44 @@
 <a href="https://codebeat.co/projects/github-com-xmartlabs-eureka"><img alt="codebeat badge" src="https://codebeat.co/badges/16f29afb-f072-4633-9497-333c6eb71263" /></a>
 </p>
 
-**Eureka** is a dynamic tableView forms generation library written in Swift.
+Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation of [XLForm] in Swift 2.
 
-Made with ❤️  by [XMARTLABS](http://xmartlabs.com). This is the re-creation of [XLForm] in Swift 2.
+## Overview
 
-## Complex forms made simple
+<img src="Example/Media/EurekaExample1.gif" width="220"/>
+<img src="Example/Media/EurekaExample2.gif" width="220"/>
+<img src="Example/Media/EurekaExample3.gif" width="220"/>
 
-<img src="Example/Media/EurekaNavigation.gif" width="300"/>
-<img src="Example/Media/EurekaRows.gif" width="300"/>
+## Contents
 
 * [Requirements]
-* [Example Project]
 * [Usage]
   + [How to create a Form]
-  + [Getting row values]
   + [Operators]
-  + [Customization]
-    - [Understanding Row and Cell]
-    - [The callbacks]
+  + [Using the callbacks]
   + [Section Header and Footer]
-  + [How to dynamically hide and show rows (or sections)]
+  + [Dynamically hide and show rows (or sections)]
   + [List sections]
-* [Extensibility]
-  + [How to create custom rows and cells]
-  + [How to create custom inline rows]
-  + [Implementing a custom Presenter row]
-  + [Custom rows catalog]
+* [Custom rows]
+  + [Basic custom rows]
+  + [Custom inline rows]
+  + [Custom presenter rows]
 * [Installation]
 * [FAQ]
 
-**For more information look at [our blog post] that introduces *Eureka!*.**
+**For more information look at [our blog post] that introduces *Eureka*.**
 
 ## Requirements
 
 * iOS 8.0+
 * Xcode 7.3.1+
 
-## Example Project
+### Example project
 
-To run Example project:
+You can clone and run the Example project to see examples of most of Eureka's features.
 
-1. Clone Eureka repository
-2. Open Eureka workspace
-3. Run the *Example* project.
-
-You can also experiment and learn with the *Eureka Playground* which is contained in *Eureka.workspace*.
+<img src="Example/Media/EurekaNavigation.gif" width="200"/>
+<img src="Example/Media/EurekaRows.gif" width="200"/>
 
 ## Usage
 
@@ -88,11 +83,16 @@ class MyFormViewController: FormViewController {
 
 In the example we create two sections with standard rows, the result is this:
 
+<center>
 <img src="Example/Media/EurekaHowTo.gif" width="300" alt="Screenshot of Custom Cells"/>
+</center>
 
 You could create a form by just setting up the `form` property by yourself without extending from `FormViewController` but this method is typically more convenient.
 
 ### Getting row values
+
+The `Row` object holds a  ***value*** of a specific type.
+For example, a `SwitchRow` holds a `Bool` value, while a `TextRow` holds a `String` value.
 
 ```swift
 // Get the value of a single row
@@ -106,11 +106,9 @@ let valuesDictionary = form.values()
 
 ### Operators
 
-Eureka includes custom operators to facilitate form creation and modification.
+Eureka includes custom operators to make form creation easy:
 
-#### +++
-Adds a section to the form:
-
+#### +++ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add a section
 ```swift
 form +++ Section()
 
@@ -122,8 +120,7 @@ form +++ TextRow()
      +++ TextRow()  // Each row will be on a separate section
 ```
 
-#### <<<
-Append rows a Section:
+#### <<< &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Insert a row
 
 ```swift
 form +++ Section()
@@ -135,8 +132,7 @@ form +++ TextRow()
         <<< DateRow()
 ```
 
-#### +=
-Append arrays of elements to either a Form or a Section like this:
+#### += &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Append an array
 
 ```swift
 // Append Sections into a Form
@@ -146,69 +142,19 @@ form += [Section("A"), Section("B"), Section("C")]
 section += [TextRow(), DateRow()]
 ```
 
-###### To learn more about these operators try them out in Eureka Playground.
+### Using the callbacks
 
-### Customization
+Eureka includes callbacks to change the appearance and behavior of a row.
 
 #### Understanding Row and Cell
-A `Row` is an abstract container which holds the model and the view **cell**. The `Cell` manages actual view and subclasses `UITableViewCell` accordingly.
 
-#### The callbacks
-
-There are many callbacks to change the default appearance and behavior of a row.
-Example:
-
-```swift
-form +++ TextRow("Tag")
-            .cellSetup({ (cell, row) in     // cell has the view, row is the holder
-                cell.backgroundColor = .redColor()
-                cell.height = {100}         // called by 'heightForRowAtIndexPath'
-            })
-            .onCellSelection({ (cell, row) in
-                // Do something
-            })
-```
-
-* **onChange()**
-
-	This will be called when the value of a row changes. You might be interested in adjusting some parameters here or even make some other rows appear or disappear.
-* **onCellSelection()**
-
-	This one will be called each time the user taps on the row and it gets selected.
-* **cellSetup()**
-
-	The cellSetup will be called only once when the cell is first configured. Here you should set up your cell with its permanent settings.
-* **cellUpdate()**
-
-	The cellUpdate will be called each time the cell appears on screen. Here you can change how the title and value of your row is set or change the appearance (colors, fonts, etc) depending on variables that might not be present at cell creation time.
-
-* **onCellHighlight()**
-
-  The onCellHighlight will be invoked whenever the cell or any subview become the first responder.
-
-* **onCellUnHighlight()**
-
-  The onCellUnHighlight will be invoked whenever the cell or any subview resigns the first responder.
-
-* **onExpandInlineRow()**
-
-  The onExpandInlineRow will be invoked before expanding the inline row. This does only apply to the rows conforming to the `InlineRowType` protocol.
-
-* **onCollapseInlineRow()**
-
-  The onCollapseInlineRow will be invoked before collapsing the inline row. This does only apply to the rows conforming to the `InlineRowType` protocol.
-
-* **onPresent()**
-
-	This method will be called by a row just before presenting another view controller. This does only apply to the rows conforming to the `PresenterRowType` protocol. You can use this to set up the presented controller.
-
-Each row also has an initializer where you should set the basic attributes of the row.
+A `Row` is an abstraction Eureka uses which holds a **value** and contains the view `Cell`. The `Cell` manages the view and subclasses `UITableViewCell`.
 
 Here is an example:
 
 ```swift
-let row  = SwitchRow("SwitchRow") { // initializer
-                        $0.title = "The title"
+let row  = SwitchRow("SwitchRow") { row in      // initializer
+                        row.title = "The title"
                     }.onChange { row in
                         row.title = (row.value ?? false) ? "The title expands when on" : "The title"
                         row.updateCell()
@@ -219,10 +165,42 @@ let row  = SwitchRow("SwitchRow") { // initializer
                 }
 ```
 
-The result:
-<figure>
 <img src="Example/Media/EurekaOnChange.gif" width="300" alt="Screenshot of Disabled Row"/>
-</figure>
+
+#### Callbacks list
+
+* **onChange()**
+
+	Called when the value of a row changes. You might be interested in adjusting some parameters here or even make some other rows appear or disappear.
+* **onCellSelection()**
+
+	Called each time the user taps on the row and it gets selected.
+* **cellSetup()**
+
+	Called only once when the cell is first configured. Set permanent settings here.
+* **cellUpdate()**
+
+	Called each time the cell appears on screen. You can change the appearance here using variables that may not be present on cellSetup().
+* **onCellHighlight()**
+
+  Called whenever the cell or any subview become the first responder.
+
+* **onCellUnHighlight()**
+
+  Called whenever the cell or any subview resigns the first responder.
+
+* **onExpandInlineRow()**
+
+  Called before expanding the inline row. Applies to rows conforming `InlineRowType` protocol.
+
+* **onCollapseInlineRow()**
+
+  Called before collapsing the inline row. Applies to rows conforming `InlineRowType` protocol.
+
+* **onPresent()**
+
+	Called by a row just before presenting another view controller. Applies to rows conforming `PresenterRowType` protocol. Use it to set up the presented controller.
+
 
 ### Section Header and Footer
 
@@ -280,7 +258,7 @@ Section(){ section in
 }
 ```
 
-### How to dynamically hide and show rows (or sections)  <a name="hide-show-rows"></a>
+### Dynamically hide and show rows (or sections)  <a name="hide-show-rows"></a>
 
 <img src="Example/Media/EurekaSwitchSections.gif" width="300" alt="Screenshot of Hidden Rows" />
 
@@ -393,19 +371,18 @@ Eureka includes the `ListCheckRow` which is used for example. In the custom rows
 To easily get the selected row/s of a `SelectableSection` there are two methods: `selectedRow()` and `selectedRows()` which can be called to get the selected row in case it is a `SingleSelection` section or all the selected rows if it is a `MultipleSelection` section.
 
 
-## Extensibility
+## Custom rows
 
+### Basic custom rows
 
-### How to create custom rows and cells  <a name="custom-rows"></a>
+To create a row with custom behavior and appearance you'll probably want to create subclasses of `Row` and `Cell`.
 
-A `Row` hold a value of a specific type. For example, a SwitchRow holds a Bool value, while a TextRow holds a String value.
-As the row contains the cell in charge of the view, both `Row` and `Cell` must have the same *value type* when defined.
-
-When creating a custom `Row` you will probably also want to create a custom `Cell` to draw that row:
+Remember that `Row` is the abstraction Eureka uses, while the `Cell` is the actual `UITableViewCell` in charge of the view.
+As the `Row` contains the `Cell`, both `Row` and `Cell` must be defined for the same **value** type.
 
 ```swift
 // Custom Cell with value type: Bool
-// The cell is defined using a .xib, so we can use outlets :)
+// The cell is defined using a .xib, so we can set outlets :)
 public class CustomCell: Cell<Bool>, CellType{
     @IBOutlet weak var switchControl: UISwitch!
     @IBOutlet weak var label: UILabel!
@@ -435,21 +412,17 @@ public final class CustomRow: Row<Bool, CustomCell>, RowType {
     }
 }
 ```
-
-<figure>
-<figcaption style="text-align:top;">The result:</figcaption>
-<img src="Example/Media/EurekaCustomRow.gif" width="300" alt="Screenshot of Disabled Row"/>
-</figure>
+The result: <br>
+<img src="Example/Media/EurekaCustomRow.gif" alt="Screenshot of Disabled Row"/>
 
 <br>
 Custom rows need to subclass `Row<ValueType, CellType>` and conform to `RowType` protocol.
 Custom cells need to subclass `Cell<ValueType>` and conform to `CellType` protocol.
 
-The setup and update methods are similar to the cellSetup and cellUpdate callbacks and that is where the cell should be customized.
+Just like the callbacks cellSetup and CellUpdate, the `Cell` has the setup and update methods where you can customize it.
 
-*Note: ValueType and CellType are illustrative. You have to replace them with the type your value will have and the type of your cell (like Bool and SwitchCell in this example)*
 
-### How to create custom inline rows
+### Custom inline rows
 
 A inline row is a specific type of row that shows dynamically a row below it, normally an inline row changes between a expand and collapse mode whenever the row is tapped.
 
@@ -473,7 +446,7 @@ public override func customDidSelect() {
 }
 ```
 
-### Implementing a custom Presenter row (SelectorRow, PushRow, ImageRow, etc) <a name="custom-presenter-row"></a>
+### Custom Presenter rows
 
 **Note:** *A Presenter row is a row that presents a new UIViewController.*
 
@@ -845,16 +818,25 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [Usage]: #usage
 [Operators]: #operators
 [Rows]: #rows
-[Customization]: #customization
+[Using the callbacks]: #using-the-callbacks
 [Section Header and Footer]: #section-header-and-footer
-[How to create custom rows and cells]: #custom-rows
+[Custom rows]: #custom-rows
+[Basic custom rows]: #basic-custom-rows
+[Custom inline rows]: #custom-inline-rows
+[Custom presenter rows]: #custom-presenter-rows
 [How to create custom inline rows]: #how-to-create-custom-inline-rows
 [Custom rows catalog]: #custom-rows-catalog
-[How to dynamically hide and show rows (or sections)]: #hide-show-rows
+[Dynamically hide and show rows (or sections)]: #hide-show-rows
 [Implementing a custom Presenter row]: #custom-presenter-row
 [Extensibility]: #extensibility
 [Installation]: #installation
 [FAQ]: #faq
+
+[List sections]: #list-sections
+
+
+* [Installation]
+* [FAQ]
 
 
 <!--- In Project -->
