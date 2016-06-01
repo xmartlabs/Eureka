@@ -1,6 +1,4 @@
-<center>![Eureka: Elegant form builder in Swift](Eureka.jpg)</center>
-
-## **Eureka** is a UITableView dynamic forms library written in Swift 2.
+![Eureka: Elegant form builder in Swift](Eureka.jpg)
 
 <p align="center">
 <a href="https://travis-ci.org/xmartlabs/Eureka"><img src="https://travis-ci.org/xmartlabs/Eureka.svg?branch=master" alt="Build status" /></a>
