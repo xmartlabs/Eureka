@@ -32,6 +32,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
   + [Basic custom rows]
   + [Custom inline rows]
   + [Custom presenter rows]
+* [Row catalog]
 * [Installation]
 * [FAQ]
 
@@ -481,6 +482,56 @@ You can place your own UIViewController instead of SelectorViewController<T>.
 
 ## Row catalog
 
+### Controls Rows
+<table>
+    <tr>
+        <td><center><b>Label Row</b><br>
+        <img src="Example/Media/RowStatics/LabelRow.png"/>
+        </center><br><br>
+        </td>
+
+        <td><center><b>Button Row</b><br>
+        <img src="Example/Media/RowStatics/ButtonRow.png"/>
+        </center><br><br>
+        </td>
+
+        <td><center><b>Check Row</b><br>
+        <img src="Example/Media/RowStatics/CheckRow.png"/>
+        </center><br><br>
+        </td>
+    </tr>
+    <tr>
+        <td><center><b>Switch Row</b><br>
+        <img src="Example/Media/RowStatics/SwitchRow.png"/>
+        </center><br><br>
+        </td>
+
+        <td><center><b>Slider Row</b><br>
+        <img src="Example/Media/RowStatics/SliderRow.png"/>
+        </center><br><br>
+        </td>
+
+        <td><center><b>Stepper Row</b><br>
+        <img src="Example/Media/RowStatics/StepperRow.png"/>
+        </center><br><br>
+        </td>        
+    </tr>
+    <tr>
+        <td><center><b>Text Area Row</b><br>
+        <img src="Example/Media/RowStatics/TextAreaRow.png"/>
+        </center><br><br>
+        </td>
+        <td><center><b>Postal Address Row</b><br>
+        <img src="Example/Media/RowStatics/PostalAddressRow.png"/>
+        </center><br><br>
+        </td>
+        <td><center><b>Picture Row</b><br>
+        <img src="Example/Media/RowStatics/PictureRow.png"/>
+        </center><br><br>
+        </td>
+    </tr>
+</table>
+
 ### Field Rows
 These rows have a textfield on the right side of the cell. The difference between each one of them consists in a different capitalization, autocorrection and keyboard type configuration.
 
@@ -515,90 +566,114 @@ public protocol FormatterProtocol {
 }
 ```
 
-
 ### Date Rows
 
 Date Rows hold a NSDate and allow us to set up a new value through UIDatePicker control. The mode of the UIDatePicker and the way how the date picker view is shown is what changes between them.
 <table>
 <tr>
-<td><b><center>Date Row<br><img src="Example/Media/RowGifs/EurekaDateRow.gif"/></td>
-<td><b><center>Date Row (Inline)<br><img src="Example/Media/RowGifs/EurekaDateInlineRow.gif"/></td>
-<td><b><center>Date Row (Picker)<br><img src="Example/Media/RowGifs/EurekaDatePickerRow.gif"/></td>
-</tr>
-<tr>
-<td><b><center>Time Row<br><img src="Example/Media/RowGifs/EurekaTimeRow.gif"/></td>
-<td><b><center>Time Row (Inline)<br><img src="Example/Media/RowGifs/EurekaTimeInlineRow.gif"/></td>
-<td><b><center>Time Row (Picker)<br><img src="Example/Media/RowGifs/EurekaTimePickerRow.gif"/></td>
-</tr>
-<tr>
-<td><b><center>Date Time Row<br><img src="Example/Media/RowGifs/EurekaDateTimeRow.gif"/></td>
-<td><b><center>Date Time Row (Inline)<br><img src="Example/Media/RowGifs/EurekaDateTimeInlineRow.gif"/></td>
-<td><b><center>Date Time Row (Picker)<br><img src="Example/Media/RowGifs/EurekaDateTimePickerRow.gif"/></td>
-</tr>
-<tr>
-<td><b><center>CountDown Row<br><img src="Example/Media/RowGifs/EurekaCountDownRow.gif"/></td>
-<td><b><center>CountDown Row (Inline)<br><img src="Example/Media/RowGifs/EurekaCountDownInlineRow.gif"/></td>
-<td><b><center>CountDown Row (Picker)<br><img src="Example/Media/RowGifs/EurekaCountDownPickerRow.gif"/></td>
+<td>
+<center><b>Date Row</b>
+<img src="Example/Media/RowGifs/EurekaDateRow.gif" height="220" width="230" />
+<br>
+Picker shown in the keyboard.
+</center>
+</td>
+<td>
+<center><b>Date Row (Inline)</b>
+<img src="Example/Media/RowGifs/EurekaDateInlineRow.gif" height="220" width="210"/>
+<br>
+The row expands.
+</center>
+</td>
+<td>
+<center><b>Date Row (Picker)</b>
+<img src="Example/Media/RowGifs/EurekaDatePickerRow.gif" height="220" width="210"/>
+<br>
+The picker is always visible.
+</center>
+</td>
 </tr>
 </table>
 
+With those 3 styles (Normal, Inline & Picker), Eureka includes:
 
-### Options Selector Rows
-These are rows with a list of options associated from which the user must choose. You can see them in the examples above.
-* **AlertRow**
++ **DateRow**
++ **TimeRow**
++ **DateTimeRow**
++ **CountDownRow**
 
-<img src="Example/Media/EurekaAlertRow.gif" width="300" alt="Screenshot of Custom Cells"/>
+### Option Rows
+These are rows with a list of options associated from which the user must choose.
 
-* **ActionSheetRow**
+```swift
+<<< ActionSheetRow<String>() {
+                $0.title = "ActionSheetRow"
+                $0.selectorTitle = "Pick a number"
+                $0.options = ["One","Two","Three"]
+                $0.value = "Two"    // initially selected
+            }
+```
 
-The ActionSheetRow will show an action sheet with options to choose from.
+<table>
+<tr>
+<td width="25%">
+<center><b>Alert Row</b><br>
+<img src="Example/Media/RowStatics/AlertRow.jpeg"/>
+<br>
+Will show an alert with the options to choose from.
+</center>
+</td>
+<td width="25%">
+<center><b>ActionSheet Row</b><br>
+<img src="Example/Media/RowStatics/ActionSheetRow.jpeg"/>
+<br>
+Will show an action sheet with the options to choose from.
+</center>
+</td>
+<td width="25%">
+<center><b>Push Row</b><br>
+<img src="Example/Media/RowStatics/PushRow.jpeg"/>
+<br>
+Will push to a new controller from where to choose options listed using Check rows.
+</center>
+</td>
+<td width="25%">
+<center><b>Multiple Selector Row</b><br>
+<img src="Example/Media/RowStatics/MultipleSelectorRow.jpeg"/>
+<br>
+Like PushRow but allows the selection of multiple options.
+</center>
+</td>
+</tr>
+</table>
 
-* **SegmentedRow**
+<table>
+    <tr>
+        <td><center><b>Segmented Row</b><br>
+        <img src="Example/Media/RowStatics/SegmentedRow.png"/>
+        </center>
+        </td>
 
-<img src="Example/Media/EurekaSegmentedRow.gif" width="300" alt="Screenshot of Segment Row"/>
+        <td><center><b>Segmented Row (w/Title)</b><br>
+        <img src="Example/Media/RowStatics/SegmentedRowWithTitle.png"/>
+        </center>
+        </td>
 
-* **PushRow**
+        <td><center><b>Picker Row</b><br>
+        <img src="Example/Media/RowStatics/PickerRow.png"/>
+        <br>Presents options of a generic type through a picker view
+        <br><b>(There is also Picker Inline Row)
+        </center>
+        </td>
+    </tr>
+</table>
 
-This row will push to a new controller from where to choose options listed using Check rows.
-
-* **PopoverSelectorRow**
-
-This row will show a popover from where to choose options listed using Check rows.
-
-* **ImageRow**
-
-Will let the user pick a photo
-
-* **MultipleSelectorRow**
-
-This row allows the selection of multiple options
-
-* **PickerRow**
-
-This row allows you to present options of a generic type through a picker view
-
-* **PickerInlineRow**
-
-This row uses the **PickerRow** row as its inline row
+### Built your own custom row?
+Let us know about it, we would be glad to mention it here. :)
 
 * **LocationRow** (Included as custom row in the example project)
 
 <img src="Example/Media/EurekaLocationRow.gif" width="300" alt="Screenshot of Location Row"/>
-
-
-### Other Rows
-These are other rows that might be useful
-* **ButtonRow**
-* **CheckRow**
-* **LabelRow**
-* **SwitchRow**
-* **TextAreaRow**
-* **PostalAddressRow**
-* **SliderRow**
-* **StepperRow**
-
-### Built your own custom row?
-Let us know about it, we would be glad to mention it here. :)
 
 ## Installation
 
@@ -827,6 +902,7 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [Dynamically hide and show rows (or sections)]: #hide-show-rows
 [Implementing a custom Presenter row]: #custom-presenter-row
 [Extensibility]: #extensibility
+[Row catalog]: #row-catalog
 [Installation]: #installation
 [FAQ]: #faq
 
