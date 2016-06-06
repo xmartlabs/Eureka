@@ -799,7 +799,7 @@ public func +=< C : CollectionType where C.Generator.Element == BaseRow>(inout l
 }
 ```
 
-You can see how the rest of custom operators are implemented [here](https://github.com/xmartlabs/Eureka/blob/master/Source/Core.swift#L1816).
+You can see how the rest of custom operators are implemented [here](https://github.com/xmartlabs/Eureka/blob/master/Source/Core/Operators.swift).
 
 It's up to you to decide if you want to use Eureka custom operators or not.
 
