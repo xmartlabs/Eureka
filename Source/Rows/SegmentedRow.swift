@@ -37,6 +37,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     
     public override func setup() {
         super.setup()
+        height = { BaseRow.estimatedRowHeight }
         selectionStyle = .None
         contentView.addSubview(titleLabel!)
         contentView.addSubview(segmentedControl)
