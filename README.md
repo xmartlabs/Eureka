@@ -1,4 +1,4 @@
-![Eureka: Elegant form builder in Swift](Eureka.png)
+![Eureka: Elegant form builder in Swift](Eureka.jpg)
 
 <p align="center">
 <a href="https://travis-ci.org/xmartlabs/Eureka"><img src="https://travis-ci.org/xmartlabs/Eureka.svg?branch=master" alt="Build status" /></a>
@@ -10,411 +10,306 @@
 <a href="https://codebeat.co/projects/github-com-xmartlabs-eureka"><img alt="codebeat badge" src="https://codebeat.co/badges/16f29afb-f072-4633-9497-333c6eb71263" /></a>
 </p>
 
-Made with ❤️  by [XMARTLABS](http://xmartlabs.com).
-This is the re-creation of [XLForm] in Swift 2.
+Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation of [XLForm] in Swift 2.
 
-* [Introduction]
+## Overview
+
+<img src="Example/Media/EurekaExample1.gif" width="220"/>
+<img src="Example/Media/EurekaExample2.gif" width="220"/>
+<img src="Example/Media/EurekaExample3.gif" width="220"/>
+
+## Contents
+
 * [Requirements]
-* [Examples]
 * [Usage]
   + [How to create a Form]
-  + [How to get the form values]
   + [Operators]
-  + [Rows]
-  + [Customization]
+  + [Using the callbacks]
   + [Section Header and Footer]
-  + [How to dynamically hide and show rows (or sections)]
-* [Extensibility]
-  + [How to create custom rows and cells]
-  + [How to create custom inline rows]
-  + [Implementing a custom Presenter row]
-  + [Custom rows catalog]
+  + [Dynamically hide and show rows (or sections)]
+  + [List sections]
+* [Custom rows]
+  + [Basic custom rows]
+  + [Custom inline rows]
+  + [Custom presenter rows]
+* [Row catalog]
 * [Installation]
 * [FAQ]
 
-## Introduction
-
-**Eureka!** is a library to create dynamic table-view forms from a [DSL] specification in Swift. This DSL basically consists of *Rows*, *Sections* and *Forms*. A *Form* is a collection of *Sections* and a *Section* is a collection of *Rows*.
-
-If you have been using `XLForm` then many terms will result familiar to you.
-
-Both `Form` and `Section` classes conform to `MutableCollectionType` and `RangeReplaceableCollectionType` protocols. This makes a whole bunch of functions available to be executed on them.
-
-**For more information look at [our blog post] that introduces *Eureka!*.**
+**For more information look at [our blog post] that introduces *Eureka*.**
 
 ## Requirements
 
 * iOS 8.0+
-* Xcode 7.3+
+* Xcode 7.3.1+
 
+### Example project
 
-## Getting involved
+You can clone and run the Example project to see examples of most of Eureka's features.
 
-* If you **want to contribute** please feel free to **submit pull requests**.
-* If you **have a feature request** please **open an issue**.
-* If you **found a bug** check older issues before submitting an issue.
-* If you **need help** or would like to **ask general question**, use [StackOverflow]. (Tag `eureka-forms`).
-
-**Before contribute check the [CONTRIBUTING](CONTRIBUTING.md) file for more info.**
-
-If you use **Eureka** in your app We would love to hear about it! Drop us a line on [twitter].
-
-## Examples
-
-Follow these 3 steps to run Example project: Clone Eureka repository, open Eureka workspace and run the *Example* project.
-
-You can also experiment and learn with the *Eureka Playground* which is contained in *Eureka.workspace*.
-
-<img src="Example/Media/EurekaNavigation.gif" width="300"/>
-<img src="Example/Media/EurekaRows.gif" width="300"/>
+<img src="Example/Media/EurekaNavigation.gif" width="200"/>
+<img src="Example/Media/EurekaRows.gif" width="200"/>
 
 ## Usage
 
 ### How to create a form
-It is quite simple to create a form, just like this:
+By extending `FormViewController` you can then simply add sections and rows to the `form` variable.
 
 ```swift
 import Eureka
 
-class CustomCellsController : FormViewController {
+class MyFormViewController: FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        form +++ Section("Custom cells")
-	            	<<< WeekDayRow(){
-	            		$0.value = [.Monday, .Wednesday, .Friday]
-	            	}
-	            	<<< TextFloatLabelRow() {
-	            		$0.title = "Float Label Row, type something to see.."
-	            	}
+        form +++ Section("Section1")
+            <<< TextRow(){ row in
+                row.title = "Text Row"
+                row.placeholder = "Enter text here"
+            }
+            <<< PhoneRow(){
+                $0.title = "Phone Row"
+                $0.placeholder = "And numbers here"
+            }
+        +++ Section("Section2")
+            <<< DateRow(){
+                $0.title = "Date Row"
+                $0.value = NSDate(timeIntervalSinceReferenceDate: 0)
+            }
     }
 }
 ```
 
-In this example we create a [CustomCellsController] and then simply add a section with two custom rows to the `form` variable.
+In the example we create two sections with standard rows, the result is this:
 
-And this is the product:
+<center>
+<img src="Example/Media/EurekaHowTo.gif" width="300" alt="Screenshot of Custom Cells"/>
+</center>
 
-<img src="Example/Media/EurekaCustomCells.gif" width="300" alt="Screenshot of Custom Cells"/>
+You could create a form by just setting up the `form` property by yourself without extending from `FormViewController` but this method is typically more convenient.
 
-As you may have noticed `CustomCellsController` extends from `FormViewController` which has a `form` property that can be used to declare the form as the example shows.
-`WeekDayRow` and `TextFloatLabelRow` are non-standard rows included in the example project, but the standard rows usage is analog. You can create a form by just setting up the `form` property without extending from `FormViewController` but typically it is more convenient to create a custom view controller that extends from it.
+### Getting row values
 
-### How to get the form values
-
-We can get all form values by invoking the following `Form` function:
+The `Row` object holds a  ***value*** of a specific type.
+For example, a `SwitchRow` holds a `Bool` value, while a `TextRow` holds a `String` value.
 
 ```swift
-public func values(includeHidden includeHidden: Bool = false) -> [String: Any?]
+// Get the value of a single row
+let row: TextRow? = form.rowByTag("MyRowTag")
+let value = row.value
+
+// Get the value of all rows which have a Tag assigned
+// The dictionary contains the 'rowTag':value pairs.
+let valuesDictionary = form.values()
 ```
-
-Passing `true` as `includeHidden` parameter value will also include the hidden rows values in the dictionary.
-
-As you may have noticed the result dictionary key is the row tag value and the value is the row value. Only rows with a tag value will be added to the dictionary.
 
 ### Operators
 
-We declared a series of custom operators to make the creation and modification of forms more readable and appealing.
-#### +++=
-This operator is used to append a row or section to a form. In case you are appending a row, then a section will be created that contains that row and that section will be appended to the form.
+Eureka includes custom operators to make form creation easy:
 
+#### +++ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add a section
 ```swift
-// Will append a section at the end of the 'form' Form.
-form +++= Section()
+form +++ Section()
 
-// Will internally create a Section containing a PhoneRow and append it to the 'form' variable:
-form +++= PhoneRow()
+// Chain it to add multiple Sections
+form +++ Section("First Section") +++ Section("Another Section")
+
+// Or use it with rows and get a blank section for free
+form +++ TextRow()
+     +++ TextRow()  // Each row will be on a separate section
 ```
 
-#### +++
-Lets you add a Section to a Form or create a Form by adding two sections. For example:
+#### <<< &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Insert a row
 
 ```swift
-// Will add two sections at the end of the 'form' Form.
-form +++ Section("Custom cells") +++ Section("Another section")
+form +++ Section()
+        <<< TextRow()
+        <<< DateRow()
 
-// Will create and assign a Form to the 'form' variable (containing the two sections):
-form = Section("Custom cells") +++ Section("Another section")
+// Or implicitly create the Section
+form +++ TextRow()
+        <<< DateRow()
 ```
 
-#### <<<
-This one is used to append rows to sections or to create a Section by appending two rows. For example:
-
+#### += &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Append an array
 
 ```swift
-// Will append a Check row to the last section of the 'form' Form.
-form.last! <<< CheckRow()
-
-// Will implicitly create a Section and add it to the 'form' (containing the two rows):
-form +++ PhoneRow("Phone"){ $0.title = "Phone"}
-         <<< IntRow("IntRow"){ $0.title = "Int"; $0.value = 5 }
-```
-
-
-#### +=
-This operator just invokes the corresponding `appendContentsOf` method which means that it can be used to append arrays of elements to either a Form or a Section like this:
-
-```swift
-// Will append three sections to form.
+// Append Sections into a Form
 form += [Section("A"), Section("B"), Section("C")]
+
+// Append Rows into a Section
+section += [TextRow(), DateRow()]
 ```
 
-###### To learn more about these operators try them out in Eureka Playground.
+### Using the callbacks
 
+Eureka includes callbacks to change the appearance and behavior of a row.
 
-### Rows
+#### Understanding Row and Cell
 
-This is a list of the rows that are provided by default:
-
-* **Field Rows**
-	This rows have a textfield on the right side of the cell. The difference between each one of them consists in a different capitalization, autocorrection and keyboard type configuration.
-	+ **TextRow**
-	+ **NameRow**
-	+ **URLRow**
-	+ **IntRow**
-	+ **PhoneRow**
-	+ **PasswordRow**
-	+ **EmailRow**
-	+ **DecimalRow**
-	+ **TwitterRow**
-	+ **AccountRow**
-	+ **ZipCodeRow**
-
-Typically we want to show a field row value using a formatter, for instance a currency formatter. To do so the previous rows have a `formatter` property that can be used to set up any formatter.
-`useFormatterDuringInput` determines if the formatter also should be used during row editing, this means, when the row's textfield is the first responder. The main challenge of using the formatting when the row is being edited is keeping updated the cursor position accordingly. Eureka provides the following protocol that your formatter should conform to in order to handle cursor position.
-
-For more information take a look at `DecimalFormatter` and `CurrencyFormatter` in the Example project.
-
-```swift
-public protocol FormatterProtocol {
-    func getNewPosition(forPosition forPosition: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition
-}
-```
-
-* **Date Rows**
-  Date Rows hold a NSDate and allow us to set up a new value through UIDatePicker control. The mode of the UIDatePicker and the way how the date picker view is shown is what changes between them.
-
-  + **DateRow**
-  + **DateInlineRow**
-  + **TimeRow**
-  + **TimeInlineRow**
-  + **DateTimeRow**
-  + **DateTimeInlineRow**
-  + **CountDownRow**
-  + **CountDownInlineRow**
-  + **DatePickerRow**
-  + **TimePickerRow**
-  + **DateTimePickerRow**
-  + **CountDownPickerRow**
-
-
-* **Options Selector Rows** These are rows with a list of options associated from which the user must choose. You can see them in the examples above.
-	+ **AlertRow**
-
-    <img src="Example/Media/EurekaAlertRow.gif" width="300" alt="Screenshot of Custom Cells"/>
-
-	+ **ActionSheetRow**
-
-		The ActionSheetRow will show an action sheet with options to choose from.
-
-	+ **SegmentedRow**
-
-    <img src="Example/Media/EurekaSegmentedRow.gif" width="300" alt="Screenshot of Segment Row"/>
-
-	+ **PushRow**
-
-		This row will push to a new controller from where to choose options listed using Check rows.
-
-  	+ **PopoverSelectorRow**
-
-  		This row will show a popover from where to choose options listed using Check rows.
-
-	+ **ImageRow**
-
-		Will let the user pick a photo
-
-	+ **MultipleSelectorRow**
-
-		This row allows the selection of multiple options
-
-	+ **PickerRow**
-
-		This row allows you to present options of a generic type through a picker view
-
-	+ **PickerInlineRow**
-
-		This row uses the **PickerRow** row as its inline row
-
-	+ **LocationRow** (Included as custom row in the example project)
-
-    <img src="Example/Media/EurekaLocationRow.gif" width="300" alt="Screenshot of Location Row"/>
-
-
-* **Other Rows**
-	These are other rows that might be useful
-	+ **ButtonRow**
-	+ **CheckRow**
-	+ **LabelRow**
-	+ **SwitchRow**
-	+ **TextAreaRow**
-  + **PostalAddressRow**
-  + **SliderRow**
-  + **StepperRow**
-
-There are also some custom rows in the examples project.
-
-### Customization
-
-A *row* holds the basic information that will be displayed on a *cell* like title, value, options (if present), etc. All the stuff that has to do with appearance like colors, fonts, text alignments, etc. normally go in the cell. Both, the row and the cell hold a reference to each other.
-
-You will often want to customize how a row behaves when it is tapped on or when its value changes and you might be interested in changing its appearance as well.
-There are many callbacks to change the default appearance and behaviour of a row.
-
-* **onChange()**
-
-	This will be called when the value of a row changes. You might be interested in adjusting some parameters here or even make some other rows appear or disappear.
-* **onCellSelection()**
-
-	This one will be called each time the user taps on the row and it gets selected.
-* **cellSetup()**
-
-	The cellSetup will be called once when the cell is first configured. Here you should set up your cell with its permanent settings.
-* **cellUpdate()**
-
-	The cellUpdate will be called each time the cell appears on screen. Here you can change how the title and value of your row is set or change the appearance (colors, fonts, etc) depending on variables that might not be present at cell creation time.
-
-* **onCellHighlight()**
-
-  The onCellHighlight will be invoked whenever the cell or any subview become the first responder.
-
-* **onCellUnHighlight()**
-
-  The onCellUnHighlight will be invoked whenever the cell or any subview resign the first responder.
-
-* **onExpandInlineRow()**
-
-  The onExpandInlineRow will be invoked before expand the inline row. This does only apply to the rows conforming to the `InlineRowType` protocol.
-
-* **onCollapseInlineRow()**
-
-  The onCollapseInlineRow will be invoked before collapse the inline row. This does only apply to the rows conforming to the `InlineRowType` protocol.
-
-* **onPresent()**
-
-	This method will be called by a row just before presenting another view controller. This does only apply to the rows conforming to the `PresenterRowType` protocol. You can use this to set up the presented controller.
-
-Each row also has an initializer where you should set the basic attributes of the row.
+A `Row` is an abstraction Eureka uses which holds a **value** and contains the view `Cell`. The `Cell` manages the view and subclasses `UITableViewCell`.
 
 Here is an example:
 
 ```swift
-let row  = CheckRow("set_disabled") { // initializer
-              $0.title = "Stop at disabled row"
-              $0.value = self.navigationOptions?.contains(.StopDisabledRow)
-           }.onChange { [weak self] row in
-              if row.value ?? false {
-                  self?.navigationOptions = self?.navigationOptions?.union(.StopDisabledRow)
-              }
-              else{
-                  self?.navigationOptions = self?.navigationOptions?.subtract(.StopDisabledRow)
-              }
-           }.cellSetup { cell, row in
-              cell.backgroundColor = .lightGrayColor()
-           }.cellUpdate { cell, row in
-              cell.textLabel?.font = .italicSystemFontOfSize(18.0)
-           }
+let row  = SwitchRow("SwitchRow") { row in      // initializer
+                        row.title = "The title"
+                    }.onChange { row in
+                        row.title = (row.value ?? false) ? "The title expands when on" : "The title"
+                        row.updateCell()
+                    }.cellSetup { cell, row in
+                        cell.backgroundColor = .lightGrayColor()
+                    }.cellUpdate { cell, row in
+                        cell.textLabel?.font = .italicSystemFontOfSize(18.0)
+                }
 ```
 
-Now it would look like this:
+<img src="Example/Media/EurekaOnChange.gif" width="300" alt="Screenshot of Disabled Row"/>
 
-<img src="Example/Media/EurekaCustomCellDisabled.gif" width="300" alt="Screenshot of Disabled Row"/>
+#### Callbacks list
+
+* **onChange()**
+
+	Called when the value of a row changes. You might be interested in adjusting some parameters here or even make some other rows appear or disappear.
+* **onCellSelection()**
+
+	Called each time the user taps on the row and it gets selected.
+* **cellSetup()**
+
+	Called only once when the cell is first configured. Set permanent settings here.
+* **cellUpdate()**
+
+	Called each time the cell appears on screen. You can change the appearance here using variables that may not be present on cellSetup().
+* **onCellHighlight()**
+
+  Called whenever the cell or any subview become the first responder.
+
+* **onCellUnHighlight()**
+
+  Called whenever the cell or any subview resigns the first responder.
+
+* **onExpandInlineRow()**
+
+  Called before expanding the inline row. Applies to rows conforming `InlineRowType` protocol.
+
+* **onCollapseInlineRow()**
+
+  Called before collapsing the inline row. Applies to rows conforming `InlineRowType` protocol.
+
+* **onPresent()**
+
+	Called by a row just before presenting another view controller. Applies to rows conforming `PresenterRowType` protocol. Use it to set up the presented controller.
+
 
 ### Section Header and Footer
 
-The UITableView accepts two ways of setting the headers and footers for its sections, one is by using `tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?` where you have to return a view and the other is `tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?` where you return a String. Eureka works the same way, you can set a String or a view as header or footer for a `Section`.
+You can set a title `String` or a custom `View` as the header or footer of a `Section`.
 
-The easiest way of setting a header or a footer is by setting them as a String. This can be done using the following Section initializers:
+#### String title
 ```swift
-init(_ header: String, @noescape _ initializer: Section -> () = { _ in })
-init(header: String, footer: String, @noescape _ initializer: Section -> () = { _ in })
-init(footer: String, @noescape _ initializer: Section -> () = { _ in })
+Section("Title")
+
+Section(header: "Title", footer: "Footer Title")
+
+Section(footer: "Footer Title")
 ```
 
-Using this you can instantiate a Section like `Section("Title")` or `Section(header: "Title", footer: "Footnote")` for example.
-
-You can also set the header or footer using a custom view. This is best done by setting the `header` or `footer` variable of the section. This variables must conform the `HeaderFooterViewRepresentable` protocol. This can be done by using the `HeaderFooterView` class. An example follows:
+#### Custom view
+You can use a Custom View from a `.xib` file:
 
 ```swift
 Section() { section in
-	var header = HeaderFooterView<MyHeaderNibFile>(.NibFile(name: "MyHeaderNibFile", bundle: nil))
-	header.onSetupView = { view, _ in
-    	 // customize header
-	 }
-	header.height = { 100 }
+    var header = HeaderFooterView<MyHeaderNibFile>(.NibFile(name: "MyHeaderNibFile", bundle: nil))
 
-	section.header = header
+    // Will be called every time the header appears on screen
+    header.onSetupView = { view, _ in
+        // Commonly used to setup texts inside the view
+        // Don't change the view hierarchy or size here!
+    }
+    section.header = header
 }
 ```
 
-The `HeaderFooterView` is a `StringLiteralConvertible` and requires a String or a `HeaderFooterProvider` that will generate the view to show. There are 3 ways a HeaderFooterProvider can create a view: from a nibfile (like in the example), from a class (it will just instantiate that class) or from a block (you can pass a block to the HeaderFooterProvider that returns the view).
+Or a custom `UIView` created programmatically
 
 ```swift
-public enum HeaderFooterProvider<ViewType: UIView> {
-	case Class
-	case Callback(()->ViewType)
-	case NibFile(name: String, bundle: NSBundle?)
+Section(){ section in
+    var header = HeaderFooterView<MyCustomUIView>(.Class)
+    header.height = {100}
+    header.onSetupView = { view, _ in
+        view.backgroundColor = .redColor()
+    }
+    section.header = header
+}
+```
+Or just build the view with a Callback
+```swift
+Section(){ section in
+    section.header = {
+          var header = HeaderFooterView<UIView>(.Callback({
+              let view = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+              view.backgroundColor = .redColor()
+              return view
+          }))
+          header.height = { 100 }
+          return header
+        }()
 }
 ```
 
+### Dynamically hide and show rows (or sections)  <a name="hide-show-rows"></a>
 
-### How to dynamically hide and show rows (or sections)  <a name="hide-show-rows"></a>
+<img src="Example/Media/EurekaSwitchSections.gif" width="300" alt="Screenshot of Hidden Rows" />
 
-Many forms have conditional rows, I mean rows that might appear on screen depending on the values of other rows. You might want to have a SegmentedRow at the top of your screen and depending on the chosen value ask different questions:
+In this case we are hiding and showing whole sections.
 
-<figure>
-  <img src="Example/Media/EurekaSwitchSections.gif" width="300" alt="Screenshot of Hidden Rows" />
-	<figcaption style="text-align:left;">In this case we are hiding and showing whole sections</figcaption>
-</figure>
+To accomplish this each row has an `hidden` variable of optional type `Condition` which can be set using a function or `NSPredicate`.
 
-To accomplish this each row has an `hidden` variable that is of optional type `Condition`.
+
+#### Hiding using a function condition
+
+Using the `Function` case of `Condition`:
+```swift
+Condition.Function([String], (Form?)->Bool)
+```
+The array of `String` to pass should contain the tags of the rows this row depends on. Each time the value of any of those rows changes the function is reevaluated.
+The function then takes the `Form` and returns a `Bool` indicating whether the row should be hidden or not. This the most powerful way of setting up the `hidden` property as it has no explicit limitations of what can be done.
+
+```swift
+form +++ Section()
+            <<< SwitchRow("switchRowTag"){
+                $0.title = "Show message"
+            }
+            <<< LabelRow(){
+
+                $0.hidden = Condition.Function(["switchRowTag"], { form in
+                    return !((form.rowByTag("switchRowTag") as? SwitchRow)?.value ?? false)
+                })
+                $0.title = "Switch is on!"
+        }
+```
+
+<img src="Example/Media/EurekaHidden.gif" width="300" alt="Screenshot of Hidden Rows" />
+
 ```swift
 public enum Condition {
-    case Predicate(NSPredicate)
     case Function([String], (Form?)->Bool)
+    case Predicate(NSPredicate)
 }
 ```
-The `hidden` variable might be set with a function that takes the form the row belongs to and returns a Bool that indicates whether the row should be hidden or not. This is the most powerful way of setting up this variable as there are no explicit limitations as to what can be done in the function.
 
-Along with the function you have to pass an array with all the tags of the rows this row depends on. This is important so that Eureka can reevaluate the function each time a value changes that may change the result of this function. In fact that will be the only time the function is reevaluated.
-You can define it like this:
-```swift
-<<< AlertRow<Emoji>("tag1") {
-        $0.title = "AlertRow"
-        $0.optionTitle = "Who is there?"
-        $0.options = [💁, 🍐, 👦, 🐗, 🐼, 🐻]
-        $0.value = 👦
-    }
-   // ...
-<<< PushRow<Emoji>("tag2") {
-        $0.title = "PushRow"
-        $0.options = [💁, 🍐, 👦, 🐗, 🐼, 🐻]
-        $0.value = 👦
-        $0.hidden = Condition.Function(["tag1"]) { form in
-                        if let r1 : AlertRow<Emoji> = form?.rowByTag("tag1") {
-                            return r1.value == 👦
-                        }
-                        return false
-                    }
-      }
-```
+  #### Hidding using an NSPredicate
 
 The `hidden` variable can also be set with a NSPredicate. In the predicate string you can reference values of other rows by their tags to determine if a row should be hidden or visible.
 This will only work if the values of the rows the predicate has to check are NSObjects (String and Int will work as they are bridged to their ObjC counterparts, but enums won't work).
 Why could it then be useful to use predicates when they are more limited? Well, they can be much simpler, shorter and readable than functions. Look at this example:
+
 ```swift
 $0.hidden = Condition.Predicate(NSPredicate(format: "$switchTag == false"))
 ```
-And we can write it even shorter since `Condition` conforms to StringLiteralConvertible:
+
+And we can write it even shorter since `Condition` conforms to `StringLiteralConvertible`:
+
 ```swift
 $0.hidden = "$switchTag == false"
 ```
@@ -427,7 +322,7 @@ We can also hide a row by doing:
 ```swift
 $0.hidden = true
 ```
-as `Condition` conforms to BooleanLiteralConvertible.
+as `Condition` conforms to `BooleanLiteralConvertible`.
 
 Not setting the `hidden` variable will leave the row always visible.
 
@@ -435,116 +330,98 @@ Not setting the `hidden` variable will leave the row always visible.
 For sections this works just the same. That means we can set up section `hidden` property to show/hide it dynamically.
 
 ##### Disabling rows
-To disable rows, each row has an `disabled` variable which is also an optional Condition type property . This variable also works the same as the `hidden` variable so that it requires the rows to have a tag.
+To disable rows, each row has an `disabled` variable which is also an optional `Condition` type property. This variable also works the same as the `hidden` variable so that it requires the rows to have a tag.
 
 Note that if you want to disable a row permanently you can also set `disabled` variable to `true`.
 
-### List sections
-It happens quite often when developing apps you want the user to choose among a list of options. Therefore we created a special section that accomplishes this.
-These sections are called `SelectableSection`.
-When instancing a SelectableSection you have to pass the type of row you will use in the section as well as the type of that row. These sections have a variable called `selectionStyle` that defines if multiple selection is allowed. `selectionStyle` is an enum which can be either `MultipleSelection` or `SingleSelection(enableDeselection: Bool)` where the enableDeselection paramter determines if the selected rows can be deselected or not.
+### List Sections
 
-This sections can be created, as it is done in the Examples project, like this:
+To display a list of options, Eureka includes a special section called `SelectableSection`.
+When creating one you need to pass the type of row to use in the options and the `selectionStyle`. The `selectionStyle` is an enum which can be either `MultipleSelection` or `SingleSelection(enableDeselection: Bool)` where the `enableDeselection` parameter determines if the selected rows can be deselected or not.
 
 ```swift
-let oceans = ["Arctic", "Atlantic", "Indian", "Pacific", "Southern"]
+form +++ SelectableSection<ListCheckRow<String>, String>("Where do you live", selectionType: .SingleSelection(enableDeselection: true))
 
-form +++= SelectableSection<ImageCheckRow<String>, String>("And which of the following oceans have you taken a bath in?", selectionType: .MultipleSelection)
-
-for option in oceans {
-    form.last! <<< ImageCheckRow<String>(option){ lrow in
-        lrow.title = option
-        lrow.selectableValue = option
-        lrow.value = nil
-    }.cellSetup { cell, _ in
-        cell.trueImage = UIImage(named: "selectedRectangle")!
-        cell.falseImage = UIImage(named: "unselectedRectangle")!
+let continents = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
+for option in continents {
+    form.last! <<< ListCheckRow<String>(option){ listRow in
+        listRow.title = option
+        listRow.selectableValue = option
+        listRow.value = nil
     }
 }
 ```
 
 ##### What kind of rows can be used?
-To create such a Section you have to create a row that conforms the `SelectableRowType` protocol.
+
+To create such a section you have to create a row that conforms the `SelectableRowType` protocol.
+
 ```swift
 public protocol SelectableRowType : RowType {
     var selectableValue : Value? { get set }
 }
 ```
+
 This `selectableValue` is where the value of the row will be permanently stored. The `value` variable will be used to determine if the row is selected or not, being 'selectableValue' if selected or nil otherwise.
+Eureka includes the `ListCheckRow` which is used for example. In the custom rows of the Examples project you can also find the `ImageCheckRow`.
 
-Eureka includes the `ListCheckRow` which is used for example in the SelectorViewController. In the custom rows of the Examples project you can also find the `ImageCheckRow`
+##### Getting the selected rows
 
-##### Helpers
-To easily get the selected row of a `SelectableSection` there are two methods: `selectedRow()` and `selectedRows()` which can be called to get the selected row in case it is a `SingleSelection` section or all the selected rows if it is a `MultipleSelection` section.
+To easily get the selected row/s of a `SelectableSection` there are two methods: `selectedRow()` and `selectedRows()` which can be called to get the selected row in case it is a `SingleSelection` section or all the selected rows if it is a `MultipleSelection` section.
 
-## Extensibility
 
-### How to create custom rows and cells  <a name="custom-rows"></a>
+## Custom rows
 
-To create a custom row you will have to create a new class subclassing from `Row<ValueType, CellType>` and conforming to `RowType` protocol.
-Take for example the SwitchRow:
+### Basic custom rows
 
-```swift
-public final class SwitchRow: Row<Bool, SwitchCell>, RowType {
+To create a row with custom behavior and appearance you'll probably want to create subclasses of `Row` and `Cell`.
 
-    required public init(tag: String?) {
-        super.init(tag: tag)
-        displayValueFor = nil
-    }
-}
-```
-
-Most times you will want to create a custom cell as well as most of the specific logic is here. What you have to do is subclassing `Cell<ValueType>`` and conforming to `CellType`:
+Remember that `Row` is the abstraction Eureka uses, while the `Cell` is the actual `UITableViewCell` in charge of the view.
+As the `Row` contains the `Cell`, both `Row` and `Cell` must be defined for the same **value** type.
 
 ```swift
-public class SwitchCell: Cell<Bool>, CellType {
-
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-    }
-
-    public var switchControl: UISwitch? {
-        return accessoryView as? UISwitch
-    }
+// Custom Cell with value type: Bool
+// The cell is defined using a .xib, so we can set outlets :)
+public class CustomCell: Cell<Bool>, CellType{
+    @IBOutlet weak var switchControl: UISwitch!
+    @IBOutlet weak var label: UILabel!
 
     public override func setup() {
         super.setup()
-        selectionStyle = .None
-        accessoryView = UISwitch()
-        editingAccessoryView = accessoryView
-        switchControl?.addTarget(self, action: "valueChanged", forControlEvents: .ValueChanged)
+        switchControl.addTarget(self, action: #selector(CustomCell.switchValueChanged), forControlEvents: .ValueChanged)
+    }
+
+    func switchValueChanged(){
+        row.value = switchControl.on
+        row.updateCell() // Re-draws the cell which calls 'update' bellow
     }
 
     public override func update() {
         super.update()
-        switchControl?.on = row.value ?? false
-        switchControl?.enabled = !row.isDisabled
-    }
-
-    func valueChanged() {
-        row.value = switchControl?.on.boolValue ?? false
+        backgroundColor = (row.value ?? false) ? .whiteColor() : .blackColor()
     }
 }
-```
 
-We can use a xib file to specify the cell view by setting up `cellProvider` row property as illustrated bellow:
-
-```swift
-public final class SwitchRow: Row<Bool, SwitchCell>, RowType {
-
+// The custom Row also has value: Bool, and cell: CustomCell
+public final class CustomRow: Row<Bool, CustomCell>, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
-        displayValueFor = nil
-        cellProvider = CellProvider<WeekDayCell>(nibName: "WeekDayCell")
+        // We set the cellProvider to load the .xib corresponding to our cell
+        cellProvider = CellProvider<CustomCell>(nibName: "CustomCell")
     }
 }
 ```
+The result: <br>
+<img src="Example/Media/EurekaCustomRow.gif" alt="Screenshot of Disabled Row"/>
 
-The setup and update methods are similar to the cellSetup and cellUpdate callbacks and that is where the cell should be customized.
+<br>
+Custom rows need to subclass `Row<ValueType, CellType>` and conform to `RowType` protocol.
+Custom cells need to subclass `Cell<ValueType>` and conform to `CellType` protocol.
 
-Note: ValueType and CellType are illustrative. You have to replace them with the type your value will have and the type of your cell (like Bool and SwitchCell in this example)
+Just like the callbacks cellSetup and CellUpdate, the `Cell` has the setup and update methods where you can customize it.
 
-### How to create custom inline rows
+
+### Custom inline rows
 
 A inline row is a specific type of row that shows dynamically a row below it, normally an inline row changes between a expand and collapse mode whenever the row is tapped.
 
@@ -568,7 +445,7 @@ public override func customDidSelect() {
 }
 ```
 
-### Implementing a custom Presenter row (SelectorRow, PushRow, ImageRow, etc) <a name="custom-presenter-row"></a>
+### Custom Presenter rows
 
 **Note:** *A Presenter row is a row that presents a new UIViewController.*
 
@@ -603,10 +480,200 @@ public final class CustomPushRow<T: Equatable> : SelectorRow<T, SelectorViewCont
 
 You can place your own UIViewController instead of SelectorViewController<T>.
 
-### Custom rows catalog
+## Row catalog
 
-Have you created a custom row, theme, etc?
-Let us know about it, we would be glad to mention it here..
+### Controls Rows
+<table>
+    <tr>
+        <td><center><b>Label Row</b><br>
+        <img src="Example/Media/RowStatics/LabelRow.png"/>
+        </center><br><br>
+        </td>
+
+        <td><center><b>Button Row</b><br>
+        <img src="Example/Media/RowStatics/ButtonRow.png"/>
+        </center><br><br>
+        </td>
+
+        <td><center><b>Check Row</b><br>
+        <img src="Example/Media/RowStatics/CheckRow.png"/>
+        </center><br><br>
+        </td>
+    </tr>
+    <tr>
+        <td><center><b>Switch Row</b><br>
+        <img src="Example/Media/RowStatics/SwitchRow.png"/>
+        </center><br><br>
+        </td>
+
+        <td><center><b>Slider Row</b><br>
+        <img src="Example/Media/RowStatics/SliderRow.png"/>
+        </center><br><br>
+        </td>
+
+        <td><center><b>Stepper Row</b><br>
+        <img src="Example/Media/RowStatics/StepperRow.png"/>
+        </center><br><br>
+        </td>        
+    </tr>
+    <tr>
+        <td><center><b>Text Area Row</b><br>
+        <img src="Example/Media/RowStatics/TextAreaRow.png"/>
+        </center><br><br>
+        </td>
+        <td><center><b>Postal Address Row</b><br>
+        <img src="Example/Media/RowStatics/PostalAddressRow.png"/>
+        </center><br><br>
+        </td>
+        <td><center><b>Picture Row</b><br>
+        <img src="Example/Media/RowStatics/PictureRow.png"/>
+        </center><br><br>
+        </td>
+    </tr>
+</table>
+
+### Field Rows
+These rows have a textfield on the right side of the cell. The difference between each one of them consists in a different capitalization, autocorrection and keyboard type configuration.
+
+<table>
+<tr>
+  <td>
+    <img src="Example/Media/CatalogFieldRows.jpg" width="300"/>
+  </td>
+  <td>
+  TextRow<br><br>
+  NameRow<br><br>
+  URLRow<br><br>
+  IntRow<br><br>
+  PhoneRow<br><br>
+  PasswordRow<br><br>
+  EmailRow<br><br>
+  DecimalRow<br><br>
+  TwitterRow<br><br>
+  AccountRow<br><br>
+  ZipCodeRow
+  </td>
+<tr>
+</table>
+
+Typically we want to show a field row value using a formatter, for instance a currency formatter. To do so the previous rows have a formatter property that can be used to set up any formatter. useFormatterDuringInput determines if the formatter also should be used during row editing, this means, when the row's textfield is the first responder. The main challenge of using the formatting when the row is being edited is keeping updated the cursor position accordingly. Eureka provides the following protocol that your formatter should conform to in order to handle cursor position.
+
+For more information take a look at DecimalFormatter and CurrencyFormatter in the Example project.
+
+```swift
+public protocol FormatterProtocol {
+    func getNewPosition(forPosition forPosition: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition
+}
+```
+
+### Date Rows
+
+Date Rows hold a NSDate and allow us to set up a new value through UIDatePicker control. The mode of the UIDatePicker and the way how the date picker view is shown is what changes between them.
+<table>
+<tr>
+<td>
+<center><b>Date Row</b>
+<img src="Example/Media/RowGifs/EurekaDateRow.gif" height="220" width="230" />
+<br>
+Picker shown in the keyboard.
+</center>
+</td>
+<td>
+<center><b>Date Row (Inline)</b>
+<img src="Example/Media/RowGifs/EurekaDateInlineRow.gif" height="220" width="210"/>
+<br>
+The row expands.
+</center>
+</td>
+<td>
+<center><b>Date Row (Picker)</b>
+<img src="Example/Media/RowGifs/EurekaDatePickerRow.gif" height="220" width="210"/>
+<br>
+The picker is always visible.
+</center>
+</td>
+</tr>
+</table>
+
+With those 3 styles (Normal, Inline & Picker), Eureka includes:
+
++ **DateRow**
++ **TimeRow**
++ **DateTimeRow**
++ **CountDownRow**
+
+### Option Rows
+These are rows with a list of options associated from which the user must choose.
+
+```swift
+<<< ActionSheetRow<String>() {
+                $0.title = "ActionSheetRow"
+                $0.selectorTitle = "Pick a number"
+                $0.options = ["One","Two","Three"]
+                $0.value = "Two"    // initially selected
+            }
+```
+
+<table>
+<tr>
+<td width="25%">
+<center><b>Alert Row</b><br>
+<img src="Example/Media/RowStatics/AlertRow.jpeg"/>
+<br>
+Will show an alert with the options to choose from.
+</center>
+</td>
+<td width="25%">
+<center><b>ActionSheet Row</b><br>
+<img src="Example/Media/RowStatics/ActionSheetRow.jpeg"/>
+<br>
+Will show an action sheet with the options to choose from.
+</center>
+</td>
+<td width="25%">
+<center><b>Push Row</b><br>
+<img src="Example/Media/RowStatics/PushRow.jpeg"/>
+<br>
+Will push to a new controller from where to choose options listed using Check rows.
+</center>
+</td>
+<td width="25%">
+<center><b>Multiple Selector Row</b><br>
+<img src="Example/Media/RowStatics/MultipleSelectorRow.jpeg"/>
+<br>
+Like PushRow but allows the selection of multiple options.
+</center>
+</td>
+</tr>
+</table>
+
+<table>
+    <tr>
+        <td><center><b>Segmented Row</b><br>
+        <img src="Example/Media/RowStatics/SegmentedRow.png"/>
+        </center>
+        </td>
+
+        <td><center><b>Segmented Row (w/Title)</b><br>
+        <img src="Example/Media/RowStatics/SegmentedRowWithTitle.png"/>
+        </center>
+        </td>
+
+        <td><center><b>Picker Row</b><br>
+        <img src="Example/Media/RowStatics/PickerRow.png"/>
+        <br>Presents options of a generic type through a picker view
+        <br><b>(There is also Picker Inline Row)
+        </center>
+        </td>
+    </tr>
+</table>
+
+### Built your own custom row?
+Let us know about it, we would be glad to mention it here. :)
+
+* **LocationRow** (Included as custom row in the example project)
+
+<img src="Example/Media/EurekaLocationRow.gif" width="300" alt="Screenshot of Location Row"/>
 
 ## Installation
 
@@ -655,6 +722,17 @@ $ git submodule add https://github.com/xmartlabs/Eureka.git
 * Select your project in the Xcode Navigation and then select your application target from the sidebar. Next select the "General" tab and click on the + button under the "Embedded Binaries" section.
 
 * Select `Eureka.framework` and we are done!
+
+## Getting involved
+
+* If you **want to contribute** please feel free to **submit pull requests**.
+* If you **have a feature request** please **open an issue**.
+* If you **found a bug** check older issues before submitting an issue.
+* If you **need help** or would like to **ask general question**, use [StackOverflow]. (Tag `eureka-forms`).
+
+**Before contribute check the [CONTRIBUTING](CONTRIBUTING.md) file for more info.**
+
+If you use **Eureka** in your app We would love to hear about it! Drop us a line on [twitter].
 
 ## Authors
 
@@ -813,16 +891,26 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [Usage]: #usage
 [Operators]: #operators
 [Rows]: #rows
-[Customization]: #customization
+[Using the callbacks]: #using-the-callbacks
 [Section Header and Footer]: #section-header-and-footer
-[How to create custom rows and cells]: #custom-rows
+[Custom rows]: #custom-rows
+[Basic custom rows]: #basic-custom-rows
+[Custom inline rows]: #custom-inline-rows
+[Custom presenter rows]: #custom-presenter-rows
 [How to create custom inline rows]: #how-to-create-custom-inline-rows
 [Custom rows catalog]: #custom-rows-catalog
-[How to dynamically hide and show rows (or sections)]: #hide-show-rows
+[Dynamically hide and show rows (or sections)]: #hide-show-rows
 [Implementing a custom Presenter row]: #custom-presenter-row
 [Extensibility]: #extensibility
+[Row catalog]: #row-catalog
 [Installation]: #installation
 [FAQ]: #faq
+
+[List sections]: #list-sections
+
+
+* [Installation]
+* [FAQ]
 
 
 <!--- In Project -->

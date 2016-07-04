@@ -43,7 +43,7 @@ class BaseEurekaTests: XCTestCase {
 
         
         // Create a Date section containing one date row of each type and some extra rows that use minimumDate, maximumDate and minuteInterval restrictions
-        dateForm +++= Section("Date Section")
+        dateForm +++ Section("Date Section")
             <<< DateRow("DateRow_d1"){ $0.title = "Date"; $0.value = NSDate() }
             <<< DateTimeRow("DateTimeRow_d1"){ $0.title = "DateTime"; $0.value = NSDate() }
             <<< TimeRow("TimeRow_d1"){ $0.title = "Time"; $0.value = NSDate() }
@@ -53,11 +53,11 @@ class BaseEurekaTests: XCTestCase {
             <<< DateRow("MinMaxDateRow_d1"){ $0.title = "Date(min/max)"; $0.value = NSDate(); $0.minimumDate = $0.value?.dateByAddingTimeInterval(-60*60*24); $0.maximumDate = $0.value?.dateByAddingTimeInterval(60*60*24)  }
             <<< DateRow("IntervalDateRow_d1"){ $0.title = "Date(interval)"; $0.value = NSDate(); $0.minuteInterval = 15 }
         
-        shortForm +++= Section("short")
+        shortForm +++ Section("short")
             <<< NameRow("NameRow_s1"){ $0.title = "Name" }
             <<< IntRow("IntRow_s1"){ $0.title = "Age" }
         
-        fieldForm +++= Section("Field Section")
+        fieldForm +++ Section("Field Section")
             <<< TextRow("TextRow_f1"){ $0.title = "Text" }
             <<< NameRow("NameRow_f1"){ $0.title = "Name" }
             <<< EmailRow("EmailRow_f1"){ $0.title = "Email" }
@@ -70,7 +70,7 @@ class BaseEurekaTests: XCTestCase {
             <<< AccountRow("AccountRow_f1"){ $0.title = "Account" }
             <<< ZipCodeRow("ZipCodeRow_f1"){ $0.title = "Zip Code" }
 		
-		postalAddressForm +++= Section("Postal Address Section")
+		postalAddressForm +++ Section("Postal Address Section")
 			<<< PostalAddressRow("PostalAddressRow_f1"){
 				$0.title = "Postal Address"
 			}

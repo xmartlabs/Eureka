@@ -61,13 +61,13 @@ class CollectionTests: BaseEurekaTests {
     
     func testDelegateFunctions() {
         // Test operators
-        var form = Form()
+        let form = Form()
         let delegate = MyFormDelegate()
         form.delegate = delegate
         
-        form +++= Section("A")                                                                  // addsection + 1
-        form +++= TextRow("textrow1_ctx"){ $0.value = " "}                                      // addsection + 1
-        form +++= Section("C") <<< TextRow("textrow2_ctx") <<< TextRow("textrow3_ctx")          // addsection + 1
+        form +++ Section("A")                                                                  // addsection + 1
+        form +++ TextRow("textrow1_ctx"){ $0.value = " "}                                      // addsection + 1
+        form +++ Section("C") <<< TextRow("textrow2_ctx") <<< TextRow("textrow3_ctx")          // addsection + 1
         
         XCTAssertEqual(delegate.sectionsAdded, 3)
         XCTAssertEqual(delegate.rowsAdded, 0)
