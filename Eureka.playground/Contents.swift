@@ -24,11 +24,11 @@ let form2 = Section("First") +++ Section("Second") +++ Section("Third")
 //: form and form2 don't have any row and are not useful at all. Let's add some rows.
 
 
-//: ### +++= 
-//: Can be used to append a row to a form without having to create a Section to contain the row. The form section is implicitly created as a result of the +++= operator.
-formController.form +++= TextRow("Text")
+//: ### +++ 
+//: Can be used to append a row to a form without having to create a Section to contain the row. The form section is implicitly created as a result of the +++ operator.
+formController.form +++ TextRow("Text")
 //: it can also be used to append a Section like this:
-formController.form +++= Section()
+formController.form +++ Section()
 
 //: ### <<<
 //: Can be used to append rows to a section.

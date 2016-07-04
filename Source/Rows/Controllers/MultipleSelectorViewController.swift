@@ -33,7 +33,7 @@ public class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType 
     public override func viewDidLoad() {
         super.viewDidLoad()
         guard let options = row.dataProvider?.arrayData else { return }
-        form +++= SelectableSection<Row, Row.Value>(row.title ?? "", selectionType: .MultipleSelection) { [weak self] section in
+        form +++ SelectableSection<Row, Row.Value>(row.title ?? "", selectionType: .MultipleSelection) { [weak self] section in
             if let sec = section as? SelectableSection<Row, Row.Value> {
                 sec.onSelectSelectableRow = { _, selectableRow in
                     var newValue: Set<T> = self?.row.value ?? []

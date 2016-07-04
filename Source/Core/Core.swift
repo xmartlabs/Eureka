@@ -353,10 +353,6 @@ public struct RowNavigationOptions : OptionSetType {
     public let rawValue: Int
     public  init(rawValue: Int){ self.rawValue = rawValue}
     private init(_ options:NavigationOptions ){ self.rawValue = options.rawValue }
-    @available(*, unavailable, renamed="Disabled")
-    
-    /// No navigation.
-    public static let None = RowNavigationOptions(.Disabled)
     
     /// No navigation.
     public static let Disabled = RowNavigationOptions(.Disabled)

@@ -31,7 +31,7 @@ class OperatorsTest: BaseEurekaTests {
         // test the operators
         
         var form = Form()
-        form +++= TextRow("textrow1_ctx")
+        form +++ TextRow("textrow1_ctx")
             <<< TextRow("textrow2_ctx")
         form = form + (TextRow("textrow3_ctx")
             <<< TextRow("textrow4_ctx")
@@ -45,8 +45,8 @@ class OperatorsTest: BaseEurekaTests {
         XCTAssertEqual(form[1].count, 2)
         XCTAssertEqual(form[2].count, 2)
         
-        form +++= IntRow("introw1_ctx")
-        form +++= IntRow("introw2_ctx")
+        form +++ IntRow("introw1_ctx")
+        form +++ IntRow("introw2_ctx")
             <<< IntRow("introw3_ctx")
             <<< IntRow("introw4_ctx")
         
