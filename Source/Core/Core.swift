@@ -553,7 +553,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     Called when a cell becomes first responder
     */
     public final func beginEditing<T:Equatable>(cell: Cell<T>) {
-        cell.row.hightlightCell()
+        cell.row.highlightCell()
         guard let _ = tableView where (form.inlineRowHideOptions ?? Form.defaultInlineRowHideOptions).contains(.FirstResponderChanges) else { return }
         let row = cell.baseRow
         let inlineRow = row._inlineRow
