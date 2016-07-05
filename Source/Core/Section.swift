@@ -158,22 +158,22 @@ public class Section {
     
     public required init(){}
     
-    public required init( _ initializer: @noescape(Section) -> ()){
+    public required init( _ initializer: (Section) -> ()){
         initializer(self)
     }
     
-    public init(_ header: String, _ initializer: @noescape(Section) -> () = { _ in }){
-        self.header = HeaderFooterView(stringLiteral: header)
+    public init(_ header: String, _ initializer: (Section) -> () = { _ in }){
+        self.header = HeaderFooterView(stringLiteral: )
         initializer(self)
     }
     
-    public init(header: String, footer: String, _ initializer: @noescape(Section) -> () = { _ in }){
+    public init(header: String, footer: String, _ initializer: (Section) -> () = { _ in }){
         self.header = HeaderFooterView(stringLiteral: header)
         self.footer = HeaderFooterView(stringLiteral: footer)
         initializer(self)
     }
     
-    public init(footer: String, _ initializer: @noescape(Section) -> () = { _ in }){
+    public init(footer: String, _ initializer: (Section) -> () = { _ in }){
         self.footer = HeaderFooterView(stringLiteral: footer)
         initializer(self)
     }
