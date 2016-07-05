@@ -16,13 +16,13 @@ public class PickerInlineCell<T: Equatable> : Cell<T>, CellType {
     
     public override func setup() {
         super.setup()
-        accessoryType = .None
-        editingAccessoryType =  .None
+        accessoryType = .none
+        editingAccessoryType =  .none
     }
     
     public override func update() {
         super.update()
-        selectionStyle = row.isDisabled ? .None : .Default
+        selectionStyle = row.isDisabled ? .none : .default
     }
     
     public override func didSelect() {
@@ -65,7 +65,7 @@ public final class PickerInlineRow<T where T: Equatable> : _PickerInlineRow<T>, 
         }
     }
     
-    public func setupInlineRow(inlineRow: InlineRow) {
+    public func setupInlineRow(_ inlineRow: InlineRow) {
         inlineRow.options = self.options
         inlineRow.displayValueFor = self.displayValueFor
     }

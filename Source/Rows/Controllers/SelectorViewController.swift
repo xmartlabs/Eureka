@@ -18,7 +18,7 @@ public class _SelectorViewController<T: Equatable, Row: SelectableRowType where 
     
     public var selectableRowCellUpdate: ((cell: Row.Cell, row: Row) -> ())?
     
-    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -26,7 +26,7 @@ public class _SelectorViewController<T: Equatable, Row: SelectableRowType where 
         super.viewDidLoad()
         guard let options = row.dataProvider?.arrayData else { return }
         
-        form +++ SelectableSection<Row, Row.Value>(row.title ?? "", selectionType: .SingleSelection(enableDeselection: true)) { [weak self] section in
+        form +++ SelectableSection<Row, Row.Value>(row.title ?? "", selectionType: .singleSelection(enableDeselection: true)) { [weak self] section in
             if let sec = section as? SelectableSection<Row, Row.Value> {
                 sec.onSelectSelectableRow = { _, row in
                     self?.row.value = row.value
@@ -36,9 +36,9 @@ public class _SelectorViewController<T: Equatable, Row: SelectableRowType where 
         }
         for option in options {
             form.first! <<< Row.init(String(option)){ lrow in
-                    lrow.title = row.displayValueFor?(option)
+                    lrow.title = self.row.displayValueFor?(option)
                     lrow.selectableValue = option
-                    lrow.value = row.value == option ? option : nil
+                    lrow.value = self.row.value == option ? option : nil
                 }.cellUpdate { [weak self] cell, row in
                     self?.selectableRowCellUpdate?(cell: cell, row: row)
                 }
@@ -49,7 +49,7 @@ public class _SelectorViewController<T: Equatable, Row: SelectableRowType where 
 /// Selector Controller (used to select one option among a list)
 public class SelectorViewController<T:Equatable> : _SelectorViewController<T, ListCheckRow<T>>  {
     
-    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     

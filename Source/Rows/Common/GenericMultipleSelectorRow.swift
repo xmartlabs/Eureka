@@ -33,9 +33,10 @@ public class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: Typ
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = { (rowValue: Set<T>?) in
-            return rowValue?.map({ String($0) }).sort().joinWithSeparator(", ")
+            return rowValue?.map({ String($0) }).sorted().joined(separator: ", ")
         }
-        presentationMode = .Show(controllerProvider: ControllerProvider.Callback { return VCType() }, completionCallback: { vc in vc.navigationController?.popViewControllerAnimated(true) })
+        presentationMode = .show(controllerProvider: ControllerProvider.callback { return VCType() }, completionCallback: { vc in
+            let _ = vc.navigationController?.popViewController(animated: true) })
     }
     
     /**
@@ -58,7 +59,7 @@ public class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: Typ
     /**
      Prepares the pushed row setting its title and completion callback.
      */
-    public override func prepareForSegue(segue: UIStoryboardSegue) {
+    public override func prepareForSegue(_ segue: UIStoryboardSegue) {
         super.prepareForSegue(segue)
         guard let rowVC = segue.destinationViewController as? VCType else { return }
         rowVC.title = selectorTitle ?? rowVC.title

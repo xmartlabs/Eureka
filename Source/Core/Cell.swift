@@ -51,7 +51,7 @@ public class BaseCell : UITableViewCell, BaseCellType {
             if responder! is FormViewController {
                 return responder as? FormViewController
             }
-            responder = responder?.nextResponder()
+            responder = responder?.next()
         }
         return nil
     }
@@ -75,13 +75,15 @@ public class BaseCell : UITableViewCell, BaseCellType {
     /**
      Called when the cell becomes first responder
      */
-    public func cellBecomeFirstResponder(direction: Direction = .Down) -> Bool {
+    @discardableResult
+    public func cellBecomeFirstResponder(_ direction: Direction = .down) -> Bool {
         return becomeFirstResponder()
     }
     
     /**
      Called when the cell resigns first responder
      */
+    @discardableResult
     public func cellResignFirstResponder() -> Bool {
         return resignFirstResponder()
     }
@@ -125,7 +127,7 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
     public override func update(){
         super.update()
         textLabel?.text = row.title
-        textLabel?.textColor = row.isDisabled ? .grayColor() : .blackColor()
+        textLabel?.textColor = row.isDisabled ? .gray() : .black()
         detailTextLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
     }
     

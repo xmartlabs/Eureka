@@ -49,8 +49,8 @@ infix operator +++= { associativity left precedence 95 }
  - parameter left:  the form
  - parameter right: the section to be appended
  */
-@available(*, unavailable, message="Use +++ instead")
-public func +++=(inout left: Form, right: Section){
+@available(*, unavailable, message:"Use +++ instead")
+public func +++=(left: inout Form, right: Section){
     left = left +++ right
 }
 
@@ -60,6 +60,7 @@ public func +++=(inout left: Form, right: Section){
  - parameter left:  the form
  - parameter right: the row
  */
+@discardableResult
 public func +++(left: Form, right: BaseRow) -> Form {
     let section = Section()
     left +++ section <<< right
@@ -74,6 +75,7 @@ public func +++(left: Form, right: BaseRow) -> Form {
  
  - returns: the created form
  */
+@discardableResult
 public func +++(left: Section, right: Section) -> Form {
     let form = Form()
     form +++ left +++ right
@@ -88,6 +90,7 @@ public func +++(left: Section, right: Section) -> Form {
  
  - returns: the form
  */
+@discardableResult
 public func +++(left: Section, right: BaseRow) -> Form {
     let section = Section()
     section <<< right
@@ -117,6 +120,7 @@ infix operator <<<{ associativity left precedence 100 }
  
  - returns: the section
  */
+@discardableResult
 public func <<<(left: Section, right: BaseRow) -> Section {
     left.append(right)
     return left
@@ -130,6 +134,7 @@ public func <<<(left: Section, right: BaseRow) -> Section {
  
  - returns: the created section
  */
+@discardableResult
 public func <<<(left: BaseRow, right: BaseRow) -> Section {
     let section = Section()
     section <<< left <<< right
@@ -142,8 +147,8 @@ public func <<<(left: BaseRow, right: BaseRow) -> Section {
  - parameter lhs: the section
  - parameter rhs: the rows to be appended
  */
-public func += <C : CollectionType where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
-    lhs.appendContentsOf(rhs)
+public func += <C : Collection where C.Iterator.Element == BaseRow>(lhs: inout Section, rhs: C){
+    lhs.append(rhs)
 }
 
 /**
@@ -152,6 +157,6 @@ public func += <C : CollectionType where C.Generator.Element == BaseRow>(inout l
  - parameter lhs: the form
  - parameter rhs: the sections to be appended
  */
-public func += <C : CollectionType where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
-    lhs.appendContentsOf(rhs)
+public func += <C : Collection where C.Iterator.Element == Section>(lhs: inout Form, rhs: C){
+    lhs.append(rhs)
 }

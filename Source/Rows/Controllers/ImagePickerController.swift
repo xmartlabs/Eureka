@@ -22,13 +22,13 @@ public class ImagePickerController : UIImagePickerController, TypedRowController
         delegate = self
     }
     
-    public func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]){
-        (row as? ImageRow)?.imageURL = info[UIImagePickerControllerReferenceURL] as? NSURL
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]){
+        (row as? ImageRow)?.imageURL = info[UIImagePickerControllerReferenceURL] as? URL
         row.value = info[UIImagePickerControllerOriginalImage] as? UIImage
         completionCallback?(self)
     }
     
-    public func imagePickerControllerDidCancel(picker: UIImagePickerController){
+    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
         completionCallback?(self)
     }
 }

@@ -16,14 +16,14 @@ public class ListCheckCell<T: Equatable> : Cell<T>, CellType {
     
     public override func update() {
         super.update()
-        accessoryType = row.value != nil ? .Checkmark : .None
+        accessoryType = row.value != nil ? .checkmark : .none
         editingAccessoryType = accessoryType
-        selectionStyle = .Default
+        selectionStyle = .default
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
         tintColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         if row.isDisabled {
             tintColor = UIColor(red: red, green: green, blue: blue, alpha: 0.3)
-            selectionStyle = .None
+            selectionStyle = .none
         }
         else {
             tintColor = UIColor(red: red, green: green, blue: blue, alpha: 1)
@@ -32,7 +32,7 @@ public class ListCheckCell<T: Equatable> : Cell<T>, CellType {
     
     public override func setup() {
         super.setup()
-        accessoryType =  .Checkmark
+        accessoryType =  .checkmark
         editingAccessoryType = accessoryType
     }
     

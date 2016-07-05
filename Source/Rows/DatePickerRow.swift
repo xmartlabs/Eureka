@@ -8,15 +8,15 @@
 
 import Foundation
 
-public class DatePickerCell : Cell<NSDate>, CellType {
+public class DatePickerCell : Cell<Date>, CellType {
     
     public lazy var datePicker: UIDatePicker = { [unowned self] in
         let picker = UIDatePicker()
         picker.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(picker)
-        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": picker]))
-        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": picker]))
-        picker.addTarget(self, action: #selector(DatePickerCell.datePickerValueChanged(_:)), forControlEvents: .ValueChanged)
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": picker]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": picker]))
+        picker.addTarget(self, action: #selector(DatePickerCell.datePickerValueChanged(_:)), for: .valueChanged)
         return picker
         }()
     
@@ -26,22 +26,22 @@ public class DatePickerCell : Cell<NSDate>, CellType {
     
     public override func setup() {
         super.setup()
-        accessoryType = .None
-        editingAccessoryType =  .None
+        accessoryType = .none
+        editingAccessoryType =  .none
         datePicker.datePickerMode = datePickerMode()
     }
     
     deinit {
-        datePicker.removeTarget(self, action: nil, forControlEvents: .AllEvents)
+        datePicker.removeTarget(self, action: nil, for: .allEvents)
     }
     
     public override func update() {
         super.update()
-        selectionStyle = row.isDisabled ? .None : .Default
-        datePicker.userInteractionEnabled = !row.isDisabled
+        selectionStyle = row.isDisabled ? .none : .default
+        datePicker.isUserInteractionEnabled = !row.isDisabled
         detailTextLabel?.text = nil
         textLabel?.text = nil
-        datePicker.setDate(row.value ?? NSDate(), animated: row is CountDownPickerRow)
+        datePicker.setDate(row.value ?? Date(), animated: row is CountDownPickerRow)
         datePicker.minimumDate = (row as? DatePickerRowProtocol)?.minimumDate
         datePicker.maximumDate = (row as? DatePickerRowProtocol)?.maximumDate
         if let minuteIntervalValue = (row as? DatePickerRowProtocol)?.minuteInterval{
@@ -49,30 +49,30 @@ public class DatePickerCell : Cell<NSDate>, CellType {
         }
     }
     
-    func datePickerValueChanged(sender: UIDatePicker){
+    func datePickerValueChanged(_ sender: UIDatePicker){
         row?.value = sender.date
     }
     
     private func datePickerMode() -> UIDatePickerMode{
         switch row {
         case is DatePickerRow:
-            return .Date
+            return .date
         case is TimePickerRow:
-            return .Time
+            return .time
         case is DateTimePickerRow:
-            return .DateAndTime
+            return .dateAndTime
         case is CountDownPickerRow:
-            return .CountDownTimer
+            return .countDownTimer
         default:
-            return .Date
+            return .date
         }
     }
 }
 
-public class _DatePickerRow : Row<NSDate, DatePickerCell>, DatePickerRowProtocol {
+public class _DatePickerRow : Row<Date, DatePickerCell>, DatePickerRowProtocol {
     
-    public var minimumDate : NSDate?
-    public var maximumDate : NSDate?
+    public var minimumDate : Date?
+    public var maximumDate : Date?
     public var minuteInterval : Int?
     
     required public init(tag: String?) {

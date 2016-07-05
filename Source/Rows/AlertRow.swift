@@ -13,12 +13,12 @@ public class _AlertRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: 
     
     public var onPresentCallback : ((FormViewController, SelectorAlertController<T>)->())?
     lazy public var presentationMode: PresentationMode<SelectorAlertController<T>>? = {
-        return .PresentModally(controllerProvider: ControllerProvider.Callback { [weak self] in
-            let vc = SelectorAlertController<T>(title: self?.selectorTitle, message: nil, preferredStyle: .Alert)
+        return .presentModally(controllerProvider: ControllerProvider.callback { [weak self] in
+            let vc = SelectorAlertController<T>(title: self?.selectorTitle, message: nil, preferredStyle: .alert)
             vc.row = self
             return vc
             }, completionCallback: { [weak self] in
-                $0.dismissViewControllerAnimated(true, completion: nil)
+                $0.dismiss(animated: true, completion: nil)
                 self?.cell?.formViewController()?.tableView?.reloadData()
             }
         )

@@ -24,24 +24,24 @@ public class SwitchCell : Cell<Bool>, CellType {
     
     public override func setup() {
         super.setup()
-        selectionStyle = .None
+        selectionStyle = .none
         accessoryView = UISwitch()
         editingAccessoryView = accessoryView
-        switchControl?.addTarget(self, action: #selector(SwitchCell.valueChanged), forControlEvents: .ValueChanged)
+        switchControl?.addTarget(self, action: #selector(SwitchCell.valueChanged), for: .valueChanged)
     }
     
     deinit {
-        switchControl?.removeTarget(self, action: nil, forControlEvents: .AllEvents)
+        switchControl?.removeTarget(self, action: nil, for: .allEvents)
     }
     
     public override func update() {
         super.update()
-        switchControl?.on = row.value ?? false
-        switchControl?.enabled = !row.isDisabled
+        switchControl?.isOn = row.value ?? false
+        switchControl?.isEnabled = !row.isDisabled
     }
     
     func valueChanged() {
-        row.value = switchControl?.on.boolValue ?? false
+        row.value = switchControl?.isOn.boolValue ?? false
     }
 }
 
