@@ -45,18 +45,18 @@ extension UIView {
     }
 }
 
-extension NSPredicate {
+extension Predicate {
     
     var predicateVars: [String] {
         var ret = [String]()
-        if let compoundPredicate = self as? NSCompoundPredicate{
+        if let compoundPredicate = self as? CompoundPredicate{
             for subPredicate in compoundPredicate.subpredicates{
-                ret.appendContentsOf(subPredicate.predicateVars)
+                ret.append(contentsOf: subPredicate.predicateVars)
             }
         }
-        else if let comparisonPredicate = self as? NSComparisonPredicate{
-            ret.appendContentsOf(comparisonPredicate.leftExpression.expressionVars)
-            ret.appendContentsOf(comparisonPredicate.rightExpression.expressionVars)
+        else if let comparisonPredicate = self as? ComparisonPredicate{
+            ret.append(contentsOf: comparisonPredicate.leftExpression.expressionVars)
+            ret.append(contentsOf: comparisonPredicate.rightExpression.expressionVars)
         }
         return ret
     }
@@ -66,13 +66,13 @@ extension NSExpression {
     
     var expressionVars: [String] {
         switch expressionType{
-            case .FunctionExpressionType, .VariableExpressionType:
+            case .function, .variable:
                 let str = "\(self)"
-                if let range = str.rangeOfString("."){
-                    return [str.substringWithRange(str.startIndex.advancedBy(1)..<range.startIndex)]
+                if let range = str.range(of: "."){
+                    return [str.substring(with: str.characters.index(str.startIndex, offsetBy: 1)..<range.lowerBound)]
                 }
                 else{
-                    return [str.substringFromIndex(str.startIndex.advancedBy(1))]
+                    return [str.substring(from: str.characters.index(str.startIndex, offsetBy: 1))]
                 }
             default:
                 return []

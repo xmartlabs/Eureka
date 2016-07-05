@@ -11,10 +11,10 @@ import Foundation
 public class _DateRow: _DateFieldRow {
     required public init(tag: String?) {
         super.init(tag: tag)
-        dateFormatter = NSDateFormatter()
-        dateFormatter?.timeStyle = .NoStyle
-        dateFormatter?.dateStyle = .MediumStyle
-        dateFormatter?.locale = NSLocale.currentLocale()
+        dateFormatter = DateFormatter()
+        dateFormatter?.timeStyle = .noStyle
+        dateFormatter?.dateStyle = .mediumStyle
+        dateFormatter?.locale = Locale.current()
     }
 }
 
@@ -22,20 +22,20 @@ public class _DateRow: _DateFieldRow {
 public class _TimeRow: _DateFieldRow {
     required public init(tag: String?) {
         super.init(tag: tag)
-        dateFormatter = NSDateFormatter()
-        dateFormatter?.timeStyle = .ShortStyle
-        dateFormatter?.dateStyle = .NoStyle
-        dateFormatter?.locale = NSLocale.currentLocale()
+        dateFormatter = DateFormatter()
+        dateFormatter?.timeStyle = .shortStyle
+        dateFormatter?.dateStyle = .noStyle
+        dateFormatter?.locale = Locale.current()
     }
 }
 
 public class _DateTimeRow: _DateFieldRow {
     required public init(tag: String?) {
         super.init(tag: tag)
-        dateFormatter = NSDateFormatter()
-        dateFormatter?.timeStyle = .ShortStyle
-        dateFormatter?.dateStyle = .ShortStyle
-        dateFormatter?.locale = NSLocale.currentLocale()
+        dateFormatter = DateFormatter()
+        dateFormatter?.timeStyle = .shortStyle
+        dateFormatter?.dateStyle = .shortStyle
+        dateFormatter?.locale = Locale.current()
     }
 }
 
@@ -47,9 +47,9 @@ public class _CountDownRow: _DateFieldRow {
                 return nil
             }
             if let formatter = self.dateFormatter {
-                return formatter.stringFromDate(val)
+                return formatter.string(from: val)
             }
-            let components = NSCalendar.currentCalendar().components(NSCalendarUnit.Minute.union(NSCalendarUnit.Hour), fromDate: val)
+            let components = Calendar.current().components(Calendar.Unit.minute.union(Calendar.Unit.hour), from: val as Date)
             var hourString = "hour"
             if components.hour != 1{
                 hourString += "s"

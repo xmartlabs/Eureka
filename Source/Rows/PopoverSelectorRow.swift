@@ -17,10 +17,10 @@ public class _PopoverSelectorRow<T: Equatable, Cell: CellType where Cell: BaseCe
                 fatalError()
             }
             porpoverController.sourceView = tableView
-            porpoverController.sourceRect = tableView.convertRect(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.contentView.frame, fromView: cell)
+            porpoverController.sourceRect = tableView.convert(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.contentView.frame, from: cell)
         }
-        presentationMode = .Popover(controllerProvider: ControllerProvider.Callback { return SelectorViewController<T>(){ _ in } }, completionCallback: { [weak self] in
-            $0.dismissViewControllerAnimated(true, completion: nil)
+        presentationMode = .popover(controllerProvider: ControllerProvider.callback { return SelectorViewController<T>(){ _ in } }, completionCallback: { [weak self] in
+            $0.dismiss(animated: true, completion: nil)
             self?.reload()
             })
     }

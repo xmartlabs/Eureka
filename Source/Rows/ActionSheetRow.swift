@@ -16,9 +16,9 @@ public class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
     
     public override func update() {
         super.update()
-        accessoryType = .None
+        accessoryType = .none
         editingAccessoryType = accessoryType
-        selectionStyle = row.isDisabled ? .None : .Default
+        selectionStyle = row.isDisabled ? .none : .default
     }
     
     public override func didSelect() {
@@ -31,18 +31,18 @@ public class _ActionSheetRow<T: Equatable, Cell: CellType where Cell: BaseCell, 
     
     public var onPresentCallback : ((FormViewController, SelectorAlertController<T>)->())?
     lazy public var presentationMode: PresentationMode<SelectorAlertController<T>>? = {
-        return .PresentModally(controllerProvider: ControllerProvider.Callback { [weak self] in
-            let vc = SelectorAlertController<T>(title: self?.selectorTitle, message: nil, preferredStyle: .ActionSheet)
+        return .presentModally(controllerProvider: ControllerProvider.callback { [weak self] in
+            let vc = SelectorAlertController<T>(title: self?.selectorTitle, message: nil, preferredStyle: .actionSheet)
             if let popView = vc.popoverPresentationController {
                 guard let cell = self?.cell, tableView = cell.formViewController()?.tableView else { fatalError() }
                 popView.sourceView = tableView
-                popView.sourceRect = tableView.convertRect(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.contentView.frame, fromView: cell)
+                popView.sourceRect = tableView.convert(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.contentView.frame, from: cell)
             }
             vc.row = self
             return vc
             },
                                completionCallback: { [weak self] in
-                                $0.dismissViewControllerAnimated(true, completion: nil)
+                                $0.dismiss(animated: true, completion: nil)
                                 self?.cell?.formViewController()?.tableView?.reloadData()
             })
     }()

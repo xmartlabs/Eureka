@@ -16,9 +16,9 @@ public class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
     
     public override func update() {
         super.update()
-        accessoryType = .DisclosureIndicator
+        accessoryType = .disclosureIndicator
         editingAccessoryType = accessoryType
-        selectionStyle = row.isDisabled ? .None : .Default
+        selectionStyle = row.isDisabled ? .none : .default
     }
 }
 
@@ -55,7 +55,7 @@ public class SelectorRow<T: Equatable, Cell: CellType, VCType: TypedRowControlle
     /**
      Prepares the pushed row setting its title and completion callback.
      */
-    public override func prepareForSegue(segue: UIStoryboardSegue) {
+    public override func prepareForSegue(_ segue: UIStoryboardSegue) {
         super.prepareForSegue(segue)
         guard let rowVC = segue.destinationViewController as? VCType else { return }
         rowVC.title = selectorTitle ?? rowVC.title

@@ -38,12 +38,12 @@ public class RowOf<T: Equatable>: BaseRow {
             }
             guard let t = tag else { return }
             form.tagToValues[t] = value as? AnyObject ?? NSNull()
-            if let rowObservers = form.rowObservers[t]?[.Hidden]{
+            if let rowObservers = form.rowObservers[t]?[.hidden]{
                 for rowObserver in rowObservers {
                     (rowObserver as? Hidable)?.evaluateHidden()
                 }
             }
-            if let rowObservers = form.rowObservers[t]?[.Disabled]{
+            if let rowObservers = form.rowObservers[t]?[.disabled]{
                 for rowObserver in rowObservers {
                     (rowObserver as? Disableable)?.evaluateDisabled()
                 }
@@ -61,7 +61,7 @@ public class RowOf<T: Equatable>: BaseRow {
     public var dataProvider: DataProvider<T>?
     
     /// Block variable used to get the String that should be displayed for the value of this row.
-    public var displayValueFor : (T? -> String?)? = {
+    public var displayValueFor : ((T?) -> String?)? = {
         if let t = $0 {
             return String(t)
         }
@@ -85,7 +85,7 @@ public class Row<T: Equatable, Cell: CellType where Cell: TypedCellType, Cell: B
     private var _cell: Cell! {
         didSet {
             RowDefaults.cellSetup["\(self.dynamicType)"]?(_cell, self)
-            (callbackCellSetup as? (Cell -> ()))?(_cell)
+            (callbackCellSetup as? ((Cell) -> ()))?(_cell)
         }
     }
     

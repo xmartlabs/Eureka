@@ -37,26 +37,26 @@ public enum HeaderFooterProvider<ViewType: UIView> {
     /**
      * Will generate a view of the specified class.
      */
-    case Class
+    case `class`
     
     /**
      * Will generate the view as a result of the given closure.
      */
-    case Callback(()->ViewType)
+    case callback(()->ViewType)
     
     /**
      * Will load the view from a nib file.
      */
-    case NibFile(name: String, bundle: NSBundle?)
+    case nibFile(name: String, bundle: Bundle?)
     
     internal func createView() -> ViewType {
         switch self {
-        case .Class:
-            return ViewType.init()
-        case .Callback(let builder):
+        case .class:
+            return ViewType.`init`(boundsSize:requestHandler:)()
+        case .callback(let builder):
             return builder()
-        case .NibFile(let nibName, let bundle):
-            return (bundle ?? NSBundle(forClass: ViewType.self)).loadNibNamed(nibName, owner: nil, options: nil)[0] as! ViewType
+        case .nibFile(let nibName, let bundle):
+            return (bundle ?? Bundle(for: ViewType.self)).loadNibNamed(nibName, owner: nil, options: nil)[0] as! ViewType
         }
     }
 }
@@ -65,7 +65,7 @@ public enum HeaderFooterProvider<ViewType: UIView> {
  * Represents headers and footers of sections
  */
 public enum HeaderFooterType {
-    case Header, Footer
+    case header, footer
 }
 
 /**
@@ -95,9 +95,9 @@ public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, Hea
      
      - returns: The header or footer of the specified section.
      */
-    public func viewForSection(section: Section, type: HeaderFooterType) -> UIView? {
+    public func viewForSection(_ section: Section, type: HeaderFooterType) -> UIView? {
         var view: ViewType?
-        if type == .Header {
+        if type == .header {
             view = section.headerView as? ViewType ?? {
                             let result = viewProvider?.createView()
                             section.headerView = result

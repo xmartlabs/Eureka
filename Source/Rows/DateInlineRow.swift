@@ -11,7 +11,7 @@ import Foundation
 
 extension DatePickerRowProtocol {
     
-    func configureInlineRow(inlineRow: DatePickerRowProtocol){
+    func configureInlineRow(_ inlineRow: DatePickerRowProtocol){
         inlineRow.minimumDate = minimumDate
         inlineRow.maximumDate = maximumDate
         inlineRow.minuteInterval = minuteInterval
@@ -26,11 +26,11 @@ public class _DateInlineRow: _DateInlineFieldRow {
     
     public required init(tag: String?) {
         super.init(tag: tag)
-        dateFormatter?.timeStyle = .NoStyle
-        dateFormatter?.dateStyle = .MediumStyle
+        dateFormatter?.timeStyle = .noStyle
+        dateFormatter?.dateStyle = .mediumStyle
     }
     
-    public func setupInlineRow(inlineRow: DatePickerRow) {
+    public func setupInlineRow(_ inlineRow: DatePickerRow) {
         configureInlineRow(inlineRow)
     }
 }
@@ -41,11 +41,11 @@ public class _TimeInlineRow: _DateInlineFieldRow {
     
     public required init(tag: String?) {
         super.init(tag: tag)
-        dateFormatter?.timeStyle = .ShortStyle
-        dateFormatter?.dateStyle = .NoStyle
+        dateFormatter?.timeStyle = .shortStyle
+        dateFormatter?.dateStyle = .noStyle
     }
     
-    public func setupInlineRow(inlineRow: TimePickerRow) {
+    public func setupInlineRow(_ inlineRow: TimePickerRow) {
         configureInlineRow(inlineRow)
     }
 }
@@ -56,11 +56,11 @@ public class _DateTimeInlineRow: _DateInlineFieldRow {
     
     public required init(tag: String?) {
         super.init(tag: tag)
-        dateFormatter?.timeStyle = .ShortStyle
-        dateFormatter?.dateStyle = .ShortStyle
+        dateFormatter?.timeStyle = .shortStyle
+        dateFormatter?.dateStyle = .shortStyle
     }
     
-    public func setupInlineRow(inlineRow: DateTimePickerRow) {
+    public func setupInlineRow(_ inlineRow: DateTimePickerRow) {
         configureInlineRow(inlineRow)
     }
 }
@@ -75,8 +75,8 @@ public class _CountDownInlineRow: _DateInlineFieldRow {
             guard let date = $0 else {
                 return nil
             }
-            let hour = NSCalendar.currentCalendar().component(.Hour, fromDate: date)
-            let min = NSCalendar.currentCalendar().component(.Minute, fromDate: date)
+            let hour = Calendar.current().component(.hour, from: date as Date)
+            let min = Calendar.current().component(.minute, from: date as Date)
             if hour == 1{
                 return "\(hour) hour \(min) min"
             }
@@ -84,7 +84,7 @@ public class _CountDownInlineRow: _DateInlineFieldRow {
         }
     }
     
-    public func setupInlineRow(inlineRow: CountDownPickerRow) {
+    public func setupInlineRow(_ inlineRow: CountDownPickerRow) {
         configureInlineRow(inlineRow)
     }
 }
@@ -110,7 +110,7 @@ public final class DateInlineRow_<T>: _DateInlineRow, RowType, InlineRowType {
     }
 }
 
-public typealias DateInlineRow = DateInlineRow_<NSDate>
+public typealias DateInlineRow = DateInlineRow_<Date>
 
 
 /// A row with an NSDate as value where the user can select date and time from an inline picker view.
@@ -135,7 +135,7 @@ public final class DateTimeInlineRow_<T>: _DateTimeInlineRow, RowType, InlineRow
 }
 
 
-public typealias DateTimeInlineRow = DateTimeInlineRow_<NSDate>
+public typealias DateTimeInlineRow = DateTimeInlineRow_<Date>
 
 
 /// A row with an NSDate as value where the user can select a time from an inline picker view.
@@ -159,7 +159,7 @@ public final class TimeInlineRow_<T>: _TimeInlineRow, RowType, InlineRowType {
     }
 }
 
-public typealias TimeInlineRow = TimeInlineRow_<NSDate>
+public typealias TimeInlineRow = TimeInlineRow_<Date>
 
 ///// A row with an NSDate as value where the user can select hour and minute as a countdown timer in an inline picker view.
 public final class CountDownInlineRow_<T>: _CountDownInlineRow, RowType, InlineRowType {
@@ -182,6 +182,6 @@ public final class CountDownInlineRow_<T>: _CountDownInlineRow, RowType, InlineR
     }
 }
 
-public typealias CountDownInlineRow = CountDownInlineRow_<NSDate>
+public typealias CountDownInlineRow = CountDownInlineRow_<Date>
 
 

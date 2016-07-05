@@ -28,33 +28,33 @@ import UIKit
 public class SliderCell: Cell<Float>, CellType {
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Value1, reuseIdentifier: reuseIdentifier)
+        super.init(style: .value1, reuseIdentifier: reuseIdentifier)
     }
     
     public var titleLabel: UILabel! {
         textLabel?.translatesAutoresizingMaskIntoConstraints = false
-        textLabel?.setContentHuggingPriority(500, forAxis: .Horizontal)
+        textLabel?.setContentHuggingPriority(500, for: .horizontal)
         return textLabel
     }
     public var valueLabel: UILabel! {
         detailTextLabel?.translatesAutoresizingMaskIntoConstraints = false
-        detailTextLabel?.setContentHuggingPriority(500, forAxis: .Horizontal)
+        detailTextLabel?.setContentHuggingPriority(500, for: .horizontal)
         return detailTextLabel
     }
     lazy public var slider: UISlider = {
         let result = UISlider()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.setContentHuggingPriority(500, forAxis: .Horizontal)
+        result.setContentHuggingPriority(500, for: .horizontal)
         return result
     }()
-    public var formatter: NSNumberFormatter?
+    public var formatter: NumberFormatter?
     
     public override func setup() {
         super.setup()
-        selectionStyle = .None
+        selectionStyle = .none
         slider.minimumValue = sliderRow.minimumValue
         slider.maximumValue = sliderRow.maximumValue
-        slider.addTarget(self, action: #selector(SliderCell.valueChanged), forControlEvents: .ValueChanged)
+        slider.addTarget(self, action: #selector(SliderCell.valueChanged), for: .valueChanged)
         
         if shouldShowTitle() {
             contentView.addSubview(titleLabel)
@@ -66,13 +66,13 @@ public class SliderCell: Cell<Float>, CellType {
         let metrics = ["hPadding" : 16.0, "vPadding" : 12.0, "spacing" : 12.0]
         
         if shouldShowTitle() {
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-hPadding-[titleLabel]-[valueLabel]-hPadding-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: metrics, views: views))
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-vPadding-[titleLabel]-spacing-[slider]-vPadding-|", options: NSLayoutFormatOptions.AlignAllLeft, metrics: metrics, views: views))
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-hPadding-[titleLabel]-[valueLabel]-hPadding-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[titleLabel]-spacing-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
             
         } else {
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-vPadding-[slider]-vPadding-|", options: NSLayoutFormatOptions.AlignAllLeft, metrics: metrics, views: views))
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
         }
-        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-hPadding-[slider]-hPadding-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: metrics, views: views))
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-hPadding-[slider]-hPadding-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
     }
     
     public override func update() {

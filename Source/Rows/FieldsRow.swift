@@ -16,9 +16,9 @@ public class TextCell : _FieldCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .Default
-        textField.autocapitalizationType = .Sentences
-        textField.keyboardType = .Default
+        textField.autocorrectionType = .default
+        textField.autocapitalizationType = .sentences
+        textField.keyboardType = .default
     }
 }
 
@@ -31,9 +31,9 @@ public class IntCell : _FieldCell<Int>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .Default
-        textField.autocapitalizationType = .None
-        textField.keyboardType = .NumberPad
+        textField.autocorrectionType = .default
+        textField.autocapitalizationType = .none
+        textField.keyboardType = .numberPad
     }
 }
 
@@ -45,7 +45,7 @@ public class PhoneCell : _FieldCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.keyboardType = .PhonePad
+        textField.keyboardType = .phonePad
     }
 }
 
@@ -57,9 +57,9 @@ public class NameCell : _FieldCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .Words
-        textField.keyboardType = .ASCIICapable
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .words
+        textField.keyboardType = .asciiCapable
     }
 }
 
@@ -71,9 +71,9 @@ public class EmailCell : _FieldCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
-        textField.keyboardType = .EmailAddress
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.keyboardType = .emailAddress
     }
 }
 
@@ -85,10 +85,10 @@ public class PasswordCell : _FieldCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
-        textField.keyboardType = .ASCIICapable
-        textField.secureTextEntry = true
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.keyboardType = .asciiCapable
+        textField.isSecureTextEntry = true
     }
 }
 
@@ -100,12 +100,12 @@ public class DecimalCell : _FieldCell<Double>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.keyboardType = .DecimalPad
+        textField.autocorrectionType = .no
+        textField.keyboardType = .decimalPad
     }
 }
 
-public class URLCell : _FieldCell<NSURL>, CellType {
+public class URLCell : _FieldCell<URL>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -113,8 +113,8 @@ public class URLCell : _FieldCell<NSURL>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
         textField.keyboardType = .URL
     }
 }
@@ -127,9 +127,9 @@ public class TwitterCell : _FieldCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
-        textField.keyboardType = .Twitter
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.keyboardType = .twitter
     }
 }
 
@@ -141,9 +141,9 @@ public class AccountCell : _FieldCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
-        textField.keyboardType = .ASCIICapable
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.keyboardType = .asciiCapable
     }
 }
 
@@ -155,9 +155,9 @@ public class ZipCodeCell : _FieldCell<String>, CellType {
     
     public override func update() {
         super.update()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .AllCharacters
-        textField.keyboardType = .NumbersAndPunctuation
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .allCharacters
+        textField.keyboardType = .numbersAndPunctuation
     }
 }
 
@@ -170,9 +170,9 @@ public class _TextRow: FieldRow<String, TextCell> {
 public class _IntRow: FieldRow<Int, IntCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
-        let numberFormatter = NSNumberFormatter()
-        numberFormatter.locale = .currentLocale()
-        numberFormatter.numberStyle = .DecimalStyle
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = .current()
+        numberFormatter.numberStyle = .decimal
         numberFormatter.minimumFractionDigits = 0
         formatter = numberFormatter
     }
@@ -206,15 +206,15 @@ public class _PasswordRow: FieldRow<String, PasswordCell> {
 public class _DecimalRow: FieldRow<Double, DecimalCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
-        let numberFormatter = NSNumberFormatter()
-        numberFormatter.locale = .currentLocale()
-        numberFormatter.numberStyle = .DecimalStyle
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = .current()
+        numberFormatter.numberStyle = .decimal
         numberFormatter.minimumFractionDigits = 2
         formatter = numberFormatter
     }
 }
 
-public class _URLRow: FieldRow<NSURL, URLCell> {
+public class _URLRow: FieldRow<URL, URLCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }

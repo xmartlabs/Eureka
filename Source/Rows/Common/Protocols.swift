@@ -25,7 +25,7 @@
 import Foundation
 
 public protocol FormatterConformance: class {
-    var formatter: NSFormatter? { get set }
+    var formatter: Formatter? { get set }
     var useFormatterDuringInput: Bool { get set }
     var useFormatterOnDidBeginEditing: Bool? { get set }
 }

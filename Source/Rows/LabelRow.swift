@@ -18,7 +18,7 @@ public class LabelCellOf<T: Equatable>: Cell<T>, CellType {
     
     public override func setup() {
         super.setup()
-        selectionStyle = .None
+        selectionStyle = .none
     }
 }
 

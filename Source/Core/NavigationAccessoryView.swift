@@ -27,16 +27,15 @@ import Foundation
 
 /// Class for the navigation accessory view used in FormViewController
 public class NavigationAccessoryView : UIToolbar {
-
     public var previousButton: UIBarButtonItem!
     public var nextButton: UIBarButtonItem!
-    public var doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: nil, action: nil)
-    private var fixedSpace = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
-    private var flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+    public var doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: nil)
+    private var fixedSpace = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+    private var flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     
     public override init(frame: CGRect) {
-        super.init(frame: CGRectMake(0, 0, frame.size.width, 44.0))
-        autoresizingMask = .FlexibleWidth
+        super.init(frame: CGRect(x: 0, y: 0, width: frame.size.width, height: 44.0))
+        autoresizingMask = .flexibleWidth
         fixedSpace.width = 22.0
         initializeChevrons()
         setItems([previousButton, fixedSpace, nextButton, flexibleSpace, doneButton], animated: false)
@@ -66,5 +65,5 @@ public class NavigationAccessoryView : UIToolbar {
         nextButton = UIBarButtonItem(image: imageRightChevron, style: .Plain, target: nil, action: nil)
     }
     
-    public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {}
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {}
 }

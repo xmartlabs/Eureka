@@ -9,13 +9,13 @@
 import Foundation
 
 public protocol DatePickerRowProtocol: class {
-    var minimumDate : NSDate? { get set }
-    var maximumDate : NSDate? { get set }
+    var minimumDate : Date? { get set }
+    var maximumDate : Date? { get set }
     var minuteInterval : Int? { get set }
 }
 
 
-public class DateCell : Cell<NSDate>, CellType {
+public class DateCell : Cell<Date>, CellType {
     
     lazy public var datePicker = UIDatePicker()
     
@@ -25,20 +25,20 @@ public class DateCell : Cell<NSDate>, CellType {
     
     public override func setup() {
         super.setup()
-        accessoryType = .None
-        editingAccessoryType =  .None
+        accessoryType = .none
+        editingAccessoryType =  .none
         datePicker.datePickerMode = datePickerMode()
-        datePicker.addTarget(self, action: #selector(DateCell.datePickerValueChanged(_:)), forControlEvents: .ValueChanged)
+        datePicker.addTarget(self, action: #selector(DateCell.datePickerValueChanged(_:)), for: .valueChanged)
     }
     
     deinit {
-        datePicker.removeTarget(self, action: nil, forControlEvents: .AllEvents)
+        datePicker.removeTarget(self, action: nil, for: .allEvents)
     }
     
     public override func update() {
         super.update()
-        selectionStyle = row.isDisabled ? .None : .Default
-        datePicker.setDate(row.value ?? NSDate(), animated: row is CountDownPickerRow)
+        selectionStyle = row.isDisabled ? .none : .default
+        datePicker.setDate(row.value ?? Date(), animated: row is CountDownPickerRow)
         datePicker.minimumDate = (row as? DatePickerRowProtocol)?.minimumDate
         datePicker.maximumDate = (row as? DatePickerRowProtocol)?.maximumDate
         if let minuteIntervalValue = (row as? DatePickerRowProtocol)?.minuteInterval{
@@ -58,7 +58,7 @@ public class DateCell : Cell<NSDate>, CellType {
         return datePicker
     }
     
-    func datePickerValueChanged(sender: UIDatePicker){
+    func datePickerValueChanged(_ sender: UIDatePicker){
         row.value = sender.date
         detailTextLabel?.text = row.displayValueFor?(row.value)
     }
@@ -66,15 +66,15 @@ public class DateCell : Cell<NSDate>, CellType {
     private func datePickerMode() -> UIDatePickerMode{
         switch row {
         case is DateRow:
-            return .Date
+            return .date
         case is TimeRow:
-            return .Time
+            return .time
         case is DateTimeRow:
-            return .DateAndTime
+            return .dateAndTime
         case is CountDownRow:
-            return .CountDownTimer
+            return .countDownTimer
         default:
-            return .Date
+            return .date
         }
     }
     
@@ -88,19 +88,19 @@ public class DateCell : Cell<NSDate>, CellType {
 }
 
 
-public class _DateFieldRow: Row<NSDate, DateCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
+public class _DateFieldRow: Row<Date, DateCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
     
     /// The minimum value for this row's UIDatePicker
-    public var minimumDate : NSDate?
+    public var minimumDate : Date?
     
     /// The maximum value for this row's UIDatePicker
-    public var maximumDate : NSDate?
+    public var maximumDate : Date?
     
     /// The interval between options for this row's UIDatePicker
     public var minuteInterval : Int?
     
     /// The formatter for the date picked by the user
-    public var dateFormatter: NSDateFormatter?
+    public var dateFormatter: DateFormatter?
     
     public var noValueDisplayText: String? = nil
     
@@ -108,7 +108,7 @@ public class _DateFieldRow: Row<NSDate, DateCell>, DatePickerRowProtocol, NoValu
         super.init(tag: tag)
         displayValueFor = { [unowned self] value in
             guard let val = value, let formatter = self.dateFormatter else { return nil }
-            return formatter.stringFromDate(val)
+            return formatter.string(from: val)
         }
     }
 }
