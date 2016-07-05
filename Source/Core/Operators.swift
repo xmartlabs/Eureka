@@ -63,7 +63,7 @@ public func +++=(left: inout Form, right: Section){
 @discardableResult
 public func +++(left: Form, right: BaseRow) -> Form {
     let section = Section()
-    left +++ section <<< right
+    let _ =  left +++ section <<< right
     return left
 }
 
@@ -78,7 +78,7 @@ public func +++(left: Form, right: BaseRow) -> Form {
 @discardableResult
 public func +++(left: Section, right: Section) -> Form {
     let form = Form()
-    form +++ left +++ right
+    let _ =  form +++ left +++ right
     return form
 }
 
