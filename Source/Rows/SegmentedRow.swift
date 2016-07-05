@@ -69,7 +69,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     
     func updateSegmentedControl() {
         segmentedControl.removeAllSegments()
-        items().enumerated().forEach { segmentedControl.insertSegment(withTitle: $0.element, at: $0.index, animated: false) }
+        items().enumerated().forEach { segmentedControl.insertSegment(withTitle: $0.element, at: $0.offset, animated: false) }
     }
     
     public override func updateConstraints() {

@@ -119,11 +119,11 @@ public class SelectableSection<Row: SelectableRowType, T where Row: BaseRow, Row
     /// A closure called when a row of this section is selected.
     public var onSelectSelectableRow: ((Row.Cell, Row) -> Void)?
     
-    public required init( _ initializer: @noescape(Section) -> ()) {
+    public required init( _ initializer: (Section) -> ()) {
         super.init(initializer)
     }
     
-    public init(_ header: String, selectionType: SelectionType, _ initializer: @noescape(Section) -> () = { _ in }) {
+    public init(_ header: String, selectionType: SelectionType, _ initializer: (Section) -> () = { _ in }) {
         self.selectionType = selectionType
         super.init(header, initializer)
     }
