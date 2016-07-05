@@ -199,7 +199,7 @@ extension Form : RangeReplaceableCollection {
     public func reserveCapacity(_ n: Int){}
     
     public func replaceSubrange<C : Collection where C.Iterator.Element == Section>(_ subRange: Range<Int>, with newElements: C) {
-        for i in subRange {
+        for i in subRange.lowerBound...subRange.upperBound {
             if let section = kvoWrapper.sections.object(at: i) as? Section {
                 section.willBeRemovedFromForm()
                 kvoWrapper._allSections.remove(at: kvoWrapper._allSections.index(of: section)!)

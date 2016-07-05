@@ -163,7 +163,7 @@ public class Section {
     }
     
     public init(_ header: String, _ initializer: (Section) -> () = { _ in }){
-        self.header = HeaderFooterView(stringLiteral: )
+        self.header = HeaderFooterView(stringLiteral: header)
         initializer(self)
     }
     
@@ -203,7 +203,7 @@ public class Section {
 }
 
 
-extension Section : MutableCollection {
+extension Section : MutableCollection, BidirectionalCollection {
     
     //MARK: MutableCollectionType
     
@@ -218,9 +218,15 @@ extension Section : MutableCollection {
         }
         set { kvoWrapper.rows[position] = newValue }
     }
-    public func index(after i: Int) -> Int {
-        return i+1 <= endIndex ? i+1 : endIndex
+
+    public subscript (range: Range<Int>) -> [BaseRow] {
+        get { return kvoWrapper.rows.objects(at: NSIndexSet(indexesIn: NSRange(range)) as IndexSet) as! [BaseRow] }
+        set { kvoWrapper.rows.replaceObjects(in: NSRange(range), withObjectsFrom: newValue) }
     }
+
+    public func index(after i: Int) -> Int {return i + 1}
+    public func index(before i: Int) -> Int {return i - 1}
+
 }
 
 extension Section : RangeReplaceableCollection {
