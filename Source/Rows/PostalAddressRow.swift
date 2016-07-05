@@ -392,13 +392,13 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
             stateTextField.becomeFirstResponder()
         }
         else if stateTextField.isFirstResponder()  {
-            sender == inputAccesoryView.previousButton ? streetTextField.becomeFirstResponder() : postalCodeTextField.becomeFirstResponder()
+            let _ = sender == inputAccesoryView.previousButton ? streetTextField.becomeFirstResponder() : postalCodeTextField.becomeFirstResponder()
         }
         else if postalCodeTextField.isFirstResponder() {
-            sender == inputAccesoryView.previousButton ? stateTextField.becomeFirstResponder() : cityTextField.becomeFirstResponder()
+            let _ = sender == inputAccesoryView.previousButton ? stateTextField.becomeFirstResponder() : cityTextField.becomeFirstResponder()
         }
         else if cityTextField.isFirstResponder() {
-            sender == inputAccesoryView.previousButton ? postalCodeTextField.becomeFirstResponder() : countryTextField.becomeFirstResponder()
+            let _ = sender == inputAccesoryView.previousButton ? postalCodeTextField.becomeFirstResponder() : countryTextField.becomeFirstResponder()
         }
         else if countryTextField.isFirstResponder() {
             cityTextField.becomeFirstResponder()
