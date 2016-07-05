@@ -1,9 +1,9 @@
 ![Eureka: Elegant form builder in Swift](Eureka.jpg)
 
 <p align="center">
-<a href="https://travis-ci.org/xmartlabs/Eureka"><img src="https://travis-ci.org/xmartlabs/Eureka.svg?branch=master" alt="Build status" /></a>
+<a href="https://travis-ci.org/xmartlabs/Eureka"><img src="https://travis-ci.org/charlymr/Eureka.svg?branch=dev%2FSwift3" alt="Build status" /></a>
 <img src="https://img.shields.io/badge/platform-iOS-blue.svg?style=flat" alt="Platform iOS" />
-<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift2-compatible-4BC51D.svg?style=flat" alt="Swift 2 compatible" /></a>
+<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift3-compatible-4BC51D.svg?style=flat" alt="Swift 3 compatible" /></a>
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible" /></a>
 <a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/badge/pod-1.7.0-blue.svg" alt="CocoaPods compatible" /></a>
 <a href="https://raw.githubusercontent.com/xmartlabs/Eureka/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License: MIT" /></a>
@@ -41,7 +41,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
 ## Requirements
 
 * iOS 8.0+
-* Xcode 7.3.1+
+* Xcode 8+ (Beta)
 
 ### Example project
 
