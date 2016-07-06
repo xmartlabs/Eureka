@@ -127,7 +127,25 @@ class FieldRowUITests: XCTestCase {
         XCTAssertEqual(textField.value as? String, intFormatter.stringForObjectValue(Int(12345)), "Int Row value is wrong, should be 12,345 or 12.345")
     }
     
-    
+    func testPickerInputRowChangesValuesProperly() {
+        let app = XCUIApplication()
+        let tablesQuery = app.tables
+        tablesQuery.staticTexts["Rows"].tap()
+        
+        let pickerInput = tablesQuery.cells.staticTexts["Picker Input"]
+        let pickerView = app.pickers["picker_view"]
+        pickerInput.tap()
+        
+        // Check initial status of picker
+        XCTAssert(pickerView.pickerWheels["option 1"].exists, "Picker's initial status should be option 1")
+        
+        pickerView.pickerWheels["option 1"].adjustToPickerWheelValue("option 4");
+        app.toolbars.buttons["Done"].tap()
+        pickerInput.tap()
+        
+        // Check if the selection is correct
+        XCTAssert(pickerView.pickerWheels["option 4"].exists, "The selected value doesn't match")
+    }
     
     //MARK: Helpers
 
