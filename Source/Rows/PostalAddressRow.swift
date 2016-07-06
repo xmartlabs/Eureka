@@ -157,6 +157,10 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     deinit {
         streetTextField.delegate = nil
         streetTextField.removeTarget(self, action: nil, for: .allEvents)

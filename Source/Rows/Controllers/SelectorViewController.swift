@@ -22,6 +22,10 @@ public class _SelectorViewController<T: Equatable, Row: SelectableRowType where 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         guard let options = row.dataProvider?.arrayData else { return }
@@ -56,6 +60,10 @@ public class SelectorViewController<T:Equatable> : _SelectorViewController<T, Li
     convenience public init(_ callback: (UIViewController) -> ()){
         self.init(nibName: nil, bundle: nil)
         completionCallback = callback
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
 

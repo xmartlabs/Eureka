@@ -27,6 +27,10 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     public override func setup() {
         super.setup()
         accessoryType = .none

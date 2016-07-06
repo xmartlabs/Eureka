@@ -142,6 +142,10 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     deinit {
         textField.delegate = nil
         textField.removeTarget(self, action: nil, for: .allEvents)

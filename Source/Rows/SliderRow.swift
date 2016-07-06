@@ -31,6 +31,10 @@ public class SliderCell: Cell<Float>, CellType {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
     }
     
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     public var titleLabel: UILabel! {
         textLabel?.translatesAutoresizingMaskIntoConstraints = false
         textLabel?.setContentHuggingPriority(500, for: .horizontal)

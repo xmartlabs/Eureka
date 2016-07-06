@@ -24,6 +24,10 @@ public class DatePickerCell : Cell<Date>, CellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     public override func setup() {
         super.setup()
         accessoryType = .none

@@ -16,6 +16,10 @@ public class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     public override func update() {
         super.update()
         selectionStyle = row.isDisabled ? .none : .default

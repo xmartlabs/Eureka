@@ -12,9 +12,9 @@ public class _DateRow: _DateFieldRow {
     required public init(tag: String?) {
         super.init(tag: tag)
         dateFormatter = DateFormatter()
-        dateFormatter?.timeStyle = .noStyle
-        dateFormatter?.dateStyle = .mediumStyle
-        dateFormatter?.locale = Locale.current()
+        dateFormatter?.timeStyle = .none
+        dateFormatter?.dateStyle = .medium
+        dateFormatter?.locale = Locale.current
     }
 }
 
@@ -23,9 +23,9 @@ public class _TimeRow: _DateFieldRow {
     required public init(tag: String?) {
         super.init(tag: tag)
         dateFormatter = DateFormatter()
-        dateFormatter?.timeStyle = .shortStyle
-        dateFormatter?.dateStyle = .noStyle
-        dateFormatter?.locale = Locale.current()
+        dateFormatter?.timeStyle = .short
+        dateFormatter?.dateStyle = .none
+        dateFormatter?.locale = Locale.current
     }
 }
 
@@ -33,9 +33,9 @@ public class _DateTimeRow: _DateFieldRow {
     required public init(tag: String?) {
         super.init(tag: tag)
         dateFormatter = DateFormatter()
-        dateFormatter?.timeStyle = .shortStyle
-        dateFormatter?.dateStyle = .shortStyle
-        dateFormatter?.locale = Locale.current()
+        dateFormatter?.timeStyle = .short
+        dateFormatter?.dateStyle = .short
+        dateFormatter?.locale = Locale.current
     }
 }
 
@@ -49,7 +49,7 @@ public class _CountDownRow: _DateFieldRow {
             if let formatter = self.dateFormatter {
                 return formatter.string(from: val)
             }
-            let components = Calendar.current().components(Calendar.Unit.minute.union(Calendar.Unit.hour), from: val as Date)
+            let components = Calendar.current.components(Calendar.Unit.minute.union(Calendar.Unit.hour), from: val as Date)
             var hourString = "hour"
             if components.hour != 1{
                 hourString += "s"
