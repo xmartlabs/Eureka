@@ -128,6 +128,10 @@ public class SelectableSection<Row: SelectableRowType, T where Row: BaseRow, Row
         super.init(header, initializer)
     }
     
+    public required init() {
+        fatalError("init() has not been implemented")
+    }
+    
     public override func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexes: IndexSet) {
         prepareSelectableRows(rows)
     }

@@ -12,7 +12,8 @@ public class _PushRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: T
     
     public required init(tag: String?) {
         super.init(tag: tag)
-        presentationMode = .show(controllerProvider: ControllerProvider.callback { return SelectorViewController<T>(){ _ in } }, completionCallback: { vc in vc.navigationController?.popViewController(animated: true) })
+        presentationMode = .show(controllerProvider: ControllerProvider.callback { return SelectorViewController<T>(){ _ in } }, completionCallback: { vc in
+            let _ = vc.navigationController?.popViewController(animated: true) })
     }
 }
 

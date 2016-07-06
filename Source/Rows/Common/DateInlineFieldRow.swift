@@ -15,6 +15,10 @@ public class DateInlineCell : Cell<Date>, CellType {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     public override func setup() {
         super.setup()
         accessoryType = .none
@@ -52,7 +56,7 @@ public class _DateInlineFieldRow: Row<Date, DateInlineCell>, DatePickerRowProtoc
     required public init(tag: String?) {
         super.init(tag: tag)
         dateFormatter = DateFormatter()
-        dateFormatter?.locale = .current()
+        dateFormatter?.locale = Locale.current
         displayValueFor = { [unowned self] value in
             guard let val = value, let formatter = self.dateFormatter else { return nil }
             return formatter.string(from: val)

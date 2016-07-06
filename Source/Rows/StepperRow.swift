@@ -19,6 +19,10 @@ public class StepperCell : Cell<Double>, CellType {
         height = { BaseRow.estimatedRowHeight }
     }
     
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     public lazy var stepper: UIStepper = {
         let s = UIStepper()
         s.translatesAutoresizingMaskIntoConstraints = false

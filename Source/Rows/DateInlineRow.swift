@@ -26,8 +26,8 @@ public class _DateInlineRow: _DateInlineFieldRow {
     
     public required init(tag: String?) {
         super.init(tag: tag)
-        dateFormatter?.timeStyle = .noStyle
-        dateFormatter?.dateStyle = .mediumStyle
+        dateFormatter?.timeStyle = .none
+        dateFormatter?.dateStyle = .medium
     }
     
     public func setupInlineRow(_ inlineRow: DatePickerRow) {
@@ -41,8 +41,8 @@ public class _TimeInlineRow: _DateInlineFieldRow {
     
     public required init(tag: String?) {
         super.init(tag: tag)
-        dateFormatter?.timeStyle = .shortStyle
-        dateFormatter?.dateStyle = .noStyle
+        dateFormatter?.timeStyle = .short
+        dateFormatter?.dateStyle = .none
     }
     
     public func setupInlineRow(_ inlineRow: TimePickerRow) {
@@ -56,8 +56,8 @@ public class _DateTimeInlineRow: _DateInlineFieldRow {
     
     public required init(tag: String?) {
         super.init(tag: tag)
-        dateFormatter?.timeStyle = .shortStyle
-        dateFormatter?.dateStyle = .shortStyle
+        dateFormatter?.timeStyle = .short
+        dateFormatter?.dateStyle = .short
     }
     
     public func setupInlineRow(_ inlineRow: DateTimePickerRow) {
@@ -75,8 +75,8 @@ public class _CountDownInlineRow: _DateInlineFieldRow {
             guard let date = $0 else {
                 return nil
             }
-            let hour = Calendar.current().component(.hour, from: date as Date)
-            let min = Calendar.current().component(.minute, from: date as Date)
+            let hour = Calendar.current.component(.hour, from: date as Date)
+            let min = Calendar.current.component(.minute, from: date as Date)
             if hour == 1{
                 return "\(hour) hour \(min) min"
             }
