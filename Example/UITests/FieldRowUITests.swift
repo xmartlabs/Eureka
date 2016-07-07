@@ -103,7 +103,7 @@ class FieldRowUITests: XCTestCase {
         let deleteKey = app.keyboards.keys["Delete"]
         
         deleteKey.tap()
-        // sould be 201
+        // should be 201
         XCTAssertEqual(textField.value as? String, intFormatter.stringForObjectValue(Int(201)), "Int Row value is wrong, should be 201")
         
         deleteKey.tap()
