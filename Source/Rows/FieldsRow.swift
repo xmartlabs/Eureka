@@ -206,11 +206,6 @@ public class _PasswordRow: FieldRow<String, PasswordCell> {
 public class _DecimalRow: FieldRow<Double, DecimalCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
-        let numberFormatter = NSNumberFormatter()
-        numberFormatter.locale = .currentLocale()
-        numberFormatter.numberStyle = .DecimalStyle
-        numberFormatter.minimumFractionDigits = 2
-        formatter = numberFormatter
     }
 }
 
