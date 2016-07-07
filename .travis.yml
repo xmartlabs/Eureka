@@ -7,6 +7,7 @@ before_install:
   - brew update
   - brew outdated carthage || brew upgrade carthage
 script:
+  - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO
   - set -o pipefail
   - xcodebuild -version
   - xcodebuild -project Eureka.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION"
