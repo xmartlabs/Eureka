@@ -1,9 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [1.7.0](https://github.com/xmartlabs/Eureka/releases/tag/1.7.0)
+
+* **Breaking change**: Fixed typo in `hightlightCell`. You must now call / override `highlightCell`.
+* Added `allSections` method to Form. (by @programmarchy)
+* Updated navigation images for row navigation. (thanks @VladislavJevremovic)
+* Removed +++= operator.
+* Other bug fixes and minor improvements
+
 ### [1.6.0](https://github.com/xmartlabs/Eureka/releases/tag/1.6.0)
 
-* **Breaking change**. Remove controller: FormViewController parameter from HeaderFooterViewRepresentable `viewForSection` method.
+* **Breaking change**: Remove controller: FormViewController parameter from HeaderFooterViewRepresentable `viewForSection` method.
 
 
 * Support for Xcode 7.3.1.
