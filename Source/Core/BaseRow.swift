@@ -96,6 +96,9 @@ public class BaseRow : BaseRowType {
      */
     public func highlightCell() {}
     
+    @available(*, unavailable, message="Deprecated. Use 'highlightCell' instead.")
+    public func hightlightCell() { highlightCell() }
+    
     /**
      Method that is responsible for unhighlighting the cell.
      */
