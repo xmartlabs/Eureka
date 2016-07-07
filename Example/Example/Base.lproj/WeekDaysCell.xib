@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -12,12 +12,11 @@
             <rect key="frame" x="0.0" y="0.0" width="382" height="61"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="piA-L5-eiN" id="Yr6-3E-keb">
-                <rect key="frame" x="0.0" y="0.0" width="382" height="60"/>
+                <rect key="frame" x="0.0" y="0.0" width="382" height="60.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZAg-Me-yKR">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZAg-Me-yKR">
                         <rect key="frame" x="8" y="0.0" width="52" height="60"/>
-                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <state key="normal" title="S">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -32,7 +31,6 @@
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UjQ-Cw-7wH" userLabel="separator 1">
                         <rect key="frame" x="59" y="10" width="1" height="40"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="1" id="K3N-3h-MZr"/>
@@ -41,7 +39,6 @@
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N3w-qP-kRZ">
                         <rect key="frame" x="60" y="0.0" width="52" height="60"/>
-                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <state key="normal" title="M">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -53,16 +50,14 @@
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kwc-0w-V51" userLabel="separator 2">
                         <rect key="frame" x="112" y="10" width="1" height="40"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="1" id="3mE-sT-ql1"/>
                             <constraint firstAttribute="height" constant="40" id="DIe-f7-hxR"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cPl-47-rS8">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cPl-47-rS8">
                         <rect key="frame" x="113" y="0.0" width="52" height="60"/>
-                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <state key="normal" title="T">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -74,16 +69,14 @@
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EiN-2p-Oig" userLabel="separator 3">
                         <rect key="frame" x="164" y="10" width="1" height="40"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="EqQ-Te-SQd"/>
                             <constraint firstAttribute="width" constant="1" id="JyW-GC-0A7"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6iC-Cl-RyI">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6iC-Cl-RyI">
                         <rect key="frame" x="166" y="0.0" width="51" height="60"/>
-                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <state key="normal" title="W">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -93,18 +86,16 @@
                             <action selector="dayTapped:" destination="piA-L5-eiN" eventType="touchUpInside" id="oO1-zj-XRv"/>
                         </connections>
                     </button>
-                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bRc-5e-QAH" userLabel="separator 4">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bRc-5e-QAH" userLabel="separator 4">
                         <rect key="frame" x="216" y="10" width="1" height="40"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="Pxp-Ee-q5x"/>
                             <constraint firstAttribute="width" constant="1" id="W9F-iR-Leh"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eTo-Ip-reh">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eTo-Ip-reh">
                         <rect key="frame" x="217" y="0.0" width="52" height="60"/>
-                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <state key="normal" title="T">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -116,7 +107,6 @@
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dHj-rj-mjh" userLabel="separator 5">
                         <rect key="frame" x="269" y="10" width="1" height="40"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="1" id="h5U-x0-9nJ"/>
@@ -125,7 +115,6 @@
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wjb-tu-QEo">
                         <rect key="frame" x="270" y="0.0" width="52" height="60"/>
-                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <state key="normal" title="F">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -135,18 +124,16 @@
                             <action selector="dayTapped:" destination="piA-L5-eiN" eventType="touchUpInside" id="9A8-9a-SGG"/>
                         </connections>
                     </button>
-                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L7g-lu-boa" userLabel="separator 6">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L7g-lu-boa" userLabel="separator 6">
                         <rect key="frame" x="321" y="10" width="1" height="40"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="1" id="81t-Xh-wZT"/>
                             <constraint firstAttribute="height" constant="40" id="Qr7-X4-anj"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LNf-b4-GYP">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LNf-b4-GYP">
                         <rect key="frame" x="322" y="0.0" width="52" height="60"/>
-                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <state key="normal" title="S">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -157,7 +144,6 @@
                         </connections>
                     </button>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="LNf-b4-GYP" firstAttribute="leading" secondItem="L7g-lu-boa" secondAttribute="trailing" id="0fo-jx-Csm"/>
                     <constraint firstItem="6iC-Cl-RyI" firstAttribute="centerY" secondItem="eTo-Ip-reh" secondAttribute="centerY" id="0uH-JF-ybH"/>
@@ -201,7 +187,6 @@
                     <constraint firstItem="6iC-Cl-RyI" firstAttribute="width" secondItem="eTo-Ip-reh" secondAttribute="width" id="zRG-mE-VLw"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <connections>
                 <outlet property="fridayButton" destination="Wjb-tu-QEo" id="AcP-Qg-i9P"/>
                 <outlet property="mondayButton" destination="N3w-qP-kRZ" id="u3A-mt-EKd"/>

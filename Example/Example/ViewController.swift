@@ -280,7 +280,39 @@ class RowsExampleViewController: FormViewController {
                         $0.title = "URLRow"
                         $0.value = NSURL(string: "http://xmartlabs.com")
                     }
-                
+            
+
+                ///Opens Https urls only by default in iOS9. To load http as well, set NSAppTransportSecurity's NSAllowsArbitraryLoads=true in info.plist.
+                <<< TextRow() {
+                    $0.title = "TextRow (tap to open link)"
+                    $0.value = "https://google.ca"
+                    $0.disabled = true
+                    }.cellUpdate { cell, _ in
+                        cell.textLabel?.textColor = UIColor.blackColor()
+                        cell.textField.textColor = UIColor.blueColor()
+                    }.onCellSelection { cell, row in
+                        guard row.value != nil else { return }
+                        
+                        var urlString = row.value!.lowercaseString
+                        
+                        if !urlString.hasPrefix("http://") && !urlString.hasPrefix("https://") {
+                            urlString = "http://" + urlString
+                        }
+                        
+                        guard let urlNSURL = NSURL(string: urlString) else {
+                            print("link row: unable to convert String to NSURL")
+                            return
+                        }
+                        
+                        // Uncomment to open in a custom web view controller instead of in Safari
+                        /*
+                         let cwvc = CustomWebViewController()
+                         cwvc.url = urlNSURL
+                         self.navigationController?.pushViewController(cwvc, animated: true)
+                         */
+                        UIApplication.sharedApplication().openURL(urlNSURL)
+                }
+            
                 <<< PhoneRow() {
                         $0.title = "PhoneRow (disabled)"
                         $0.value = "+598 9898983510"

@@ -20,6 +20,7 @@
 		51729E281B9A54F1004A00EB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51729E261B9A54F1004A00EB /* LaunchScreen.storyboard */; };
 		51729E6E1B9A6601004A00EB /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51729E6D1B9A6601004A00EB /* CustomCells.swift */; };
 		51729E711B9A660A004A00EB /* WeekDaysCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51729E6F1B9A660A004A00EB /* WeekDaysCell.xib */; };
+		9B45736E1CE275B50061A213 /* CustomWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B45736D1CE275B50061A213 /* CustomWebViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		51729E411B9A5841004A00EB /* Eureka.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Eureka.xcodeproj; sourceTree = "<group>"; };
 		51729E6D1B9A6601004A00EB /* CustomCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = CustomCells.swift; path = Example/CustomCells.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51729E701B9A660A004A00EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Example/Base.lproj/WeekDaysCell.xib; sourceTree = "<group>"; };
+		9B45736D1CE275B50061A213 /* CustomWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomWebViewController.swift; path = Example/Helpers/CustomWebViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +200,7 @@
 				2837E29D1BA3A5A800A1952C /* Helpers */,
 				51729E6F1B9A660A004A00EB /* WeekDaysCell.xib */,
 				51729E6D1B9A6601004A00EB /* CustomCells.swift */,
+				9B45736D1CE275B50061A213 /* CustomWebViewController.swift */,
 			);
 			name = "Custom Row and Cell";
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 			files = (
 				51729E201B9A54F1004A00EB /* ViewController.swift in Sources */,
 				51729E6E1B9A6601004A00EB /* CustomCells.swift in Sources */,
+				9B45736E1CE275B50061A213 /* CustomWebViewController.swift in Sources */,
 				51729E1E1B9A54F1004A00EB /* AppDelegate.swift in Sources */,
 				2837E2A01BA3A5A800A1952C /* FloatLabelTextField.swift in Sources */,
 			);
