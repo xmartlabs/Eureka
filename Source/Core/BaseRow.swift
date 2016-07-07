@@ -94,7 +94,7 @@ public class BaseRow : BaseRowType {
     /**
      Method that is responsible for highlighting the cell.
      */
-    public func hightlightCell() {}
+    public func highlightCell() {}
     
     /**
      Method that is responsible for unhighlighting the cell.

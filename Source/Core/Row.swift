@@ -133,8 +133,8 @@ public class Row<T: Equatable, Cell: CellType where Cell: TypedCellType, Cell: B
     /**
      Method that is responsible for highlighting the cell.
      */
-    override public func hightlightCell() {
-        super.hightlightCell()
+    override public func highlightCell() {
+        super.highlightCell()
         cell.highlight()
         RowDefaults.onCellHighlight["\(self.dynamicType)"]?(cell, self)
         callbackOnCellHighlight?()
