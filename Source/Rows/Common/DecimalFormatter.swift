@@ -12,7 +12,7 @@ public class DecimalFormatter : NumberFormatter, FormatterProtocol {
     
     public override init() {
         super.init()
-        locale = Locale.current
+        locale = Locale.current()
         numberStyle = .decimal
         minimumFractionDigits = 2
         maximumFractionDigits = 2

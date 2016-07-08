@@ -585,16 +585,16 @@ class NativeEventFormViewController : FormViewController {
                     let endDate: DateTimeInlineRow! = self?.form.rowByTag("Ends")
                     
                     if row.value ?? false {
-                        startDate.dateFormatter?.dateStyle = .medium
-                        startDate.dateFormatter?.timeStyle = .none
-                        endDate.dateFormatter?.dateStyle = .medium
-                        endDate.dateFormatter?.timeStyle = .none
+                        startDate.dateFormatter?.dateStyle = .mediumStyle
+                        startDate.dateFormatter?.timeStyle = .noStyle
+                        endDate.dateFormatter?.dateStyle = .mediumStyle
+                        endDate.dateFormatter?.timeStyle = .noStyle
                     }
                     else {
-                        startDate.dateFormatter?.dateStyle = .short
-                        startDate.dateFormatter?.timeStyle = .short
-                        endDate.dateFormatter?.dateStyle = .short
-                        endDate.dateFormatter?.timeStyle = .short
+                        startDate.dateFormatter?.dateStyle = .shortStyle
+                        startDate.dateFormatter?.timeStyle = .shortStyle
+                        endDate.dateFormatter?.dateStyle = .shortStyle
+                        endDate.dateFormatter?.timeStyle = .shortStyle
                     }
                     startDate.updateCell()
                     endDate.updateCell()
@@ -898,7 +898,7 @@ class FormatterExample : FormViewController {
                 $0.title = "Currency style"
                 $0.value = 2015
                 let formatter = CurrencyFormatter()
-                formatter.locale = .current
+                formatter.locale = .current()
                 formatter.numberStyle = .currency
                 $0.formatter = formatter
             }
@@ -906,7 +906,7 @@ class FormatterExample : FormViewController {
                 $0.title = "Scientific style"
                 $0.value = 2015
                 let formatter = NumberFormatter()
-                formatter.locale = .current
+                formatter.locale = .current()
                 formatter.numberStyle = .scientific
                 $0.formatter = formatter
             }
@@ -914,7 +914,7 @@ class FormatterExample : FormViewController {
                 $0.title = "Spell out style"
                 $0.value = 2015
                 let formatter = NumberFormatter()
-                formatter.locale = .current
+                formatter.locale = .current()
                 formatter.numberStyle = .spellOut
                 $0.formatter = formatter
             }
@@ -923,16 +923,16 @@ class FormatterExample : FormViewController {
                 $0.title = "Short style"
                 $0.value = Date()
                 let formatter = DateFormatter()
-                formatter.locale = .current
-                formatter.dateStyle = .short
+                formatter.locale = .current()
+                formatter.dateStyle = .shortStyle
                 $0.dateFormatter = formatter
             }
             <<< DateRow(){
                 $0.title = "Long style"
                 $0.value = Date()
                 let formatter = DateFormatter()
-                formatter.locale = .current
-                formatter.dateStyle = .long
+                formatter.locale = .current()
+                formatter.dateStyle = .longStyle
                 $0.dateFormatter = formatter
             }
         +++ Section("Other formatters")
@@ -1021,8 +1021,8 @@ class InlineRowsController: FormViewController {
                     var dateComp = DateComponents()
                     dateComp.hour = 18
                     dateComp.minute = 33
-                    (dateComp as NSDateComponents).timeZone = TimeZone.system
-                    $0.value = Calendar.current.date(from: dateComp)
+                    (dateComp as NSDateComponents).timeZone = TimeZone.system()
+                    $0.value = Calendar.current().date(from: dateComp)
                 }
         
         +++ Section("Generic inline picker")
@@ -1030,7 +1030,7 @@ class InlineRowsController: FormViewController {
             <<< PickerInlineRow<Date>("PickerInlineRow") { (row : PickerInlineRow<Date>) -> Void in
                     row.title = row.tag
                     row.displayValueFor = { (rowValue: Date?) in
-                        return rowValue.map { "Year \(Calendar.current.component(.year, from: $0))" }
+                        return rowValue.map { "Year \(Calendar.current().component(.year, from: $0))" }
                     }
                     row.options = []
                     var date = Date()

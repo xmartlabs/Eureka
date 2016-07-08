@@ -215,7 +215,7 @@ public class _IntRow: FieldRow<IntCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
         let numberFormatter = NumberFormatter()
-        numberFormatter.locale = Locale.current
+        numberFormatter.locale = Locale.current()
         numberFormatter.numberStyle = .decimal
         numberFormatter.minimumFractionDigits = 0
         formatter = numberFormatter
@@ -251,7 +251,7 @@ public class _DecimalRow: FieldRow<DecimalCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
         let numberFormatter = NumberFormatter()
-        numberFormatter.locale = Locale.current
+        numberFormatter.locale = Locale.current()
         numberFormatter.numberStyle = .decimal
         numberFormatter.minimumFractionDigits = 2
         formatter = numberFormatter
