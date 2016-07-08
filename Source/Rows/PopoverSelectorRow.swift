@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class _PopoverSelectorRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell.Value == T> : SelectorRow<T, Cell, SelectorViewController<T>> {
+public class _PopoverSelectorRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType> : SelectorRow<Cell, SelectorViewController<Cell.Value>> {
     
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -19,7 +19,7 @@ public class _PopoverSelectorRow<T: Equatable, Cell: CellType where Cell: BaseCe
             porpoverController.sourceView = tableView
             porpoverController.sourceRect = tableView.convert(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.contentView.frame, from: cell)
         }
-        presentationMode = .popover(controllerProvider: ControllerProvider.callback { return SelectorViewController<T>(){ _ in } }, completionCallback: { [weak self] in
+        presentationMode = .popover(controllerProvider: ControllerProvider.callback { return SelectorViewController<Cell.Value>(){ _ in } }, completionCallback: { [weak self] in
             $0.dismiss(animated: true, completion: nil)
             self?.reload()
             })
@@ -31,7 +31,7 @@ public class _PopoverSelectorRow<T: Equatable, Cell: CellType where Cell: BaseCe
     }
 }
 
-public final class PopoverSelectorRow<T: Equatable> : _PopoverSelectorRow<T, PushSelectorCell<T>>, RowType {
+public final class PopoverSelectorRow<T: Equatable> : _PopoverSelectorRow<PushSelectorCell<T>>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }

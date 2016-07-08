@@ -73,7 +73,7 @@ public class StepperCell : Cell<Double>, CellType {
 
 // MARK: StepperRow
 
-public class _StepperRow: Row<Double, StepperCell> {
+public class _StepperRow: Row<StepperCell> {
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = nil

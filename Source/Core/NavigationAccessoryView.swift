@@ -46,23 +46,23 @@ public class NavigationAccessoryView : UIToolbar {
     }
 
     private func initializeChevrons() {
-        var bundle = NSBundle(forClass: self.classForCoder)
+        var bundle = Bundle(for: self.classForCoder)
         if let resourcePath = bundle.pathForResource("Eureka", ofType: "bundle") {
-            if let resourcesBundle = NSBundle(path: resourcePath) {
+            if let resourcesBundle = Bundle(path: resourcePath) {
                 bundle = resourcesBundle
             }
         }
 
-        var imageLeftChevron = UIImage(named: "back-chevron", inBundle: bundle, compatibleWithTraitCollection: nil)
-        var imageRightChevron = UIImage(named: "forward-chevron", inBundle: bundle, compatibleWithTraitCollection: nil)
+        var imageLeftChevron = UIImage(named: "back-chevron", in: bundle, compatibleWith: nil)
+        var imageRightChevron = UIImage(named: "forward-chevron", in: bundle, compatibleWith: nil)
         // RTL language support
         if #available(iOS 9.0, *) {
             imageLeftChevron = imageLeftChevron?.imageFlippedForRightToLeftLayoutDirection()
             imageRightChevron = imageRightChevron?.imageFlippedForRightToLeftLayoutDirection()
         }
 
-        previousButton = UIBarButtonItem(image: imageLeftChevron, style: .Plain, target: nil, action: nil)
-        nextButton = UIBarButtonItem(image: imageRightChevron, style: .Plain, target: nil, action: nil)
+        previousButton = UIBarButtonItem(image: imageLeftChevron, style: .plain, target: nil, action: nil)
+        nextButton = UIBarButtonItem(image: imageRightChevron, style: .plain, target: nil, action: nil)
     }
     
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {}

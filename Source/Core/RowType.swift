@@ -72,14 +72,13 @@ public protocol BaseRowType: Taggable {
 
 public protocol TypedRowType: BaseRowType {
     
-    associatedtype Value: Equatable
     associatedtype Cell: BaseCell, TypedCellType
     
     /// The typed cell associated to this row.
-    var cell : Self.Cell! { get }
+    var cell : Cell! { get }
     
     /// The typed value this row stores.
-    var value : Self.Value? { get set }
+    var value : Cell.Value? { get set }
 }
 
 /**
@@ -89,7 +88,7 @@ public protocol RowType {
     init(_ tag: String?, _ initializer: (Self) -> ())
 }
 
-extension RowType where Self: TypedRowType, Self: BaseRow, Self.Cell.Value == Self.Value {
+extension RowType where Self: TypedRowType, Self: BaseRow {
     
     /**
      Default initializer for a row
@@ -102,7 +101,7 @@ extension RowType where Self: TypedRowType, Self: BaseRow, Self.Cell.Value == Se
 }
 
 
-extension RowType where Self: TypedRowType, Self: BaseRow, Self.Cell.Value == Self.Value {
+extension RowType where Self: TypedRowType, Self: BaseRow {
     
     /// The default block executed when the cell is updated. Applies to every row of this type.
     public static var defaultCellUpdate:((Cell, Self) -> ())? {

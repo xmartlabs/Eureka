@@ -8,10 +8,10 @@
 
 import Foundation
 
-public class _SelectorViewController<T: Equatable, Row: SelectableRowType where Row: BaseRow, Row: TypedRowType, Row.Value == T, Row.Cell.Value == T>: FormViewController, TypedRowControllerType {
+public class _SelectorViewController<Row: SelectableRowType where Row: BaseRow, Row: TypedRowType>: FormViewController, TypedRowControllerType {
     
     /// The row that pushed or presented this controller
-    public var row: RowOf<Row.Value>!
+    public var row: RowOf<Row.Cell.Value>!
     
     /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
@@ -30,8 +30,8 @@ public class _SelectorViewController<T: Equatable, Row: SelectableRowType where 
         super.viewDidLoad()
         guard let options = row.dataProvider?.arrayData else { return }
         
-        form +++ SelectableSection<Row, Row.Value>(row.title ?? "", selectionType: .singleSelection(enableDeselection: true)) { [weak self] section in
-            if let sec = section as? SelectableSection<Row, Row.Value> {
+        form +++ SelectableSection<Row>(row.title ?? "", selectionType: .singleSelection(enableDeselection: true)) { [weak self] section in
+            if let sec = section as? SelectableSection<Row> {
                 sec.onSelectSelectableRow = { _, row in
                     self?.row.value = row.value
                     self?.completionCallback?(self!)
@@ -51,7 +51,7 @@ public class _SelectorViewController<T: Equatable, Row: SelectableRowType where 
 }
 
 /// Selector Controller (used to select one option among a list)
-public class SelectorViewController<T:Equatable> : _SelectorViewController<T, ListCheckRow<T>>  {
+public class SelectorViewController<T:Equatable> : _SelectorViewController<ListCheckRow<T>>  {
     
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)

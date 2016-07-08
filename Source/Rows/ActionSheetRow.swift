@@ -31,12 +31,12 @@ public class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
     }
 }
 
-public class _ActionSheetRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell.Value == T>: OptionsRow<T, Cell>, PresenterRowType {
+public class _ActionSheetRow<Cell: CellType where Cell: BaseCell>: OptionsRow<Cell>, PresenterRowType {
     
-    public var onPresentCallback : ((FormViewController, SelectorAlertController<T>)->())?
-    lazy public var presentationMode: PresentationMode<SelectorAlertController<T>>? = {
+    public var onPresentCallback : ((FormViewController, SelectorAlertController<Cell.Value>)->())?
+    lazy public var presentationMode: PresentationMode<SelectorAlertController<Cell.Value>>? = {
         return .presentModally(controllerProvider: ControllerProvider.callback { [weak self] in
-            let vc = SelectorAlertController<T>(title: self?.selectorTitle, message: nil, preferredStyle: .actionSheet)
+            let vc = SelectorAlertController<Cell.Value>(title: self?.selectorTitle, message: nil, preferredStyle: .actionSheet)
             if let popView = vc.popoverPresentationController {
                 guard let cell = self?.cell, tableView = cell.formViewController()?.tableView else { fatalError() }
                 popView.sourceView = tableView
@@ -71,7 +71,7 @@ public class _ActionSheetRow<T: Equatable, Cell: CellType where Cell: BaseCell, 
 }
 
 /// An options row where the user can select an option from an ActionSheet
-public final class ActionSheetRow<T: Equatable>: _ActionSheetRow<T, AlertSelectorCell<T>>, RowType {
+public final class ActionSheetRow<T: Equatable>: _ActionSheetRow<AlertSelectorCell<T>>, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }

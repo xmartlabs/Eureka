@@ -667,7 +667,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
 
 //MARK: PostalAddressRow
 
-public class _PostalAddressRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: PostalAddressCellConformance, Cell.Value == T>: Row<T, Cell>, PostalAddressRowConformance, KeyboardReturnHandler {
+public class _PostalAddressRow<Cell: CellType where Cell: BaseCell, Cell: PostalAddressCellConformance>: Row<Cell>, PostalAddressRowConformance, KeyboardReturnHandler {
     
     /// Configuration for the keyboardReturnType of this row
     public var keyboardReturnType : KeyboardReturnTypeConfiguration?
@@ -735,7 +735,7 @@ public class _PostalAddressRow<T: Equatable, Cell: CellType where Cell: BaseCell
 }
 
 /// A PostalAddress valued row where the user can enter a postal address.
-public final class PostalAddressRow: _PostalAddressRow<PostalAddress, PostalAddressCell<PostalAddress>>, RowType {
+public final class PostalAddressRow: _PostalAddressRow<PostalAddressCell<PostalAddress>>, RowType {
     public required init(tag: String? = nil) {
         super.init(tag: tag)
         onCellHighlight { cell, row  in

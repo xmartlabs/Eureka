@@ -30,7 +30,7 @@ public typealias LabelCell = LabelCellOf<String>
 
 // MARK: LabelRow
 
-public class _LabelRow: Row<String, LabelCell> {
+public class _LabelRow: Row<LabelCell> {
     required public init(tag: String?) {
         super.init(tag: tag)
     }

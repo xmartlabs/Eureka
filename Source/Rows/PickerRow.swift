@@ -76,7 +76,7 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
 
 //MARK: PickerRow
 
-public class _PickerRow<T where T: Equatable> : Row<T, PickerCell<T>>{
+public class _PickerRow<T where T: Equatable> : Row<PickerCell<T>>{
     
     public var options = [T]()
     

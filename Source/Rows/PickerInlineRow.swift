@@ -37,7 +37,7 @@ public class PickerInlineCell<T: Equatable> : Cell<T>, CellType {
 
 //MARK: PickerInlineRow
 
-public class _PickerInlineRow<T where T: Equatable> : Row<T, PickerInlineCell<T>>, NoValueDisplayTextConformance {
+public class _PickerInlineRow<T where T: Equatable> : Row<PickerInlineCell<T>>, NoValueDisplayTextConformance {
     
     public typealias InlineRow = PickerRow<T>
     public var options = [T]()

@@ -56,7 +56,7 @@ public protocol InlineRowType: TypedRowType, BaseInlineRowType {
 }
 
 
-extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell.Value == Self.Value, Self.InlineRow.Cell.Value == Self.InlineRow.Value, Self.InlineRow.Value == Self.Value {
+extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell.Value ==  Self.InlineRow.Cell.Value {
     
     /// The row that will be inserted below after the current one when it is selected.
     public var inlineRow : Self.InlineRow? { return _inlineRow as? Self.InlineRow }

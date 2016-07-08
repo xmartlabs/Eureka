@@ -89,6 +89,6 @@ public protocol TypedCellType : BaseCellType {
     var row : RowOf<Value>! { get set }
 }
 
-public protocol CellType {}
+public protocol CellType: TypedCellType {}
 
 

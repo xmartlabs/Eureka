@@ -244,7 +244,7 @@ public class TextAreaCell : _TextAreaCell<String>, CellType {
     }
 }
 
-public class AreaRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: AreaCell, Cell.Value == T>: FormatteableRow<T, Cell>, TextAreaConformance {
+public class AreaRow<Cell: CellType where Cell: BaseCell, Cell: AreaCell>: FormatteableRow<Cell>, TextAreaConformance {
     
     public var placeholder : String?
     public var textAreaHeight = TextAreaHeight.fixed(cellHeight: 110)
@@ -254,7 +254,7 @@ public class AreaRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: Ty
     }
 }
 
-public class _TextAreaRow: AreaRow<String, TextAreaCell> {
+public class _TextAreaRow: AreaRow<TextAreaCell> {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
