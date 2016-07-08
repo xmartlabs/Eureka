@@ -35,62 +35,62 @@ class HomeViewController : FormViewController {
                 
         ImageRow.defaultCellUpdate = { cell, row in
            cell.accessoryView?.layer.cornerRadius = 17
-           cell.accessoryView?.frame = CGRectMake(0, 0, 34, 34)
+           cell.accessoryView?.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
         }
         
         form =
             
             Section() {
-                $0.header = HeaderFooterView<EurekaLogoView>(HeaderFooterProvider.Class)
+                $0.header = HeaderFooterView<EurekaLogoView>(HeaderFooterProvider.class)
             }
         
                 <<< ButtonRow("Rows") {
                         $0.title = $0.tag
-                        $0.presentationMode = .SegueName(segueName: "RowsExampleViewControllerSegue", completionCallback: nil)
+                        $0.presentationMode = .segueName(segueName: "RowsExampleViewControllerSegue", completionCallback: nil)
                     }
             
                 <<< ButtonRow("Native iOS Event Form") { row in
                         row.title = row.tag
-                        row.presentationMode = .SegueName(segueName: "NativeEventsFormNavigationControllerSegue", completionCallback:{  vc in vc.dismissViewControllerAnimated(true, completion: nil) })
+                        row.presentationMode = .segueName(segueName: "NativeEventsFormNavigationControllerSegue", completionCallback:{  vc in vc.dismiss(animated: true, completion: nil) })
                     }
             
                 <<< ButtonRow("Accesory View Navigation") { (row: ButtonRow) in
                         row.title = row.tag
-                        row.presentationMode = .SegueName(segueName: "AccesoryViewControllerSegue", completionCallback: nil)
+                        row.presentationMode = .segueName(segueName: "AccesoryViewControllerSegue", completionCallback: nil)
                     }
             
                 <<< ButtonRow("Custom Cells") { (row: ButtonRow) -> () in
                         row.title = row.tag
-                        row.presentationMode = .SegueName(segueName: "CustomCellsControllerSegue", completionCallback: nil)
+                        row.presentationMode = .segueName(segueName: "CustomCellsControllerSegue", completionCallback: nil)
                     }
             
                 <<< ButtonRow("Customization of rows with text input") { (row: ButtonRow) -> Void in
                         row.title = row.tag
-                        row.presentationMode = .SegueName(segueName: "FieldCustomizationControllerSegue", completionCallback: nil)
+                        row.presentationMode = .segueName(segueName: "FieldCustomizationControllerSegue", completionCallback: nil)
                     }
             
                 <<< ButtonRow("Hidden rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .SegueName(segueName: "HiddenRowsControllerSegue", completionCallback: nil)
+                    row.presentationMode = .segueName(segueName: "HiddenRowsControllerSegue", completionCallback: nil)
                     }
             
                 <<< ButtonRow("Disabled rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .SegueName(segueName: "DisabledRowsControllerSegue", completionCallback: nil)
+                    row.presentationMode = .segueName(segueName: "DisabledRowsControllerSegue", completionCallback: nil)
                 }
             
                 <<< ButtonRow("Formatters") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .SegueName(segueName: "FormattersControllerSegue", completionCallback: nil)
+                    row.presentationMode = .segueName(segueName: "FormattersControllerSegue", completionCallback: nil)
                 }
         
                 <<< ButtonRow("Inline rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .SegueName(segueName: "InlineRowsControllerSegue", completionCallback: nil)
+                    row.presentationMode = .segueName(segueName: "InlineRowsControllerSegue", completionCallback: nil)
                 }
                 <<< ButtonRow("List Sections") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .SegueName(segueName: "ListSectionsControllerSegue", completionCallback: nil)
+                    row.presentationMode = .segueName(segueName: "ListSectionsControllerSegue", completionCallback: nil)
                 }
         +++ Section()
                 <<< ButtonRow() { (row: ButtonRow) -> Void in
@@ -102,10 +102,10 @@ class HomeViewController : FormViewController {
     
     
     @IBAction func showAlert() {
-        let alertController = UIAlertController(title: "OnCellSelection", message: "Button Row Action", preferredStyle: .Alert)
-        let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        let alertController = UIAlertController(title: "OnCellSelection", message: "Button Row Action", preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(defaultAction)
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
         
     }
     
@@ -122,10 +122,10 @@ class RowsExampleViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        URLRow.defaultCellUpdate = { cell, row in cell.textField.textColor = .blueColor() }
-        LabelRow.defaultCellUpdate = { cell, row in cell.detailTextLabel?.textColor = .orangeColor()  }
-        CheckRow.defaultCellSetup = { cell, row in cell.tintColor = .orangeColor() }
-        DateRow.defaultRowInitializer = { row in row.minimumDate = NSDate() }
+        URLRow.defaultCellUpdate = { cell, row in cell.textField.textColor = .blue() }
+        LabelRow.defaultCellUpdate = { cell, row in cell.detailTextLabel?.textColor = .orange()  }
+        CheckRow.defaultCellSetup = { cell, row in cell.tintColor = .orange() }
+        DateRow.defaultRowInitializer = { row in row.minimumDate = Date() }
         
         form =
             
@@ -141,7 +141,7 @@ class RowsExampleViewController: FormViewController {
                     }
             
             
-                <<< DateRow() { $0.value = NSDate(); $0.title = "DateRow" }
+                <<< DateRow() { $0.value = Date(); $0.title = "DateRow" }
                 
                 <<< CheckRow() {
                         $0.title = "CheckRow"
@@ -205,7 +205,7 @@ class RowsExampleViewController: FormViewController {
                         print(row.value)
                     }
                     .onPresent{ _, to in
-                        to.view.tintColor = .purpleColor()
+                        to.view.tintColor = .purple()
                     }
             
                 <<< PushRow<Emoji>() {
@@ -216,7 +216,7 @@ class RowsExampleViewController: FormViewController {
                     }
             
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current().userInterfaceIdiom == .pad {
             let section = form.last!
         
             section <<< PopoverSelectorRow<Emoji>() {
@@ -245,7 +245,7 @@ class RowsExampleViewController: FormViewController {
                         $0.value = [👦🏼, 🍐, 🐗]
                     }
                     .onPresent { from, to in
-                        to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
+                        to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
                     }
             
         form +++ Section("Generic picker")
@@ -273,12 +273,12 @@ class RowsExampleViewController: FormViewController {
                         $0.useFormatterDuringInput = true
                         //$0.useFormatterOnDidBeginEditing = true
                     }.cellSetup { cell, _  in
-                        cell.textField.keyboardType = .NumberPad
+                        cell.textField.keyboardType = .numberPad
                     }
                 
                 <<< URLRow() {
                         $0.title = "URLRow"
-                        $0.value = NSURL(string: "http://xmartlabs.com")
+                        $0.value = URL(string: "http://xmartlabs.com")
                     }
                 
                 <<< PhoneRow() {
@@ -341,8 +341,8 @@ class RowsExampleViewController: FormViewController {
 				}
     }
 	
-    func multipleSelectorDone(item:UIBarButtonItem) {
-        navigationController?.popViewControllerAnimated(true)
+    func multipleSelectorDone(_ item:UIBarButtonItem) {
+        navigationController?.popViewController(animated: true)
     }
     
 }
@@ -355,14 +355,14 @@ class CustomCellsController : FormViewController {
         super.viewDidLoad()
         form +++
             Section() {
-                var header = HeaderFooterView<EurekaLogoViewNib>(HeaderFooterProvider.NibFile(name: "EurekaSectionHeader", bundle: nil))
+                var header = HeaderFooterView<EurekaLogoViewNib>(HeaderFooterProvider.nibFile(name: "EurekaSectionHeader", bundle: nil))
                 header.onSetupView = { (view, section) -> () in
                                             view.imageView.alpha = 0;
-                                            UIView.animateWithDuration(2.0, animations: { [weak view] in
+                                            UIView.animate(withDuration: 2.0, animations: { [weak view] in
                                                 view?.imageView.alpha = 1
                                             })
                                             view.layer.transform = CATransform3DMakeScale(0.9, 0.9, 1)
-                                            UIView.animateWithDuration(1.0, animations: { [weak view] in
+                                            UIView.animate(withDuration: 1.0, animations: { [weak view] in
                                                 view?.layer.transform = CATransform3DIdentity
                                             })
                                      }
@@ -371,7 +371,7 @@ class CustomCellsController : FormViewController {
             +++ Section("WeekDay cell")
             
                 <<< WeekDayRow(){
-                    $0.value = [.Monday, .Wednesday, .Friday]
+                    $0.value = [.monday, .wednesday, .friday]
                 }
                
                 <<< TextFloatLabelRow() {
@@ -412,12 +412,12 @@ class FieldRowCustomizationController : FormViewController {
                 <<< NameRow() {
                         $0.title = "Your name:"
                     }.cellUpdate { cell, row in
-                        cell.textField.textAlignment = .Left
+                        cell.textField.textAlignment = .left
                         cell.textField.placeholder = "(left alignment)"
                     }
             
                 <<< NameRow().cellUpdate { cell, row in
-                    cell.textField.textAlignment = .Right
+                    cell.textField.textAlignment = .right
                     cell.textField.placeholder = "Name (right alignment)"
                 }
         
@@ -429,8 +429,8 @@ class FieldRowCustomizationController : FormViewController {
                     $0.placeholder = "textFieldPercentage = 0.6"
                 }
                 .cellUpdate {
-                    $0.cell.textField.textAlignment = .Left
-                    $0.cell.textLabel?.textAlignment = .Right
+                    $0.cell.textField.textAlignment = .left
+                    $0.cell.textLabel?.textAlignment = .right
                 }
                 <<< NameRow() {
                     $0.title = "Another Title"
@@ -438,8 +438,8 @@ class FieldRowCustomizationController : FormViewController {
                     $0.placeholder = "textFieldPercentage = 0.6"
                 }
                 .cellUpdate {
-                    $0.cell.textField.textAlignment = .Left
-                    $0.cell.textLabel?.textAlignment = .Right
+                    $0.cell.textField.textAlignment = .left
+                    $0.cell.textLabel?.textAlignment = .right
                 }
                 <<< NameRow() {
                     $0.title = "One more"
@@ -447,15 +447,15 @@ class FieldRowCustomizationController : FormViewController {
                     $0.placeholder = "textFieldPercentage = 0.7"
                 }
                 .cellUpdate {
-                    $0.cell.textField.textAlignment = .Left
-                    $0.cell.textLabel?.textAlignment = .Right
+                    $0.cell.textField.textAlignment = .left
+                    $0.cell.textLabel?.textAlignment = .right
                 }
         
             +++ Section("TextAreaRow")
         
                 <<< TextAreaRow() {
                     $0.placeholder = "TextAreaRow"
-                    $0.textAreaHeight = .Dynamic(initialTextViewHeight: 110)
+                    $0.textAreaHeight = .dynamic(initialTextViewHeight: 110)
                 }
         
             }
@@ -502,7 +502,7 @@ class NavigationAccessoryController : FormViewController {
                         self?.navigationOptions = self?.navigationOptions?.union(.StopDisabledRow)
                     }
                     else{
-                        self?.navigationOptions = self?.navigationOptions?.subtract(.StopDisabledRow)
+                        self?.navigationOptions = self?.navigationOptions?.subtracting(.StopDisabledRow)
                     }
                 }
 
@@ -515,7 +515,7 @@ class NavigationAccessoryController : FormViewController {
                         self?.navigationOptions = self?.navigationOptions?.union(.SkipCanNotBecomeFirstResponderRow)
                     }
                     else{
-                        self?.navigationOptions = self?.navigationOptions?.subtract(.SkipCanNotBecomeFirstResponderRow)
+                        self?.navigationOptions = self?.navigationOptions?.subtracting(.SkipCanNotBecomeFirstResponderRow)
                     }
                 }
 
@@ -585,16 +585,16 @@ class NativeEventFormViewController : FormViewController {
                     let endDate: DateTimeInlineRow! = self?.form.rowByTag("Ends")
                     
                     if row.value ?? false {
-                        startDate.dateFormatter?.dateStyle = .MediumStyle
-                        startDate.dateFormatter?.timeStyle = .NoStyle
-                        endDate.dateFormatter?.dateStyle = .MediumStyle
-                        endDate.dateFormatter?.timeStyle = .NoStyle
+                        startDate.dateFormatter?.dateStyle = .medium
+                        startDate.dateFormatter?.timeStyle = .none
+                        endDate.dateFormatter?.dateStyle = .medium
+                        endDate.dateFormatter?.timeStyle = .none
                     }
                     else {
-                        startDate.dateFormatter?.dateStyle = .ShortStyle
-                        startDate.dateFormatter?.timeStyle = .ShortStyle
-                        endDate.dateFormatter?.dateStyle = .ShortStyle
-                        endDate.dateFormatter?.timeStyle = .ShortStyle
+                        startDate.dateFormatter?.dateStyle = .short
+                        startDate.dateFormatter?.timeStyle = .short
+                        endDate.dateFormatter?.dateStyle = .short
+                        endDate.dateFormatter?.timeStyle = .short
                     }
                     startDate.updateCell()
                     endDate.updateCell()
@@ -604,13 +604,13 @@ class NativeEventFormViewController : FormViewController {
         
             <<< DateTimeInlineRow("Starts") {
                     $0.title = $0.tag
-                    $0.value = NSDate().dateByAddingTimeInterval(60*60*24)
+                    $0.value = Date().addingTimeInterval(60*60*24)
                 }
                 .onChange { [weak self] row in
                     let endRow: DateTimeInlineRow! = self?.form.rowByTag("Ends")
-                    if row.value?.compare(endRow.value!) == .OrderedDescending {
-                        endRow.value = NSDate(timeInterval: 60*60*24, sinceDate: row.value!)
-                        endRow.cell!.backgroundColor = .whiteColor()
+                    if row.value?.compare(endRow.value!) == .orderedDescending {
+                        endRow.value = Date(timeInterval: 60*60*24, since: row.value!)
+                        endRow.cell!.backgroundColor = .white()
                         endRow.updateCell()
                     }
                 }
@@ -618,10 +618,10 @@ class NativeEventFormViewController : FormViewController {
                     inlineRow.cellUpdate { [weak self] cell, dateRow in
                         let allRow: SwitchRow! = self?.form.rowByTag("All-day")
                         if allRow.value ?? false {
-                            cell.datePicker.datePickerMode = .Date
+                            cell.datePicker.datePickerMode = .date
                         }
                         else {
-                            cell.datePicker.datePickerMode = .DateAndTime
+                            cell.datePicker.datePickerMode = .dateAndTime
                         }
                     }
                     let color = cell.detailTextLabel?.textColor
@@ -633,15 +633,15 @@ class NativeEventFormViewController : FormViewController {
             
             <<< DateTimeInlineRow("Ends"){
                     $0.title = $0.tag
-                    $0.value = NSDate().dateByAddingTimeInterval(60*60*25)
+                    $0.value = Date().addingTimeInterval(60*60*25)
                 }
                 .onChange { [weak self] row in
                     let startRow: DateTimeInlineRow! = self?.form.rowByTag("Starts")
-                    if row.value?.compare(startRow.value!) == .OrderedAscending {
-                        row.cell!.backgroundColor = .redColor()
+                    if row.value?.compare(startRow.value!) == .orderedAscending {
+                        row.cell!.backgroundColor = .red()
                     }
                     else{
-                        row.cell!.backgroundColor = .whiteColor()
+                        row.cell!.backgroundColor = .white()
                     }
                     row.updateCell()
                 }
@@ -649,10 +649,10 @@ class NativeEventFormViewController : FormViewController {
                     inlineRow.cellUpdate { [weak self] cell, dateRow in
                         let allRow: SwitchRow! = self?.form.rowByTag("All-day")
                         if allRow.value ?? false {
-                            cell.datePicker.datePickerMode = .Date
+                            cell.datePicker.datePickerMode = .date
                         }
                         else {
-                            cell.datePicker.datePickerMode = .DateAndTime
+                            cell.datePicker.datePickerMode = .dateAndTime
                         }
                     }
                     let color = cell.detailTextLabel?.textColor
@@ -680,7 +680,7 @@ class NativeEventFormViewController : FormViewController {
             .onChange { [weak self] row in
                 if row.value == .Never {
                     if let second : PushRow<EventAlert> = self?.form.rowByTag("Another Alert"), let secondIndexPath = second.indexPath() {
-                        row.section?.removeAtIndex(secondIndexPath.row)
+                        row.section?.remove(at: (secondIndexPath as NSIndexPath).row)
                     }
                 }
                 else{
@@ -690,7 +690,7 @@ class NativeEventFormViewController : FormViewController {
                             $0.value = .Never
                             $0.options = EventAlert.allValues
                         }
-                        row.section?.insert(second, atIndex: row.indexPath()!.row + 1)
+                        row.section?.insert(second, at: (row.indexPath()! as NSIndexPath).row + 1)
                         return
                     }
                 }
@@ -711,12 +711,12 @@ class NativeEventFormViewController : FormViewController {
         
             <<< TextAreaRow("notes") {
                     $0.placeholder = "Notes"
-                    $0.textAreaHeight = .Dynamic(initialTextViewHeight: 50)
+                    $0.textAreaHeight = .dynamic(initialTextViewHeight: 50)
                 }
         
     }
     
-    func cancelTapped(barButtonItem: UIBarButtonItem) {
+    func cancelTapped(_ barButtonItem: UIBarButtonItem) {
         (navigationController as? NativeEventNavigationController)?.completionCallback?(self)
     }
  
@@ -750,10 +750,10 @@ class NativeEventFormViewController : FormViewController {
     }
     
     enum EventState {
-        case Busy
-        case Free
+        case busy
+        case free
         
-        static let allValues = [Busy, Free]
+        static let allValues = [busy, free]
     }
 }
 
@@ -766,7 +766,7 @@ class HiddenRowsExample : FormViewController {
         super.viewDidLoad()
         
         TextRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.italicSystemFontOfSize(12)
+            cell.textLabel?.font = UIFont.italicSystemFont(ofSize: 12)
         }
         
         form = Section("What do you want to talk about:")
@@ -824,14 +824,14 @@ class HiddenRowsExample : FormViewController {
                 }
                 <<< SwitchRow("Show Next Section"){
                     $0.title = $0.tag
-                    $0.hidden = .Function(["Show Next Row"], { form -> Bool in
+                    $0.hidden = .function(["Show Next Row"], { form -> Bool in
                         let row: RowOf<Bool>! = form.rowByTag("Show Next Row")
                         return row.value ?? false == false
                     })
                 }
         
             +++ Section(footer: "This section is shown only when 'Show Next Row' switch is enabled"){
-                    $0.hidden = .Function(["Show Next Section"], { form -> Bool in
+                    $0.hidden = .function(["Show Next Section"], { form -> Bool in
                         let row: RowOf<Bool>! = form.rowByTag("Show Next Section")
                         return row.value ?? false == false
                     })
@@ -870,7 +870,7 @@ class DisabledRowsExample : FormViewController {
             
                 <<< TextRow() {
                     $0.title = "Gonna be disabled soon.."
-                    $0.disabled = Condition.Function(["Disable Next Section?"], { (form) -> Bool in
+                    $0.disabled = Eureka.Condition.function(["Disable Next Section?"], { (form) -> Bool in
                         let row: SwitchRow! = form.rowByTag("Disable Next Section?")
                         return row.value ?? false
                     })
@@ -898,67 +898,66 @@ class FormatterExample : FormViewController {
                 $0.title = "Currency style"
                 $0.value = 2015
                 let formatter = CurrencyFormatter()
-                formatter.locale = .currentLocale()
-                formatter.numberStyle = .CurrencyStyle
+                formatter.locale = .current
+                formatter.numberStyle = .currency
                 $0.formatter = formatter
             }
             <<< DecimalRow(){
                 $0.title = "Scientific style"
                 $0.value = 2015
-                let formatter = NSNumberFormatter()
-                formatter.locale = .currentLocale()
-                formatter.numberStyle = .ScientificStyle
+                let formatter = NumberFormatter()
+                formatter.locale = .current
+                formatter.numberStyle = .scientific
                 $0.formatter = formatter
             }
             <<< IntRow(){
                 $0.title = "Spell out style"
                 $0.value = 2015
-                let formatter = NSNumberFormatter()
-                formatter.locale = .currentLocale()
-                formatter.numberStyle = .SpellOutStyle
+                let formatter = NumberFormatter()
+                formatter.locale = .current
+                formatter.numberStyle = .spellOut
                 $0.formatter = formatter
             }
         +++ Section("Date formatters")
             <<< DateRow(){
                 $0.title = "Short style"
-                $0.value = NSDate()
-                let formatter = NSDateFormatter()
-                formatter.locale = .currentLocale()
-                formatter.dateStyle = .ShortStyle
+                $0.value = Date()
+                let formatter = DateFormatter()
+                formatter.locale = .current
+                formatter.dateStyle = .short
                 $0.dateFormatter = formatter
             }
             <<< DateRow(){
                 $0.title = "Long style"
-                $0.value = NSDate()
-                let formatter = NSDateFormatter()
-                formatter.locale = .currentLocale()
-                formatter.dateStyle = .LongStyle
+                $0.value = Date()
+                let formatter = DateFormatter()
+                formatter.locale = .current
+                formatter.dateStyle = .long
                 $0.dateFormatter = formatter
             }
         +++ Section("Other formatters")
             <<< DecimalRow(){
                 $0.title = "Energy: Jules to calories"
                 $0.value = 100.0
-                let formatter = NSEnergyFormatter()
+                let formatter = EnergyFormatter()
                 $0.formatter = formatter
             }
             <<< IntRow(){
                 $0.title = "Weight: Kg to lb"
                 $0.value = 1000
-                $0.formatter = NSMassFormatter()
+                $0.formatter = MassFormatter()
             }
     }
     
-    class CurrencyFormatter : NSNumberFormatter, FormatterProtocol {
-        override func getObjectValue(obj: AutoreleasingUnsafeMutablePointer<AnyObject?>, forString string: String, errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>) -> Bool {
-            guard obj != nil else { return false }
-            let str = string.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet).joinWithSeparator("")
-            obj.memory = NSNumber(double: (Double(str) ?? 0.0)/Double(pow(10.0, Double(minimumFractionDigits))))
-            return true
+    class CurrencyFormatter : NumberFormatter, FormatterProtocol {
+        override func getObjectValue(_ obj: AutoreleasingUnsafeMutablePointer<AnyObject?>?, for string: String, range rangep: UnsafeMutablePointer<NSRange>?) throws {
+            guard obj != nil else { return }
+            let str = string.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
+            obj?.pointee = NSNumber(value: (Double(str) ?? 0.0)/Double(pow(10.0, Double(minimumFractionDigits))))
         }
         
         func getNewPosition(forPosition position: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition {
-            return textInput.positionFromPosition(position, offset:((newValue?.characters.count ?? 0) - (oldValue?.characters.count ?? 0))) ?? position
+            return textInput.position(from: position, offset:((newValue?.characters.count ?? 0) - (oldValue?.characters.count ?? 0))) ?? position
         }
     }
 }
@@ -983,7 +982,7 @@ class InlineRowsController: FormViewController {
                         form?.inlineRowHideOptions = form?.inlineRowHideOptions?.union(.AnotherInlineRowIsShown)
                     }
                     else {
-                        form?.inlineRowHideOptions = form?.inlineRowHideOptions?.subtract(.AnotherInlineRowIsShown)
+                        form?.inlineRowHideOptions = form?.inlineRowHideOptions?.subtracting(.AnotherInlineRowIsShown)
                     }
                 }
             
@@ -996,7 +995,7 @@ class InlineRowsController: FormViewController {
                         form?.inlineRowHideOptions = form?.inlineRowHideOptions?.union(.FirstResponderChanges)
                     }
                     else {
-                        form?.inlineRowHideOptions = form?.inlineRowHideOptions?.subtract(.FirstResponderChanges)
+                        form?.inlineRowHideOptions = form?.inlineRowHideOptions?.subtracting(.FirstResponderChanges)
                     }
                 }
             
@@ -1004,40 +1003,40 @@ class InlineRowsController: FormViewController {
             
             <<< DateInlineRow() {
                     $0.title = "DateInlineRow"
-                    $0.value = NSDate()
+                    $0.value = Date()
                 }
             
             <<< TimeInlineRow(){
                     $0.title = "TimeInlineRow"
-                    $0.value = NSDate()
+                    $0.value = Date()
                 }
             
             <<< DateTimeInlineRow(){
                     $0.title = "DateTimeInlineRow"
-                    $0.value = NSDate()
+                    $0.value = Date()
                 }
             
             <<< CountDownInlineRow(){
                     $0.title = "CountDownInlineRow"
-                    let dateComp = NSDateComponents()
+                    var dateComp = DateComponents()
                     dateComp.hour = 18
                     dateComp.minute = 33
-                    dateComp.timeZone = NSTimeZone.systemTimeZone()
-                    $0.value = NSCalendar.currentCalendar().dateFromComponents(dateComp)
+                    (dateComp as NSDateComponents).timeZone = TimeZone.system
+                    $0.value = Calendar.current.date(from: dateComp)
                 }
         
         +++ Section("Generic inline picker")
             
-            <<< PickerInlineRow<NSDate>("PickerInlineRow") { (row : PickerInlineRow<NSDate>) -> Void in
+            <<< PickerInlineRow<Date>("PickerInlineRow") { (row : PickerInlineRow<Date>) -> Void in
                     row.title = row.tag
-                    row.displayValueFor = { (rowValue: NSDate?) in
-                        return rowValue.map { "Year \(NSCalendar.currentCalendar().component(.Year, fromDate: $0))" }
+                    row.displayValueFor = { (rowValue: Date?) in
+                        return rowValue.map { "Year \(Calendar.current.component(.year, from: $0))" }
                     }
                     row.options = []
-                    var date = NSDate()
+                    var date = Date()
                     for _ in 1...10{
                         row.options.append(date)
-                        date = date.dateByAddingTimeInterval(60*60*24*365)
+                        date = date.addingTimeInterval(60*60*24*365)
                     }
                     row.value = row.options[0]
                 }
@@ -1051,7 +1050,7 @@ class ListSectionsController: FormViewController {
         
         let continents = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
         
-        form +++ SelectableSection<ImageCheckRow<String>, String>() { section in
+        form +++ SelectableSection<ImageCheckRow<String>>() { section in
             section.header = HeaderFooterView(title: "Where do you live?")
         }
         
@@ -1065,7 +1064,7 @@ class ListSectionsController: FormViewController {
         
         let oceans = ["Arctic", "Atlantic", "Indian", "Pacific", "Southern"]
         
-        form +++ SelectableSection<ImageCheckRow<String>, String>("And which of the following oceans have you taken a bath in?", selectionType: .MultipleSelection)
+        form +++ SelectableSection<ImageCheckRow<String>>("And which of the following oceans have you taken a bath in?", selectionType: .multipleSelection)
         for option in oceans {
             form.last! <<< ImageCheckRow<String>(option){ lrow in
                 lrow.title = option
@@ -1078,12 +1077,12 @@ class ListSectionsController: FormViewController {
         }
     }
     
-    override func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {
+    override func rowValueHasBeenChanged(_ row: BaseRow, oldValue: Any?, newValue: Any?) {
         if row.section === form[0] {
-            print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>, String>).selectedRow()?.baseValue)")
+            print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRow()?.baseValue)")
         }
         else if row.section === form[1] {
-            print("Mutiple Selection:\((row.section as! SelectableSection<ImageCheckRow<String>, String>).selectedRows().map({$0.baseValue}))")
+            print("Mutiple Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRows().map({$0.baseValue}))")
         }
     }
 }
@@ -1103,9 +1102,9 @@ class EurekaLogoView: UIView {
         super.init(frame: frame)
         let imageView = UIImageView(image: UIImage(named: "Eureka"))
         imageView.frame = CGRect(x: 0, y: 0, width: 320, height: 130)
-        imageView.autoresizingMask = .FlexibleWidth
+        imageView.autoresizingMask = .flexibleWidth
         self.frame = CGRect(x: 0, y: 0, width: 320, height: 130)
-        imageView.contentMode = .ScaleAspectFit
+        imageView.contentMode = .scaleAspectFit
         self.addSubview(imageView)
     }
 

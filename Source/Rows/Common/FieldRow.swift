@@ -58,7 +58,7 @@ extension Double: InputTypeInitiable {
 }
 
 
-public class FormatteableRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: TextInputCell, Cell.Value == T>: Row<T, Cell>, FormatterConformance {
+public class FormatteableRow<Cell: CellType where Cell: BaseCell, Cell: TextInputCell>: Row<Cell>, FormatterConformance {
     
     
     /// A formatter to be used to format the user's input
@@ -83,7 +83,7 @@ public class FormatteableRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: 
 }
 
 
-public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: TextFieldCell, Cell.Value == T>: FormatteableRow<T, Cell>, FieldRowConformance, KeyboardReturnHandler {
+public class FieldRow<Cell: CellType where Cell: BaseCell, Cell: TextFieldCell>: FormatteableRow<Cell>, FieldRowConformance, KeyboardReturnHandler {
     
     /// Configuration for the keyboardReturnType of this row
     public var keyboardReturnType : KeyboardReturnTypeConfiguration?

@@ -131,7 +131,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
 //MARK: SegmentedRow
 
 /// An options row where the user can select an option from an UISegmentedControl
-public final class SegmentedRow<T: Equatable>: OptionsRow<T, SegmentedCell<T>>, RowType {
+public final class SegmentedRow<T: Equatable>: OptionsRow<SegmentedCell<T>>, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }

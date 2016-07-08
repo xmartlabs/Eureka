@@ -36,6 +36,7 @@ infix operator +++{ associativity left precedence 95 }
  
  - returns: the updated form
  */
+@discardableResult
 public func +++(left: Form, right: Section) -> Form {
     left.append(right)
     return left
@@ -105,6 +106,7 @@ public func +++(left: Section, right: BaseRow) -> Form {
  
  - returns: the created form
  */
+@discardableResult
 public func +++(left: BaseRow, right: BaseRow) -> Form {
     let form = Section() <<< left +++ Section() <<< right
     return form

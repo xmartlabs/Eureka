@@ -29,5 +29,5 @@ import Foundation
  *  Every row that shall be used in a SelectableSection must conform to this protocol.
  */
 public protocol SelectableRowType : TypedRowType, RowType {
-    var selectableValue : Value? { get set }
+    var selectableValue : Cell.Value? { get set }
 }

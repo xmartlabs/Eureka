@@ -205,13 +205,13 @@ public class ZipCodeCell : _FieldCell<String>, CellType {
     }
 }
 
-public class _TextRow: FieldRow<String, TextCell> {
+public class _TextRow: FieldRow<TextCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _IntRow: FieldRow<Int, IntCell> {
+public class _IntRow: FieldRow<IntCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
         let numberFormatter = NumberFormatter()
@@ -222,32 +222,32 @@ public class _IntRow: FieldRow<Int, IntCell> {
     }
 }
 
-public class _PhoneRow: FieldRow<String, PhoneCell> {
+public class _PhoneRow: FieldRow<PhoneCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _NameRow: FieldRow<String, NameCell> {
+public class _NameRow: FieldRow<NameCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _EmailRow: FieldRow<String, EmailCell> {
+public class _EmailRow: FieldRow<EmailCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _PasswordRow: FieldRow<String, PasswordCell> {
+public class _PasswordRow: FieldRow<PasswordCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
 
-public class _DecimalRow: FieldRow<Double, DecimalCell> {
+public class _DecimalRow: FieldRow<DecimalCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
         let numberFormatter = NumberFormatter()
@@ -258,25 +258,25 @@ public class _DecimalRow: FieldRow<Double, DecimalCell> {
     }
 }
 
-public class _URLRow: FieldRow<URL, URLCell> {
+public class _URLRow: FieldRow<URLCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _TwitterRow: FieldRow<String, TwitterCell> {
+public class _TwitterRow: FieldRow<TwitterCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _AccountRow: FieldRow<String, AccountCell> {
+public class _AccountRow: FieldRow<AccountCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _ZipCodeRow: FieldRow<String, ZipCodeCell> {
+public class _ZipCodeRow: FieldRow<ZipCodeCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }

@@ -115,7 +115,7 @@ public class SliderCell: Cell<Float>, CellType {
 }
 
 /// A row that displays a UISlider. If there is a title set then the title and value will appear above the UISlider.
-public final class SliderRow: Row<Float, SliderCell>, RowType {
+public final class SliderRow: Row<SliderCell>, RowType {
     
     public var minimumValue: Float = 0.0
     public var maximumValue: Float = 10.0

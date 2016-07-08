@@ -120,19 +120,19 @@ public class MyFormDelegate : FormDelegate {
     public var rowsReplacedOut = 0
     public var sectionsReplacedOut = 0
     
-    public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {
+    public func rowValueHasBeenChanged(_ row: BaseRow, oldValue: Any?, newValue: Any?) {
         valuesChanged += 1
     }
     
-    public func sectionsHaveBeenAdded(sections: [Section], atIndexes: NSIndexSet){
+    public func sectionsHaveBeenAdded(_ sections: [Section], atIndexes: IndexSet){
         sectionsAdded += sections.count
     }
     
-    public func sectionsHaveBeenRemoved(sections: [Section], atIndexes: NSIndexSet){
+    public func sectionsHaveBeenRemoved(_ sections: [Section], atIndexes: IndexSet){
         sectionsRemoved += sections.count
     }
     
-    public func sectionsHaveBeenReplaced(oldSections oldSections:[Section], newSections: [Section], atIndexes: NSIndexSet){
+    public func sectionsHaveBeenReplaced(oldSections:[Section], newSections: [Section], atIndexes: IndexSet){
         sectionsReplacedIn += newSections.count
         sectionsReplacedOut += oldSections.count
     }
@@ -145,9 +145,8 @@ public class MyFormDelegate : FormDelegate {
         rowsRemoved += rows.count
     }
     
-    public func rowsHaveBeenReplaced(oldRows oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [NSIndexPath]){
+    public func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [NSIndexPath]){
         rowsReplacedIn += newRows.count
         rowsReplacedOut += oldRows.count
     }
-    
 }

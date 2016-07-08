@@ -5,13 +5,21 @@
 
 import UIKit
 import XCPlayground
+import PlaygroundSupport
 
 //: Start by importing Eureka module
 import Eureka
 
 //: Any **Eureka** form must extend from `FromViewController`
 let formController = FormViewController()
-XCPlaygroundPage.currentPage.liveView = formController.view
+PlaygroundPage.current.liveView = formController.view
+
+
+let b = Array<Int>()
+b.last
+
+let f = Form()
+f.last
 
 
 //: ## Operators
@@ -47,10 +55,10 @@ formController.view
 formController.form +++ Section("Callbacks") <<< SwitchRow("scr1"){ $0.title = "Switch to turn red"; $0.value = false }
     .onChange({ row in
         if row.value == true {
-            row.cell.backgroundColor = .redColor()
+            row.cell.backgroundColor = .red()
         }
         else {
-            row.cell.backgroundColor = .blackColor()
+            row.cell.backgroundColor = .black()
         }
     })
 
@@ -64,9 +72,9 @@ formController.view
 //: The cellSetup will be called when the cell of this row is configured (just once at the beginning) and the cellUpdate will be called when it is updated (each time it reappears on screen). Here you should define the appearance of the cell
 
 formController.form.last! <<< SegmentedRow<String>("Segments") { $0.title = "Choose an animal"; $0.value = "🐼"; $0.options = ["🐼", "🐶", "🐻"]}.cellSetup({ cell, row in
-        cell.backgroundColor = .redColor()
+        cell.backgroundColor = .red()
 }).cellUpdate({ (cell, row) -> () in
-    cell.textLabel?.textColor = .yellowColor()
+    cell.textLabel?.textColor = .yellow()
 })
 
 
@@ -100,7 +108,7 @@ formController.view
 
 formController.form.last! <<< LabelRow("Confirm2") {
     $0.title = "Well chosen!!"
-    $0.hidden = Condition.Function(["Segments2"]){ form in
+    $0.hidden = Condition.function(["Segments2"]){ form in
         if let r:SegmentedRow<String> = form.rowByTag("Segments2") {
             return r.value != "🐼"
         }

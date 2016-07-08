@@ -37,7 +37,7 @@ public class DateInlineCell : Cell<Date>, CellType {
 }
 
 
-public class _DateInlineFieldRow: Row<Date, DateInlineCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
+public class _DateInlineFieldRow: Row<DateInlineCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
     
     /// The minimum value for this row's UIDatePicker
     public var minimumDate : Date?

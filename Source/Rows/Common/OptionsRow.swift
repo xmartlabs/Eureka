@@ -8,9 +8,9 @@
 
 import Foundation
 
-public class OptionsRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell.Value == T> : Row<T, Cell>, NoValueDisplayTextConformance {
+public class OptionsRow<Cell: CellType where Cell: BaseCell> : Row<Cell>, NoValueDisplayTextConformance {
     
-    public var options: [T] {
+    public var options: [Cell.Value] {
         get { return dataProvider?.arrayData ?? [] }
         set { dataProvider = DataProvider(arrayData: newValue) }
     }

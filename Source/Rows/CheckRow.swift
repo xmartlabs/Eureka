@@ -52,7 +52,7 @@ public final class CheckCell : Cell<Bool>, CellType {
 
 // MARK: CheckRow
 
-public class _CheckRow: Row<Bool, CheckCell> {
+public class _CheckRow: Row<CheckCell> {
     
     required public init(tag: String?) {
         super.init(tag: tag)

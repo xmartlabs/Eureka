@@ -92,7 +92,7 @@ public class DateCell : Cell<Date>, CellType {
 }
 
 
-public class _DateFieldRow: Row<Date, DateCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
+public class _DateFieldRow: Row<DateCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
     
     /// The minimum value for this row's UIDatePicker
     public var minimumDate : Date?

@@ -73,7 +73,7 @@ public class DatePickerCell : Cell<Date>, CellType {
     }
 }
 
-public class _DatePickerRow : Row<Date, DatePickerCell>, DatePickerRowProtocol {
+public class _DatePickerRow : Row<DatePickerCell>, DatePickerRowProtocol {
     
     public var minimumDate : Date?
     public var maximumDate : Date?

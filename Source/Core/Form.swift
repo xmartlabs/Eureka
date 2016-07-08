@@ -164,11 +164,15 @@ public final class Form {
     private lazy var kvoWrapper : KVOWrapper = { [unowned self] in return KVOWrapper(form: self) }()
 }
 
-extension Form : MutableCollection {
-    
-    // MARK: MutableCollectionType
+extension Form: Collection {
     public var startIndex: Int { return 0 }
     public var endIndex: Int { return kvoWrapper.sections.count }
+}
+
+extension Form: MutableCollection {
+    
+    // MARK: MutableCollectionType
+    
     public subscript (_ position: Int) -> Section {
         get { return kvoWrapper.sections[position] as! Section }
         set { kvoWrapper.sections[position] = newValue }
@@ -176,6 +180,14 @@ extension Form : MutableCollection {
     public func index(after i: Int) -> Int {
         return i+1 <= endIndex ? i+1 : endIndex
     }
+    public func index(before i: Int) -> Int {
+        return i > startIndex ? i-1 : startIndex
+    }
+    public var last: Section? {
+        return reversed().first
+    }
+    
+    
 }
 
 extension Form : RangeReplaceableCollection {

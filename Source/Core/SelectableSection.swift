@@ -62,7 +62,7 @@ public protocol SelectableSectionType: Collection {
     func selectedRows() -> [SelectableRow]
 }
 
-extension SelectableSectionType where Self: Section, SelectableRow.Value == SelectableRow.Cell.Value, Self.Iterator == IndexingIterator<Section>, Self.Iterator.Element == BaseRow {
+extension SelectableSectionType where Self: Section, Self.Iterator == IndexingIterator<Section>, Self.Iterator.Element == BaseRow {
     
     /**
      Returns the selected row of this section. Should be used if selectionType is SingleSelection
@@ -109,7 +109,7 @@ extension SelectableSectionType where Self: Section, SelectableRow.Value == Sele
 }
 
 /// A subclass of Section that serves to create a section with a list of selectable options.
-public class SelectableSection<Row: SelectableRowType, T where Row: BaseRow, Row.Value == T, T == Row.Cell.Value> : Section, SelectableSectionType  {
+public class SelectableSection<Row: SelectableRowType where Row: BaseRow> : Section, SelectableSectionType  {
     
     public typealias SelectableRow = Row
     

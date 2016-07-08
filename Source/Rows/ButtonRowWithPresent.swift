@@ -24,7 +24,7 @@
 
 import Foundation
 
-public class _ButtonRowWithPresent<T: Equatable, VCType: TypedRowControllerType where VCType: UIViewController, VCType.RowValue == T>: Row<T, ButtonCellOf<T>>, PresenterRowType {
+public class _ButtonRowWithPresent<VCType: TypedRowControllerType where VCType: UIViewController>: Row<ButtonCellOf<VCType.RowValue>>, PresenterRowType {
     
     public var presentationMode: PresentationMode<VCType>?
     public var onPresentCallback : ((FormViewController, VCType)->())?
@@ -83,7 +83,7 @@ public class _ButtonRowWithPresent<T: Equatable, VCType: TypedRowControllerType 
 //MARK: Rows
 
 /// A generic row with a button that presents a view controller when tapped
-public final class ButtonRowWithPresent<T: Equatable, VCType: TypedRowControllerType where VCType: UIViewController, VCType.RowValue == T> : _ButtonRowWithPresent<T, VCType>, RowType {
+public final class ButtonRowWithPresent<VCType: TypedRowControllerType where VCType: UIViewController> : _ButtonRowWithPresent<VCType>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }

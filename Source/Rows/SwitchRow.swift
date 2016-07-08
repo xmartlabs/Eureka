@@ -51,7 +51,7 @@ public class SwitchCell : Cell<Bool>, CellType {
 
 // MARK: SwitchRow
 
-public class _SwitchRow: Row<Bool, SwitchCell> {
+public class _SwitchRow: Row<SwitchCell> {
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = nil

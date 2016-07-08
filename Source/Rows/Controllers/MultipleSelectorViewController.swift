@@ -10,7 +10,7 @@ import Foundation
 
 
 /// Selector Controller that enables multiple selection
-public class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType where Row: BaseRow, Row: TypedRowType, Row.Value == T, Row.Cell.Value == T> : FormViewController, TypedRowControllerType {
+public class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType where Row: BaseRow, Row: TypedRowType, Row.Cell.Value == T> : FormViewController, TypedRowControllerType {
     
     /// The row that pushed or presented this controller
     public var row: RowOf<Set<T>>!
@@ -37,8 +37,8 @@ public class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType 
     public override func viewDidLoad() {
         super.viewDidLoad()
         guard let options = row.dataProvider?.arrayData else { return }
-        let _ =  form +++ SelectableSection<Row, Row.Value>(row.title ?? "", selectionType: .multipleSelection) { [weak self] section in
-            if let sec = section as? SelectableSection<Row, Row.Value> {
+        let _ =  form +++ SelectableSection<Row>(row.title ?? "", selectionType: .multipleSelection) { [weak self] section in
+            if let sec = section as? SelectableSection<Row> {
                 sec.onSelectSelectableRow = { _, selectableRow in
                     var newValue: Set<T> = self?.row.value ?? []
                     if let selectableValue = selectableRow.value {

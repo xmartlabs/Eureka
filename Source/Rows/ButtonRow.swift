@@ -43,7 +43,7 @@ public typealias ButtonCell = ButtonCellOf<String>
 
 //MARK: ButtonRow
 
-public class _ButtonRowOf<T: Equatable> : Row<T, ButtonCellOf<T>> {
+public class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
     public var presentationMode: PresentationMode<UIViewController>?
     
     required public init(tag: String?) {
