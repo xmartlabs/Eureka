@@ -22,7 +22,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import Foundation
 
 // MARK: Operators
@@ -50,6 +49,7 @@ infix operator +++= { associativity left precedence 95 }
  - parameter left:  the form
  - parameter right: the section to be appended
  */
+@available(*, unavailable, message="Use +++ instead")
 public func +++=(inout left: Form, right: Section){
     left = left +++ right
 }
@@ -60,8 +60,10 @@ public func +++=(inout left: Form, right: Section){
  - parameter left:  the form
  - parameter right: the row
  */
-public func +++=(inout left: Form, right: BaseRow){
-    left +++= Section() <<< right
+public func +++(left: Form, right: BaseRow) -> Form {
+    let section = Section()
+    left +++ section <<< right
+    return left
 }
 
 /**
@@ -76,6 +78,20 @@ public func +++(left: Section, right: Section) -> Form {
     let form = Form()
     form +++ left +++ right
     return form
+}
+
+/**
+ Appends the row wrapped in a new section
+ 
+ - parameter left: a section of the form
+ - parameter right: a row to be appended
+ 
+ - returns: the form
+ */
+public func +++(left: Section, right: BaseRow) -> Form {
+    let section = Section()
+    section <<< right
+    return left +++ section
 }
 
 /**
@@ -126,7 +142,7 @@ public func <<<(left: BaseRow, right: BaseRow) -> Section {
  - parameter lhs: the section
  - parameter rhs: the rows to be appended
  */
-public func +=< C : CollectionType where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
+public func += <C : CollectionType where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
     lhs.appendContentsOf(rhs)
 }
 
@@ -136,6 +152,6 @@ public func +=< C : CollectionType where C.Generator.Element == BaseRow>(inout l
  - parameter lhs: the form
  - parameter rhs: the sections to be appended
  */
-public func +=< C : CollectionType where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
+public func += <C : CollectionType where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
     lhs.appendContentsOf(rhs)
 }

@@ -15,6 +15,7 @@ public class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType 
     /// The row that pushed or presented this controller
     public var row: RowOf<Set<T>>!
     
+    public var selectableRowCellSetup: ((cell: Row.Cell, row: Row) -> ())?
     public var selectableRowCellUpdate: ((cell: Row.Cell, row: Row) -> ())?
 
     /// A closure to be called when the controller disappears.
@@ -32,7 +33,7 @@ public class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType 
     public override func viewDidLoad() {
         super.viewDidLoad()
         guard let options = row.dataProvider?.arrayData else { return }
-        form +++= SelectableSection<Row, Row.Value>(row.title ?? "", selectionType: .MultipleSelection) { [weak self] section in
+        form +++ SelectableSection<Row, Row.Value>(row.title ?? "", selectionType: .MultipleSelection) { [weak self] section in
             if let sec = section as? SelectableSection<Row, Row.Value> {
                 sec.onSelectSelectableRow = { _, selectableRow in
                     var newValue: Set<T> = self?.row.value ?? []
@@ -51,6 +52,8 @@ public class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType 
                     $0.title = String(o.first!)
                     $0.selectableValue = o.first!
                     $0.value = self?.row.value?.contains(o.first!) ?? false ? o.first! : nil
+                }.cellSetup { [weak self] cell, row in
+                    self?.selectableRowCellSetup?(cell: cell, row: row)
                 }.cellUpdate { [weak self] cell, row in
                     self?.selectableRowCellUpdate?(cell: cell, row: row)
                 }
