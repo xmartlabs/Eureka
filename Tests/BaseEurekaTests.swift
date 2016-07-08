@@ -38,20 +38,20 @@ class BaseEurekaTests: XCTestCase {
         super.setUp()
         
         // load the view to test the cells
-        formVC.view.frame = CGRectMake(0, 0, 375, 3000)
+        formVC.view.frame = CGRect(x: 0, y: 0, width: 375, height: 3000)
         formVC.tableView?.frame = formVC.view.frame
 
         
         // Create a Date section containing one date row of each type and some extra rows that use minimumDate, maximumDate and minuteInterval restrictions
         dateForm +++ Section("Date Section")
-            <<< DateRow("DateRow_d1"){ $0.title = "Date"; $0.value = NSDate() }
-            <<< DateTimeRow("DateTimeRow_d1"){ $0.title = "DateTime"; $0.value = NSDate() }
-            <<< TimeRow("TimeRow_d1"){ $0.title = "Time"; $0.value = NSDate() }
-            <<< CountDownRow("CountDownRow_d1"){ $0.title = "CountDown"; $0.value = NSDate() }
-            <<< DateRow("MinDateRow_d1"){ $0.title = "Date(min)"; $0.value = NSDate(); $0.minimumDate = $0.value?.dateByAddingTimeInterval(-60*60*24) }
-            <<< DateRow("MaxDateRow_d1"){ $0.title = "Date(max)"; $0.value = NSDate(); $0.maximumDate = $0.value?.dateByAddingTimeInterval(60*60*24) }
-            <<< DateRow("MinMaxDateRow_d1"){ $0.title = "Date(min/max)"; $0.value = NSDate(); $0.minimumDate = $0.value?.dateByAddingTimeInterval(-60*60*24); $0.maximumDate = $0.value?.dateByAddingTimeInterval(60*60*24)  }
-            <<< DateRow("IntervalDateRow_d1"){ $0.title = "Date(interval)"; $0.value = NSDate(); $0.minuteInterval = 15 }
+            <<< DateRow("DateRow_d1"){ $0.title = "Date"; $0.value = NSDate() as Date }
+            <<< DateTimeRow("DateTimeRow_d1"){ $0.title = "DateTime"; $0.value = NSDate() as Date }
+            <<< TimeRow("TimeRow_d1"){ $0.title = "Time"; $0.value = NSDate() as Date }
+            <<< CountDownRow("CountDownRow_d1"){ $0.title = "CountDown"; $0.value = NSDate() as Date }
+            <<< DateRow("MinDateRow_d1"){ $0.title = "Date(min)"; $0.value = NSDate() as Date; $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24) }
+            <<< DateRow("MaxDateRow_d1"){ $0.title = "Date(max)"; $0.value = NSDate() as Date; $0.maximumDate = $0.value?.addingTimeInterval(60*60*24) }
+            <<< DateRow("MinMaxDateRow_d1"){ $0.title = "Date(min/max)"; $0.value = NSDate() as Date; $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24); $0.maximumDate = $0.value?.addingTimeInterval(60*60*24)  }
+            <<< DateRow("IntervalDateRow_d1"){ $0.title = "Date(interval)"; $0.value = NSDate() as Date; $0.minuteInterval = 15 }
         
         shortForm +++ Section("short")
             <<< NameRow("NameRow_s1"){ $0.title = "Name" }
@@ -120,7 +120,7 @@ public class MyFormDelegate : FormDelegate {
     public var rowsReplacedOut = 0
     public var sectionsReplacedOut = 0
     
-    public func rowValueHasBeenChanged(_ row: BaseRow, oldValue: Any?, newValue: Any?) {
+    public func rowValueHasBeenChanged(_ row: BaseRow, oldValue: Any?, newValue: Any?){
         valuesChanged += 1
     }
     
@@ -137,16 +137,17 @@ public class MyFormDelegate : FormDelegate {
         sectionsReplacedOut += oldSections.count
     }
     
-    public func rowsHaveBeenAdded(rows: [BaseRow], atIndexPaths:[NSIndexPath]){
+    public func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexPaths:[IndexPath]){
         rowsAdded += rows.count
     }
     
-    public func rowsHaveBeenRemoved(rows: [BaseRow], atIndexPaths:[NSIndexPath]){
+    public func rowsHaveBeenRemoved(_ rows: [BaseRow], atIndexPaths:[IndexPath]){
         rowsRemoved += rows.count
     }
     
-    public func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [NSIndexPath]){
+    public func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [IndexPath]){
         rowsReplacedIn += newRows.count
         rowsReplacedOut += oldRows.count
     }
+    
 }

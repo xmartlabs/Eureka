@@ -133,7 +133,7 @@ class FieldRowUITests: XCTestCase {
 
     lazy var decimalFormatter: NumberFormatter = {
         let numberFormatter = NumberFormatter()
-        numberFormatter.locale = .currentLocale()
+        numberFormatter.locale = Locale.current
         numberFormatter.numberStyle = .decimal
         numberFormatter.minimumFractionDigits = 2
         return numberFormatter
@@ -141,7 +141,7 @@ class FieldRowUITests: XCTestCase {
     
     lazy var intFormatter: NumberFormatter = {
         let numberFormatter = NumberFormatter()
-        numberFormatter.locale = .currentLocale()
+        numberFormatter.locale = Locale.current
         numberFormatter.numberStyle = .decimal
         numberFormatter.minimumFractionDigits = 0
         numberFormatter.maximumFractionDigits = 0
