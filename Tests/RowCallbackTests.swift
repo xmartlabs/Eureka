@@ -33,7 +33,7 @@ class RowCallbackTests: BaseEurekaTests {
             +++ Section("something")
             <<< CheckRow("row1").cellSetup { cell, row in
                 cell.textLabel?.text = "checkrow + Setup"
-                cell.backgroundColor = .redColor()
+                cell.backgroundColor = .red()
             }
             <<< IntRow("row2").cellUpdate({ cell, row in
                 cell.textLabel?.text = "introw"
@@ -101,7 +101,7 @@ class RowCallbackTests: BaseEurekaTests {
         XCTAssertEqual(intRow?.cell.textLabel?.text, "introw")
         XCTAssertEqual(textRow?.cell.textLabel?.text, "afterupdate")
         
-        XCTAssertEqual(chkRow?.cell.backgroundColor, .redColor())
+        XCTAssertEqual(chkRow?.cell.backgroundColor, .red())
         XCTAssertEqual(intRow?.cell.textLabel?.font, UIFont(name: "Baskerville-Italic", size: 20))
         XCTAssertEqual(textRow?.cell.textLabel?.font, UIFont(name: "Baskerville-Italic", size: 20))
         

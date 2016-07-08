@@ -98,14 +98,14 @@ class HelperMethodTests: BaseEurekaTests {
         formVC.form +++ checkRow <<< switchRow <<< segmentedRow <<< intRow
         
         checkRow.updateCell()
-        XCTAssertTrue(checkRow.cell.selectionStyle == .None)
+        XCTAssertTrue(checkRow.cell.selectionStyle == .none)
         
         switchRow.updateCell()
         XCTAssertNotNil(switchRow.cell.switchControl)
-        XCTAssertFalse(switchRow.cell.switchControl!.enabled)
+        XCTAssertFalse(switchRow.cell.switchControl!.isEnabled)
         
         segmentedRow.updateCell()
-        XCTAssertFalse(segmentedRow.cell.segmentedControl.enabled)
+        XCTAssertFalse(segmentedRow.cell.segmentedControl.isEnabled)
         
         intRow.updateCell()
         XCTAssertFalse(intRow.cell.cellCanBecomeFirstResponder())

@@ -251,8 +251,8 @@ class HiddenRowsTests: BaseEurekaTests {
                     $0.hidden = "$NameRow_s1 contains 'morning'"
                     $0.tag = "s2_ths"
                 }
-        form.insert(s1, atIndex: 1)
-        form.insert(s2, atIndex: 3)
+        form.insert(s1, at: 1)
+        form.insert(s2, at: 3)
         
         /* what we should have here
         
@@ -291,8 +291,8 @@ class HiddenRowsTests: BaseEurekaTests {
         let r3 = CheckRow("check3_tii_hrt"){ $0.hidden = "$NameRow_s1 contains 'good'" }
         let r4 = CheckRow("check4_tii_hrt"){ $0.hidden = "$NameRow_s1 contains 'good'" }
         
-        form[0].insert(r1, atIndex: 1)
-        form[1].insertContentsOf([r2,r3], at: 0)
+        form[0].insert(r1, at: 1)
+        form[1].insert(contentsOf: [r2,r3], at: 0)
         
         //test correct insert
         
@@ -307,7 +307,7 @@ class HiddenRowsTests: BaseEurekaTests {
         form[0][0].baseValue = "hello, good morning!"
         
         // insert another row
-        form[1].insert(r4, atIndex: 1)
+        form[1].insert(r4, at: 1)
         
         XCTAssertEqual(form[1].count, 2) // all inserted rows should be hidden
         XCTAssertEqual(form[1][0].tag, "int1_hrt")
@@ -329,7 +329,7 @@ class HiddenRowsTests: BaseEurekaTests {
         form[1].removeAll()
         
         //inserting 2 rows at the end, deleting 1
-        form[2].replaceRange(1..<2, with: [r2, r4])
+        form[2].replaceSubrange(1..<2, with: [r2, r4])
         
         XCTAssertEqual(form[1].count, 0)
         XCTAssertEqual(form[2].count, 1)

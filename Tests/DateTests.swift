@@ -54,12 +54,12 @@ class DateTests: BaseEurekaTests {
         formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: minMaxRow.indexPath()!)
         
         XCTAssertNil(minRow.cell.datePicker.maximumDate)
-        XCTAssertEqual(minRow.cell.datePicker.minimumDate, minRow.value?.dateByAddingTimeInterval(-60*60*24))
+        XCTAssertEqual(minRow.cell.datePicker.minimumDate, minRow.value?.addTimeInterval(-60*60*24))
         XCTAssertNil(maxRow.cell.datePicker.minimumDate)
-        XCTAssertEqual(maxRow.cell.datePicker.maximumDate, maxRow.value?.dateByAddingTimeInterval(60*60*24))
+        XCTAssertEqual(maxRow.cell.datePicker.maximumDate, maxRow.value?.addTimeInterval(60*60*24))
         
         XCTAssertNotNil(minMaxRow.cell.datePicker.minimumDate)
-        XCTAssertEqual(minMaxRow.cell.datePicker.maximumDate, minMaxRow.cell.datePicker.minimumDate!.dateByAddingTimeInterval(2*60*60*24))
+        XCTAssertEqual(minMaxRow.cell.datePicker.maximumDate, minMaxRow.cell.datePicker.minimumDate?.addTimeInterval(2*60*60*24))
     }
     
     func testInterval(){
