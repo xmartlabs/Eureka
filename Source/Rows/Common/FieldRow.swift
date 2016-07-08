@@ -76,7 +76,7 @@ public class FormatteableRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: 
             if (self.cell.textInput as? UIView)?.isFirstResponder() == true {
                 return self.useFormatterDuringInput ? formatter.editingStringForObjectValue(v as! AnyObject) : String(v)
             }
-            return formatter.stringForObjectValue(v as! AnyObject)
+            return formatter.stringForObjectValue(v as? AnyObject)
         }
     }
 
@@ -212,10 +212,10 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         contentView.removeConstraints(dynamicConstraints)
         dynamicConstraints = []
         var views : [String: AnyObject] =  ["textField": textField]
-        dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-11-[textField]-11-|", options: .AlignAllBaseline, metrics: nil, views: ["textField": textField])
+        dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-11-[textField]-11-|", options: .AlignAllLastBaseline, metrics: nil, views: ["textField": textField])
         
         if let label = titleLabel, let text = label.text where !text.isEmpty {
-            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-11-[titleLabel]-11-|", options: .AlignAllBaseline, metrics: nil, views: ["titleLabel": label])
+            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-11-[titleLabel]-11-|", options: .AlignAllLastBaseline, metrics: nil, views: ["titleLabel": label])
             dynamicConstraints.append(NSLayoutConstraint(item: label, attribute: .CenterY, relatedBy: .Equal, toItem: textField, attribute: .CenterY, multiplier: 1, constant: 0))
         }
         if let imageView = imageView, let _ = imageView.image {
@@ -284,7 +284,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     private func displayValue(useFormatter useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter where useFormatter {
-            return textField.isFirstResponder() ? formatter.editingStringForObjectValue(v as! AnyObject) : formatter.stringForObjectValue(v as! AnyObject)
+            return textField.isFirstResponder() ? formatter.editingStringForObjectValue(v as! AnyObject) : formatter.stringForObjectValue(v as? AnyObject)
         }
         return String(v)
     }

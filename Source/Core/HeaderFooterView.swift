@@ -52,7 +52,7 @@ public enum HeaderFooterProvider<ViewType: UIView> {
     internal func createView() -> ViewType {
         switch self {
         case .Class:
-            return ViewType.init()
+            return ViewType()
         case .Callback(let builder):
             return builder()
         case .NibFile(let nibName, let bundle):
