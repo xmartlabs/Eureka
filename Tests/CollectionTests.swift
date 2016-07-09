@@ -30,7 +30,7 @@ class CollectionTests: BaseEurekaTests {
     func testSectionRangeReplaceableCollectionTypeConformance() {
         // test if the collection function work as expected
         
-        fieldForm[0].replaceSubRange(subRange: 3...6, with: [CheckRow("check1_ctx")])          // replacing 4 rows with 1
+        fieldForm[0].replaceSubrange(Range(3...6), with: [CheckRow("check1_ctx")])          // replacing 4 rows with 1
         XCTAssertEqual(fieldForm[0].count, 8)                                                       // fieldform had 10 rows prior to replacing
         fieldForm[0][4] = CheckRow("check2_ctx")                                                    // replacing 5th row
         XCTAssertEqual(fieldForm[0].count, 8)
@@ -80,7 +80,7 @@ class CollectionTests: BaseEurekaTests {
         XCTAssertEqual(delegate.rowsAdded, 1)
         
         form[2][1] = TextRow("textrow7_ctx")                                                    // replacerowIn+1, replacerowOut+1,
-        form.replaceRange(0...1, with: [Section("replaced in")])              // replacesectionOut+1, sectionremoved+1, replacesectionin+1
+        form.replaceSubrange(0...1, with: [Section("replaced in")])              // replacesectionOut+1, sectionremoved+1, replacesectionin+1
         
         XCTAssertEqual(delegate.sectionsRemoved, 1)
         

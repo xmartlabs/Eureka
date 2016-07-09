@@ -30,10 +30,11 @@ class HiddenRowsTests: BaseEurekaTests {
     let row10 = IntRow("int1_hrt"){
         $0.hidden = "$IntRow_s1 > 23"
     }
+    
     let row11 = TextRow("txt1_hrt"){
-        $0.hidden = .Function(["NameRow_s1"], { form in
+        $0.hidden = .function(["NameRow_s1"], { form in
                         if let r1 : NameRow = form.rowByTag("NameRow_s1") {
-                            return r1.value?.containsString(" is ") ?? false
+                            return r1.value?.contains(" is ") ?? false
                         }
                         return false
                     })
@@ -43,7 +44,7 @@ class HiddenRowsTests: BaseEurekaTests {
         $0.hidden = "$NameRow_s1 contains 'God'"
     }
     let row20 = TextRow("txt2_hrt"){
-        $0.hidden = .Function(["IntRow_s1", "NameRow_s1"], { form in
+        $0.hidden = .function(["IntRow_s1", "NameRow_s1"], { form in
                         if let r1 : IntRow = form.rowByTag("IntRow_s1"), let r2 : NameRow = form.rowByTag("NameRow_s1")  {
                             return r1.value == 88 || r2.value?.hasSuffix("real") ?? false
                         }
@@ -66,8 +67,8 @@ class HiddenRowsTests: BaseEurekaTests {
 
     func testAddRowToObserver(){
         
-        let intDep = form.rowObservers["IntRow_s1"]?[.Hidden]
-        let nameDep = form.rowObservers["NameRow_s1"]?[.Hidden]
+        let intDep = form.rowObservers["IntRow_s1"]?[.hidden]
+        let nameDep = form.rowObservers["NameRow_s1"]?[.hidden]
         
         // make sure we can unwrap
         XCTAssertNotNil(intDep)

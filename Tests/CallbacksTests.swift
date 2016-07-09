@@ -45,9 +45,9 @@ class CallbacksTests: XCTestCase {
         onChangeTest(TextRow(), value: "text")
         onChangeTest(IntRow(), value: 33)
         onChangeTest(DecimalRow(), value: 35.7)
-        onChangeTest(URLRow(), value: NSURL(string: "http://xmartlabs.com")!)
-        onChangeTest(DateRow(), value: NSDate().dateByAddingTimeInterval(100))
-        onChangeTest(DateInlineRow(), value: NSDate().dateByAddingTimeInterval(100))
+        onChangeTest(URLRow(), value: URL(string: "http://xmartlabs.com")!)
+        onChangeTest(DateRow(), value: NSDate().addingTimeInterval(100) as Date)
+        onChangeTest(DateInlineRow(), value: NSDate().addingTimeInterval(100) as Date)
         onChangeTest(PopoverSelectorRow<String>(), value: "text")
         onChangeTest(PostalAddressRow(), value: PostalAddress(street: "a", state: "b", postalCode: "c", city: "d", country: "e"))
         onChangeTest(SliderRow(), value: 5.0)
@@ -119,7 +119,7 @@ class CallbacksTests: XCTestCase {
         defaultInitializerTest(StepperRow())
     }
     
-    private func onChangeTest<Row, Value where Row: BaseRow, Row: RowType, Row: TypedRowType, Value == Row.Cell.Value>(row:Row, value:Value){
+    private func onChangeTest<Row, Value where Row: BaseRow, Row: RowType, Row: TypedRowType, Value == Row.Cell.Value>(_ row:Row, value:Value){
         var invoked = false
         row.onChange { row in
             invoked = true
@@ -129,27 +129,27 @@ class CallbacksTests: XCTestCase {
         XCTAssertTrue(invoked)
     }
     
-    private func cellSetupTest<Row, Value where  Row: BaseRow, Row : RowType, Row: TypedRowType, Value == Row.Cell.Value>(row:Row){
+    private func cellSetupTest<Row, Value where  Row: BaseRow, Row : RowType, Row: TypedRowType, Value == Row.Cell.Value>(_ row:Row){
         var invoked = false
         row.cellSetup { cell, row in
             invoked = true
         }
         formVC.form +++ Section() <<< row
-        row.cell // laod cell
+        let _ = row.cell // load cell
         XCTAssertTrue(invoked)
     }
     
-    private func cellUpdateTest<Row, Value where  Row: BaseRow, Row : RowType, Row: TypedRowType, Value == Row.Cell.Value>(row:Row){
+    private func cellUpdateTest<Row, Value where  Row: BaseRow, Row : RowType, Row: TypedRowType, Value == Row.Cell.Value>(_ row:Row){
         var invoked = false
         row.cellUpdate { cell, row in
             invoked = true
         }
         formVC.form +++ Section() <<< row
-        formVC.tableView(formVC.tableView!, cellForRowAt: row.indexPath()!) // should invoke cell update
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row.indexPath()!) // should invoke cell update
         XCTAssertTrue(invoked)
     }
     
-    private func defaultInitializerTest<Row where Row: BaseRow, Row : RowType,  Row: TypedRowType>(row:Row){
+    private func defaultInitializerTest<Row where Row: BaseRow, Row : RowType,  Row: TypedRowType>(_ row:Row){
         var invoked = false
         Row.defaultRowInitializer = { row in
             invoked = true
@@ -158,23 +158,23 @@ class CallbacksTests: XCTestCase {
         XCTAssertTrue(invoked)
     }
     
-    private func defaultCellSetupTest<Row where Row: BaseRow, Row: RowType,  Row: TypedRowType>(row:Row){
+    private func defaultCellSetupTest<Row where Row: BaseRow, Row: RowType,  Row: TypedRowType>(_ row:Row){
         var invoked = false
         Row.defaultCellSetup = { cell, row in
             invoked = true
         }
         formVC.form +++ row
-        row.cell // laod cell
+        let _ = row.cell // load cell
         XCTAssertTrue(invoked)
     }
 
-    private func defaultCellUpdateTest<Row where Row: BaseRow, Row : RowType, Row: TypedRowType>(row:Row){
+    private func defaultCellUpdateTest<Row where Row: BaseRow, Row : RowType, Row: TypedRowType>(_ row:Row){
         var invoked = false
         Row.defaultCellUpdate = { cell, row in
             invoked = true
         }
         formVC.form +++ row
-        formVC.tableView(formVC.tableView!, cellForRowAt: row.indexPath()!) // should invoke cell update
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row.indexPath()!) // should invoke cell update
         XCTAssertTrue(invoked)
     }
 }

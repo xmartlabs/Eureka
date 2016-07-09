@@ -138,15 +138,15 @@ public class MyFormDelegate : FormDelegate {
         sectionsReplacedOut += oldSections.count
     }
     
-    public func rowsHaveBeenAdded(rows: [BaseRow], atIndexPaths:[NSIndexPath]){
+    public func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexPaths:[IndexPath]){
         rowsAdded += rows.count
     }
     
-    public func rowsHaveBeenRemoved(rows: [BaseRow], atIndexPaths:[NSIndexPath]){
+    public func rowsHaveBeenRemoved(_ rows: [BaseRow], atIndexPaths:[IndexPath]){
         rowsRemoved += rows.count
     }
     
-    public func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [NSIndexPath]){
+    public func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [IndexPath]){
         rowsReplacedIn += newRows.count
         rowsReplacedOut += oldRows.count
     }

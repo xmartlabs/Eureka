@@ -44,14 +44,14 @@ class DateTests: BaseEurekaTests {
         XCTAssertNotNil(minMaxRow.indexPath())
         
         // make sure cellSetup is called for each cell
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: minRow.indexPath()!)
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: maxRow.indexPath()!)
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: minMaxRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: minRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: maxRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: minMaxRow.indexPath()!)
         
         //make sure cell update is called for each cell
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: minRow.indexPath()!)
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: maxRow.indexPath()!)
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: minMaxRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: minRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: maxRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: minMaxRow.indexPath()!)
         
         XCTAssertNil(minRow.cell.datePicker.maximumDate)
         XCTAssertEqual(minRow.cell.datePicker.minimumDate, minRow.value?.addTimeInterval(-60*60*24))
@@ -68,10 +68,10 @@ class DateTests: BaseEurekaTests {
         XCTAssertNotNil(row?.indexPath())
         
         // make sure cellSetup is called for each cell
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: row!.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row!.indexPath()!)
         
         //make sure cell update is called for each cell
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: row!.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row!.indexPath()!)
         
         XCTAssertEqual(row?.cell.datePicker.minuteInterval, 15)
 
