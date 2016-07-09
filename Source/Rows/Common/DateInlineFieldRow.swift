@@ -56,7 +56,7 @@ public class _DateInlineFieldRow: Row<DateInlineCell>, DatePickerRowProtocol, No
     required public init(tag: String?) {
         super.init(tag: tag)
         dateFormatter = DateFormatter()
-        dateFormatter?.locale = Locale.current
+        dateFormatter?.locale = Locale.current()
         displayValueFor = { [unowned self] value in
             guard let val = value, let formatter = self.dateFormatter else { return nil }
             return formatter.string(from: val)
