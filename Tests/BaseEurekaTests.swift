@@ -49,9 +49,9 @@ class BaseEurekaTests: XCTestCase {
             <<< DateTimeRow("DateTimeRow_d1"){ $0.title = "DateTime"; $0.value = Date() }
             <<< TimeRow("TimeRow_d1"){ $0.title = "Time"; $0.value = Date() }
             <<< CountDownRow("CountDownRow_d1"){ $0.title = "CountDown"; $0.value = Date() }
-            <<< DateRow("MinDateRow_d1"){ $0.title = "Date(min)"; $0.value = Date(); $0.minimumDate = $0.value?.addTimeInterval(-60*60*24) }
-            <<< DateRow("MaxDateRow_d1"){ $0.title = "Date(max)"; $0.value = Date(); $0.maximumDate = $0.value?.addTimeInterval(60*60*24) }
-            <<< DateRow("MinMaxDateRow_d1"){ $0.title = "Date(min/max)"; $0.value = Date(); $0.minimumDate = $0.value?.addTimeInterval(-60*60*24); $0.maximumDate = $0.value?.addTimeInterval(60*60*24)  }
+            <<< DateRow("MinDateRow_d1"){ $0.title = "Date(min)"; $0.value = Date(); $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24) }
+            <<< DateRow("MaxDateRow_d1"){ $0.title = "Date(max)"; $0.value = Date(); $0.maximumDate = $0.value?.addingTimeInterval(60*60*24) }
+            <<< DateRow("MinMaxDateRow_d1"){ $0.title = "Date(min/max)"; $0.value = Date(); $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24); $0.maximumDate = $0.value?.addingTimeInterval(60*60*24)  }
             <<< DateRow("IntervalDateRow_d1"){ $0.title = "Date(interval)"; $0.value = Date(); $0.minuteInterval = 15 }
         
         shortForm +++ Section("short")
