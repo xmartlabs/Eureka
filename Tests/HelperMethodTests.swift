@@ -47,7 +47,7 @@ class HelperMethodTests: BaseEurekaTests {
         XCTAssertEqual(row6, form.rowByTag("IntRow_f1") as? IntRow)
         
         
-        let row_5_and_6: MutableSlice<Section> = form[0][5...6]
+        let row_5_and_6: MutableSlice<Section> = form[0][Range(5...6)]
         XCTAssertEqual(row_5_and_6[5], form[0][5])
         XCTAssertEqual(row_5_and_6[6], form[0][6])
         
@@ -98,14 +98,14 @@ class HelperMethodTests: BaseEurekaTests {
         formVC.form +++ checkRow <<< switchRow <<< segmentedRow <<< intRow
         
         checkRow.updateCell()
-        XCTAssertTrue(checkRow.cell.selectionStyle == .None)
+        XCTAssertTrue(checkRow.cell.selectionStyle == .none)
         
         switchRow.updateCell()
         XCTAssertNotNil(switchRow.cell.switchControl)
-        XCTAssertFalse(switchRow.cell.switchControl!.enabled)
+        XCTAssertFalse(switchRow.cell.switchControl!.isEnabled)
         
         segmentedRow.updateCell()
-        XCTAssertFalse(segmentedRow.cell.segmentedControl.enabled)
+        XCTAssertFalse(segmentedRow.cell.segmentedControl.isEnabled)
         
         intRow.updateCell()
         XCTAssertFalse(intRow.cell.cellCanBecomeFirstResponder())
