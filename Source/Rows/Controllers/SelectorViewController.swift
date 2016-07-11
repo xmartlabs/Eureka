@@ -12,6 +12,7 @@ public class _SelectorViewController<Row: SelectableRowType where Row: BaseRow, 
     
     /// The row that pushed or presented this controller
     public var row: RowOf<Row.Cell.Value>!
+    public var enableDeselection = true
     
     /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
@@ -30,7 +31,7 @@ public class _SelectorViewController<Row: SelectableRowType where Row: BaseRow, 
         super.viewDidLoad()
         guard let options = row.dataProvider?.arrayData else { return }
         
-        form +++ SelectableSection<Row>(row.title ?? "", selectionType: .singleSelection(enableDeselection: true)) { [weak self] section in
+        form +++ SelectableSection<Row>(row.title ?? "", selectionType: .singleSelection(enableDeselection: enableDeselection)) { [weak self] section in
             if let sec = section as? SelectableSection<Row> {
                 sec.onSelectSelectableRow = { _, row in
                     self?.row.value = row.value
