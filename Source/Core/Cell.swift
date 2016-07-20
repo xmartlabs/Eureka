@@ -25,6 +25,11 @@
 
 import Foundation
 
+protocol DetailLabelConformance {
+    var detailLabelLeftConst: CGFloat? { get set }
+    var detailLabelTextAlignment: NSTextAlignment? { get set }
+}
+
 /// Base class for the Eureka cells
 public class BaseCell : UITableViewCell, BaseCellType {
     
@@ -64,6 +69,17 @@ public class BaseCell : UITableViewCell, BaseCellType {
     public func highlight() {}
     public func unhighlight() {}
     
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        guard let detailLabel = detailTextLabel, let view = detailTextLabel?.superview else {
+            return
+        }
+        detailLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addConstraint(NSLayoutConstraint(item: detailLabel, attribute: .CenterY, relatedBy: .Equal, toItem: view, attribute: .CenterY, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: detailLabel, attribute: .Left, relatedBy: .Equal, toItem: view, attribute: .Left, multiplier: 1, constant: 110))
+        detailLabel.textAlignment = .Left
+    }
     
     /**
      If the cell can become first responder. By default returns false

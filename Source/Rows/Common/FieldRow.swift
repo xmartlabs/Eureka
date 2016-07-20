@@ -30,6 +30,7 @@ public protocol InputTypeInitiable {
 
 public protocol FieldRowConformance : FormatterConformance {
     var textFieldPercentage : CGFloat? { get set }
+    var textFieldLeftConst: CGFloat? { get set }
     var placeholder : String? { get set }
     var placeholderColor : UIColor? { get set }
 }
@@ -89,7 +90,12 @@ public class FieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TypedCe
     public var keyboardReturnType : KeyboardReturnTypeConfiguration?
     
     /// The percentage of the cell that should be occupied by the textField
+    ///
+    /// !!! JUST for SegmentedRow
     public var textFieldPercentage : CGFloat?
+    
+    /// The left anchor of the cell that should be occupied by the textField
+    public var textFieldLeftConst: CGFloat?
     
     /// The placeholder for the textField
     public var placeholder : String?
@@ -222,21 +228,36 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
             views["imageView"] = imageView
             if let titleLabel = titleLabel, text = titleLabel.text where !text.isEmpty {
                 views["label"] = titleLabel
-                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[label]-[textField]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views)
-                dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
+                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[label]", options: NSLayoutFormatOptions(), metrics: nil, views: views)
+                
+                if let left = (row as? FieldRowConformance)?.textFieldLeftConst {
+                    dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Left, relatedBy: .Equal, toItem: contentView, attribute: .Left, multiplier: 1.0, constant: left))
+                } else {
+                    dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Left, relatedBy: .Equal, toItem: titleLabel, attribute: .Right, multiplier: 1.0, constant: 0))
+                }
+                
+            } else {
+                if let left = (row as? FieldRowConformance)?.textFieldLeftConst {
+                    dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Left, relatedBy: .Equal, toItem: contentView, attribute: .Left, multiplier: 1.0, constant: left))
+                } else {
+                    dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Left, relatedBy: .Equal, toItem: imageView, attribute: .Right, multiplier: 1.0, constant: 0))
+                }
             }
-            else{
-                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[textField]-|", options: [], metrics: nil, views: views)
-            }
-        }
-        else{
+        } else {
             if let titleLabel = titleLabel, let text = titleLabel.text where !text.isEmpty {
                 views["label"] = titleLabel
-                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|-[label]-[textField]-|", options: [], metrics: nil, views: views)
-                dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
-            }
-            else{
-                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textField]-|", options: .AlignAllLeft, metrics: nil, views: views)
+                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|-[label]", options: [], metrics: nil, views: views)
+                if let left = (row as? FieldRowConformance)?.textFieldLeftConst {
+                    dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Left, relatedBy: .Equal, toItem: contentView, attribute: .Left, multiplier: 1.0, constant: left))
+                } else {
+                    dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Left, relatedBy: .Equal, toItem: titleLabel, attribute: .Right, multiplier: 1.0, constant: 0))
+                }
+            } else {
+                if let left = (row as? FieldRowConformance)?.textFieldLeftConst {
+                    dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Left, relatedBy: .Equal, toItem: contentView, attribute: .Left, multiplier: 1.0, constant: left))
+                } else {
+                    dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Left, relatedBy: .Equal, toItem: contentView, attribute: .Left, multiplier: 1.0, constant: 0))
+                }
             }
         }
         contentView.addConstraints(dynamicConstraints)
