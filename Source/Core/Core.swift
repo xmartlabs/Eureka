@@ -417,16 +417,25 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         form.delegate = self
         return form
         }()
-    
+
+    private var _oldform : Form?
+
     public var form : Form {
-        get { return _form }
+        get {
+            _oldform = _form
+            return _form
+        }
         set {
             _form.delegate = nil
             tableView?.endEditing(false)
             _form = newValue
             _form.delegate = self
-            if isViewLoaded() && tableView?.window != nil {
-                tableView?.reloadData()
+
+            guard _oldform === _form else {
+                if isViewLoaded() && tableView?.window != nil {
+                    tableView?.reloadData()
+                }
+                return
             }
         }
     }
