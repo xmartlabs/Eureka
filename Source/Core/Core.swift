@@ -554,7 +554,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     */
     public final func beginEditing<T:Equatable>(_ cell: Cell<T>) {
         cell.row.highlightCell()
-        guard let _ = tableView where (form.inlineRowHideOptions ?? Form.defaultInlineRowHideOptions).contains(.FirstResponderChanges) else { return }
+        guard let _ = tableView, (form.inlineRowHideOptions ?? Form.defaultInlineRowHideOptions).contains(.FirstResponderChanges) else { return }
         let row = cell.baseRow
         let inlineRow = row?._inlineRow
         for row in form.allRows.filter({ $0 !== row && $0 !== inlineRow && $0._inlineRow != nil }) {
@@ -901,7 +901,7 @@ extension FormViewControllerProtocol {
     //MARK: Helpers
     
     func makeRowVisible(_ row: BaseRow){
-        guard let cell = row.baseCell, indexPath = row.indexPath(), tableView = tableView else { return }
+        guard let cell = row.baseCell, let indexPath = row.indexPath(), let tableView = tableView else { return }
         if cell.window == nil || (tableView.contentOffset.y + tableView.frame.size.height <= cell.frame.origin.y + cell.frame.size.height){
             tableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
         }

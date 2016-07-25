@@ -38,7 +38,7 @@ public class _ActionSheetRow<Cell: CellType where Cell: BaseCell>: OptionsRow<Ce
         return .presentModally(controllerProvider: ControllerProvider.callback { [weak self] in
             let vc = SelectorAlertController<Cell.Value>(title: self?.selectorTitle, message: nil, preferredStyle: .actionSheet)
             if let popView = vc.popoverPresentationController {
-                guard let cell = self?.cell, tableView = cell.formViewController()?.tableView else { fatalError() }
+                guard let cell = self?.cell, let tableView = cell.formViewController()?.tableView else { fatalError() }
                 popView.sourceView = tableView
                 popView.sourceRect = tableView.convert(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.contentView.frame, from: cell)
             }
@@ -57,7 +57,7 @@ public class _ActionSheetRow<Cell: CellType where Cell: BaseCell>: OptionsRow<Ce
     
     public override func customDidSelect() {
         super.customDidSelect()
-        if let presentationMode = presentationMode where !isDisabled {
+        if let presentationMode = presentationMode, !isDisabled {
             if let controller = presentationMode.createController(){
                 controller.row = self
                 onPresentCallback?(cell.formViewController()!, controller)

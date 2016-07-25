@@ -149,7 +149,7 @@ extension BaseRow {
      Evaluates if the row should be disabled or not and updates it accordingly
      */
     public final func evaluateDisabled() {
-        guard let d = disabled, form = section?.form else { return }
+        guard let d = disabled, let form = section?.form else { return }
         switch d {
         case .function(_ , let callback):
             disabledCache = callback(form)
@@ -238,17 +238,19 @@ extension BaseRow: Equatable, Hidable, Disableable {}
 extension BaseRow {
     
     public func reload(_ rowAnimation: UITableViewRowAnimation = .none) {
-        guard let tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView, indexPath = indexPath() else { return }
+        guard let tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView, let indexPath = indexPath() else { return }
         tableView.reloadRows(at: [indexPath], with: rowAnimation)
     }
     
     public func deselect(_ animated: Bool = true) {
-        guard let indexPath = indexPath(), tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView  else { return }
+        guard let indexPath = indexPath(),
+            let tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView  else { return }
         tableView.deselectRow(at: indexPath, animated: animated)
     }
     
     public func select(_ animated: Bool = false) {
-        guard let indexPath = indexPath(), tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView  else { return }
+        guard let indexPath = indexPath(),
+            let tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView  else { return }
         tableView.selectRow(at: indexPath, animated: animated, scrollPosition: .none)
     }
 }
