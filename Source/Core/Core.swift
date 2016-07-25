@@ -68,7 +68,7 @@ public struct CellProvider<Cell: BaseCell where Cell: CellType> {
      */
     func createCell(cellStyle: UITableViewCellStyle) -> Cell {
         if let nibName = self.nibName {
-            return bundle.loadNibNamed(nibName, owner: nil, options: nil).first as! Cell
+            return bundle.loadNibNamed(nibName, owner: nil, options: nil)!.first as! Cell
         }
         return Cell.init(style: cellStyle, reuseIdentifier: nil)
     }
@@ -242,7 +242,7 @@ public enum PresentationMode<VCType: UIViewController> {
  *  Protocol to be implemented by custom formatters.
  */
 public protocol FormatterProtocol {
-    func getNewPosition(forPosition forPosition: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition
+    func getNewPosition(forPosition: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition
 }
 
 //MARK: Predicate Machine

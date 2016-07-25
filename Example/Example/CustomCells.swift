@@ -209,7 +209,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
                         let oldVal = textField.text
                         textField.text = row.displayValueFor?(row.value)
                         if let f = formatter as? FormatterProtocol {
-                            selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text)
+                            selStartPos = f.getNewPosition(selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text)
                         }
                         textField.selectedTextRange = textField.textRangeFromPosition(selStartPos, toPosition: selStartPos)
                     }

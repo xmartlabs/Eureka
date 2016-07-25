@@ -29,7 +29,7 @@ public class DecimalFormatter : NSNumberFormatter, FormatterProtocol {
         return true
     }
     
-    public func getNewPosition(forPosition position: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition {
-        return textInput.positionFromPosition(position, offset:((newValue?.characters.count ?? 0) - (oldValue?.characters.count ?? 0))) ?? position
+    public func getNewPosition(forPosition: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition {
+        return textInput.positionFromPosition(forPosition, offset:((newValue?.characters.count ?? 0) - (oldValue?.characters.count ?? 0))) ?? forPosition
     }
 }

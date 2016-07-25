@@ -49,9 +49,9 @@ extension NSPredicate {
     
     var predicateVars: [String] {
         var ret = [String]()
-        if let compoundPredicate = self as? NSCompoundPredicate{
-            for subPredicate in compoundPredicate.subpredicates{
-                ret.appendContentsOf(subPredicate.predicateVars)
+        if let compoundPredicate = self as? NSCompoundPredicate {
+            for subPredicate in compoundPredicate.subpredicates where subPredicate is NSPredicate {
+                ret.appendContentsOf((subPredicate as! NSPredicate).predicateVars)
             }
         }
         else if let comparisonPredicate = self as? NSComparisonPredicate{
