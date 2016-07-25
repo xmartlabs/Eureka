@@ -668,7 +668,9 @@ class NativeEventFormViewController : FormViewController {
                     $0.title = $0.tag
                     $0.options = RepeatInterval.allValues
                     $0.value = .Never
-                }
+                }.onPresent({ (_, vc) in
+                    vc.enableDeselection = false
+                })
         
         form +++
             
