@@ -62,7 +62,7 @@ class MyFormViewController: FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        form +++ Section("Section1")
+        form = Section("Section1")
             <<< TextRow(){ row in
                 row.title = "Text Row"
                 row.placeholder = "Enter text here"
