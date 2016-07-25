@@ -73,7 +73,7 @@ public class FormatteableRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: 
         displayValueFor = { [unowned self] value in
             guard let v = value else { return nil }
             guard let formatter = self.formatter else { return String(v) }
-            if (self.cell.textInput as? UIView)?.isFirstResponder() == true {
+            if ((self.cell as TextInputCell).textInput as? UIView)?.isFirstResponder() == true {
                 return self.useFormatterDuringInput ? formatter.editingStringForObjectValue(v as! AnyObject) : String(v)
             }
             return formatter.stringForObjectValue(v as? AnyObject)
@@ -265,7 +265,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
                 guard var selStartPos = textField.selectedTextRange?.start else { return }
                 let oldVal = textField.text
                 textField.text = row.displayValueFor?(row.value)
-                selStartPos = (formatter as? FormatterProtocol)?.getNewPosition(forPosition: selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text) ?? selStartPos
+                selStartPos = (formatter as? FormatterProtocol)?.getNewPosition(selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text) ?? selStartPos
                 textField.selectedTextRange = textField.textRangeFromPosition(selStartPos, toPosition: selStartPos)
                 return
             }

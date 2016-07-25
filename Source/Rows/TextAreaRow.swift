@@ -173,7 +173,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
                 guard var selStartPos = textView.selectedTextRange?.start else { return }
                 let oldVal = textView.text
                 textView.text = row.displayValueFor?(row.value)
-                selStartPos = (formatter as? FormatterProtocol)?.getNewPosition(forPosition: selStartPos, inTextInput: textView, oldValue: oldVal, newValue: textView.text) ?? selStartPos
+                selStartPos = (formatter as? FormatterProtocol)?.getNewPosition(selStartPos, inTextInput: textView, oldValue: oldVal, newValue: textView.text) ?? selStartPos
                 textView.selectedTextRange = textView.textRangeFromPosition(selStartPos, toPosition: selStartPos)
                 return
             }
