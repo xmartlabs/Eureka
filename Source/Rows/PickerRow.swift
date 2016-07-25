@@ -67,7 +67,7 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
     }
     
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if let picker = pickerRow where !picker.options.isEmpty {
+        if let picker = pickerRow, !picker.options.isEmpty {
             picker.value = picker.options[row]
         }
     }

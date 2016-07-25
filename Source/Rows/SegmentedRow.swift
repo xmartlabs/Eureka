@@ -89,7 +89,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
             hasImageView = true
         }
         
-        if let titleLabel = titleLabel, text = titleLabel.text where !text.isEmpty {
+        if let titleLabel = titleLabel, let text = titleLabel.text, !text.isEmpty {
             views["titleLabel"] = titleLabel
             hasTitleLabel = true
             dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0))
