@@ -49,12 +49,12 @@ extension Predicate {
     
     var predicateVars: [String] {
         var ret = [String]()
-        if let compoundPredicate = self as? CompoundPredicate{
-            for subPredicate in compoundPredicate.subpredicates{
-                ret.append(contentsOf: subPredicate.predicateVars)
+        if let compoundPredicate = self as? CompoundPredicate {
+            for subPredicate in compoundPredicate.subpredicates where subPredicate is Predicate {
+                ret.append(contentsOf: (subPredicate as! Predicate).predicateVars)
             }
         }
-        else if let comparisonPredicate = self as? ComparisonPredicate{
+        else if let comparisonPredicate = self as? ComparisonPredicate {
             ret.append(contentsOf: comparisonPredicate.leftExpression.expressionVars)
             ret.append(contentsOf: comparisonPredicate.rightExpression.expressionVars)
         }

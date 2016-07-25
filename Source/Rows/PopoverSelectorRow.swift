@@ -13,7 +13,7 @@ public class _PopoverSelectorRow<Cell: CellType where Cell: BaseCell, Cell: Type
     public required init(tag: String?) {
         super.init(tag: tag)
         onPresentCallback = { [weak self] (_, viewController) -> Void in
-            guard let porpoverController = viewController.popoverPresentationController, tableView = self?.baseCell.formViewController()?.tableView, cell = self?.cell else {
+            guard let porpoverController = viewController.popoverPresentationController, let tableView = self?.baseCell.formViewController()?.tableView, let cell = self?.cell else {
                 fatalError()
             }
             porpoverController.sourceView = tableView

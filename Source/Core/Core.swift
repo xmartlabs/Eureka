@@ -68,7 +68,7 @@ public struct CellProvider<Cell: BaseCell where Cell: CellType> {
      */
     func createCell(_ cellStyle: UITableViewCellStyle) -> Cell {
         if let nibName = self.nibName {
-            return bundle.loadNibNamed(nibName, owner: nil, options: nil).first as! Cell
+            return bundle.loadNibNamed(nibName, owner: nil, options: nil)!.first as! Cell
         }
         return Cell.init(style: cellStyle, reuseIdentifier: nil)
     }
