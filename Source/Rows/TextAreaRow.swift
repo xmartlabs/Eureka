@@ -113,7 +113,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     }
     
     public override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
-        if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey] where obj === imageView && keyPathValue == "image" && changeType.uintValue == NSKeyValueChange.setting.rawValue {
+        if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], obj === imageView && keyPathValue == "image" && changeType.uintValue == NSKeyValueChange.setting.rawValue {
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()
         }
@@ -123,7 +123,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
-        if let formatter = (row as? FormatterConformance)?.formatter where useFormatter {
+        if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
             return textView.isFirstResponder() ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
         }
         return String(v)
@@ -135,7 +135,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     public func textViewDidBeginEditing(_ textView: UITextView) {
         formViewController()?.beginEditing(self)
         formViewController()?.textInputDidBeginEditing(textView, cell: self)
-        if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter where textAreaConformance.useFormatterOnDidBeginEditing ?? textAreaConformance.useFormatterDuringInput {
+        if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter, textAreaConformance.useFormatterOnDidBeginEditing ?? textAreaConformance.useFormatterDuringInput {
             textView.text = self.displayValue(useFormatter: true)
         }
         else {

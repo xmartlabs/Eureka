@@ -88,9 +88,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2859CD921C7CF1FD0002982F /* Core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; };
+		2859CD921C7CF1FD0002982F /* Core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Core.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2859CD931C7CF1FD0002982F /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
-		2859CD991C7CF2020002982F /* ButtonRowWithPresent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonRowWithPresent.swift; sourceTree = "<group>"; };
+		2859CD991C7CF2020002982F /* ButtonRowWithPresent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ButtonRowWithPresent.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2859CD9A1C7CF2020002982F /* SliderRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderRow.swift; sourceTree = "<group>"; };
 		2859CD9E1C7CF23D0002982F /* PostalAddressRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostalAddressRow.swift; sourceTree = "<group>"; };
 		2859CDA01C7CF3A10002982F /* LabelRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelRow.swift; sourceTree = "<group>"; };
@@ -99,8 +99,8 @@
 		2859CDA61C7CF5530002982F /* SwitchRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchRow.swift; sourceTree = "<group>"; };
 		2859CDA81C7D0B3C0002982F /* SegmentedRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedRow.swift; sourceTree = "<group>"; };
 		2859CDAC1C7D0BCA0002982F /* TextAreaRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextAreaRow.swift; sourceTree = "<group>"; };
-		2859CDAE1C7D0D990002982F /* ActionSheetRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionSheetRow.swift; sourceTree = "<group>"; };
-		2859CDB01C7D0E010002982F /* AlertRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertRow.swift; sourceTree = "<group>"; };
+		2859CDAE1C7D0D990002982F /* ActionSheetRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ActionSheetRow.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2859CDB01C7D0E010002982F /* AlertRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AlertRow.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2859CDB31C7D0E4B0002982F /* OptionsRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OptionsRow.swift; path = Common/OptionsRow.swift; sourceTree = "<group>"; };
 		2859CDB51C7D0EC60002982F /* PickerRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerRow.swift; sourceTree = "<group>"; };
 		2859CDB71C7D0FE70002982F /* PickerInlineRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerInlineRow.swift; sourceTree = "<group>"; };
@@ -110,7 +110,7 @@
 		2859CDBF1C7D138D0002982F /* Section.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		2859CDC31C7D19C50002982F /* HeaderFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderFooterView.swift; sourceTree = "<group>"; };
 		2859CDC51C7D1A2E0002982F /* NavigationAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationAccessoryView.swift; sourceTree = "<group>"; };
-		2859CDE81C7DD78E0002982F /* BaseRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseRow.swift; sourceTree = "<group>"; };
+		2859CDE81C7DD78E0002982F /* BaseRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = BaseRow.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2859CDEC1C7DF0680002982F /* PushRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushRow.swift; sourceTree = "<group>"; };
 		2859CDEE1C7DF0F70002982F /* DateFieldRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateFieldRow.swift; path = Common/DateFieldRow.swift; sourceTree = "<group>"; };
 		2859CDF01C7DF1620002982F /* FieldRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FieldRow.swift; path = Common/FieldRow.swift; sourceTree = "<group>"; };
@@ -131,7 +131,7 @@
 		2859CE231C7E141B0002982F /* SelectableSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectableSection.swift; sourceTree = "<group>"; };
 		28B12FD41BA0E83C00F27A23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Source/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		28B1D7711C7F90C900605EB3 /* BaseEurekaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseEurekaTests.swift; path = Tests/BaseEurekaTests.swift; sourceTree = SOURCE_ROOT; };
-		28B1D7721C7F90C900605EB3 /* CallbacksTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CallbacksTests.swift; path = Tests/CallbacksTests.swift; sourceTree = SOURCE_ROOT; };
+		28B1D7721C7F90C900605EB3 /* CallbacksTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = CallbacksTests.swift; path = Tests/CallbacksTests.swift; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		28B1D7731C7F90C900605EB3 /* CollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionTests.swift; path = Tests/CollectionTests.swift; sourceTree = SOURCE_ROOT; };
 		28B1D7741C7F90C900605EB3 /* DateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateTests.swift; path = Tests/DateTests.swift; sourceTree = SOURCE_ROOT; };
 		28B1D7751C7F90C900605EB3 /* FormValuesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FormValuesTests.swift; path = Tests/FormValuesTests.swift; sourceTree = SOURCE_ROOT; };

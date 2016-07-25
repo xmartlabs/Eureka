@@ -150,7 +150,7 @@ import UIKit
 		title.alpha = 0.0
 		title.font = titleFont
 		title.textColor = titleTextColour
-		if let str = placeholder where !str.isEmpty {
+		if let str = placeholder, !str.isEmpty {
             title.text = str
             title.sizeToFit()
 		}

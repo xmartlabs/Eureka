@@ -70,7 +70,7 @@ public class _ImageRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType,
     
     // copy over the existing logic from the SelectorRow
     private func displayImagePickerController(_ sourceType: UIImagePickerControllerSourceType) {
-        if let presentationMode = presentationMode where !isDisabled {
+        if let presentationMode = presentationMode, !isDisabled {
             if let controller = presentationMode.createController(){
                 controller.row = self
                 controller.sourceType = sourceType
@@ -117,7 +117,7 @@ public class _ImageRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType,
             popView.sourceRect = tableView.convert(cell.accessoryView?.frame ?? cell.contentView.frame, from: cell)
         }
         createOptionsForAlertController(sourceActionSheet)
-        if case .yes(let style) = clearAction where value != nil {
+        if case .yes(let style) = clearAction, value != nil {
             let clearPhotoOption = UIAlertAction(title: NSLocalizedString("Clear Photo", comment: ""), style: style, handler: { [weak self] _ in
                 self?.value = nil
                 self?.updateCell()
@@ -170,7 +170,7 @@ extension _ImageRow {
 //MARK: Helpers
     
     private func createOptionForAlertController(_ alertController: UIAlertController, sourceType: ImageRowSourceTypes) {
-        guard let pickerSourceType = UIImagePickerControllerSourceType(rawValue: sourceType.imagePickerControllerSourceTypeRawValue) where sourceTypes.contains(sourceType) else { return }
+        guard let pickerSourceType = UIImagePickerControllerSourceType(rawValue: sourceType.imagePickerControllerSourceTypeRawValue), sourceTypes.contains(sourceType) else { return }
         let option = UIAlertAction(title: NSLocalizedString(sourceType.localizedString, comment: ""), style: .default, handler: { [weak self] _ in
             self?.displayImagePickerController(pickerSourceType)
         })

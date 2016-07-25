@@ -244,7 +244,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
     
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
-        if let formatter = (row as? FormatterConformance)?.formatter where useFormatter {
+        if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
             return textField.isFirstResponder() ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
         }
         return String(v)
@@ -254,7 +254,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
     
     public func textFieldDidBeginEditing(_ textField: UITextField) {
         formViewController()?.beginEditing(self)
-        if let fieldRowConformance = row as? FormatterConformance, let _ = fieldRowConformance.formatter where fieldRowConformance.useFormatterOnDidBeginEditing ?? fieldRowConformance.useFormatterDuringInput {
+        if let fieldRowConformance = row as? FormatterConformance, let _ = fieldRowConformance.formatter, fieldRowConformance.useFormatterOnDidBeginEditing ?? fieldRowConformance.useFormatterDuringInput {
             textField.text = displayValue(useFormatter: true)
         } else {
             textField.text = displayValue(useFormatter: false)
@@ -548,7 +548,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
     let height: CGFloat = 5.0
     
     lazy var ellipse: UIBezierPath = { [unowned self] in
-        let ellipse = UIBezierPath(ovalIn: CGRect(x: 0 , y: 0, width: self.width, height: self.height))
+        let ellipse = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: self.width, height: self.height))
         return ellipse
         }()
     

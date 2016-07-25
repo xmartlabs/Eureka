@@ -30,7 +30,7 @@ public class _AlertRow<Cell: CellType where Cell: BaseCell>: OptionsRow<Cell>, P
     
     public override func customDidSelect() {
         super.customDidSelect()
-        if let presentationMode = presentationMode where !isDisabled  {
+        if let presentationMode = presentationMode, !isDisabled  {
             if let controller = presentationMode.createController(){
                 controller.row = self
                 onPresentCallback?(cell.formViewController()!, controller)
