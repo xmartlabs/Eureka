@@ -480,6 +480,18 @@ public final class CustomPushRow<T: Equatable> : SelectorRow<T, PushSelectorCell
 
 You can place your own UIViewController instead of `SelectorViewController<T>` and your own cell instead of `PushSelectorCell<T>`.
 
+### Subclassing cells using the same row
+
+Sometimes we want to change the UI look of one of our rows but without changing the row type and all the logic associated to one row.
+There is currently one way to do this if you are using cells that are instantiated from nib files.
+
+What you have to do is define a subclass and a nibfile with a cell of that subclass type. This will create a row with that cell.
+
+There are some things to consider when you do this:
+* Your subclass has to implement the init methods of its subclass, specially `init?(coder aDecoder: NSCoder)`.
+* If you get an error saying `Unknown class <YOUR_CLASS_NAME> in Interface Builder file`, it might be that you have to instantiate that new type somewhere in your code to load it in the runtime. Calling `let t = YourClass.self` helped in my case.
+
+
 ## Row catalog
 
 ### Controls Rows
