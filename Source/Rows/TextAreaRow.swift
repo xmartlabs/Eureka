@@ -217,8 +217,8 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         }
         if let imageView = imageView, let _ = imageView.image {
             views["imageView"] = imageView
-            dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[textView]-|", options: [], metrics: nil, views: views))
-            dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[label]-|", options: [], metrics: nil, views: views))
+            dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-(15)-[textView]-|", options: [], metrics: nil, views: views))
+            dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-(15)-[label]-|", options: [], metrics: nil, views: views))
         }
         else {
             dynamicConstraints.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textView]-|", options: [], metrics: nil, views: views))

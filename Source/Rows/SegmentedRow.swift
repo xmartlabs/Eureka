@@ -95,7 +95,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         
         
         if hasImageView && hasTitleLabel {
-            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[titleLabel]-[segmentedControl]-|", options: [], metrics: nil, views: views)
+            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-(15)-[titleLabel]-[segmentedControl]-|", options: [], metrics: nil, views: views)
         }
         else if hasImageView && !hasTitleLabel {
             dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[segmentedControl]-|", options: [], metrics: nil, views: views)

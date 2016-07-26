@@ -222,11 +222,11 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
             views["imageView"] = imageView
             if let titleLabel = titleLabel, text = titleLabel.text where !text.isEmpty {
                 views["label"] = titleLabel
-                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[label]-[textField]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views)
+                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-(15)-[label]-[textField]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views)
                 dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .Width, relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .Equal : .GreaterThanOrEqual, toItem: contentView, attribute: .Width, multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3, constant: 0.0))
             }
             else{
-                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-[textField]-|", options: [], metrics: nil, views: views)
+                dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("H:[imageView]-(15)-[textField]-|", options: [], metrics: nil, views: views)
             }
         }
         else{
