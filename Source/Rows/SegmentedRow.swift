@@ -27,6 +27,17 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationWillResignActive, object: nil, queue: nil){ [weak self] notification in
+            guard let me = self else { return }
+            me.titleLabel?.removeObserver(me, forKeyPath: "text")
+        }
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: nil){ [weak self] notification in
+            self?.titleLabel?.addObserver(self!, forKeyPath: "text", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
+        }
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil){ [weak self] notification in
+            self?.setNeedsUpdateConstraints()
+        }
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -37,6 +48,9 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         segmentedControl.removeTarget(self, action: nil, for: .allEvents)
         titleLabel?.removeObserver(self, forKeyPath: "text")
         imageView?.removeObserver(self, forKeyPath: "image")
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
     }
     
     public override func setup() {
