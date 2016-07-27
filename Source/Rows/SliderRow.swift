@@ -29,6 +29,18 @@ public class SliderCell: Cell<Float>, CellType {
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil){ [weak self] notification in
+            guard let me = self else { return }
+            if me.shouldShowTitle() {
+                me.contentView.addSubview(me.titleLabel)
+                me.contentView.addSubview(me.valueLabel!)
+                me.addConstraints()
+            }
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -65,18 +77,7 @@ public class SliderCell: Cell<Float>, CellType {
             contentView.addSubview(valueLabel!)
         }
         contentView.addSubview(slider)
-        
-        let views = ["titleLabel" : titleLabel, "valueLabel" : valueLabel, "slider" : slider]
-        let metrics = ["hPadding" : 16.0, "vPadding" : 12.0, "spacing" : 12.0]
-        
-        if shouldShowTitle() {
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-hPadding-[titleLabel]-[valueLabel]-hPadding-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[titleLabel]-spacing-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
-            
-        } else {
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
-        }
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-hPadding-[slider]-hPadding-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
+        addConstraints()
     }
     
     public override func update() {
@@ -86,6 +87,22 @@ public class SliderCell: Cell<Float>, CellType {
             detailTextLabel?.text = nil
         }
         slider.value = row.value ?? 0.0
+    }
+    
+    func addConstraints(justLabelConstraints: Bool = false) {
+        let views = ["titleLabel" : titleLabel, "valueLabel" : valueLabel, "slider" : slider]
+        //TODO: in Iphone 6 Plus hPadding should be 20
+        let metrics = ["hPadding" : 15.0, "vPadding" : 12.0, "spacing" : 12.0]
+        if shouldShowTitle() {
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-hPadding-[titleLabel]-[valueLabel]-hPadding-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[titleLabel]-spacing-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
+            
+        } else if !justLabelConstraints {
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
+        }
+        if !justLabelConstraints {
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-hPadding-[slider]-hPadding-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
+        }
     }
     
     func valueChanged() {
