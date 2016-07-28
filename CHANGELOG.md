@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### master branch
+
+* Fixed textlabel alignment for cells with custom constraints (FieldRow, SegmentedRow, TextAreaRow).
+* Set 'Require Only App-Extension-Safe API' to YES to enable code sharing in App Extensions.
+* Other bug fixes and minor improvements
+
 ### [1.7.0](https://github.com/xmartlabs/Eureka/releases/tag/1.7.0)
 
 * **Breaking change**: Fixed typo in `hightlightCell`. You must now call / override `highlightCell`.
