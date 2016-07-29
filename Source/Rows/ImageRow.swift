@@ -120,6 +120,7 @@ public class _ImageRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType,
         if case .yes(let style) = clearAction, value != nil {
             let clearPhotoOption = UIAlertAction(title: NSLocalizedString("Clear Photo", comment: ""), style: style, handler: { [weak self] _ in
                 self?.value = nil
+                self?.imageURL = nil
                 self?.updateCell()
                 })
             sourceActionSheet.addAction(clearPhotoOption)
