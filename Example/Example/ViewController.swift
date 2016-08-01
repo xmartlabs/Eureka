@@ -580,6 +580,7 @@ class NativeEventFormViewController : FormViewController {
     
                 SwitchRow("All-day") {
                     $0.title = $0.tag
+                    $0.validator = IdaBaseValidator.SwitchDemoValidator($0)
                 }.onChange { [weak self] row in
                     let startDate: DateTimeInlineRow! = self?.form.rowByTag("Starts")
                     let endDate: DateTimeInlineRow! = self?.form.rowByTag("Ends")
