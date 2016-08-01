@@ -122,6 +122,10 @@ public class BaseRow : BaseRowType {
             }
         }
     }
+    
+    // MARK: - Validation Extension
+    var validator:IdaValidator?
+    var fireValidatorOnChange: Bool = false
 }
 
 extension BaseRow {
