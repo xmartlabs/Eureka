@@ -97,7 +97,7 @@ public class SliderCell: Cell<Float>, CellType {
         }
         row.value = roundedValue
         if shouldShowTitle() {
-            valueLabel.text = "\(row.value!)"
+            valueLabel.text = row.displayValueFor?(row.value)
         }
     }
     
