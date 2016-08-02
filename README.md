@@ -465,14 +465,14 @@ The onPresentCallback will be called when the row is about to present another vi
 The `presentationMode` is what defines how the controller is presented and which controller is presented. This presentation can be using a Segue identifier, a segue class, presenting a controller modally or pushing to a specific view controller. For example a CustomPushRow can be defined like this:
 
 ```swift
-public final class CustomPushRow<T: Equatable> : SelectorRow<T, SelectorViewController<T>>, RowType {
 
+public final class CustomPushRow<T: Equatable, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell.Value == T> : SelectorRow<T, Cell, SelectorViewController<T>>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
         presentationMode = .Show(controllerProvider: ControllerProvider.Callback {
-        	return SelectorViewController<T>(){ _ in }
-        }, completionCallback: { vc in
-        	vc.navigationController?.popViewControllerAnimated(true)
+            return SelectorViewController<T>(){ _ in }
+            }, completionCallback: { vc in
+                vc.navigationController?.popViewControllerAnimated(true)
         })
     }
 }
