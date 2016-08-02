@@ -8,21 +8,21 @@
 
 import Foundation
 
-class ValidationResult: NSObject {
+public class ValidationResult: NSObject {
     var target:AnyObject!
     var isValid:Bool = false
     var payload:Any?
 }
 
-protocol IdaValidationListener:class {
+public protocol IdaValidationListener:class {
     func processValidationResult(validationResult:ValidationResult)
 }
 
-protocol IdaValidator:_IdaValidator {
+public protocol IdaValidator:_IdaValidator {
     func validate(autoPresent:Bool) -> ValidationResult
-    func addListener(listener:IdaValidationListener)
+    func addListener(listener:IdaValidationListener, strong:Bool)
     func removeListener(listener:IdaValidationListener)
 }
 
-@objc protocol _IdaValidator:class {
+@objc public protocol _IdaValidator:class {
 }

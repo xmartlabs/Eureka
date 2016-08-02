@@ -8,9 +8,9 @@
 
 import Foundation
 
-typealias ValidationRule = (AnyObject?) -> ValidationResult
+public typealias ValidationRule = (AnyObject?) -> ValidationResult
 
-class IdaBaseValidator: NSObject,IdaValidator {
+public class IdaBaseValidator: NSObject,IdaValidator {
     private var target:AnyObject
     private var rule:ValidationRule
     private var wr_listeners:[Weak<AnyObject>]=[]
@@ -22,7 +22,7 @@ class IdaBaseValidator: NSObject,IdaValidator {
     }
     
     // MARK: - Validation
-    func validate(autoPresent: Bool) -> ValidationResult {
+    public func validate(autoPresent: Bool) -> ValidationResult {
         let result = rule(target)
         if (autoPresent) {
             self.iterateListeners({ (listener) in
@@ -34,21 +34,21 @@ class IdaBaseValidator: NSObject,IdaValidator {
     
     
     // MARK: - Listeners
-    func addListener(listener:IdaValidationListener) {
+    public func addListener(listener:IdaValidationListener, strong:Bool) {
         // find the previously added reference
         guard listenerWeakReference(listener) == nil else{
             return
         }
-        wr_listeners.append(Weak(value: listener))
+        wr_listeners.append(Weak(value: listener, strong:strong))
     }
     
-    func removeListener(listener:IdaValidationListener) {
+    public func removeListener(listener:IdaValidationListener) {
         if let weakReference = listenerWeakReference(listener) {
             wr_listeners.removeAtIndex(indexOfWeakReference(weakReference))
         }
     }
     
-    func iterateListeners( blockForListener: ((listener:IdaValidationListener)->Void) ) {
+    public func iterateListeners( blockForListener: ((listener:IdaValidationListener)->Void) ) {
         var emptyReferencesRange = NSMakeRange(0, 0)
         
         for i in 0 ..< wr_listeners.count {
@@ -105,8 +105,30 @@ class IdaBaseValidator: NSObject,IdaValidator {
 }
 
 private class Weak<T: AnyObject> {
-    weak var value : T?
-    init (value: T) {
+    weak var weakValue : T?
+    var strongValue: T?
+    var value : T? {
+        get {
+            if !isStrong {
+                return weakValue
+            }
+            else {
+                return strongValue
+            }
+        }
+        set {
+            if !isStrong {
+                weakValue = newValue
+            }
+            else {
+                strongValue = newValue
+            }
+        }
+    }
+    private(set) var  isStrong: Bool = false
+    
+    init (value: T, strong:Bool) {
+        isStrong = strong
         self.value = value
     }
 }

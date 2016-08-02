@@ -9,7 +9,7 @@
 import Foundation
 
 extension IdaBaseValidator {
-    class func SwitchDemoValidator(row:SwitchRow) -> IdaBaseValidator {
+    public class func SwitchDemoValidator(row:SwitchRow) -> IdaBaseValidator {
         let validator = IdaBaseValidator(target: row) { (target) -> ValidationResult in
             let row = target as! SwitchRow
             let validationResult = ValidationResult()
