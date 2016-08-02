@@ -8,15 +8,15 @@
 
 import Foundation
 
-public typealias ValidationRule = (AnyObject?) -> ValidationResult
+public typealias ValidationRule = (Any?) -> ValidationResult
 
 public class IdaBaseValidator: NSObject,IdaValidator {
-    private var target:AnyObject
+    private var target:Any
     private var rule:ValidationRule
     private var wr_listeners:[Weak<AnyObject>]=[]
     
     // MARK: - Initialization
-    init(target:AnyObject, rule:ValidationRule) {
+    init(target:Any, rule:ValidationRule) {
         self.target = target
         self.rule = rule
     }
