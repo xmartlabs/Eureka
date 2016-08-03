@@ -124,7 +124,7 @@ public class BaseRow : BaseRowType {
     }
     
     // MARK: - Validation Extension
-    public var validator:IdaValidator?
+    public var validator:IdaBaseValidator?
     public var fireValidatorOnChange: Bool = false
 }
 

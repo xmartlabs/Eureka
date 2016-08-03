@@ -75,11 +75,10 @@
 		51729DF61B9A4F5E004A00EB /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51729DEB1B9A4F5E004A00EB /* Eureka.framework */; };
 		51729E671B9A5FA5004A00EB /* Eureka.h in Headers */ = {isa = PBXBuildFile; fileRef = 51729E661B9A5FA5004A00EB /* Eureka.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8690E4BE1CFDE062004CDB1C /* Eureka.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8690E4BD1CFDE062004CDB1C /* Eureka.bundle */; };
+		C51E0A121D52480D00AB6959 /* IdaDefinableValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C582362A1D4F60F6003C615F /* IdaDefinableValidator.swift */; };
+		C51E0A141D524B9000AB6959 /* IdaDefinableValidationResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E0A131D524B9000AB6959 /* IdaDefinableValidationResultProcessor.swift */; };
 		C58236291D4F6000003C615F /* IdaValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58236281D4F6000003C615F /* IdaValidator.swift */; };
-		C582362B1D4F60F6003C615F /* IdaBaseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C582362A1D4F60F6003C615F /* IdaBaseValidator.swift */; };
-		C582362E1D4F9F4C003C615F /* IdaBaseValidator+FactoryHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C582362D1D4F9F4C003C615F /* IdaBaseValidator+FactoryHelpers.swift */; };
-		C58236301D4FA6A0003C615F /* Row+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C582362F1D4FA6A0003C615F /* Row+Extension.swift */; };
-		C58236321D4FACDC003C615F /* IdaValidationResultPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58236311D4FACDC003C615F /* IdaValidationResultPresenter.swift */; };
+		C58236321D4FACDC003C615F /* IdaValidationResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58236311D4FACDC003C615F /* IdaValidationResultProcessor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -164,11 +163,10 @@
 		51729DFC1B9A4F5E004A00EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Tests/Info.plist; sourceTree = "<group>"; };
 		51729E661B9A5FA5004A00EB /* Eureka.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Eureka.h; path = Source/Eureka.h; sourceTree = SOURCE_ROOT; };
 		8690E4BD1CFDE062004CDB1C /* Eureka.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Eureka.bundle; sourceTree = "<group>"; };
+		C51E0A131D524B9000AB6959 /* IdaDefinableValidationResultProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdaDefinableValidationResultProcessor.swift; sourceTree = "<group>"; };
 		C58236281D4F6000003C615F /* IdaValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdaValidator.swift; sourceTree = "<group>"; };
-		C582362A1D4F60F6003C615F /* IdaBaseValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdaBaseValidator.swift; sourceTree = "<group>"; };
-		C582362D1D4F9F4C003C615F /* IdaBaseValidator+FactoryHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IdaBaseValidator+FactoryHelpers.swift"; sourceTree = "<group>"; };
-		C582362F1D4FA6A0003C615F /* Row+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Row+Extension.swift"; sourceTree = "<group>"; };
-		C58236311D4FACDC003C615F /* IdaValidationResultPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdaValidationResultPresenter.swift; sourceTree = "<group>"; };
+		C582362A1D4F60F6003C615F /* IdaDefinableValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdaDefinableValidator.swift; sourceTree = "<group>"; };
+		C58236311D4FACDC003C615F /* IdaValidationResultProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdaValidationResultProcessor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -349,10 +347,9 @@
 			isa = PBXGroup;
 			children = (
 				C58236281D4F6000003C615F /* IdaValidator.swift */,
-				C582362A1D4F60F6003C615F /* IdaBaseValidator.swift */,
-				C582362D1D4F9F4C003C615F /* IdaBaseValidator+FactoryHelpers.swift */,
-				C582362F1D4FA6A0003C615F /* Row+Extension.swift */,
-				C58236311D4FACDC003C615F /* IdaValidationResultPresenter.swift */,
+				C58236311D4FACDC003C615F /* IdaValidationResultProcessor.swift */,
+				C582362A1D4F60F6003C615F /* IdaDefinableValidator.swift */,
+				C51E0A131D524B9000AB6959 /* IdaDefinableValidationResultProcessor.swift */,
 			);
 			name = Validation;
 			path = Source/Validation;
@@ -485,7 +482,6 @@
 				2859CDBE1C7D137D0002982F /* Form.swift in Sources */,
 				28EEC0001C7E36EB00300699 /* SwitchRow.swift in Sources */,
 				28EEC02A1C7E3B5A00300699 /* MultipleSelectorRow.swift in Sources */,
-				C582362B1D4F60F6003C615F /* IdaBaseValidator.swift in Sources */,
 				28EEC0231C7E3B1900300699 /* AlertRow.swift in Sources */,
 				28EEC0221C7E3B1300300699 /* ActionSheetRow.swift in Sources */,
 				28EEBFEC1C7E224200300699 /* PresenterRowType.swift in Sources */,
@@ -493,7 +489,7 @@
 				28EEBFFD1C7E25F100300699 /* Cell.swift in Sources */,
 				28EEC0321C7E64A400300699 /* DatePickerRow.swift in Sources */,
 				28EEBFE81C7E1D7E00300699 /* CellType.swift in Sources */,
-				C58236321D4FACDC003C615F /* IdaValidationResultPresenter.swift in Sources */,
+				C58236321D4FACDC003C615F /* IdaValidationResultProcessor.swift in Sources */,
 				28EEC0241C7E3B1D00300699 /* PickerRow.swift in Sources */,
 				28EEC0281C7E3B4B00300699 /* FieldsRow.swift in Sources */,
 				2859CD961C7CF1FD0002982F /* Helpers.swift in Sources */,
@@ -511,15 +507,15 @@
 				28EEC00C1C7E396000300699 /* SelectorRow.swift in Sources */,
 				28EEC0161C7E3A3200300699 /* ListCheckRow.swift in Sources */,
 				28EEC01D1C7E3A8600300699 /* SliderRow.swift in Sources */,
+				C51E0A121D52480D00AB6959 /* IdaDefinableValidator.swift in Sources */,
 				28EEC00B1C7E395700300699 /* OptionsRow.swift in Sources */,
 				28EEC0021C7E37BD00300699 /* ButtonRow.swift in Sources */,
 				28EE46A81C7F5D5200EFF4A2 /* SelectableSection.swift in Sources */,
-				C582362E1D4F9F4C003C615F /* IdaBaseValidator+FactoryHelpers.swift in Sources */,
-				C58236301D4FA6A0003C615F /* Row+Extension.swift in Sources */,
 				28EEBFF61C7E240B00300699 /* InlineRowType.swift in Sources */,
 				28EEBFFB1C7E25C500300699 /* Operators.swift in Sources */,
 				28DB37301CE4F864009E46BA /* Protocols.swift in Sources */,
 				2859CDC01C7D138D0002982F /* Section.swift in Sources */,
+				C51E0A141D524B9000AB6959 /* IdaDefinableValidationResultProcessor.swift in Sources */,
 				28EEC0151C7E39C100300699 /* DateRow.swift in Sources */,
 				2859CDE91C7DD78E0002982F /* BaseRow.swift in Sources */,
 				28EEBFF01C7E23F400300699 /* Row.swift in Sources */,

@@ -92,6 +92,10 @@ class HomeViewController : FormViewController {
                     row.title = row.tag
                     row.presentationMode = .SegueName(segueName: "ListSectionsControllerSegue", completionCallback: nil)
                 }
+                <<< ButtonRow("Validation Example") { (row:ButtonRow) -> Void in
+                    row.title = row.tag
+                    row.presentationMode = .SegueName(segueName: "ValidationExampleSegue", completionCallback: nil)
+                }
         +++ Section()
                 <<< ButtonRow() { (row: ButtonRow) -> Void in
                    row.title = "About"
@@ -580,8 +584,6 @@ class NativeEventFormViewController : FormViewController {
     
                 SwitchRow("All-day") {
                     $0.title = $0.tag
-                    $0.validator = IdaBaseValidator.SwitchDemoValidator($0)
-                    $0.validator?.addListener(SwitchDemoValidationResultPresenter(), strong:true)
                 }.onChange { [weak self] row in
                     let startDate: DateTimeInlineRow! = self?.form.rowByTag("Starts")
                     let endDate: DateTimeInlineRow! = self?.form.rowByTag("Ends")
