@@ -15,31 +15,161 @@ class ValidationExample: FormViewController {
         
         initializeForm()
     }
+    
     var row_lowerValue : DecimalRow!
     var row_higherValue : DecimalRow!
     
+    var row_systolic : DecimalRow!
+    var row_diastolic : DecimalRow!
+    
+    var validation_limit : IdaDecimalComparisonValidator!
+    var validation_bloodPressure : IdaDecimalComparisonValidator!
+    
+    var numericValidationResultProccessor: IdaDefinableValidationResultProcessor!
+    
+    var row_start : DateTimeInlineRow!
+    var row_end : DateTimeInlineRow!
+    var validation_duration : IdaDefinableValidator!
     private func initializeForm() {
         
-        form +++ Section("Comapre Numeric Fields")
-            <<< SwitchRow("Should be on") {
+        form +++ Section("Switch")
+            <<< SwitchRow("I agree to Privacy Policy") {
                 $0.title = $0.tag
-                $0.validator = IdaDefinableValidator.SwitchDemoValidator($0)
-                $0.validator?.addListener(SwitchDemoValidationResultPresenter(), strong: true)
+                // Validator 0. Should agree
+                $0.validatorWhileEditing = IdaDefinableValidator.SwitchDemoValidator($0)
+                $0.validatorWhileEditing?.addListener(SwitchDemoValidationResultPresenter(), strong: true)
             }
-            <<< DecimalRow("Should keep lower value") {
+        +++ Section("Comapre Numeric Fields")
+            <<< DecimalRow("Lower Limit") {
                 $0.title = $0.tag
                 row_lowerValue = $0
             }
-            <<< DecimalRow("Should keep higher value") {
+            <<< DecimalRow("Higher Limit") {
                 $0.title = $0.tag
                 row_higherValue = $0
-        }
+            }
+        +++ Section("Blood Pressure")
+            <<< DecimalRow("Systolic") {
+                $0.title = $0.tag
+                row_systolic = $0
+            }
+            <<< DecimalRow("Diastolic") {
+                $0.title = $0.tag
+                row_diastolic = $0
+            }
+        +++ Section("Holidy Period")
+            <<< DateTimeInlineRow("Start Time") {
+                $0.title = $0.tag
+                row_start = $0
+            }
+            <<< DateTimeInlineRow("End Time") {
+                $0.title = $0.tag
+                row_end = $0
+            }
+        
+        // Add Validators
+        // Validator 1. Bounds
+        validation_limit = IdaDecimalComparisonValidator(tag: "Bounds", leftRow: row_lowerValue, rightRow: row_higherValue, validCases: [.OrderedAscending , .OrderedSame], resultClassifier: IdaDecimalComparisonValidator.ProposedResultClassifierPrefix + ".Bounds")
+        row_lowerValue.validatorAfterEditing = validation_limit
+        row_higherValue.validatorAfterEditing = validation_limit
+        
+        // Validator 2. Blood Pressure
+        validation_bloodPressure = IdaDecimalComparisonValidator(tag: "BloodPressure", leftRow: row_systolic, rightRow: row_diastolic, validCases: [.OrderedDescending], resultClassifier: IdaDecimalComparisonValidator.ProposedResultClassifierPrefix + ".BloodPressure")
+        row_systolic.validatorWhileEditing = validation_bloodPressure
+        row_diastolic.validatorWhileEditing = validation_bloodPressure
+        row_systolic.validatorAfterEditing = validation_bloodPressure
+        row_diastolic.validatorAfterEditing = validation_bloodPressure
+        
+        //// Listener for Validator 1, Validator 2.
+        numericValidationResultProccessor = IdaDefinableValidationResultProcessor(processor: { (result, callback) in
+            print ("numeric validation result")
+            print (result)
+            let (left,right) = result.target as! (DecimalRow,DecimalRow)
+            var invalidColor = UIColor.redColor()
+            if result.classifier == IdaDecimalComparisonValidator.ProposedResultClassifierPrefix + ".BloodPressure" {
+                invalidColor = UIColor(red: 0.5, green: 0, blue: 0, alpha: 1)
+            }
+            
+            left.cell.textLabel?.textColor = result.isValid ? UIColor.blackColor() : invalidColor
+            right.cell.textLabel?.textColor = result.isValid ? UIColor.blackColor() : invalidColor
+        })
+        validation_limit.addListener(numericValidationResultProccessor, strong: false)
+        validation_bloodPressure.addListener(numericValidationResultProccessor, strong: false)
+        
+        // Validator 3. Duration
+        let _row_start = row_start!
+        let _row_end = row_end!
+        validation_duration = IdaDefinableValidator(tag: "Duration", target: (_row_start,_row_end), rule: { (rowsPair) -> ValidationResult in
+            let (startRow, endRow) = rowsPair as! (DateTimeInlineRow, DateTimeInlineRow)
+            let startTime = startRow.value
+            let endTime = endRow.value
+//
+            var isValid = true
+            var payloadLeftPart : String?
+            var payloadRightPart : String?
+            var payload = [String:String]()
+            // Check Start Row
+            if let startTime = startTime {
+                // Check if the value is within the meaningful zone.
+                if let endTime = endTime {
+                    if startTime.compare(endTime) != .OrderedAscending {
+                        isValid = false
+                        payloadLeftPart = "Start time should be ahead of end time."
+                    }
+                }
+            }
+            else {
+                payloadLeftPart = "Value is empty"
+                isValid = false
+            }
+            
+            // Check End Row
+            if let endTime = endTime {
+                // Check if the value is within the meaningful zone.
+                if let startTime = startTime {
+                    if startTime.compare(endTime) != .OrderedAscending {
+                        isValid = false
+                        payloadRightPart = "End time should be after start time."
+                    }
+                }
+            }
+            else {
+                payloadRightPart = "Value is empty"
+                isValid = false
+            }
+//
+            if let payloadLeftPart = payloadLeftPart {
+                payload["start"] = payloadLeftPart
+            }
+            if let payloadRightPart = payloadRightPart {
+                payload["end"] = payloadRightPart
+            }
+            return ValidationResult(target: rowsPair, classifier: "Duration", isValid: isValid, payload: payload)
+        })
+        validation_duration.addListener(IdaDefinableValidationResultProcessor(processor: { result , callback in
+            let (rowStart,rowEnd) = result.target as! (DateTimeInlineRow, DateTimeInlineRow)
+            var rowStartColor = UIColor.whiteColor()
+            var rowEndColor = UIColor.whiteColor()
+            if let payload = result.payload as? [String:String] {
+                if let rowStart_ErrorMessage = payload["start"] {
+                    rowStartColor = UIColor.redColor()
+                }
+                if let rowEnd_ErrorMessage = payload["end"] {
+                    rowEndColor = UIColor.redColor()
+                }
+            }
+            rowStart.baseCell.backgroundColor = rowStartColor
+            rowEnd.baseCell.backgroundColor = rowEndColor
+        }) , strong: true)
+        row_start.validatorWhileEditing = validation_duration
+        row_start.validatorAfterEditing = validation_duration
+        row_end.validatorAfterEditing = validation_duration
     }
 }
 
 // MARK: - Switch Validation
 internal class SwitchDemoValidationResultPresenter : IdaValidationResultProcessor {
-    override public func processValidationResult(validationResult: ValidationResult) {
+    override internal func processValidationResult(validationResult: ValidationResult) {
         let row = validationResult.target as! SwitchRow
         row.cell.textLabel?.textColor = validationResult.isValid ? UIColor.blackColor() : UIColor.redColor()
     }
@@ -69,32 +199,59 @@ extension IdaDefinableValidator {
 
 // MARK: - Number Comparison
 internal class IdaDecimalComparisonValidator : IdaValidator<(left:DecimalRow,right:DecimalRow)> {
-    static let ValidationResultClassifier = "IdaDecimalComparisonValidationResult"
+    static let ProposedResultClassifierPrefix = "IdaDecimalComparisonValidationResult"
     var validCases:[NSComparisonResult]
-    init(tag:String!, leftRow:DecimalRow, rightRow:DecimalRow, validCases:[NSComparisonResult]) {
+    var resultClassifier:String?
+    init(tag:String!, leftRow:DecimalRow, rightRow:DecimalRow, validCases:[NSComparisonResult], resultClassifier:String?) {
         self.validCases = validCases
+        self.resultClassifier = resultClassifier
         super.init(tag: tag, target:(left:leftRow,right:rightRow))
     }
     override func validate(notify: Bool) -> ValidationResult {
-        var failureMessage = "Validator's target is not set"
+        var isValid = false
+        var payloadMessage = "Validator's target is not set"
         if let (left,right) = self.target {
-            guard let leftValue = left.value, rightValue = right.value else {
-                failureMessage = "Values are not set"
-            }
-            var comparisonResult : NSComparisonResult = .OrderedSame
-            if leftValue < rightValue {
-                comparisonResult = .OrderedAscending
-            }
-            else if leftValue > rightValue {
-                comparisonResult = .OrderedDescending
-            }
-            if validCases.contains(comparisonResult) {
-                return ValidationResult(target: self.target, classifier: self.dynamicType.ValidationResultClassifier, isValid: true, payload: "Valid")
+            if let leftValue = left.value, rightValue = right.value {
+                var comparisonResult : NSComparisonResult = .OrderedSame
+                if leftValue < rightValue {
+                    comparisonResult = .OrderedAscending
+                }
+                else if leftValue > rightValue {
+                    comparisonResult = .OrderedDescending
+                }
+                if validCases.contains(comparisonResult) {
+                    isValid = true
+                    payloadMessage = "Valid case"
+                }
+                else {
+                    payloadMessage = "Invalid case"
+                }
             }
             else {
-                failureMessage = "Invalid case"
+                payloadMessage = "Values are not set"
             }
         }
-        return ValidationResult(target: self.target, classifier: self.dynamicType.ValidationResultClassifier, isValid: false, payload: failureMessage)
+        let result = ValidationResult(target: self.target, classifier: resultClassifier, isValid: isValid, payload: payloadMessage)
+        if notify {
+            notifyListeners(result)
+        }
+        return result
+    }
+}
+
+extension ValidationResult : CustomStringConvertible {
+    public var description : String {
+        get {
+            var strDesc = ""
+            strDesc += isValid ? "Valid. ":"Invalid. "
+            
+            if let classifier = classifier {
+                strDesc += "Classfier: " + classifier + ". "
+            }
+            if let payload = payload as? String {
+                strDesc += "Payload: " + payload + ". "
+            }
+            return strDesc
+        }
     }
 }
