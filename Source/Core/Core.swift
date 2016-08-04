@@ -562,6 +562,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
                 inlineRow.collapseInlineRow()
             }
         }
+        cell.row.validatorBeforeEditing?.validate(true)
     }
     
     /**
@@ -569,6 +570,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
      */
     public final func endEditing<T:Equatable>(cell: Cell<T>) {
         cell.row.unhighlightCell()
+        cell.row.validatorAfterEditing?.validate(true)
     }
     
     /**

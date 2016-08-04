@@ -124,8 +124,9 @@ public class BaseRow : BaseRowType {
     }
     
     // MARK: - Validation Extension
-    public var validator:IdaBaseValidator?
-    public var fireValidatorOnChange: Bool = false
+    public var validatorBeforeEditing:IdaBaseValidator?
+    public var validatorWhileEditing:IdaBaseValidator?
+    public var validatorAfterEditing:IdaBaseValidator?
 }
 
 extension BaseRow {
