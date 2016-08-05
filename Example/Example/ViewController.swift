@@ -32,7 +32,7 @@ class HomeViewController : FormViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         ImageRow.defaultCellUpdate = { cell, row in
            cell.accessoryView?.layer.cornerRadius = 17
            cell.accessoryView?.frame = CGRectMake(0, 0, 34, 34)
@@ -662,7 +662,7 @@ class NativeEventFormViewController : FormViewController {
                     cell.detailTextLabel?.textColor = cell.tintColor
                 }
         
-        form +++=
+        form +++
 
                 PushRow<RepeatInterval>("Repeat") {
                     $0.title = $0.tag
@@ -670,7 +670,7 @@ class NativeEventFormViewController : FormViewController {
                     $0.value = .Never
                 }
         
-        form +++=
+        form +++
             
             PushRow<EventAlert>() {
                 $0.title = "Alert"
@@ -696,14 +696,14 @@ class NativeEventFormViewController : FormViewController {
                 }
             }
         
-        form +++=
+        form +++
             
             PushRow<EventState>("Show As") {
                 $0.title = "Show As"
                 $0.options = EventState.allValues
             }
         
-        form +++=
+        form +++
             
             URLRow("URL") {
                 $0.placeholder = "URL"
@@ -1051,7 +1051,7 @@ class ListSectionsController: FormViewController {
         
         let continents = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
         
-        form +++= SelectableSection<ImageCheckRow<String>, String>() { section in
+        form +++ SelectableSection<ImageCheckRow<String>, String>() { section in
             section.header = HeaderFooterView(title: "Where do you live?")
         }
         
@@ -1065,7 +1065,7 @@ class ListSectionsController: FormViewController {
         
         let oceans = ["Arctic", "Atlantic", "Indian", "Pacific", "Southern"]
         
-        form +++= SelectableSection<ImageCheckRow<String>, String>("And which of the following oceans have you taken a bath in?", selectionType: .MultipleSelection)
+        form +++ SelectableSection<ImageCheckRow<String>, String>("And which of the following oceans have you taken a bath in?", selectionType: .MultipleSelection)
         for option in oceans {
             form.last! <<< ImageCheckRow<String>(option){ lrow in
                 lrow.title = option

@@ -142,6 +142,9 @@ public final class Form {
     /// All the rows of this form. Includes the hidden rows.
     public var allRows: [BaseRow] { return kvoWrapper._allSections.map({ $0.kvoWrapper._allRows }).flatMap { $0 } }
     
+    /// All the sections of this form. Includes hidden sections.
+    public var allSections: [Section] { return kvoWrapper._allSections }
+    
     /**
      * Hides all the inline rows of this form.
      */

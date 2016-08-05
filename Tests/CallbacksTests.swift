@@ -154,7 +154,7 @@ class CallbacksTests: XCTestCase {
         Row.defaultRowInitializer = { row in
             invoked = true
         }
-        formVC.form +++= Row.init() { _ in }
+        formVC.form +++ Row.init() { _ in }
         XCTAssertTrue(invoked)
     }
     
@@ -163,7 +163,7 @@ class CallbacksTests: XCTestCase {
         Row.defaultCellSetup = { cell, row in
             invoked = true
         }
-        formVC.form +++= row
+        formVC.form +++ row
         row.cell // laod cell
         XCTAssertTrue(invoked)
     }
@@ -173,7 +173,7 @@ class CallbacksTests: XCTestCase {
         Row.defaultCellUpdate = { cell, row in
             invoked = true
         }
-        formVC.form +++= row
+        formVC.form +++ row
         formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: row.indexPath()!) // should invoke cell update
         XCTAssertTrue(invoked)
     }
