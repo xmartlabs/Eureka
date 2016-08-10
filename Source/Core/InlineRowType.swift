@@ -111,9 +111,13 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
     public func toggleInlineRow() {
         if let _ = inlineRow {
             collapseInlineRow()
+            let row = self as BaseRow
+            row.validatorAfterEditing?.validate(true)
         }
         else{
             expandInlineRow()
+            let row = self as BaseRow
+            row.validatorBeforeEditing?.validate(true)
         }
     }
     
