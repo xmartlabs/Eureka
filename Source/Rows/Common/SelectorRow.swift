@@ -61,7 +61,7 @@ public class SelectorRow<Cell: CellType, VCType: TypedRowControllerType where Ce
      */
     public override func prepareForSegue(_ segue: UIStoryboardSegue) {
         super.prepareForSegue(segue)
-        guard let rowVC = segue.destinationViewController as? VCType else { return }
+        guard let rowVC = segue.destination as? VCType else { return }
         rowVC.title = selectorTitle ?? rowVC.title
         rowVC.completionCallback = presentationMode?.completionHandler ?? rowVC.completionCallback
         onPresentCallback?(cell.formViewController()!, rowVC)

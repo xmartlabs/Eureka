@@ -84,7 +84,7 @@ public class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
     
     public override func prepareForSegue(_ segue: UIStoryboardSegue) {
         super.prepareForSegue(segue)
-        let rowVC = segue.destinationViewController as? RowControllerType
+        let rowVC = segue.destination as? RowControllerType
         rowVC?.completionCallback = self.presentationMode?.completionHandler
     }
 }

@@ -39,7 +39,7 @@ import UIKit
 		}
 	}
 	
-	override public var attributedPlaceholder:AttributedString? {
+	override public var attributedPlaceholder:NSAttributedString? {
 		didSet {
 			title.text = attributedPlaceholder?.string
 			title.sizeToFit()
@@ -63,9 +63,9 @@ import UIKit
 		}
 	}
 	
-	@IBInspectable var titleTextColour:UIColor = .gray() {
+	@IBInspectable var titleTextColour:UIColor = .gray {
 		didSet {
-			if !isFirstResponder() {
+			if !isFirstResponder {
 				title.textColor = titleTextColour
 			}
 		}
@@ -73,7 +73,7 @@ import UIKit
 	
 	@IBInspectable var titleActiveTextColour:UIColor! {
 		didSet {
-			if isFirstResponder() {
+			if isFirstResponder {
 				title.textColor = titleActiveTextColour
 			}
 		}
@@ -94,7 +94,7 @@ import UIKit
 	override public func layoutSubviews() {
 		super.layoutSubviews()
 		setTitlePositionForTextAlignment()
-		let isResp = isFirstResponder()
+		let isResp = isFirstResponder
 		if isResp && !(text?.isEmpty ?? true) {
 			title.textColor = titleActiveTextColour
 		} else {

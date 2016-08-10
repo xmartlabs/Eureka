@@ -72,7 +72,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         textView.delegate = self
         textView.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
         textView.textContainer.lineFragmentPadding = 0
-        textView.textContainerInset = UIEdgeInsetsZero
+        textView.textContainerInset = UIEdgeInsets.zero
         placeholderLabel.font = textView.font
         selectionStyle = .none
         contentView.addSubview(textView)
@@ -93,7 +93,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         textLabel?.text = nil
         detailTextLabel?.text = nil
         textView.isEditable = !row.isDisabled
-        textView.textColor = row.isDisabled ? .gray() : .black()
+        textView.textColor = row.isDisabled ? .gray : .black
         textView.text = row.displayValueFor?(row.value)
         placeholderLabel.text = (row as? TextAreaConformance)?.placeholder
         placeholderLabel.sizeToFit()
@@ -101,7 +101,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     }
     
     public override func cellCanBecomeFirstResponder() -> Bool {
-        return !row.isDisabled && textView.canBecomeFirstResponder()
+        return !row.isDisabled && textView.canBecomeFirstResponder
     }
     
     public override func cellBecomeFirstResponder(_ fromDiretion: Direction) -> Bool {
@@ -124,7 +124,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
-            return textView.isFirstResponder() ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
+            return textView.isFirstResponder ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
         }
         return String(v)
     }
@@ -170,7 +170,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
             return
         }
         if fieldRow.useFormatterDuringInput {
-            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>(allocatingCapacity: 1))
+            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.allocate(capacity: 1))
             let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?>? = nil
             if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
                 row.value = value.pointee as? T
@@ -183,7 +183,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
             }
         }
         else {
-            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>(allocatingCapacity: 1))
+            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.allocate(capacity: 1))
             let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?>? = nil
             if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
                 row.value = value.pointee as? T

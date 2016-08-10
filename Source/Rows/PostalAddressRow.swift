@@ -95,7 +95,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
     lazy public var streetSeparatorView : UIView = {
         let separatorView = UIView()
         separatorView.translatesAutoresizingMaskIntoConstraints = false
-        separatorView.backgroundColor = .lightGray()
+        separatorView.backgroundColor = .lightGray
         return separatorView
     }()
     
@@ -108,7 +108,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
     lazy public var stateSeparatorView : UIView = {
         let separatorView = UIView()
         separatorView.translatesAutoresizingMaskIntoConstraints = false
-        separatorView.backgroundColor = .lightGray()
+        separatorView.backgroundColor = .lightGray
         return separatorView
     }()
     
@@ -121,7 +121,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
     lazy public var postalCodeSeparatorView : UIView = {
         let separatorView = UIView()
         separatorView.translatesAutoresizingMaskIntoConstraints = false
-        separatorView.backgroundColor = .lightGray()
+        separatorView.backgroundColor = .lightGray
         return separatorView
     }()
     
@@ -134,7 +134,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
     lazy public var citySeparatorView : UIView = {
         let separatorView = UIView()
         separatorView.translatesAutoresizingMaskIntoConstraints = false
-        separatorView.backgroundColor = .lightGray()
+        separatorView.backgroundColor = .lightGray
         return separatorView
     }()
     
@@ -254,7 +254,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         streetTextField.delegate = self
         streetTextField.text = row.value?.street
         streetTextField.isEnabled = !row.isDisabled
-        streetTextField.textColor = row.isDisabled ? .gray() : .black()
+        streetTextField.textColor = row.isDisabled ? .gray : .black
         streetTextField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
         streetTextField.autocorrectionType = .no
         streetTextField.autocapitalizationType = .words
@@ -263,7 +263,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         stateTextField.delegate = self
         stateTextField.text = row.value?.state
         stateTextField.isEnabled = !row.isDisabled
-        stateTextField.textColor = row.isDisabled ? .gray() : .black()
+        stateTextField.textColor = row.isDisabled ? .gray : .black
         stateTextField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
         stateTextField.autocorrectionType = .no
         stateTextField.autocapitalizationType = .words
@@ -272,7 +272,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         postalCodeTextField.delegate = self
         postalCodeTextField.text = row.value?.postalCode
         postalCodeTextField.isEnabled = !row.isDisabled
-        postalCodeTextField.textColor = row.isDisabled ? .gray() : .black()
+        postalCodeTextField.textColor = row.isDisabled ? .gray : .black
         postalCodeTextField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
         postalCodeTextField.autocorrectionType = .no
         postalCodeTextField.autocapitalizationType = .allCharacters
@@ -281,7 +281,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         cityTextField.delegate = self
         cityTextField.text = row.value?.city
         cityTextField.isEnabled = !row.isDisabled
-        cityTextField.textColor = row.isDisabled ? .gray() : .black()
+        cityTextField.textColor = row.isDisabled ? .gray : .black
         cityTextField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
         cityTextField.autocorrectionType = .no
         cityTextField.autocapitalizationType = .words
@@ -290,7 +290,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         countryTextField.delegate = self
         countryTextField.text = row.value?.country
         countryTextField.isEnabled = !row.isDisabled
-        countryTextField.textColor = row.isDisabled ? .gray() : .black()
+        countryTextField.textColor = row.isDisabled ? .gray : .black
         countryTextField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
         countryTextField.autocorrectionType = .no
         countryTextField.autocapitalizationType = .words
@@ -301,7 +301,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
                 streetTextField.placeholder = placeholder
                 
                 if let color = rowConformance.placeholderColor {
-                    streetTextField.attributedPlaceholder = AttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
+                    streetTextField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
                 }
             }
             
@@ -309,7 +309,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
                 stateTextField.placeholder = placeholder
                 
                 if let color = rowConformance.placeholderColor {
-                    stateTextField.attributedPlaceholder = AttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
+                    stateTextField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
                 }
             }
             
@@ -317,7 +317,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
                 postalCodeTextField.placeholder = placeholder
                 
                 if let color = rowConformance.placeholderColor {
-                    postalCodeTextField.attributedPlaceholder = AttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
+                    postalCodeTextField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
                 }
             }
             
@@ -325,7 +325,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
                 cityTextField.placeholder = placeholder
                 
                 if let color = rowConformance.placeholderColor {
-                    cityTextField.attributedPlaceholder = AttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
+                    cityTextField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
                 }
             }
             
@@ -333,7 +333,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
                 countryTextField.placeholder = placeholder
                 
                 if let color = rowConformance.placeholderColor {
-                    countryTextField.attributedPlaceholder = AttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
+                    countryTextField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
                 }
             }
         }
@@ -341,11 +341,11 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
     
     public override func cellCanBecomeFirstResponder() -> Bool {
         return !row.isDisabled && (
-            streetTextField.canBecomeFirstResponder() ||
-                stateTextField.canBecomeFirstResponder() ||
-                postalCodeTextField.canBecomeFirstResponder() ||
-                cityTextField.canBecomeFirstResponder() ||
-                countryTextField.canBecomeFirstResponder()
+            streetTextField.canBecomeFirstResponder ||
+                stateTextField.canBecomeFirstResponder ||
+                postalCodeTextField.canBecomeFirstResponder ||
+                cityTextField.canBecomeFirstResponder ||
+                countryTextField.canBecomeFirstResponder
         )
     }
     
@@ -365,12 +365,12 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
     override public var inputAccessoryView: UIView? {
         
         if let v = formViewController()?.inputAccessoryViewForRow(row) as? NavigationAccessoryView {
-            if streetTextField.isFirstResponder() {
+            if streetTextField.isFirstResponder {
                 v.nextButton.isEnabled = true
                 v.nextButton.target = self
                 v.nextButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
             }
-            else if stateTextField.isFirstResponder() {
+            else if stateTextField.isFirstResponder {
                 v.previousButton.target = self
                 v.previousButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
                 v.nextButton.target = self
@@ -378,14 +378,14 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
                 v.previousButton.isEnabled = true
                 v.nextButton.isEnabled = true
             }
-            else if postalCodeTextField.isFirstResponder() {
+            else if postalCodeTextField.isFirstResponder {
                 v.previousButton.target = self
                 v.previousButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
                 v.nextButton.target = self
                 v.nextButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
                 v.previousButton.isEnabled = true
                 v.nextButton.isEnabled = true
-            } else if cityTextField.isFirstResponder() {
+            } else if cityTextField.isFirstResponder {
                 v.previousButton.target = self
                 v.previousButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
                 v.nextButton.target = self
@@ -393,7 +393,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
                 v.previousButton.isEnabled = true
                 v.nextButton.isEnabled = true
             }
-            else if countryTextField.isFirstResponder() {
+            else if countryTextField.isFirstResponder {
                 v.previousButton.target = self
                 v.previousButton.action = #selector(PostalAddressCell.internalNavigationAction(_:))
                 v.previousButton.isEnabled = true
@@ -406,19 +406,19 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
     func internalNavigationAction(_ sender: UIBarButtonItem) {
         guard let inputAccesoryView  = inputAccessoryView as? NavigationAccessoryView else { return }
         
-        if streetTextField.isFirstResponder() {
+        if streetTextField.isFirstResponder {
             stateTextField.becomeFirstResponder()
         }
-        else if stateTextField.isFirstResponder()  {
+        else if stateTextField.isFirstResponder  {
             let _ = sender == inputAccesoryView.previousButton ? streetTextField.becomeFirstResponder() : postalCodeTextField.becomeFirstResponder()
         }
-        else if postalCodeTextField.isFirstResponder() {
+        else if postalCodeTextField.isFirstResponder {
             let _ = sender == inputAccesoryView.previousButton ? stateTextField.becomeFirstResponder() : cityTextField.becomeFirstResponder()
         }
-        else if cityTextField.isFirstResponder() {
+        else if cityTextField.isFirstResponder {
             let _ = sender == inputAccesoryView.previousButton ? postalCodeTextField.becomeFirstResponder() : countryTextField.becomeFirstResponder()
         }
-        else if countryTextField.isFirstResponder() {
+        else if countryTextField.isFirstResponder {
             cityTextField.becomeFirstResponder()
         }
     }
@@ -578,7 +578,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
             }
             
             if let formatter = valueFormatter, useFormatterDuringInput{
-                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>(allocatingCapacity: 1))
+                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.allocate(capacity: 1))
                 let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?>? = nil
                 if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
                     

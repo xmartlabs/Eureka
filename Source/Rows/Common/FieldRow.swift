@@ -73,7 +73,7 @@ public class FormatteableRow<Cell: CellType where Cell: BaseCell, Cell: TextInpu
         displayValueFor = { [unowned self] value in
             guard let v = value else { return nil }
             guard let formatter = self.formatter else { return String(v) }
-            if (self.cell.textInput as? UIView)?.isFirstResponder() == true {
+            if (self.cell.textInput as? UIView)?.isFirstResponder == true {
                 return self.useFormatterDuringInput ? formatter.editingString(for: v as! AnyObject) : String(v)
             }
             return formatter.string(for: v as? AnyObject)
@@ -193,11 +193,11 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         textField.delegate = self
         textField.text = row.displayValueFor?(row.value)
         textField.isEnabled = !row.isDisabled
-        textField.textColor = row.isDisabled ? .gray() : .black()
+        textField.textColor = row.isDisabled ? .gray : .black
         textField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
         if let placeholder = (row as? FieldRowConformance)?.placeholder {
             if let color = (row as? FieldRowConformance)?.placeholderColor {
-                textField.attributedPlaceholder = AttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
+                textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
             }
             else{
                 textField.placeholder = (row as? FieldRowConformance)?.placeholder
@@ -206,7 +206,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     }
     
     public override func cellCanBecomeFirstResponder() -> Bool {
-        return !row.isDisabled && textField.canBecomeFirstResponder()
+        return !row.isDisabled && textField.canBecomeFirstResponder
     }
     
     public override func cellBecomeFirstResponder(_ direction: Direction) -> Bool {
@@ -276,7 +276,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
             return
         }
         if fieldRow.useFormatterDuringInput {
-            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>(allocatingCapacity: 1))
+            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.allocate(capacity: 1))
             let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?>? = nil
             if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
                 row.value = value.pointee as? T
@@ -289,7 +289,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
             }
         }
         else {
-            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>(allocatingCapacity: 1))
+            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.allocate(capacity: 1))
             let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?>? = nil
             if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
                 row.value = value.pointee as? T
@@ -302,7 +302,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
-            return textField.isFirstResponder() ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
+            return textField.isFirstResponder ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
         }
         return String(v)
     }

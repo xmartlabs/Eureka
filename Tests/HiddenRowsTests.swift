@@ -78,13 +78,13 @@ class HiddenRowsTests: BaseEurekaTests {
         XCTAssertEqual(intDep!.count, 3)
         XCTAssertEqual(nameDep!.count, 3)
         
-        XCTAssertTrue(intDep!.contains({ $0.tag == "txt2_hrt" }))
-        XCTAssertTrue(intDep!.contains({ $0.tag == "int1_hrt" }))
-        XCTAssertFalse(intDep!.contains({ $0.tag == "s3_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag ==  "txt2_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "s3_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "txt1_hrt" }))
-        XCTAssertFalse(nameDep!.contains({ $0.tag == "int1_hrt" }))
+        XCTAssertTrue(intDep!.contains(where: { $0.tag == "txt2_hrt" }))
+        XCTAssertTrue(intDep!.contains(where: { $0.tag == "int1_hrt" }))
+        XCTAssertFalse(intDep!.contains(where: { $0.tag == "s3_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag ==  "txt2_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "s3_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "txt1_hrt" }))
+        XCTAssertFalse(nameDep!.contains(where: { $0.tag == "int1_hrt" }))
         
         //This should not change when some rows hide ...
         form[0][0].baseValue = "God is real"
@@ -95,13 +95,13 @@ class HiddenRowsTests: BaseEurekaTests {
         XCTAssertEqual(intDep!.count, 3)
         XCTAssertEqual(nameDep!.count, 3)
         
-        XCTAssertTrue(intDep!.contains({ $0.tag == "txt2_hrt" }))
-        XCTAssertTrue(intDep!.contains({ $0.tag == "int1_hrt" }))
-        XCTAssertFalse(intDep!.contains({ $0.tag == "s3_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "txt2_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "s3_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "txt1_hrt" }))
-        XCTAssertFalse(nameDep!.contains({ $0.tag == "int1_hrt" }))
+        XCTAssertTrue(intDep!.contains(where: { $0.tag == "txt2_hrt" }))
+        XCTAssertTrue(intDep!.contains(where: { $0.tag == "int1_hrt" }))
+        XCTAssertFalse(intDep!.contains(where: { $0.tag == "s3_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "txt2_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "s3_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "txt1_hrt" }))
+        XCTAssertFalse(nameDep!.contains(where: { $0.tag == "int1_hrt" }))
         
         // ...nor if they reappear
         form[0][0].baseValue = "blah blah blah"
@@ -110,13 +110,13 @@ class HiddenRowsTests: BaseEurekaTests {
         //check everything is still the same
         XCTAssertEqual(intDep!.count, 3)
         XCTAssertEqual(nameDep!.count, 3)
-        XCTAssertTrue(intDep!.contains({ $0.tag == "txt2_hrt" }))
-        XCTAssertTrue(intDep!.contains({ $0.tag == "int1_hrt" }))
-        XCTAssertFalse(intDep!.contains({ $0.tag == "s3_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "txt2_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "s3_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "txt1_hrt" }))
-        XCTAssertFalse(nameDep!.contains({ $0.tag == "int1_hrt" }))
+        XCTAssertTrue(intDep!.contains(where: { $0.tag == "txt2_hrt" }))
+        XCTAssertTrue(intDep!.contains(where: { $0.tag == "int1_hrt" }))
+        XCTAssertFalse(intDep!.contains(where: { $0.tag == "s3_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "txt2_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "s3_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "txt1_hrt" }))
+        XCTAssertFalse(nameDep!.contains(where: { $0.tag == "int1_hrt" }))
     }
     
     func testItemsByTag(){

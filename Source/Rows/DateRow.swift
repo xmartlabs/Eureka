@@ -49,7 +49,7 @@ public class _CountDownRow: _DateFieldRow {
             if let formatter = self.dateFormatter {
                 return formatter.string(from: val)
             }
-            let components = Calendar.current.components(Calendar.Unit.minute.union(Calendar.Unit.hour), from: val as Date)
+            let components = Calendar.current.dateComponents([Calendar.Component.minute, Calendar.Component.hour], from: val as Date)
             var hourString = "hour"
             if components.hour != 1{
                 hourString += "s"

@@ -108,7 +108,7 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
             row.value?.insert(day)
         }
         else{
-            row.value?.remove(day)
+            _ = row.value?.remove(day)
         }
     }
     
@@ -173,15 +173,15 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
         super.update()
         textLabel?.text = nil
         detailTextLabel?.text = nil
-        floatLabelTextField.attributedPlaceholder = AttributedString(string: row.title ?? "", attributes: [NSForegroundColorAttributeName: UIColor.lightGray()])
+        floatLabelTextField.attributedPlaceholder = NSAttributedString(string: row.title ?? "", attributes: [NSForegroundColorAttributeName: UIColor.lightGray])
         floatLabelTextField.text =  row.displayValueFor?(row.value)
         floatLabelTextField.isEnabled = !row.isDisabled
-        floatLabelTextField.titleTextColour = .lightGray()
+        floatLabelTextField.titleTextColour = .lightGray
         floatLabelTextField.alpha = row.isDisabled ? 0.6 : 1
     }
     
     public override func cellCanBecomeFirstResponder() -> Bool {
-        return !row.isDisabled && floatLabelTextField.canBecomeFirstResponder()
+        return !row.isDisabled && floatLabelTextField.canBecomeFirstResponder
     }
     
     public override func cellBecomeFirstResponder(_ direction: Direction) -> Bool {
@@ -205,7 +205,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
         }
         if let fieldRow = row as? FormatterConformance, let formatter = fieldRow.formatter {
             if fieldRow.useFormatterDuringInput {
-                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>(allocatingCapacity: 1))
+                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.allocate(capacity: 1))
                 let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?>? = nil
                 if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
                     row.value = value.pointee as? T
@@ -221,7 +221,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
                 }
             }
             else {
-                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>(allocatingCapacity: 1))
+                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.allocate(capacity: 1))
                 let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?>? = nil
                 if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
                     row.value = value.pointee as? T
@@ -245,7 +245,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
-            return textField.isFirstResponder() ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
+            return textField.isFirstResponder ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
         }
         return String(v)
     }
@@ -538,7 +538,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
         v.image = UIImage(named: "map_pin", in: Bundle(for: MapViewController.self), compatibleWith: nil)
         v.image = v.image?.withRenderingMode(.alwaysTemplate)
         v.tintColor = self.view.tintColor
-        v.backgroundColor = .clear()
+        v.backgroundColor = .clear
         v.clipsToBounds = true
         v.contentMode = .scaleAspectFit
         v.isUserInteractionEnabled = false
@@ -558,7 +558,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
         let layer = CAShapeLayer()
         layer.bounds = CGRect(x: 0, y: 0, width: self.width, height: self.height)
         layer.path = self.ellipse.cgPath
-        layer.fillColor = UIColor.gray().cgColor
+        layer.fillColor = UIColor.gray.cgColor
         layer.fillRule = kCAFillRuleNonZero
         layer.lineCap = kCALineCapButt
         layer.lineDashPattern = nil
@@ -566,7 +566,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
         layer.lineJoin = kCALineJoinMiter
         layer.lineWidth = 1.0
         layer.miterLimit = 10.0
-        layer.strokeColor = UIColor.gray().cgColor
+        layer.strokeColor = UIColor.gray.cgColor
         return layer
         }()
     

@@ -45,7 +45,7 @@ public class SwitchCell : Cell<Bool>, CellType {
     }
     
     func valueChanged() {
-        row.value = switchControl?.isOn.boolValue ?? false
+        row.value = switchControl?.isOn ?? false
     }
 }
 

@@ -47,7 +47,7 @@ public class NavigationAccessoryView : UIToolbar {
 
     private func initializeChevrons() {
         var bundle = Bundle(for: self.classForCoder)
-        if let resourcePath = bundle.pathForResource("Eureka", ofType: "bundle") {
+        if let resourcePath = bundle.path(forResource: "Eureka", ofType: "bundle") {
             if let resourcesBundle = Bundle(path: resourcePath) {
                 bundle = resourcesBundle
             }

@@ -299,7 +299,7 @@ extension Form {
                 rowObservers[rowTag] = Dictionary()
             }
             if let _ = rowObservers[rowTag]?[type]{
-                if !rowObservers[rowTag]![type]!.contains({ $0 === taggable }){
+                if !rowObservers[rowTag]![type]!.contains(where: { $0 === taggable }){
                     rowObservers[rowTag]?[type]!.append(taggable)
                 }
             }

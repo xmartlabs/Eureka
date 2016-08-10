@@ -55,10 +55,10 @@ formController.view
 formController.form +++ Section("Callbacks") <<< SwitchRow("scr1"){ $0.title = "Switch to turn red"; $0.value = false }
     .onChange({ row in
         if row.value == true {
-            row.cell.backgroundColor = .red()
+            row.cell.backgroundColor = .red
         }
         else {
-            row.cell.backgroundColor = .black()
+            row.cell.backgroundColor = .black
         }
     })
 
@@ -72,9 +72,9 @@ formController.view
 //: The cellSetup will be called when the cell of this row is configured (just once at the beginning) and the cellUpdate will be called when it is updated (each time it reappears on screen). Here you should define the appearance of the cell
 
 formController.form.last! <<< SegmentedRow<String>("Segments") { $0.title = "Choose an animal"; $0.value = "🐼"; $0.options = ["🐼", "🐶", "🐻"]}.cellSetup({ cell, row in
-        cell.backgroundColor = .red()
+        cell.backgroundColor = .red
 }).cellUpdate({ (cell, row) -> () in
-    cell.textLabel?.textColor = .yellow()
+    cell.textLabel?.textColor = .yellow
 })
 
 
