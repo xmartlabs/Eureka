@@ -193,23 +193,33 @@ class ValidationExample: FormViewController {
                 <<< DecimalRow("Decimal Row") {
                     $0.title = $0.tag
                     $0.validatorWhileEditing = DummyValidator(tag:"DecimalRow.whileEditing", target:$0)
+                    $0.validatorBeforeEditing = DummyValidator(tag:"DecimalRow.beforeEditing", target:$0)
+                    $0.validatorAfterEditing = DummyValidator(tag:"DecimalRow.afterEditing", target:$0)
                 }
                 <<< IntRow("Int Row") {
                     $0.title = $0.tag
                     $0.validatorWhileEditing = DummyValidator(tag:"IntRow.whileEditing", target:$0)
+                    $0.validatorBeforeEditing = DummyValidator(tag:"IntRow.beforeEditing", target:$0)
+                    $0.validatorAfterEditing = DummyValidator(tag:"IntRow.afterEditing", target:$0)
                 }
                 <<< TextRow("Text Row") {
                     $0.title = $0.tag
                     $0.validatorWhileEditing = DummyValidator(tag:"TextRow.whileEditing", target:$0)
+                    $0.validatorBeforeEditing = DummyValidator(tag:"IntRow.beforeEditing", target:$0)
+                    $0.validatorAfterEditing = DummyValidator(tag:"IntRow.afterEditing", target:$0)
                 }
                 <<< PasswordRow("Password Row") {
                     $0.title = $0.tag
                     $0.validatorWhileEditing = DummyValidator(tag:"PasswordRow.whileEditing", target:$0)
+                    $0.validatorBeforeEditing = DummyValidator(tag:"PasswordRow.beforeEditing", target:$0)
+                    $0.validatorAfterEditing = DummyValidator(tag:"PasswordRow.afterEditing", target:$0)
                 }
             +++ Section("Inline Rows")
                 <<< DateTimeInlineRow("Time Row") {
                     $0.title = $0.tag
                     $0.validatorWhileEditing = DummyValidator(tag:"TimeRow.whileEditing", target:$0)
+                    $0.validatorBeforeEditing = DummyValidator(tag:"TimeRow.beforeEditing", target:$0)
+                    $0.validatorAfterEditing = DummyValidator(tag:"TimeRow.afterEditing", target:$0)
                 }
             +++ Section("Simple")
                 <<< SwitchRow("Switch Row") {
