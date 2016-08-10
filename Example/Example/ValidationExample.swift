@@ -16,6 +16,7 @@ class ValidationExample: FormViewController {
         initializeForm()
     }
     
+    /// Rows for Tests with Simple Business Logic.
     var row_lowerValue : DecimalRow!
     var row_higherValue : DecimalRow!
     
@@ -30,7 +31,26 @@ class ValidationExample: FormViewController {
     var row_start : DateTimeInlineRow!
     var row_end : DateTimeInlineRow!
     var validation_duration : IdaDefinableValidator!
+    
+    /// Rows for Log Based Tests
+    /// --- Field Rows
+    var row_decimal : DecimalRow!
+    var row_text : TextRow!
+    var row_int : IntRow!
+    var row_password : PasswordRow!
+    /// --- Inline
+    var row_time : DateTimeInlineRow!
+    /// --- Simple Input
+    var row_switch : SwitchRow!
+    var row_check : CheckRow!
+    var row_segment : SegmentedRow<String>!
+    
+    
     private func initializeForm() {
+        initializeForm_ExamplesWithLogic()
+        initializeForm_ExamplesLogBased()
+    }
+    private func initializeForm_ExamplesWithLogic() {
         
         form +++ Section("Switch")
             <<< SwitchRow("I agree to Privacy Policy") {
@@ -39,7 +59,7 @@ class ValidationExample: FormViewController {
                 $0.validatorWhileEditing = IdaDefinableValidator.SwitchDemoValidator($0)
                 $0.validatorWhileEditing?.addListener(SwitchDemoValidationResultPresenter(), strong: true)
             }
-        +++ Section("Comapre Numeric Fields")
+            +++ Section("Comapre Numeric Fields")
             <<< DecimalRow("Lower Limit") {
                 $0.title = $0.tag
                 row_lowerValue = $0
@@ -48,7 +68,7 @@ class ValidationExample: FormViewController {
                 $0.title = $0.tag
                 row_higherValue = $0
             }
-        +++ Section("Blood Pressure")
+            +++ Section("Blood Pressure")
             <<< DecimalRow("Systolic") {
                 $0.title = $0.tag
                 row_systolic = $0
@@ -57,7 +77,7 @@ class ValidationExample: FormViewController {
                 $0.title = $0.tag
                 row_diastolic = $0
             }
-        +++ Section("Holidy Period")
+            +++ Section("Holidy Period")
             <<< DateTimeInlineRow("Start Time") {
                 $0.title = $0.tag
                 row_start = $0
@@ -65,7 +85,7 @@ class ValidationExample: FormViewController {
             <<< DateTimeInlineRow("End Time") {
                 $0.title = $0.tag
                 row_end = $0
-            }
+        }
         
         // Add Validators
         // Validator 1. Bounds
@@ -103,7 +123,7 @@ class ValidationExample: FormViewController {
             let (startRow, endRow) = rowsPair as! (DateTimeInlineRow, DateTimeInlineRow)
             let startTime = startRow.value
             let endTime = endRow.value
-//
+            //
             var isValid = true
             var payloadLeftPart : String?
             var payloadRightPart : String?
@@ -137,7 +157,7 @@ class ValidationExample: FormViewController {
                 payloadRightPart = "Value is empty"
                 isValid = false
             }
-//
+            //
             if let payloadLeftPart = payloadLeftPart {
                 payload["start"] = payloadLeftPart
             }
@@ -151,10 +171,10 @@ class ValidationExample: FormViewController {
             var rowStartColor = UIColor.whiteColor()
             var rowEndColor = UIColor.whiteColor()
             if let payload = result.payload as? [String:String] {
-                if let rowStart_ErrorMessage = payload["start"] {
+                if payload["start"] != nil {
                     rowStartColor = UIColor.redColor()
                 }
-                if let rowEnd_ErrorMessage = payload["end"] {
+                if payload["end"] != nil {
                     rowEndColor = UIColor.redColor()
                 }
             }
@@ -164,6 +184,47 @@ class ValidationExample: FormViewController {
         row_start.validatorWhileEditing = validation_duration
         row_start.validatorAfterEditing = validation_duration
         row_end.validatorAfterEditing = validation_duration
+    }
+    private func initializeForm_ExamplesLogBased() {
+        
+        
+        form +++ Section("Log Based Tests")
+            +++ Section("Field Rows")
+                <<< DecimalRow("Decimal Row") {
+                    $0.title = $0.tag
+                    $0.validatorWhileEditing = DummyValidator(tag:"DecimalRow.whileEditing", target:$0)
+                }
+                <<< IntRow("Int Row") {
+                    $0.title = $0.tag
+                    $0.validatorWhileEditing = DummyValidator(tag:"IntRow.whileEditing", target:$0)
+                }
+                <<< TextRow("Text Row") {
+                    $0.title = $0.tag
+                    $0.validatorWhileEditing = DummyValidator(tag:"TextRow.whileEditing", target:$0)
+                }
+                <<< PasswordRow("Password Row") {
+                    $0.title = $0.tag
+                    $0.validatorWhileEditing = DummyValidator(tag:"PasswordRow.whileEditing", target:$0)
+                }
+            +++ Section("Inline Rows")
+                <<< DateTimeInlineRow("Time Row") {
+                    $0.title = $0.tag
+                    $0.validatorWhileEditing = DummyValidator(tag:"TimeRow.whileEditing", target:$0)
+                }
+            +++ Section("Simple")
+                <<< SwitchRow("Switch Row") {
+                    $0.title = $0.tag
+                    $0.validatorWhileEditing = DummyValidator(tag: "SwitchRow.whileEditing", target: $0)
+                }
+                <<< CheckRow("Check Row") {
+                    $0.title = $0.tag
+                    $0.validatorWhileEditing = DummyValidator(tag: "CheckRow.whileEditing", target: $0)
+                }
+                <<< SegmentedRow<String>("SegmentedRow Row") {
+                    $0.title = $0.tag
+                    $0.options = ["💁🏻","🍐","👦🏼"]
+                    $0.validatorWhileEditing = DummyValidator(tag: "SegmentedRow.whileEditing", target: $0)
+                }
     }
 }
 
@@ -236,6 +297,17 @@ internal class IdaDecimalComparisonValidator : IdaValidator<(left:DecimalRow,rig
             notifyListeners(result)
         }
         return result
+    }
+}
+
+// This is dummy validator to log that it's fired.
+internal class DummyValidator : IdaValidator<BaseRow> {
+    override func validate(notify: Bool) -> ValidationResult {
+        print("Validator Fired. Validator Tag : "+(self.tag ?? "")+"Row Tag : "+(target.tag ?? ""))
+        return ValidationResult(target: target, classifier: "DummyValidator")
+    }
+    init (tag:String?, target:BaseRow) {
+        super.init(tag: tag, target: target)
     }
 }
 
