@@ -83,11 +83,13 @@ public class DateCell : Cell<Date>, CellType {
     }
     
     public override func cellCanBecomeFirstResponder() -> Bool {
-        return canBecomeFirstResponder()
+        return canBecomeFirstResponder
     }
-    
-    public override func canBecomeFirstResponder() -> Bool {
-        return !row.isDisabled;
+
+    override public var canBecomeFirstResponder: Bool {
+        get {
+            return !row.isDisabled
+        }
     }
 }
 

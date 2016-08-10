@@ -122,11 +122,11 @@ class RowsExampleViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        URLRow.defaultCellUpdate = { cell, row in cell.textField.textColor = .blue() }
-        LabelRow.defaultCellUpdate = { cell, row in cell.detailTextLabel?.textColor = .orange()  }
-        CheckRow.defaultCellSetup = { cell, row in cell.tintColor = .orange() }
+        URLRow.defaultCellUpdate = { cell, row in cell.textField.textColor = .blue }
+        LabelRow.defaultCellUpdate = { cell, row in cell.detailTextLabel?.textColor = .orange  }
+        CheckRow.defaultCellSetup = { cell, row in cell.tintColor = .orange }
         DateRow.defaultRowInitializer = { row in row.minimumDate = Date() }
-        
+
         form =
             
             Section()
@@ -205,7 +205,7 @@ class RowsExampleViewController: FormViewController {
                         print(row.value)
                     }
                     .onPresent{ _, to in
-                        to.view.tintColor = .purple()
+                        to.view.tintColor = .purple
                     }
             
                 <<< PushRow<Emoji>() {
@@ -216,7 +216,7 @@ class RowsExampleViewController: FormViewController {
                     }
             
         
-        if UIDevice.current().userInterfaceIdiom == .pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             let section = form.last!
         
             section <<< PopoverSelectorRow<Emoji>() {
@@ -342,7 +342,7 @@ class RowsExampleViewController: FormViewController {
     }
 	
     func multipleSelectorDone(_ item:UIBarButtonItem) {
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
     
 }
@@ -610,7 +610,7 @@ class NativeEventFormViewController : FormViewController {
                     let endRow: DateTimeInlineRow! = self?.form.rowByTag("Ends")
                     if row.value?.compare(endRow.value!) == .orderedDescending {
                         endRow.value = Date(timeInterval: 60*60*24, since: row.value!)
-                        endRow.cell!.backgroundColor = .white()
+                        endRow.cell!.backgroundColor = .white
                         endRow.updateCell()
                     }
                 }
@@ -638,10 +638,10 @@ class NativeEventFormViewController : FormViewController {
                 .onChange { [weak self] row in
                     let startRow: DateTimeInlineRow! = self?.form.rowByTag("Starts")
                     if row.value?.compare(startRow.value!) == .orderedAscending {
-                        row.cell!.backgroundColor = .red()
+                        row.cell!.backgroundColor = .red
                     }
                     else{
-                        row.cell!.backgroundColor = .white()
+                        row.cell!.backgroundColor = .white
                     }
                     row.updateCell()
                 }
@@ -1023,7 +1023,7 @@ class InlineRowsController: FormViewController {
                     var dateComp = DateComponents()
                     dateComp.hour = 18
                     dateComp.minute = 33
-                    (dateComp as NSDateComponents).timeZone = TimeZone.system
+                    (dateComp as NSDateComponents).timeZone = TimeZone.current
                     $0.value = Calendar.current.date(from: dateComp)
                 }
         

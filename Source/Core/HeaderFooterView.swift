@@ -71,7 +71,7 @@ public enum HeaderFooterType {
 /**
  *  Struct used to generate headers and footers either from a view or a String.
  */
-public struct HeaderFooterView<ViewType: UIView> : StringLiteralConvertible, HeaderFooterViewRepresentable {
+public struct HeaderFooterView<ViewType: UIView> : ExpressibleByStringLiteral, HeaderFooterViewRepresentable {
     
     /// Holds the title of the view if it was set up with a String.
     public var title: String?

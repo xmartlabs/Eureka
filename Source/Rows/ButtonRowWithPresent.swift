@@ -67,7 +67,7 @@ public class _ButtonRowWithPresent<VCType: TypedRowControllerType where VCType: 
     
     public override func prepareForSegue(_ segue: UIStoryboardSegue) {
         super.prepareForSegue(segue)
-        guard let rowVC = segue.destinationViewController as? VCType else {
+        guard let rowVC = segue.destination as? VCType else {
             return
         }
         if let callback = self.presentationMode?.completionHandler{

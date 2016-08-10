@@ -275,10 +275,10 @@ public enum Condition {
      *
      *  @return If the condition is true or false
      */
-    case predicate(Foundation.Predicate)
+    case predicate(Foundation.NSPredicate)
 }
 
-extension Condition : BooleanLiteralConvertible {
+extension Condition : ExpressibleByBooleanLiteral {
     
     /**
      Initialize a condition to return afixed boolean value always
@@ -288,27 +288,27 @@ extension Condition : BooleanLiteralConvertible {
     }
 }
 
-extension Condition : StringLiteralConvertible {
+extension Condition : ExpressibleByStringLiteral {
     
     /**
      Initialize a Condition with a string that will be converted to a NSPredicate
      */
     public init(stringLiteral value: String){
-        self = .predicate(Foundation.Predicate(format: value))
+        self = .predicate(Foundation.NSPredicate(format: value))
     }
     
     /**
      Initialize a Condition with a string that will be converted to a NSPredicate
      */
     public init(unicodeScalarLiteral value: String) {
-        self = .predicate(Foundation.Predicate(format: value))
+        self = .predicate(Foundation.NSPredicate(format: value))
     }
     
     /**
      Initialize a Condition with a string that will be converted to a NSPredicate
      */
     public init(extendedGraphemeClusterLiteral value: String) {
-        self = .predicate(Foundation.Predicate(format: value))
+        self = .predicate(Foundation.NSPredicate(format: value))
     }
 }
 
@@ -319,7 +319,7 @@ Errors thrown by Eureka
 
 - DuplicatedTag: When a section or row is inserted whose tag dows already exist
 */
-public enum EurekaError : ErrorProtocol {
+public enum EurekaError : Error {
     case duplicatedTag(tag: String)
 }
 
@@ -425,7 +425,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
             tableView?.endEditing(false)
             _form = newValue
             _form.delegate = self
-            if isViewLoaded() && tableView?.window != nil {
+            if isViewLoaded && tableView?.window != nil {
                 tableView?.reloadData()
             }
         }
@@ -488,19 +488,19 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
 
         let deselectionAnimation = { [weak self] (context: UIViewControllerTransitionCoordinatorContext) in
             selectedIndexPaths.forEach {
-                self?.tableView?.deselectRow(at: $0, animated: context.isAnimated())
+                self?.tableView?.deselectRow(at: $0, animated: context.isAnimated)
             }
         }
 
         let reselection = { [weak self] (context: UIViewControllerTransitionCoordinatorContext) in
-            if context.isCancelled() {
+            if context.isCancelled {
                 selectedIndexPaths.forEach {
                     self?.tableView?.selectRow(at: $0, animated: false, scrollPosition: .none)
                 }
             }
         }
 
-        if let coordinator = transitionCoordinator() {
+        if let coordinator = transitionCoordinator {
             coordinator.animateAlongsideTransition(in: parent?.view, animation: deselectionAnimation, completion: reselection)
         }
         else {

@@ -142,7 +142,7 @@ public class _ImageRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType,
     
     public override func prepareForSegue(_ segue: UIStoryboardSegue) {
         super.prepareForSegue(segue)
-        guard let rowVC = segue.destinationViewController as? ImagePickerController else {
+        guard let rowVC = segue.destination as? ImagePickerController else {
             return
         }
         rowVC.sourceType = _sourceType

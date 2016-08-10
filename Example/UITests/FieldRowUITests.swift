@@ -63,7 +63,7 @@ class FieldRowUITests: XCTestCase {
         
         // check that delete keyboard worlks properly
         decimalRowTextFieldElement.tap()
-        let deleteKey = app.keyboards.keys["Delete"]
+        let deleteKey = app.keys["Delete"]
         deleteKey.tap()
         XCTAssertEqual(decimalRowTextFieldElement.value as? String, decimalFormatter.editingString(for: Double(0.5)), "Decimal Row value is wrong, should be 0,50 or 0.50")
         
@@ -100,7 +100,7 @@ class FieldRowUITests: XCTestCase {
         // should be 2015
         XCTAssertEqual(textField.value as? String, "2015", "Editing Initial Int Row value is wrong, should be 2015")
     
-        let deleteKey = app.keyboards.keys["Delete"]
+        let deleteKey = app.keys["Delete"]
         
         deleteKey.tap()
         // sould be 201
