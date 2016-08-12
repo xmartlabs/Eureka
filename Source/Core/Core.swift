@@ -157,7 +157,7 @@ public enum PresentationMode<VCType: UIViewController> {
     case popover(controllerProvider: ControllerProvider<VCType>, completionCallback: ((UIViewController)->())?)
     
     
-    public var completionHandler: (UIViewController ->())? {
+    public var completionHandler: ((UIViewController) ->())? {
         switch self{
             case .show(_, let completionCallback):
                 return completionCallback
