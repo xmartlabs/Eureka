@@ -185,6 +185,16 @@ class ValidationExample: FormViewController {
         row_start.validatorAfterEditing = validation_duration
         row_end.validatorAfterEditing = validation_duration
     }
+    
+    private func initializeForm_SimpleValidations() {
+        var row_glucoseLevel : IntRow!
+        form +++ Section("Simple Validations")
+            <<< IntRow("Glucose Level") {
+                $0.title = $0.tag
+                row_glucoseLevel = $0
+            }
+    }
+    
     private func initializeForm_ExamplesLogBased() {
         
         
