@@ -264,17 +264,13 @@ extension Form {
         
         deinit { removeObserver(self, forKeyPath: "_sections") }
         
-        //
-        // TODO: Fix this
-        //
-        
-        func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
+        open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
             
             let newSections = change?[NSKeyValueChangeKey.newKey] as? [Section] ?? []
             let oldSections = change?[NSKeyValueChangeKey.oldKey] as? [Section] ?? []
             guard let delegateValue = form?.delegate, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey] else { return }
             guard keyPathValue == "_sections" else { return }
-            switch changeType.uintValue {
+            switch (changeType as AnyObject).uintValue {
             case NSKeyValueChange.setting.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as? IndexSet ?? IndexSet(integer: 0)
                 delegateValue.sectionsHaveBeenAdded(newSections, atIndexes: indexSet)

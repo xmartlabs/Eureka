@@ -76,16 +76,13 @@ extension Section {
             removeObserver(self, forKeyPath: "_rows")
         }
         
-        //
-        // TODO: Fix this
-        //
-        func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
+        open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
             let newRows = change![NSKeyValueChangeKey.newKey] as? [BaseRow] ?? []
             let oldRows = change![NSKeyValueChangeKey.oldKey] as? [BaseRow] ?? []
             guard let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey] else{ return }
             let delegateValue = section?.form?.delegate
             guard keyPathValue == "_rows" else { return }
-            switch changeType.uintValue {
+            switch (changeType as AnyObject).uintValue {
             case NSKeyValueChange.setting.rawValue:
                 section?.rowsHaveBeenAdded(newRows, atIndexes:IndexSet(integer: 0))
                 delegateValue?.rowsHaveBeenAdded(newRows, atIndexPaths:[IndexPath(index: 0)])
