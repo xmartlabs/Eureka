@@ -814,7 +814,10 @@ extension FormViewController {
     public func keyboardWillShow(_ notification: Notification){
         guard let table = tableView, let cell = table.findFirstResponder()?.formCell() else { return }
         let keyBoardInfo = (notification as NSNotification).userInfo!
-        let keyBoardFrame = table.window!.convert(((keyBoardInfo[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue)!, to: table.superview)
+        
+        let endFrame = keyBoardInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue
+        
+        let keyBoardFrame = table.window!.convert(endFrame.cgRectValue, to: table.superview)
         let newBottomInset = table.frame.origin.y + table.frame.size.height - keyBoardFrame.origin.y
         var tableInsets = table.contentInset
         var scrollIndicatorInsets = table.scrollIndicatorInsets
