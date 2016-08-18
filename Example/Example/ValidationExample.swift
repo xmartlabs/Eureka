@@ -49,6 +49,7 @@ class ValidationExample: FormViewController {
     private func initializeForm() {
         initializeForm_ExamplesWithLogic()
         initializeForm_ExamplesLogBased()
+        initializeForm_ShowingValidationResult()
     }
     private func initializeForm_ExamplesWithLogic() {
         
@@ -246,9 +247,86 @@ class ValidationExample: FormViewController {
                     $0.validatorWhileEditing = DummyValidator(tag: "SegmentedRow.whileEditing", target: $0)
                 }
     }
+    
+    // MARK: - Showing Validation Demo
+    var row_independent : DictionaryMessageRow? {
+        return form.rowByTag("Independent") as? DictionaryMessageRow
+    }
+    var row_Age : IntRow? {
+        return form.rowByTag("Age") as? IntRow
+    }
+    private func initializeForm_ShowingValidationResult() {
+        form +++ Section("Showing Result")
+            +++ Section("Message Row Alone")
+                <<< SegmentedRow<String>("ControlIndependentMessage") {
+                    $0.title = "Control Message"
+                    $0.options = ["Hide","One line","Two lines"]
+                    $0.value = "Two lines"
+                    $0.onChange({ [unowned self](row) in
+                        switch row.value ?? "" {
+                            case "One line":
+                                self.row_independent?.value = DictionaryMessage(messages: ["Message 1":"I am shown"])
+                            case "Two lines":
+                                self.row_independent?.value = DictionaryMessage(messages: ["Message1":"I am shown","Message2":"I can be hidden by Segmented row above"])
+                            default:
+                                self.row_independent?.value = nil
+                        }
+                        self.row_independent?.reload()
+                    })
+                }
+                <<< DictionaryMessageRow("Independent") {
+                    $0.value = DictionaryMessage(messages: ["Message1":"I am shown","Message2":"I can be hidden by Segmented row above"])
+                }
+            +++ Section("Validation Message Row")
+                <<< IntRow("Age") {
+                    $0.title = $0.tag
+                    $0.MessageRowType = DictionaryMessageRow.self
+                }
+        
+        /// row.message[result.classifier] = result.isValid ? nil : result.payload
+        let messagePresenter = IdaDefinableValidationResultProcessor { (result, callback) in
+            guard let row = result.target as? BaseRow, let key = result.classifier else {return}
+            let message = ( row.message as? DictionaryMessage ) ?? DictionaryMessage(messages: [:])
+            if result.isValid {
+                message[key] = nil
+            }
+            else {
+                if let validationMessage = result.payload as? String {
+                    message[key] = validationMessage
+                }
+            }
+            row.message = message
+        }
+        let age_boundValidator = IdaDefinableValidator(tag: "AgeBound", target: row_Age) { (target) -> ValidationResult in
+            let ageRow = target as! IntRow
+            var valid = true
+            var message = "You can watch the movie"
+            
+            if let age = ageRow.value {
+                if age < 15 {
+                    valid = false
+                    message = "You should be older than 15 to watch the movie."
+                }
+                if age > 60 {
+                    valid = false
+                    message = "You should be younger than 60 to watch the movie."
+                }
+            }
+            else {
+                valid = false
+                message = "You need to enter your age."
+            }
+            
+            return ValidationResult(target: ageRow, classifier: "AgeBound", isValid: valid, payload: message)
+        }
+        age_boundValidator.addListener(messagePresenter, strong: true)
+//        row_Age?.validatorAfterEditing = age_boundValidator
+        row_Age?.validatorWhileEditing = age_boundValidator
+    }
 }
 
-// MARK: - Switch Validation
+// MARK: - Helpers
+// MARK: Switch Validation
 internal class SwitchDemoValidationResultPresenter : IdaValidationResultProcessor {
     override internal func processValidationResult(validationResult: ValidationResult) {
         let row = validationResult.target as! SwitchRow
@@ -278,7 +356,7 @@ extension IdaDefinableValidator {
     }
 }
 
-// MARK: - Number Comparison
+// MARK: Number Comparison
 internal class IdaDecimalComparisonValidator : IdaValidator<(left:DecimalRow,right:DecimalRow)> {
     static let ProposedResultClassifierPrefix = "IdaDecimalComparisonValidationResult"
     var validCases:[NSComparisonResult]

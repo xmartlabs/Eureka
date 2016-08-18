@@ -79,10 +79,8 @@
 		C51E0A141D524B9000AB6959 /* IdaDefinableValidationResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E0A131D524B9000AB6959 /* IdaDefinableValidationResultProcessor.swift */; };
 		C58236291D4F6000003C615F /* IdaValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58236281D4F6000003C615F /* IdaValidator.swift */; };
 		C58236321D4FACDC003C615F /* IdaValidationResultProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58236311D4FACDC003C615F /* IdaValidationResultProcessor.swift */; };
-		C5E2CB221D63638F0040DA1D /* DictionaryMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E2CB211D63638F0040DA1D /* DictionaryMessageCell.swift */; };
-		C5E2CB241D63656A0040DA1D /* MessageTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E2CB231D63656A0040DA1D /* MessageTypes.swift */; };
-		C5E2CB261D6366F60040DA1D /* DictionaryMessageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E2CB251D6366F60040DA1D /* DictionaryMessageRow.swift */; };
 		C5E2CB281D6368920040DA1D /* ShowingCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E2CB271D6368920040DA1D /* ShowingCore.swift */; };
+		C5E9606B1D66241B008B11D9 /* DictionaryMessageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E9606A1D66241B008B11D9 /* DictionaryMessageRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -171,10 +169,8 @@
 		C58236281D4F6000003C615F /* IdaValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdaValidator.swift; sourceTree = "<group>"; };
 		C582362A1D4F60F6003C615F /* IdaDefinableValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdaDefinableValidator.swift; sourceTree = "<group>"; };
 		C58236311D4FACDC003C615F /* IdaValidationResultProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdaValidationResultProcessor.swift; sourceTree = "<group>"; };
-		C5E2CB211D63638F0040DA1D /* DictionaryMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryMessageCell.swift; sourceTree = "<group>"; };
-		C5E2CB231D63656A0040DA1D /* MessageTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTypes.swift; sourceTree = "<group>"; };
-		C5E2CB251D6366F60040DA1D /* DictionaryMessageRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryMessageRow.swift; sourceTree = "<group>"; };
 		C5E2CB271D6368920040DA1D /* ShowingCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowingCore.swift; sourceTree = "<group>"; };
+		C5E9606A1D66241B008B11D9 /* DictionaryMessageRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryMessageRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -367,9 +363,7 @@
 		C5E2CB201D63636B0040DA1D /* Showing */ = {
 			isa = PBXGroup;
 			children = (
-				C5E2CB211D63638F0040DA1D /* DictionaryMessageCell.swift */,
-				C5E2CB231D63656A0040DA1D /* MessageTypes.swift */,
-				C5E2CB251D6366F60040DA1D /* DictionaryMessageRow.swift */,
+				C5E9606A1D66241B008B11D9 /* DictionaryMessageRow.swift */,
 				C5E2CB271D6368920040DA1D /* ShowingCore.swift */,
 			);
 			name = Showing;
@@ -487,17 +481,16 @@
 			files = (
 				28EEC0251C7E3B2200300699 /* PickerInlineRow.swift in Sources */,
 				28EEC0331C7E64AB00300699 /* PopoverSelectorRow.swift in Sources */,
-				C5E2CB241D63656A0040DA1D /* MessageTypes.swift in Sources */,
 				28EEBFF81C7E241200300699 /* SelectableRowType.swift in Sources */,
 				28EEC0201C7E3AD200300699 /* SegmentedRow.swift in Sources */,
 				28EEC01F1C7E3AC800300699 /* LabelRow.swift in Sources */,
 				28EEC0191C7E3A3D00300699 /* SelectorAlertController.swift in Sources */,
+				C5E9606B1D66241B008B11D9 /* DictionaryMessageRow.swift in Sources */,
 				28EEBFEE1C7E231C00300699 /* RowControllerType.swift in Sources */,
 				28EE46A91C7F685900EFF4A2 /* PushRow.swift in Sources */,
 				28EEC00F1C7E398D00300699 /* FieldRow.swift in Sources */,
 				C58236291D4F6000003C615F /* IdaValidator.swift in Sources */,
 				28EEC02F1C7E49BF00300699 /* SelectorViewController.swift in Sources */,
-				C5E2CB261D6366F60040DA1D /* DictionaryMessageRow.swift in Sources */,
 				28EEC0031C7E390300300699 /* DecimalFormatter.swift in Sources */,
 				283D16D61C80B29A00DD6347 /* ImageRow.swift in Sources */,
 				2859CD951C7CF1FD0002982F /* Core.swift in Sources */,
@@ -544,7 +537,6 @@
 				28EEBFF01C7E23F400300699 /* Row.swift in Sources */,
 				28EEC0121C7E399500300699 /* GenericMultipleSelectorRow.swift in Sources */,
 				28EEC0181C7E3A3D00300699 /* MultipleSelectorViewController.swift in Sources */,
-				C5E2CB221D63638F0040DA1D /* DictionaryMessageCell.swift in Sources */,
 				28EEC00E1C7E398A00300699 /* DateFieldRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
