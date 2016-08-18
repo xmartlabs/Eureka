@@ -26,7 +26,17 @@ import Foundation
 
 // MARK: Operators
 
-infix operator +++{ associativity left precedence 95 }
+precedencegroup FormPrecedence {
+    associativity: left
+    higherThan: LogicalConjunctionPrecedence
+}
+
+precedencegroup SectionPrecedence {
+    associativity: left
+    higherThan: FormPrecedence
+}
+
+infix operator +++ : FormPrecedence
 
 /**
  Appends a section to a form
@@ -42,7 +52,7 @@ public func +++(left: Form, right: Section) -> Form {
     return left
 }
 
-infix operator +++= { associativity left precedence 95 }
+infix operator +++= : FormPrecedence
 
 /**
  Appends a section to a form without return statement
@@ -112,7 +122,7 @@ public func +++(left: BaseRow, right: BaseRow) -> Form {
     return form
 }
 
-infix operator <<<{ associativity left precedence 100 }
+infix operator <<< : SectionPrecedence
 
 /**
  Appends a row to a section.
