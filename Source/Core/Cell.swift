@@ -26,7 +26,7 @@
 import Foundation
 
 /// Base class for the Eureka cells
-public class BaseCell : UITableViewCell, BaseCellType {
+open class BaseCell : UITableViewCell, BaseCellType {
     
     /// Untyped row associated to this cell.
     public var baseRow: BaseRow! { return nil }
@@ -90,7 +90,7 @@ public class BaseCell : UITableViewCell, BaseCellType {
 }
 
 /// Generic class that represents the Eureka cells.
-public class Cell<T: Equatable> : BaseCell, TypedCellType {
+open class Cell<T: Equatable> : BaseCell, TypedCellType {
     
     public typealias Value = T
     
