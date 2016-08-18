@@ -70,7 +70,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         }
         textView.keyboardType = .default
         textView.delegate = self
-        textView.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
+        textView.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = UIEdgeInsets.zero
         placeholderLabel.font = textView.font
@@ -112,7 +112,11 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         return textView.resignFirstResponder()
     }
     
-    public override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
+    //
+    // TODO: Fix this
+    //
+
+    public func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
         if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], obj === imageView && keyPathValue == "image" && changeType.uintValue == NSKeyValueChange.setting.rawValue {
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()
@@ -126,7 +130,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
             return textView.isFirstResponder ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
         }
-        return String(v)
+        return String(describing: v)
     }
     
     //MARK: TextFieldDelegate

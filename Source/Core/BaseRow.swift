@@ -114,8 +114,8 @@ public class BaseRow : BaseRowType {
         return IndexPath(row: rowIndex, section: sectionIndex)
     }
     
-    private var hiddenCache = false
-    private var disabledCache = false {
+    var hiddenCache = false
+    var disabledCache = false {
         willSet {
             if newValue == true && disabledCache == false  {
                 baseCell.cellResignFirstResponder()

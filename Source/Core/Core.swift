@@ -519,7 +519,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    public override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         let baseRow = sender as? BaseRow
         baseRow?.prepareForSegue(segue)
@@ -660,7 +660,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     
     //MARK: Private
     
-    private var oldBottomInset : CGFloat?
+    var oldBottomInset : CGFloat?
 }
 
 extension FormViewController : UITableViewDelegate {
@@ -814,17 +814,17 @@ extension FormViewController {
     public func keyboardWillShow(_ notification: Notification){
         guard let table = tableView, let cell = table.findFirstResponder()?.formCell() else { return }
         let keyBoardInfo = (notification as NSNotification).userInfo!
-        let keyBoardFrame = table.window!.convert((keyBoardInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue)!, to: table.superview)
+        let keyBoardFrame = table.window!.convert(((keyBoardInfo[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue)!, to: table.superview)
         let newBottomInset = table.frame.origin.y + table.frame.size.height - keyBoardFrame.origin.y
         var tableInsets = table.contentInset
         var scrollIndicatorInsets = table.scrollIndicatorInsets
         oldBottomInset = oldBottomInset ?? tableInsets.bottom
-        if newBottomInset > oldBottomInset {
+        if newBottomInset > oldBottomInset! {
             tableInsets.bottom = newBottomInset
             scrollIndicatorInsets.bottom = tableInsets.bottom
             UIView.beginAnimations(nil, context: nil)
-            UIView.setAnimationDuration(keyBoardInfo[UIKeyboardAnimationDurationUserInfoKey]!.doubleValue)
-            UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: keyBoardInfo[UIKeyboardAnimationCurveUserInfoKey]!.intValue)!)
+            UIView.setAnimationDuration((keyBoardInfo[UIKeyboardAnimationDurationUserInfoKey]! as AnyObject).doubleValue)
+            UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: (keyBoardInfo[UIKeyboardAnimationCurveUserInfoKey]! as AnyObject).intValue)!)
             table.contentInset = tableInsets
             table.scrollIndicatorInsets = scrollIndicatorInsets
             if let selectedRow = table.indexPath(for: cell) {
@@ -846,8 +846,8 @@ extension FormViewController {
         scrollIndicatorInsets.bottom = tableInsets.bottom
         oldBottomInset = nil
         UIView.beginAnimations(nil, context: nil)
-        UIView.setAnimationDuration(keyBoardInfo[UIKeyboardAnimationDurationUserInfoKey]!.doubleValue)
-        UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: keyBoardInfo[UIKeyboardAnimationCurveUserInfoKey]!.intValue)!)
+        UIView.setAnimationDuration((keyBoardInfo[UIKeyboardAnimationDurationUserInfoKey]! as AnyObject).doubleValue)
+        UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: (keyBoardInfo[UIKeyboardAnimationCurveUserInfoKey]! as AnyObject).intValue)!)
         table.contentInset = tableInsets
         table.scrollIndicatorInsets = scrollIndicatorInsets
         UIView.commitAnimations()
@@ -878,7 +878,7 @@ extension FormViewController {
         }
     }
     
-    private func nextRowForRow(_ currentRow: BaseRow, withDirection direction: Direction) -> BaseRow? {
+    func nextRowForRow(_ currentRow: BaseRow, withDirection direction: Direction) -> BaseRow? {
         
         let options = navigationOptions ?? Form.defaultNavigationOptions
         guard options.contains(.Enabled) else { return nil }

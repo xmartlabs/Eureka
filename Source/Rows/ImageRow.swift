@@ -14,7 +14,7 @@ public struct ImageRowSourceTypes : OptionSet {
     public var imagePickerControllerSourceTypeRawValue: Int { return self.rawValue >> 1 }
     
     public init(rawValue: Int) { self.rawValue = rawValue }
-    private init(_ sourceType: UIImagePickerControllerSourceType) { self.init(rawValue: 1 << sourceType.rawValue) }
+    init(_ sourceType: UIImagePickerControllerSourceType) { self.init(rawValue: 1 << sourceType.rawValue) }
     
     public static let PhotoLibrary  = ImageRowSourceTypes(.photoLibrary)
     public static let Camera  = ImageRowSourceTypes(.camera)
@@ -27,7 +27,7 @@ extension ImageRowSourceTypes {
     
 // MARK: Helpers
     
-    private var localizedString: String {
+    var localizedString: String {
         switch self {
         case ImageRowSourceTypes.Camera:
             return "Take photo"
@@ -69,7 +69,7 @@ public class _ImageRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType,
     }
     
     // copy over the existing logic from the SelectorRow
-    private func displayImagePickerController(_ sourceType: UIImagePickerControllerSourceType) {
+    func displayImagePickerController(_ sourceType: UIImagePickerControllerSourceType) {
         if let presentationMode = presentationMode, !isDisabled {
             if let controller = presentationMode.createController(){
                 controller.row = self
@@ -170,7 +170,7 @@ extension _ImageRow {
     
 //MARK: Helpers
     
-    private func createOptionForAlertController(_ alertController: UIAlertController, sourceType: ImageRowSourceTypes) {
+    func createOptionForAlertController(_ alertController: UIAlertController, sourceType: ImageRowSourceTypes) {
         guard let pickerSourceType = UIImagePickerControllerSourceType(rawValue: sourceType.imagePickerControllerSourceTypeRawValue), sourceTypes.contains(sourceType) else { return }
         let option = UIAlertAction(title: NSLocalizedString(sourceType.localizedString, comment: ""), style: .default, handler: { [weak self] _ in
             self?.displayImagePickerController(pickerSourceType)
@@ -178,7 +178,7 @@ extension _ImageRow {
         alertController.addAction(option)
     }
     
-    private func createOptionsForAlertController(_ alertController: UIAlertController) {
+    func createOptionsForAlertController(_ alertController: UIAlertController) {
         createOptionForAlertController(alertController, sourceType: .Camera)
         createOptionForAlertController(alertController, sourceType: .PhotoLibrary)
         createOptionForAlertController(alertController, sourceType: .SavedPhotosAlbum)

@@ -72,9 +72,9 @@ public class FormatteableRow<Cell: CellType where Cell: BaseCell, Cell: TextInpu
         super.init(tag: tag)
         displayValueFor = { [unowned self] value in
             guard let v = value else { return nil }
-            guard let formatter = self.formatter else { return String(v) }
+            guard let formatter = self.formatter else { return String(describing: v) }
             if (self.cell.textInput as? UIView)?.isFirstResponder == true {
-                return self.useFormatterDuringInput ? formatter.editingString(for: v as! AnyObject) : String(v)
+                return self.useFormatterDuringInput ? formatter.editingString(for: v as! AnyObject) : String(describing: v)
             }
             return formatter.string(for: v as? AnyObject)
         }
@@ -194,7 +194,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         textField.text = row.displayValueFor?(row.value)
         textField.isEnabled = !row.isDisabled
         textField.textColor = row.isDisabled ? .gray : .black
-        textField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
+        textField.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
         if let placeholder = (row as? FieldRowConformance)?.placeholder {
             if let color = (row as? FieldRowConformance)?.placeholderColor {
                 textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
@@ -217,7 +217,10 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         return textField.resignFirstResponder()
     }
     
-    public override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
+    //
+    // TODO: Fix this
+    //
+    public func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
         if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && changeType.uintValue == NSKeyValueChange.setting.rawValue {
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()
@@ -304,7 +307,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
             return textField.isFirstResponder ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
         }
-        return String(v)
+        return String(describing: v)
     }
     
     //MARK: TextFieldDelegate

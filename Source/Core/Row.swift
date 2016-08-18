@@ -63,7 +63,7 @@ public class RowOf<T: Equatable>: BaseRow {
     /// Block variable used to get the String that should be displayed for the value of this row.
     public var displayValueFor : ((T?) -> String?)? = {
         if let t = $0 {
-            return String(t)
+            return String(describing: t)
         }
         return nil
     }
@@ -84,7 +84,7 @@ public class Row<Cell: CellType where Cell: BaseCell>: RowOf<Cell.Value>, TypedR
     
     private var _cell: Cell! {
         didSet {
-            RowDefaults.cellSetup["\(self.dynamicType)"]?(_cell, self)
+            RowDefaults.cellSetup["\(type(of: self))"]?(_cell, self)
             (callbackCellSetup as? ((Cell) -> ()))?(_cell)
         }
     }
@@ -114,7 +114,7 @@ public class Row<Cell: CellType where Cell: BaseCell>: RowOf<Cell.Value>, TypedR
         super.updateCell()
         cell.update()
         customUpdateCell()
-        RowDefaults.cellUpdate["\(self.dynamicType)"]?(cell, self)
+        RowDefaults.cellUpdate["\(type(of: self))"]?(cell, self)
         callbackCellUpdate?()
     }
     
@@ -136,7 +136,7 @@ public class Row<Cell: CellType where Cell: BaseCell>: RowOf<Cell.Value>, TypedR
     override public func highlightCell() {
         super.highlightCell()
         cell.highlight()
-        RowDefaults.onCellHighlight["\(self.dynamicType)"]?(cell, self)
+        RowDefaults.onCellHighlight["\(type(of: self))"]?(cell, self)
         callbackOnCellHighlight?()
     }
     
@@ -146,7 +146,7 @@ public class Row<Cell: CellType where Cell: BaseCell>: RowOf<Cell.Value>, TypedR
     public override func unhighlightCell() {
         super.unhighlightCell()
         cell.unhighlight()
-        RowDefaults.onCellUnHighlight["\(self.dynamicType)"]?(cell, self)
+        RowDefaults.onCellUnHighlight["\(type(of: self))"]?(cell, self)
         callbackOnCellUnHighlight?()
     }
     

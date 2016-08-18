@@ -27,7 +27,7 @@ public class SelectorAlertController<T: Equatable> : UIAlertController, TypedRow
         super.init(coder: aDecoder)
     }
     
-    convenience public init(_ callback: (UIViewController) -> ()){
+    convenience public init(_ callback: ((UIViewController) -> ())?){
         self.init()
         completionCallback = callback
     }

@@ -15,8 +15,8 @@ public class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType 
     /// The row that pushed or presented this controller
     public var row: RowOf<Set<T>>!
     
-    public var selectableRowCellSetup: ((cell: Row.Cell, row: Row) -> ())?
-    public var selectableRowCellUpdate: ((cell: Row.Cell, row: Row) -> ())?
+    public var selectableRowCellSetup: ((_ cell: Row.Cell, _ row: Row) -> ())?
+    public var selectableRowCellUpdate: ((_ cell: Row.Cell, _ row: Row) -> ())?
 
     /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
@@ -25,7 +25,7 @@ public class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
-    convenience public init(_ callback: (UIViewController) -> ()){
+    convenience public init(_ callback: ((UIViewController) -> ())?){
         self.init(nibName: nil, bundle: nil)
         completionCallback = callback
     }
@@ -53,13 +53,13 @@ public class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType 
         }
         for o in options {
             form.first! <<< Row.init() { [weak self] in
-                    $0.title = String(o.first!)
+                $0.title = String(describing: o.first!)
                     $0.selectableValue = o.first!
                     $0.value = self?.row.value?.contains(o.first!) ?? false ? o.first! : nil
                 }.cellSetup { [weak self] cell, row in
-                    self?.selectableRowCellSetup?(cell: cell, row: row)
+                    self?.selectableRowCellSetup?(cell, row)
                 }.cellUpdate { [weak self] cell, row in
-                    self?.selectableRowCellUpdate?(cell: cell, row: row)
+                    self?.selectableRowCellUpdate?(cell, row)
                 }
         
         }

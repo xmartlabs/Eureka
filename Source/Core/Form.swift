@@ -161,7 +161,7 @@ public final class Form {
     var rowObservers = [String: [ConditionType: [Taggable]]]()
     var rowsByTag = [String: BaseRow]()
     var tagToValues = [String: AnyObject]()
-    private lazy var kvoWrapper : KVOWrapper = { [unowned self] in return KVOWrapper(form: self) }()
+    lazy var kvoWrapper : KVOWrapper = { [unowned self] in return KVOWrapper(form: self) }()
 }
 
 extension Form: Collection {
@@ -264,7 +264,11 @@ extension Form {
         
         deinit { removeObserver(self, forKeyPath: "_sections") }
         
-        override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
+        //
+        // TODO: Fix this
+        //
+        
+        func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
             
             let newSections = change?[NSKeyValueChangeKey.newKey] as? [Section] ?? []
             let oldSections = change?[NSKeyValueChangeKey.oldKey] as? [Section] ?? []

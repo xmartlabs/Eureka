@@ -33,7 +33,7 @@ public class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: Typ
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = { (rowValue: Set<T>?) in
-            return rowValue?.map({ String($0) }).sorted().joined(separator: ", ")
+            return rowValue?.map({ String(describing: $0) }).sorted().joined(separator: ", ")
         }
         presentationMode = .show(controllerProvider: ControllerProvider.callback { return VCType() }, completionCallback: { vc in
             let _ = vc.navigationController?.popViewController(animated: true) })

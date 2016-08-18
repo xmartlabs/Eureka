@@ -76,7 +76,10 @@ extension Section {
             removeObserver(self, forKeyPath: "_rows")
         }
         
-        override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
+        //
+        // TODO: Fix this
+        //
+        func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
             let newRows = change![NSKeyValueChangeKey.newKey] as? [BaseRow] ?? []
             let oldRows = change![NSKeyValueChangeKey.oldKey] as? [BaseRow] ?? []
             guard let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey] else{ return }
@@ -128,7 +131,7 @@ public class Section {
     public var tag: String?
     
     /// The form that contains this section
-    public private(set) weak var form: Form?
+    public internal(set) weak var form: Form?
     
     /// The header of this section.
     public var header: HeaderFooterViewRepresentable? {
