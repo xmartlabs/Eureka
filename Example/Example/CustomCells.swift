@@ -43,7 +43,7 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
     @IBOutlet var fridayButton: UIButton!
     @IBOutlet var saturdayButton: UIButton!
         
-    public override func setup() {
+    open override func setup() {
         height = { 60 }
         row.title = nil
         super.setup()
@@ -58,7 +58,7 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
         }
     }
     
-    public override func update() {
+    open override func update() {
         row.title = nil
         super.update()
         let value = row.value
@@ -137,7 +137,7 @@ public final class WeekDayRow: Row<WeekDayCell>, RowType {
 
 //MARK: FloatLabelCell
 
-public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<T>, UITextFieldDelegate, TextFieldCell {
+public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell where T: Equatable, T: InputTypeInitiable {
         
     public var textField : UITextField { return floatLabelTextField }
 
@@ -152,14 +152,14 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
     lazy public var floatLabelTextField: FloatLabelTextField = { [unowned self] in
         let floatTextField = FloatLabelTextField()
         floatTextField.translatesAutoresizingMaskIntoConstraints = false
-        floatTextField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
+        floatTextField.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
         floatTextField.titleFont = .boldSystemFont(ofSize: 11.0)
         floatTextField.clearButtonMode = .whileEditing
         return floatTextField
         }()
     
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         height = { 55 }
         selectionStyle = .none
@@ -169,7 +169,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
         contentView.addConstraints(layoutConstraints())
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         textLabel?.text = nil
         detailTextLabel?.text = nil
@@ -180,15 +180,15 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
         floatLabelTextField.alpha = row.isDisabled ? 0.6 : 1
     }
     
-    public override func cellCanBecomeFirstResponder() -> Bool {
+    open override func cellCanBecomeFirstResponder() -> Bool {
         return !row.isDisabled && floatLabelTextField.canBecomeFirstResponder
     }
     
-    public override func cellBecomeFirstResponder(_ direction: Direction) -> Bool {
+    open override func cellBecomeFirstResponder(_ direction: Direction) -> Bool {
         return floatLabelTextField.becomeFirstResponder()
     }
     
-    public override func cellResignFirstResponder() -> Bool {
+    open override func cellResignFirstResponder() -> Bool {
         return floatLabelTextField.resignFirstResponder()
     }
     
@@ -245,9 +245,9 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
-            return textField.isFirstResponder ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
+            return textField.isFirstResponder ? formatter.editingString(for: v as AnyObject) : formatter.string(for: v as AnyObject)
         }
-        return String(v)
+        return String(describing: v)
     }
     
     //MARK: TextFieldDelegate
@@ -449,7 +449,7 @@ public class AccountFloatLabelCell : _FloatLabelCell<String>, CellType {
 
 //MARK: FloatLabelRow
 
-public class FloatFieldRow<Cell: CellType where Cell: BaseCell, Cell: TextFieldCell>: FormatteableRow<Cell> {
+open class FloatFieldRow<Cell: CellType>: FormatteableRow<Cell> where Cell: BaseCell, Cell: TextFieldCell {
 
 
     public required init(tag: String?) {
@@ -515,8 +515,8 @@ public final class LocationRow : SelectorRow<PushSelectorCell<CLLocation>, MapVi
             let fmt = NumberFormatter()
             fmt.maximumFractionDigits = 4
             fmt.minimumFractionDigits = 4
-            let latitude = fmt.string(from: location.coordinate.latitude)!
-            let longitude = fmt.string(from: location.coordinate.longitude)!
+            let latitude = fmt.string(from: NSNumber(value: location.coordinate.latitude))!
+            let longitude = fmt.string(from: NSNumber(value: location.coordinate.longitude))!
             return  "\(latitude), \(longitude)"
         }
     }
@@ -579,7 +579,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
         super.init(nibName: nil, bundle: nil)
     }
     
-    convenience public init(_ callback: (UIViewController) -> ()){
+    convenience public init(_ callback: ((UIViewController) -> ())?){
         self.init(nibName: nil, bundle: nil)
         completionCallback = callback
     }
@@ -626,8 +626,8 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
         let fmt = NumberFormatter()
         fmt.maximumFractionDigits = 4
         fmt.minimumFractionDigits = 4
-        let latitude = fmt.string(from: mapView.centerCoordinate.latitude)!
-        let longitude = fmt.string(from: mapView.centerCoordinate.longitude)!
+        let latitude = fmt.string(from: NSNumber(value: mapView.centerCoordinate.latitude))!
+        let longitude = fmt.string(from: NSNumber(value: mapView.centerCoordinate.longitude))!
         title = "\(latitude), \(longitude)"
     }
     

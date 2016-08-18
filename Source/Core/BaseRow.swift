@@ -24,7 +24,7 @@
 
 import Foundation
 
-public class BaseRow : BaseRowType {
+open class BaseRow : BaseRowType {
     
     var callbackOnChange: (()->Void)?
     var callbackCellUpdate: (()->Void)?
@@ -114,8 +114,8 @@ public class BaseRow : BaseRowType {
         return IndexPath(row: rowIndex, section: sectionIndex)
     }
     
-    private var hiddenCache = false
-    private var disabledCache = false {
+    var hiddenCache = false
+    var disabledCache = false {
         willSet {
             if newValue == true && disabledCache == false  {
                 baseCell.cellResignFirstResponder()
@@ -164,7 +164,7 @@ extension BaseRow {
         if let t = tag {
             assert(section.form?.rowsByTag[t] == nil, "Duplicate tag \(t)")
             self.section?.form?.rowsByTag[t] = self
-            self.section?.form?.tagToValues[t] = baseValue as? AnyObject ?? NSNull()
+            self.section?.form?.tagToValues[t] = baseValue as AnyObject
         }
         addToRowObservers()
         evaluateHidden()

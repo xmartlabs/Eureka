@@ -80,7 +80,7 @@ public struct HeaderFooterView<ViewType: UIView> : ExpressibleByStringLiteral, H
     public var viewProvider: HeaderFooterProvider<ViewType>?
     
     /// Closure called when the view is created. Useful to customize its appearance.
-    public var onSetupView: ((view: ViewType, section: Section) -> ())?
+    public var onSetupView: ((_ view: ViewType, _ section: Section) -> ())?
     
     /// A closure that returns the height for the header or footer view.
     public var height: (()->CGFloat)?
@@ -112,7 +112,7 @@ public struct HeaderFooterView<ViewType: UIView> : ExpressibleByStringLiteral, H
                         }()
         }
         guard let v = view else { return nil }
-        onSetupView?(view: v, section: section)
+        onSetupView?(v, section)
         return v
     }
     

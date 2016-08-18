@@ -255,7 +255,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         streetTextField.text = row.value?.street
         streetTextField.isEnabled = !row.isDisabled
         streetTextField.textColor = row.isDisabled ? .gray : .black
-        streetTextField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
+        streetTextField.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
         streetTextField.autocorrectionType = .no
         streetTextField.autocapitalizationType = .words
         streetTextField.keyboardType = .asciiCapable
@@ -264,7 +264,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         stateTextField.text = row.value?.state
         stateTextField.isEnabled = !row.isDisabled
         stateTextField.textColor = row.isDisabled ? .gray : .black
-        stateTextField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
+        stateTextField.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
         stateTextField.autocorrectionType = .no
         stateTextField.autocapitalizationType = .words
         stateTextField.keyboardType = .asciiCapable
@@ -273,7 +273,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         postalCodeTextField.text = row.value?.postalCode
         postalCodeTextField.isEnabled = !row.isDisabled
         postalCodeTextField.textColor = row.isDisabled ? .gray : .black
-        postalCodeTextField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
+        postalCodeTextField.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
         postalCodeTextField.autocorrectionType = .no
         postalCodeTextField.autocapitalizationType = .allCharacters
         postalCodeTextField.keyboardType = .numbersAndPunctuation
@@ -282,7 +282,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         cityTextField.text = row.value?.city
         cityTextField.isEnabled = !row.isDisabled
         cityTextField.textColor = row.isDisabled ? .gray : .black
-        cityTextField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
+        cityTextField.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
         cityTextField.autocorrectionType = .no
         cityTextField.autocapitalizationType = .words
         cityTextField.keyboardType = .asciiCapable
@@ -291,7 +291,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         countryTextField.text = row.value?.country
         countryTextField.isEnabled = !row.isDisabled
         countryTextField.textColor = row.isDisabled ? .gray : .black
-        countryTextField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
+        countryTextField.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
         countryTextField.autocorrectionType = .no
         countryTextField.autocapitalizationType = .words
         countryTextField.keyboardType = .asciiCapable
@@ -423,9 +423,10 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
         }
     }
     
-    
-    public override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
-        if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && changeType.uintValue == NSKeyValueChange.setting.rawValue {
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        let obj = object as AnyObject?
+        
+        if let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && (changeType as? NSNumber)?.uintValue == NSKeyValueChange.setting.rawValue {
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()
         }
@@ -681,7 +682,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
 
 //MARK: PostalAddressRow
 
-public class _PostalAddressRow<Cell: CellType where Cell: BaseCell, Cell: PostalAddressCellConformance>: Row<Cell>, PostalAddressRowConformance, KeyboardReturnHandler {
+public class _PostalAddressRow<Cell: CellType>: Row<Cell>, PostalAddressRowConformance, KeyboardReturnHandler where Cell: BaseCell, Cell: PostalAddressCellConformance {
     
     /// Configuration for the keyboardReturnType of this row
     public var keyboardReturnType : KeyboardReturnTypeConfiguration?
