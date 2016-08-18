@@ -164,7 +164,7 @@ extension BaseRow {
         if let t = tag {
             assert(section.form?.rowsByTag[t] == nil, "Duplicate tag \(t)")
             self.section?.form?.rowsByTag[t] = self
-            self.section?.form?.tagToValues[t] = baseValue as? AnyObject ?? NSNull()
+            self.section?.form?.tagToValues[t] = baseValue as AnyObject
         }
         addToRowObservers()
         evaluateHidden()

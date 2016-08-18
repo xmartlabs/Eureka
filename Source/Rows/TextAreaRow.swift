@@ -126,7 +126,7 @@ public class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: E
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
-            return textView.isFirstResponder ? formatter.editingString(for: v as AnyObject) : formatter.string(for: v as? AnyObject)
+            return textView.isFirstResponder ? formatter.editingString(for: v as AnyObject) : formatter.string(for: v as AnyObject)
         }
         return String(describing: v)
     }

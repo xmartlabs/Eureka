@@ -159,7 +159,7 @@ public func <<<(left: BaseRow, right: BaseRow) -> Section {
  - parameter lhs: the section
  - parameter rhs: the rows to be appended
  */
-public func += <C : Collection where C.Iterator.Element == BaseRow>(lhs: inout Section, rhs: C){
+public func += <C : Collection>(lhs: inout Section, rhs: C) where C.Iterator.Element == BaseRow{
     lhs.append(contentsOf: rhs)
 }
 
@@ -169,6 +169,6 @@ public func += <C : Collection where C.Iterator.Element == BaseRow>(lhs: inout S
  - parameter lhs: the form
  - parameter rhs: the sections to be appended
  */
-public func += <C : Collection where C.Iterator.Element == Section>(lhs: inout Form, rhs: C){
+public func += <C : Collection>(lhs: inout Form, rhs: C) where C.Iterator.Element == Section{
     lhs.append(contentsOf: rhs)
 }

@@ -10,7 +10,7 @@ import Foundation
 
 //MARK: PickerCell
 
-public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerViewDelegate{
+public class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerViewDelegate where T: Equatable{
     
     public lazy var picker: UIPickerView = { [unowned self] in
         let picker = UIPickerView()
@@ -76,7 +76,7 @@ public class PickerCell<T where T: Equatable> : Cell<T>, CellType, UIPickerViewD
 
 //MARK: PickerRow
 
-public class _PickerRow<T where T: Equatable> : Row<PickerCell<T>>{
+public class _PickerRow<T> : Row<PickerCell<T>> where T: Equatable{
     
     public var options = [T]()
     
@@ -86,7 +86,7 @@ public class _PickerRow<T where T: Equatable> : Row<PickerCell<T>>{
 }
 
 /// A generic row where the user can pick an option from a picker view
-public final class PickerRow<T where T: Equatable>: _PickerRow<T>, RowType {
+public final class PickerRow<T>: _PickerRow<T>, RowType where T: Equatable {
     
     required public init(tag: String?) {
         super.init(tag: tag)

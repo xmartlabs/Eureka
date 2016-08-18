@@ -424,7 +424,9 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
     }
     
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if let obj = object as? AnyObject, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && (changeType as AnyObject).uintValue == NSKeyValueChange.setting.rawValue {
+        let obj = object as AnyObject
+        
+        if let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && (changeType as AnyObject).uintValue == NSKeyValueChange.setting.rawValue {
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()
         }
@@ -680,7 +682,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
 
 //MARK: PostalAddressRow
 
-public class _PostalAddressRow<Cell: CellType where Cell: BaseCell, Cell: PostalAddressCellConformance>: Row<Cell>, PostalAddressRowConformance, KeyboardReturnHandler {
+public class _PostalAddressRow<Cell: CellType>: Row<Cell>, PostalAddressRowConformance, KeyboardReturnHandler where Cell: BaseCell, Cell: PostalAddressCellConformance {
     
     /// Configuration for the keyboardReturnType of this row
     public var keyboardReturnType : KeyboardReturnTypeConfiguration?

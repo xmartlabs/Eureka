@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class _SelectorViewController<Row: SelectableRowType where Row: BaseRow, Row: TypedRowType>: FormViewController, TypedRowControllerType {
+public class _SelectorViewController<Row: SelectableRowType>: FormViewController, TypedRowControllerType where Row: BaseRow, Row: TypedRowType {
     
     /// The row that pushed or presented this controller
     public var row: RowOf<Row.Cell.Value>!

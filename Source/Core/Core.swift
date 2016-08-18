@@ -43,7 +43,7 @@ internal class RowDefaults {
 
 // MARK: FormCells
 
-public struct CellProvider<Cell: BaseCell where Cell: CellType> {
+public struct CellProvider<Cell: BaseCell> where Cell: CellType {
     
     /// Nibname of the cell that will be created.
     public private (set) var nibName: String?

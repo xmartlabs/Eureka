@@ -37,7 +37,7 @@ open class RowOf<T: Equatable>: BaseRow {
                 callbackOnChange?()
             }
             guard let t = tag else { return }
-            form.tagToValues[t] = value as? AnyObject ?? NSNull()
+            form.tagToValues[t] = (value as AnyObject) 
             if let rowObservers = form.rowObservers[t]?[.hidden]{
                 for rowObserver in rowObservers {
                     (rowObserver as? Hidable)?.evaluateHidden()
@@ -74,7 +74,7 @@ open class RowOf<T: Equatable>: BaseRow {
 }
 
 /// Generic class that represents an Eureka row.
-open class Row<Cell: CellType where Cell: BaseCell>: RowOf<Cell.Value>, TypedRowType {
+open class Row<Cell: CellType>: RowOf<Cell.Value>, TypedRowType where Cell: BaseCell {
     
     /// Responsible for creating the cell for this row.
     public var cellProvider = CellProvider<Cell>()

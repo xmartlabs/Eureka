@@ -137,7 +137,7 @@ public final class WeekDayRow: Row<WeekDayCell>, RowType {
 
 //MARK: FloatLabelCell
 
-public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<T>, UITextFieldDelegate, TextFieldCell {
+public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell where T: Equatable, T: InputTypeInitiable {
         
     public var textField : UITextField { return floatLabelTextField }
 
@@ -245,7 +245,7 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
-            return textField.isFirstResponder ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
+            return textField.isFirstResponder ? formatter.editingString(for: v as AnyObject) : formatter.string(for: v as AnyObject)
         }
         return String(describing: v)
     }
@@ -449,7 +449,7 @@ public class AccountFloatLabelCell : _FloatLabelCell<String>, CellType {
 
 //MARK: FloatLabelRow
 
-open class FloatFieldRow<Cell: CellType where Cell: BaseCell, Cell: TextFieldCell>: FormatteableRow<Cell> {
+open class FloatFieldRow<Cell: CellType>: FormatteableRow<Cell> where Cell: BaseCell, Cell: TextFieldCell {
 
 
     public required init(tag: String?) {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class _PushRow<Cell: CellType where Cell: BaseCell> : SelectorRow<Cell, SelectorViewController<Cell.Value>> {
+public class _PushRow<Cell: CellType> : SelectorRow<Cell, SelectorViewController<Cell.Value>> where Cell: BaseCell {
     
     public required init(tag: String?) {
         super.init(tag: tag)

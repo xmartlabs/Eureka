@@ -37,7 +37,7 @@ public class PickerInlineCell<T: Equatable> : Cell<T>, CellType {
 
 //MARK: PickerInlineRow
 
-public class _PickerInlineRow<T where T: Equatable> : Row<PickerInlineCell<T>>, NoValueDisplayTextConformance {
+public class _PickerInlineRow<T> : Row<PickerInlineCell<T>>, NoValueDisplayTextConformance where T: Equatable {
     
     public typealias InlineRow = PickerRow<T>
     public var options = [T]()
@@ -49,7 +49,7 @@ public class _PickerInlineRow<T where T: Equatable> : Row<PickerInlineCell<T>>, 
 }
 
 /// A generic inline row where the user can pick an option from a picker view
-public final class PickerInlineRow<T where T: Equatable> : _PickerInlineRow<T>, RowType, InlineRowType {
+public final class PickerInlineRow<T> : _PickerInlineRow<T>, RowType, InlineRowType where T: Equatable {
     
     required public init(tag: String?) {
         super.init(tag: tag)

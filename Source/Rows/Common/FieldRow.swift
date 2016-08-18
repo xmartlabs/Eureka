@@ -76,7 +76,7 @@ open class FormatteableRow<Cell: CellType>: Row<Cell>, FormatterConformance wher
             if (self.cell.textInput as? UIView)?.isFirstResponder == true {
                 return self.useFormatterDuringInput ? formatter.editingString(for: v as AnyObject) : String(describing: v)
             }
-            return formatter.string(for: v as? AnyObject)
+            return formatter.string(for: v as AnyObject)
         }
     }
 
@@ -218,7 +218,9 @@ public class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T
     }
 
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if let obj = object as? AnyObject, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && (changeType as AnyObject).uintValue == NSKeyValueChange.setting.rawValue {
+        let obj = object as AnyObject
+        
+        if let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && (changeType as AnyObject).uintValue == NSKeyValueChange.setting.rawValue {
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()
         }
@@ -302,7 +304,7 @@ public class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
-            return textField.isFirstResponder ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
+            return textField.isFirstResponder ? formatter.editingString(for: v as AnyObject) : formatter.string(for: v as AnyObject)
         }
         return String(describing: v)
     }

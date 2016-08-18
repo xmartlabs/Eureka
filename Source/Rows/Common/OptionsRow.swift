@@ -8,7 +8,7 @@
 
 import Foundation
 
-open class OptionsRow<Cell: CellType where Cell: BaseCell> : Row<Cell>, NoValueDisplayTextConformance {
+open class OptionsRow<Cell: CellType> : Row<Cell>, NoValueDisplayTextConformance where Cell: BaseCell {
     
     public var options: [Cell.Value] {
         get { return dataProvider?.arrayData ?? [] }
