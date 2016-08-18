@@ -79,7 +79,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     }
     
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        let obj = object as AnyObject
+        let obj = object as AnyObject?
         
         if let changeType = change, let _ = keyPath, ((obj === titleLabel && keyPath == "text") || (obj === imageView && keyPath == "image")) && (changeType[NSKeyValueChangeKey.kindKey] as AnyObject).uintValue == NSKeyValueChange.setting.rawValue{
             setNeedsUpdateConstraints()

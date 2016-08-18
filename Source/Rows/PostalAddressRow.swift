@@ -424,7 +424,7 @@ public class PostalAddressCell<T: PostalAddressType>: Cell<T>, CellType, PostalA
     }
     
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        let obj = object as AnyObject
+        let obj = object as AnyObject?
         
         if let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && (changeType as AnyObject).uintValue == NSKeyValueChange.setting.rawValue {
             setNeedsUpdateConstraints()

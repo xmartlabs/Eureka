@@ -82,7 +82,7 @@ extension Section {
             guard let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey] else{ return }
             let delegateValue = section?.form?.delegate
             guard keyPathValue == "_rows" else { return }
-            switch (changeType as AnyObject).uintValue {
+            switch (changeType as! NSNumber).uintValue {
             case NSKeyValueChange.setting.rawValue:
                 section?.rowsHaveBeenAdded(newRows, atIndexes:IndexSet(integer: 0))
                 delegateValue?.rowsHaveBeenAdded(newRows, atIndexPaths:[IndexPath(index: 0)])
