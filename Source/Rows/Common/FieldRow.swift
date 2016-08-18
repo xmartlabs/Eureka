@@ -58,7 +58,7 @@ extension Double: InputTypeInitiable {
 }
 
 
-open class FormatteableRow<Cell: CellType where Cell: BaseCell, Cell: TextInputCell>: Row<Cell>, FormatterConformance {
+open class FormatteableRow<Cell: CellType>: Row<Cell>, FormatterConformance where Cell: BaseCell, Cell: TextInputCell {
     
     
     /// A formatter to be used to format the user's input
@@ -74,7 +74,7 @@ open class FormatteableRow<Cell: CellType where Cell: BaseCell, Cell: TextInputC
             guard let v = value else { return nil }
             guard let formatter = self.formatter else { return String(describing: v) }
             if (self.cell.textInput as? UIView)?.isFirstResponder == true {
-                return self.useFormatterDuringInput ? formatter.editingString(for: v as! AnyObject) : String(describing: v)
+                return self.useFormatterDuringInput ? formatter.editingString(for: v as AnyObject) : String(describing: v)
             }
             return formatter.string(for: v as? AnyObject)
         }
@@ -83,7 +83,7 @@ open class FormatteableRow<Cell: CellType where Cell: BaseCell, Cell: TextInputC
 }
 
 
-public class FieldRow<Cell: CellType where Cell: BaseCell, Cell: TextFieldCell>: FormatteableRow<Cell>, FieldRowConformance, KeyboardReturnHandler {
+public class FieldRow<Cell: CellType>: FormatteableRow<Cell>, FieldRowConformance, KeyboardReturnHandler where Cell: BaseCell, Cell: TextFieldCell {
     
     /// Configuration for the keyboardReturnType of this row
     public var keyboardReturnType : KeyboardReturnTypeConfiguration?
@@ -121,7 +121,7 @@ extension TextFieldCell {
     }
 }
 
-public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, UITextFieldDelegate, TextFieldCell {
+public class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: Equatable, T: InputTypeInitiable {
     
     lazy public var textField : UITextField = {
         let textField = UITextField()

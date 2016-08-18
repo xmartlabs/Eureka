@@ -10,7 +10,7 @@ import Foundation
 
 
 /// Selector Controller that enables multiple selection
-public class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType where Row: BaseRow, Row: TypedRowType, Row.Cell.Value == T> : FormViewController, TypedRowControllerType {
+public class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType> : FormViewController, TypedRowControllerType where Row: BaseRow, Row: TypedRowType, Row.Cell.Value == T {
     
     /// The row that pushed or presented this controller
     public var row: RowOf<Set<T>>!

@@ -197,7 +197,7 @@ public enum PresentationMode<VCType: UIViewController> {
                     fatalError()
                 }
                 porpoverController.sourceView = porpoverController.sourceView ?? presentingViewController.tableView
-                porpoverController.sourceRect = porpoverController.sourceRect ?? row.baseCell.frame
+                //porpoverController.sourceRect = porpoverController.sourceRect ?? row.baseCell.frame
                 presentingViewController.present(viewController, animated: true, completion: nil)
             }
         

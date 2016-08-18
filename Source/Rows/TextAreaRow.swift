@@ -32,7 +32,7 @@ extension AreaCell {
     }
 }
 
-public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, UITextViewDelegate, AreaCell {
+public class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equatable, T: InputTypeInitiable {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -113,7 +113,9 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     }
     
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if let obj = object as? AnyObject, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], obj === imageView && keyPathValue == "image" && (changeType as AnyObject).uintValue == NSKeyValueChange.setting.rawValue {
+        let obj = object as AnyObject
+        
+        if let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], obj === imageView && keyPathValue == "image" && (changeType as AnyObject).uintValue == NSKeyValueChange.setting.rawValue {
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()
         }
@@ -124,7 +126,7 @@ public class _TextAreaCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
-            return textView.isFirstResponder ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
+            return textView.isFirstResponder ? formatter.editingString(for: v as AnyObject) : formatter.string(for: v as? AnyObject)
         }
         return String(describing: v)
     }
@@ -244,7 +246,7 @@ public class TextAreaCell : _TextAreaCell<String>, CellType {
     }
 }
 
-public class AreaRow<Cell: CellType where Cell: BaseCell, Cell: AreaCell>: FormatteableRow<Cell>, TextAreaConformance {
+public class AreaRow<Cell: CellType>: FormatteableRow<Cell>, TextAreaConformance where Cell: BaseCell, Cell: AreaCell {
     
     public var placeholder : String?
     public var textAreaHeight = TextAreaHeight.fixed(cellHeight: 110)

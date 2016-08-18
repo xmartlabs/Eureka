@@ -239,7 +239,7 @@ extension Section : RangeReplaceableCollection {
         formRow.wasAddedToFormInSection(self)
     }
     
-    public func append<S : Sequence where S.Iterator.Element == BaseRow>(contentsOf newElements: S) {
+    public func append<S : Sequence>(contentsOf newElements: S) where S.Iterator.Element == BaseRow {
         kvoWrapper.rows.addObjects(from: newElements.map { $0 })
         kvoWrapper._allRows.append(contentsOf: newElements)
         for row in newElements{
@@ -249,7 +249,7 @@ extension Section : RangeReplaceableCollection {
     
     public func reserveCapacity(_ n: Int){}
     
-    public func replaceSubrange<C : Collection where C.Iterator.Element == BaseRow>(_ subRange: Range<Int>, with newElements: C) {
+    public func replaceSubrange<C : Collection>(_ subRange: Range<Int>, with newElements: C) where C.Iterator.Element == BaseRow {
         for i in subRange.lowerBound..<subRange.upperBound {
             if let row = kvoWrapper.rows.object(at: i) as? BaseRow {
                 row.willBeRemovedFromForm()
