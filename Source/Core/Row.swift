@@ -25,7 +25,7 @@
 
 import Foundation
 
-public class RowOf<T: Equatable>: BaseRow {
+open class RowOf<T: Equatable>: BaseRow {
     
     /// The typed value of this row.
     public var value : T?{
@@ -74,7 +74,7 @@ public class RowOf<T: Equatable>: BaseRow {
 }
 
 /// Generic class that represents an Eureka row.
-public class Row<Cell: CellType where Cell: BaseCell>: RowOf<Cell.Value>, TypedRowType {
+open class Row<Cell: CellType where Cell: BaseCell>: RowOf<Cell.Value>, TypedRowType {
     
     /// Responsible for creating the cell for this row.
     public var cellProvider = CellProvider<Cell>()

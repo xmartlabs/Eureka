@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class _PopoverSelectorRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType> : SelectorRow<Cell, SelectorViewController<Cell.Value>> {
+open class _PopoverSelectorRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType> : SelectorRow<Cell, SelectorViewController<Cell.Value>> {
     
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -25,7 +25,7 @@ public class _PopoverSelectorRow<Cell: CellType where Cell: BaseCell, Cell: Type
             })
     }
     
-    public override func didSelect() {
+    open override func didSelect() {
         deselect()
         super.didSelect()
     }

@@ -24,7 +24,7 @@
 
 import Foundation
 
-public class BaseRow : BaseRowType {
+open class BaseRow : BaseRowType {
     
     var callbackOnChange: (()->Void)?
     var callbackCellUpdate: (()->Void)?

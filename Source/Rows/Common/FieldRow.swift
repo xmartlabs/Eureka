@@ -58,7 +58,7 @@ extension Double: InputTypeInitiable {
 }
 
 
-public class FormatteableRow<Cell: CellType where Cell: BaseCell, Cell: TextInputCell>: Row<Cell>, FormatterConformance {
+open class FormatteableRow<Cell: CellType where Cell: BaseCell, Cell: TextInputCell>: Row<Cell>, FormatterConformance {
     
     
     /// A formatter to be used to format the user's input

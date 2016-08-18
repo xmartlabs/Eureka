@@ -408,7 +408,7 @@ public struct InlineRowHideOptions : OptionSet {
 }
 
 /// View controller that shows a form.
-public class FormViewController : UIViewController, FormViewControllerProtocol {
+open class FormViewController : UIViewController, FormViewControllerProtocol {
     
     @IBOutlet public var tableView: UITableView?
     
@@ -456,7 +456,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         super.init(coder: aDecoder)
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         if tableView == nil {
             tableView = UITableView(frame: view.bounds, style: tableViewStyle)
@@ -477,7 +477,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         tableView?.estimatedRowHeight = BaseRow.estimatedRowHeight
     }
     
-    public override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         let selectedIndexPaths = tableView?.indexPathsForSelectedRows ?? []
@@ -513,13 +513,13 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    public override func viewDidDisappear(_ animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         let baseRow = sender as? BaseRow
         baseRow?.prepareForSegue(segue)
@@ -528,7 +528,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     /**
      Returns the navigation accessory view if it is enabled. Returns nil otherwise.
      */
-    public func inputAccessoryViewForRow(_ row: BaseRow) -> UIView? {
+    open func inputAccessoryViewForRow(_ row: BaseRow) -> UIView? {
         let options = navigationOptions ?? Form.defaultNavigationOptions
         guard options.contains(.Enabled) else { return nil }
         guard row.baseCell.cellCanBecomeFirstResponder() else { return nil}
@@ -545,7 +545,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     
     //MARK: FormDelegate
     
-    public func rowValueHasBeenChanged(_ row: BaseRow, oldValue: Any?, newValue: Any?) {}
+    open func rowValueHasBeenChanged(_ row: BaseRow, oldValue: Any?, newValue: Any?) {}
     
     //MARK: FormViewControllerProtocol
     
@@ -574,52 +574,52 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     /**
      Returns the animation for the insertion of the given rows.
      */
-    public func insertAnimationForRows(_ rows: [BaseRow]) -> UITableViewRowAnimation {
+    open func insertAnimationForRows(_ rows: [BaseRow]) -> UITableViewRowAnimation {
         return .fade
     }
     
     /**
      Returns the animation for the deletion of the given rows.
      */
-    public func deleteAnimationForRows(_ rows: [BaseRow]) -> UITableViewRowAnimation {
+    open func deleteAnimationForRows(_ rows: [BaseRow]) -> UITableViewRowAnimation {
         return .fade
     }
     
     /**
      Returns the animation for the reloading of the given rows.
      */
-    public func reloadAnimationOldRows(_ oldRows: [BaseRow], newRows: [BaseRow]) -> UITableViewRowAnimation {
+    open func reloadAnimationOldRows(_ oldRows: [BaseRow], newRows: [BaseRow]) -> UITableViewRowAnimation {
         return .automatic
     }
     
     /**
      Returns the animation for the insertion of the given sections.
      */
-    public func insertAnimationForSections(_ sections: [Section]) -> UITableViewRowAnimation {
+    open func insertAnimationForSections(_ sections: [Section]) -> UITableViewRowAnimation {
         return .automatic
     }
     
     /**
      Returns the animation for the deletion of the given sections.
      */
-    public func deleteAnimationForSections(_ sections: [Section]) -> UITableViewRowAnimation {
+    open func deleteAnimationForSections(_ sections: [Section]) -> UITableViewRowAnimation {
         return .automatic
     }
     
     /**
      Returns the animation for the reloading of the given sections.
      */
-    public func reloadAnimationOldSections(_ oldSections: [Section], newSections: [Section]) -> UITableViewRowAnimation {
+    open func reloadAnimationOldSections(_ oldSections: [Section], newSections: [Section]) -> UITableViewRowAnimation {
         return .automatic
     }
     
     //MARK: TextField and TextView Delegate
     
-    public func textInputShouldBeginEditing<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
+    open func textInputShouldBeginEditing<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
         return true
     }
     
-    public func textInputDidBeginEditing<T>(_ textInput: UITextInput, cell: Cell<T>) {
+    open func textInputDidBeginEditing<T>(_ textInput: UITextInput, cell: Cell<T>) {
         if let row = cell.row as? KeyboardReturnHandler {
             let nextRow = nextRowForRow(cell.row, withDirection: .down)
             if let textField = textInput as? UITextField {
@@ -631,23 +631,23 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         }
     }
     
-    public func textInputShouldEndEditing<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
+    open func textInputShouldEndEditing<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
         return true
     }
     
-    public func textInputDidEndEditing<T>(_ textInput: UITextInput, cell: Cell<T>) {
+    open func textInputDidEndEditing<T>(_ textInput: UITextInput, cell: Cell<T>) {
         
     }
     
-    public func textInput<T>(_ textInput: UITextInput, shouldChangeCharactersInRange range: NSRange, replacementString string: String, cell: Cell<T>) -> Bool {
+    open func textInput<T>(_ textInput: UITextInput, shouldChangeCharactersInRange range: NSRange, replacementString string: String, cell: Cell<T>) -> Bool {
         return true
     }
     
-    public func textInputShouldClear<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
+    open func textInputShouldClear<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
         return true
     }
 
-    public func textInputShouldReturn<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
+    open func textInputShouldReturn<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
         if let nextRow = nextRowForRow(cell.row, withDirection: .down){
             if nextRow.baseCell.cellCanBecomeFirstResponder(){
                 nextRow.baseCell.cellBecomeFirstResponder()
