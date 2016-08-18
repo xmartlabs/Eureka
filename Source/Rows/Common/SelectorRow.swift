@@ -27,7 +27,7 @@ public class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
 }
 
 /// Generic row type where a user must select a value among several options.
-public class SelectorRow<Cell: CellType, VCType: TypedRowControllerType where Cell: BaseCell, VCType: UIViewController, VCType.RowValue == Cell.Value>: OptionsRow<Cell>, PresenterRowType {
+open class SelectorRow<Cell: CellType, VCType: TypedRowControllerType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell, VCType: UIViewController, VCType.RowValue == Cell.Value {
     
     /// Defines how the view controller will be presented, pushed, etc.
     public var presentationMode: PresentationMode<VCType>?

@@ -121,7 +121,7 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
      Sets a block to be executed when a row is expanded.
      */
     @discardableResult
-    public func onExpandInlineRow(_ callback: (Cell, Self, InlineRow)->()) -> Self {
+    public func onExpandInlineRow(_ callback: @escaping (Cell, Self, InlineRow)->()) -> Self {
         callbackOnExpandInlineRow = callback
         return self
     }
@@ -130,7 +130,7 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
      Sets a block to be executed when a row is collapsed.
      */
     @discardableResult
-    public func onCollapseInlineRow(_ callback: (Cell, Self, InlineRow)->()) -> Self {
+    public func onCollapseInlineRow(_ callback: @escaping (Cell, Self, InlineRow)->()) -> Self {
         callbackOnCollapseInlineRow = callback
         return self
     }

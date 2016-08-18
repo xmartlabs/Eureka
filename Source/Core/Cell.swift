@@ -26,7 +26,7 @@
 import Foundation
 
 /// Base class for the Eureka cells
-public class BaseCell : UITableViewCell, BaseCellType {
+open class BaseCell : UITableViewCell, BaseCellType {
     
     /// Untyped row associated to this cell.
     public var baseRow: BaseRow! { return nil }
@@ -56,19 +56,19 @@ public class BaseCell : UITableViewCell, BaseCellType {
         return nil
     }
     
-    public func setup(){}
-    public func update() {}
+    open func setup(){}
+    open func update() {}
     
-    public func didSelect() {}
+    open func didSelect() {}
     
-    public func highlight() {}
-    public func unhighlight() {}
+    open func highlight() {}
+    open func unhighlight() {}
     
     
     /**
      If the cell can become first responder. By default returns false
      */
-    public func cellCanBecomeFirstResponder() -> Bool {
+    open func cellCanBecomeFirstResponder() -> Bool {
         return false
     }
     
@@ -76,7 +76,7 @@ public class BaseCell : UITableViewCell, BaseCellType {
      Called when the cell becomes first responder
      */
     @discardableResult
-    public func cellBecomeFirstResponder(_ direction: Direction = .down) -> Bool {
+    open func cellBecomeFirstResponder(_ direction: Direction = .down) -> Bool {
         return becomeFirstResponder()
     }
     
@@ -84,13 +84,13 @@ public class BaseCell : UITableViewCell, BaseCellType {
      Called when the cell resigns first responder
      */
     @discardableResult
-    public func cellResignFirstResponder() -> Bool {
+    open func cellResignFirstResponder() -> Bool {
         return resignFirstResponder()
     }
 }
 
 /// Generic class that represents the Eureka cells.
-public class Cell<T: Equatable> : BaseCell, TypedCellType {
+open class Cell<T: Equatable> : BaseCell, TypedCellType {
     
     public typealias Value = T
     
@@ -98,7 +98,7 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
     public weak var row : RowOf<T>!
     
     /// Returns the navigationAccessoryView if it is defined or calls super if not.
-    override public var inputAccessoryView: UIView? {
+    override open var inputAccessoryView: UIView? {
         if let v = formViewController()?.inputAccessoryViewForRow(row){
             return v
         }
@@ -117,14 +117,14 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
     /**
      Function responsible for setting up the cell at creation time.
      */
-    public override func setup(){
+    open override func setup(){
         super.setup()
     }
     
     /**
      Function responsible for updating the cell each time it is reloaded.
      */
-    public override func update(){
+    open override func update(){
         super.update()
         textLabel?.text = row.title
         textLabel?.textColor = row.isDisabled ? .gray : .black
@@ -134,15 +134,15 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
     /**
      Called when the cell was selected.
      */
-    public override func didSelect() {}
+    open override func didSelect() {}
 
-    override public var canBecomeFirstResponder: Bool {
+    override open var canBecomeFirstResponder: Bool {
         get {
             return false
         }
     }
 
-    public override func becomeFirstResponder() -> Bool {
+    open override func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
         if result {
             formViewController()?.beginEditing(self)
@@ -150,7 +150,7 @@ public class Cell<T: Equatable> : BaseCell, TypedCellType {
         return result
     }
     
-    public override func resignFirstResponder() -> Bool {
+    open override func resignFirstResponder() -> Bool {
         let result = super.resignFirstResponder()
         if result {
             formViewController()?.endEditing(self)

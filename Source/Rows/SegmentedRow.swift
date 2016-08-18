@@ -78,8 +78,10 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         row.value =  (row as! SegmentedRow<T>).options[segmentedControl.selectedSegmentIndex]
     }
     
-    public override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
-        if let obj = object, let changeType = change, let _ = keyPath, ((obj === titleLabel && keyPath == "text") || (obj === imageView && keyPath == "image")) && changeType[NSKeyValueChangeKey.kindKey]?.uintValue == NSKeyValueChange.setting.rawValue{
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        let obj = object as AnyObject?
+        
+        if let changeType = change, let _ = keyPath, ((obj === titleLabel && keyPath == "text") || (obj === imageView && keyPath == "image")) && (changeType[NSKeyValueChangeKey.kindKey] as? NSNumber)?.uintValue == NSKeyValueChange.setting.rawValue{
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()
         }

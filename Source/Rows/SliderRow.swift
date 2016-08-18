@@ -90,7 +90,7 @@ public class SliderCell: Cell<Float>, CellType {
     }
     
     func addConstraints(justLabelConstraints: Bool = false) {
-        let views = ["titleLabel" : titleLabel, "valueLabel" : valueLabel, "slider" : slider]
+        let views = ["titleLabel" : titleLabel, "valueLabel" : valueLabel, "slider" : slider] as [String : Any]
         //TODO: in Iphone 6 Plus hPadding should be 20
         let metrics = ["hPadding" : 15.0, "vPadding" : 12.0, "spacing" : 12.0]
         if shouldShowTitle() {

@@ -22,7 +22,7 @@ public class ImagePickerController : UIImagePickerController, TypedRowController
         delegate = self
     }
     
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]){
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         (row as? ImageRow)?.imageURL = info[UIImagePickerControllerReferenceURL] as? URL
         row.value = info[UIImagePickerControllerOriginalImage] as? UIImage
         completionCallback?(self)

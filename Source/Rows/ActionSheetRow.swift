@@ -31,7 +31,7 @@ public class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
     }
 }
 
-public class _ActionSheetRow<Cell: CellType where Cell: BaseCell>: OptionsRow<Cell>, PresenterRowType {
+public class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
     
     public var onPresentCallback : ((FormViewController, SelectorAlertController<Cell.Value>)->())?
     lazy public var presentationMode: PresentationMode<SelectorAlertController<Cell.Value>>? = {

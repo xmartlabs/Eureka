@@ -58,7 +58,7 @@ extension Double: InputTypeInitiable {
 }
 
 
-public class FormatteableRow<Cell: CellType where Cell: BaseCell, Cell: TextInputCell>: Row<Cell>, FormatterConformance {
+open class FormatteableRow<Cell: CellType>: Row<Cell>, FormatterConformance where Cell: BaseCell, Cell: TextInputCell {
     
     
     /// A formatter to be used to format the user's input
@@ -72,18 +72,18 @@ public class FormatteableRow<Cell: CellType where Cell: BaseCell, Cell: TextInpu
         super.init(tag: tag)
         displayValueFor = { [unowned self] value in
             guard let v = value else { return nil }
-            guard let formatter = self.formatter else { return String(v) }
+            guard let formatter = self.formatter else { return String(describing: v) }
             if (self.cell.textInput as? UIView)?.isFirstResponder == true {
-                return self.useFormatterDuringInput ? formatter.editingString(for: v as! AnyObject) : String(v)
+                return self.useFormatterDuringInput ? formatter.editingString(for: v as AnyObject) : String(describing: v)
             }
-            return formatter.string(for: v as? AnyObject)
+            return formatter.string(for: v as AnyObject)
         }
     }
 
 }
 
 
-public class FieldRow<Cell: CellType where Cell: BaseCell, Cell: TextFieldCell>: FormatteableRow<Cell>, FieldRowConformance, KeyboardReturnHandler {
+public class FieldRow<Cell: CellType>: FormatteableRow<Cell>, FieldRowConformance, KeyboardReturnHandler where Cell: BaseCell, Cell: TextFieldCell {
     
     /// Configuration for the keyboardReturnType of this row
     public var keyboardReturnType : KeyboardReturnTypeConfiguration?
@@ -121,7 +121,7 @@ extension TextFieldCell {
     }
 }
 
-public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, UITextFieldDelegate, TextFieldCell {
+public class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: Equatable, T: InputTypeInitiable {
     
     lazy public var textField : UITextField = {
         let textField = UITextField()
@@ -194,7 +194,7 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         textField.text = row.displayValueFor?(row.value)
         textField.isEnabled = !row.isDisabled
         textField.textColor = row.isDisabled ? .gray : .black
-        textField.font = .preferredFont(forTextStyle: UIFontTextStyleBody)
+        textField.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
         if let placeholder = (row as? FieldRowConformance)?.placeholder {
             if let color = (row as? FieldRowConformance)?.placeholderColor {
                 textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
@@ -216,9 +216,11 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     public override func cellResignFirstResponder() -> Bool {
         return textField.resignFirstResponder()
     }
-    
-    public override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
-        if let obj = object, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && changeType.uintValue == NSKeyValueChange.setting.rawValue {
+
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        let obj = object as AnyObject?
+        
+        if let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && (changeType as? NSNumber)?.uintValue == NSKeyValueChange.setting.rawValue {
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()
         }
@@ -302,9 +304,9 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
-            return textField.isFirstResponder ? formatter.editingString(for: v as! AnyObject) : formatter.string(for: v as? AnyObject)
+            return textField.isFirstResponder ? formatter.editingString(for: v as AnyObject) : formatter.string(for: v as AnyObject)
         }
-        return String(v)
+        return String(describing: v)
     }
     
     //MARK: TextFieldDelegate

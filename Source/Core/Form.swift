@@ -161,7 +161,7 @@ public final class Form {
     var rowObservers = [String: [ConditionType: [Taggable]]]()
     var rowsByTag = [String: BaseRow]()
     var tagToValues = [String: AnyObject]()
-    private lazy var kvoWrapper : KVOWrapper = { [unowned self] in return KVOWrapper(form: self) }()
+    lazy var kvoWrapper : KVOWrapper = { [unowned self] in return KVOWrapper(form: self) }()
 }
 
 extension Form: Collection {
@@ -200,7 +200,7 @@ extension Form : RangeReplaceableCollection {
         formSection.wasAddedToForm(self)
     }
     
-    public func append<S : Sequence where S.Iterator.Element == Section>(contentsOf newElements: S) {
+    public func append<S : Sequence>(contentsOf newElements: S) where S.Iterator.Element == Section {
         kvoWrapper.sections.addObjects(from: newElements.map { $0 })
         kvoWrapper._allSections.append(contentsOf: newElements)
         for section in newElements{
@@ -210,7 +210,7 @@ extension Form : RangeReplaceableCollection {
     
     public func reserveCapacity(_ n: Int){}
     
-    public func replaceSubrange<C : Collection where C.Iterator.Element == Section>(_ subRange: Range<Int>, with newElements: C) {
+    public func replaceSubrange<C : Collection>(_ subRange: Range<Int>, with newElements: C) where C.Iterator.Element == Section {
         for i in subRange.lowerBound..<subRange.upperBound {
             if let section = kvoWrapper.sections.object(at: i) as? Section {
                 section.willBeRemovedFromForm()
@@ -264,13 +264,13 @@ extension Form {
         
         deinit { removeObserver(self, forKeyPath: "_sections") }
         
-        override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
+        open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
             
             let newSections = change?[NSKeyValueChangeKey.newKey] as? [Section] ?? []
             let oldSections = change?[NSKeyValueChangeKey.oldKey] as? [Section] ?? []
             guard let delegateValue = form?.delegate, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey] else { return }
             guard keyPathValue == "_sections" else { return }
-            switch changeType.uintValue {
+            switch (changeType as! NSNumber).uintValue {
             case NSKeyValueChange.setting.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as? IndexSet ?? IndexSet(integer: 0)
                 delegateValue.sectionsHaveBeenAdded(newSections, atIndexes: indexSet)

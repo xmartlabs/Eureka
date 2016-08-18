@@ -95,7 +95,7 @@ extension RowType where Self: TypedRowType, Self: BaseRow {
      */
     public init(_ tag: String? = nil, _ initializer: (Self) -> () = { _ in }) {
         self.init(tag: tag)
-        RowDefaults.rowInitialization["\(self.dynamicType)"]?(self)
+        RowDefaults.rowInitialization["\(type(of: self))"]?(self)
         initializer(self)
     }
 }
@@ -199,7 +199,7 @@ extension RowType where Self: TypedRowType, Self: BaseRow {
      - returns: this row
      */
     @discardableResult
-    public func onChange(_ callback: (Self) -> ()) -> Self{
+    public func onChange(_ callback: @escaping (Self) -> ()) -> Self{
         callbackOnChange = { [unowned self] in callback(self) }
         return self
     }
@@ -210,8 +210,8 @@ extension RowType where Self: TypedRowType, Self: BaseRow {
      - returns: this row
      */
     @discardableResult
-    public func cellUpdate(_ callback: ((cell: Cell, row: Self) -> ())) -> Self{
-        callbackCellUpdate = { [unowned self] in  callback(cell: self.cell, row: self) }
+    public func cellUpdate(_ callback: ((_ cell: Cell, _ row: Self) -> ())) -> Self{
+        callbackCellUpdate = { [unowned self] in  callback(self.cell, self) }
         return self
     }
     
@@ -221,8 +221,8 @@ extension RowType where Self: TypedRowType, Self: BaseRow {
      - returns: this row
      */
     @discardableResult
-    public func cellSetup(_ callback: ((cell: Cell, row: Self) -> ())) -> Self{
-        callbackCellSetup = { [unowned self] (cell:Cell) in  callback(cell: cell, row: self) }
+    public func cellSetup(_ callback: ((_ cell: Cell, _ row: Self) -> ())) -> Self{
+        callbackCellSetup = { [unowned self] (cell:Cell) in  callback(cell, self) }
         return self
     }
     
@@ -232,8 +232,8 @@ extension RowType where Self: TypedRowType, Self: BaseRow {
      - returns: this row
      */
     @discardableResult
-    public func onCellSelection(_ callback: ((cell: Cell, row: Self) -> ())) -> Self{
-        callbackCellOnSelection = { [unowned self] in  callback(cell: self.cell, row: self) }
+    public func onCellSelection(_ callback: ((_ cell: Cell, _ row: Self) -> ())) -> Self{
+        callbackCellOnSelection = { [unowned self] in  callback(self.cell, self) }
         return self
     }
     
@@ -243,8 +243,8 @@ extension RowType where Self: TypedRowType, Self: BaseRow {
      - returns: this row
      */
     @discardableResult
-    public func onCellHighlight(_ callback: (cell: Cell, row: Self)->()) -> Self {
-        callbackOnCellHighlight = { [unowned self] in  callback(cell: self.cell, row: self) }
+    public func onCellHighlight(_ callback: @escaping (_ cell: Cell, _ row: Self)->()) -> Self {
+        callbackOnCellHighlight = { [unowned self] in  callback(self.cell, self) }
         return self
     }
     
@@ -254,8 +254,8 @@ extension RowType where Self: TypedRowType, Self: BaseRow {
      - returns: this row
      */
     @discardableResult
-    public func onCellUnHighlight(_ callback: (cell: Cell, row: Self)->()) -> Self {
-        callbackOnCellUnHighlight = { [unowned self] in  callback(cell: self.cell, row: self) }
+    public func onCellUnHighlight(_ callback: @escaping (_ cell: Cell, _ row: Self)->()) -> Self {
+        callbackOnCellUnHighlight = { [unowned self] in  callback(self.cell, self) }
         return self
     }
 }
