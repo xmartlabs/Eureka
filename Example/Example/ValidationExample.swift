@@ -280,7 +280,10 @@ class ValidationExample: FormViewController {
             +++ Section("Validation Message Row")
                 <<< IntRow("Age") {
                     $0.title = $0.tag
-                    $0.MessageRowType = DictionaryMessageRow.self
+                    $0.MessageRowType = CustomizedDictionaryMessageRow.self
+                }
+                <<< IntRow("Someother") {
+                    $0.title = $0.tag
                 }
         
         /// row.message[result.classifier] = result.isValid ? nil : result.payload
@@ -322,6 +325,17 @@ class ValidationExample: FormViewController {
         age_boundValidator.addListener(messagePresenter, strong: true)
 //        row_Age?.validatorAfterEditing = age_boundValidator
         row_Age?.validatorWhileEditing = age_boundValidator
+    }
+    
+    class CustomizedDictionaryMessageRow : DictionaryMessageRow {
+        required init(tag: String?) {
+            super.init(tag: tag)
+            cellBackgroundColor = UIColor.yellowColor()
+            cellTextColor = UIColor.blueColor()
+        }
+        convenience init() {
+            self.init(nil)
+        }
     }
 }
 

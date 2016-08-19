@@ -11,6 +11,16 @@ import Foundation
 
 public class DictionaryMessageRow : Row<DictionaryMessage,DictionaryMessageCell>, MessageRow, RowType {
     weak var mainRow: BaseRow?
+    public var cellBackgroundColor : UIColor? {
+        didSet {
+            cell.cellBackgroundColor = cellBackgroundColor
+        }
+    }
+    public var cellTextColor : UIColor? {
+        didSet {
+            cell.cellTextColor = cellTextColor
+        }
+    }
     
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -24,6 +34,16 @@ public class DictionaryMessageRow : Row<DictionaryMessage,DictionaryMessageCell>
 // MARK: -- Message Cell
 
 public class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
+    public var cellBackgroundColor : UIColor? {
+        didSet {
+            style()
+        }
+    }
+    public var cellTextColor : UIColor? {
+        didSet {
+            style()
+        }
+    }
     // MARK: - Initializer
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -45,9 +65,10 @@ public class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
         }()
     
     // MARK: - Private Properties
-    private lazy var hideLabelConstraint : NSLayoutConstraint = { [unowned self] in
-        let label = self.messageLabel
-        return NSLayoutConstraint(item: label, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 0)
+    private lazy var hideCellConstraint : NSLayoutConstraint = { [unowned self] in
+        let constraint = NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 0)
+        constraint.priority = UILayoutPriorityRequired
+        return constraint
         }()
     private var messageRow : DictionaryMessageRow? {
         return row as? DictionaryMessageRow
@@ -56,8 +77,11 @@ public class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
     // MARK: - Overriding methods
     public override func setup() {
         super.setup()
+        contentView.clipsToBounds = true
+        self.clipsToBounds = true
         selectionStyle = .None
-        update() // using messageLabel will add it to `self`.
+        
+        style() // using messageLabel will add it to `self`.
     }
     
     public override func update() {
@@ -65,17 +89,21 @@ public class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
         textLabel?.text = nil
         detailTextLabel?.text = nil
         messageLabel.text = self.message?.concatenatedMessage()
-        if self.message == nil {
-            messageLabel.addConstraint(hideLabelConstraint)
+        if self.message?.concatenatedMessage().characters.count ?? 0 == 0 {
+            self.addConstraint(hideCellConstraint)
+            self.hidden = true
         }
         else {
-            messageLabel.removeConstraint(hideLabelConstraint)
+            self.removeConstraint(hideCellConstraint)
+            self.hidden = false
         }
     }
     
     private func style() {
-        messageLabel.textColor = UIColor.whiteColor()
-        self.backgroundColor = UIColor.redColor()
+        messageLabel.textColor = cellTextColor ?? UIColor.whiteColor()
+        self.backgroundColor = cellBackgroundColor ?? UIColor.redColor()
+        // Hide seperator
+        self.separatorInset = UIEdgeInsetsMake(0, self.bounds.size.width, 0, 0);
     }
 }
 
