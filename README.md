@@ -298,7 +298,7 @@ public enum Condition {
 }
 ```
 
-#### Hidding using an NSPredicate
+#### Hiding using an NSPredicate
 
 The `hidden` variable can also be set with a NSPredicate. In the predicate string you can reference values of other rows by their tags to determine if a row should be hidden or visible.
 This will only work if the values of the rows the predicate has to check are NSObjects (String and Int will work as they are bridged to their ObjC counterparts, but enums won't work).
