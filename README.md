@@ -556,15 +556,17 @@ These rows have a textfield on the right side of the cell. The difference betwee
 <tr>
 </table>
 
-Typically we want to show a field row value using a formatter, for instance a currency formatter. To do so the previous rows have a formatter property that can be used to set up any formatter. useFormatterDuringInput determines if the formatter also should be used during row editing, this means, when the row's textfield is the first responder. The main challenge of using the formatting when the row is being edited is keeping updated the cursor position accordingly. Eureka provides the following protocol that your formatter should conform to in order to handle cursor position.
+All of the `FieldRow` subtypes above have a `formatter` property of type <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSFormatter_Class/">`NSFormatter`</a> which can be set to determine how that row's value should be displayed. A custom formatter for numbers with two digits after the decimal mark is included with Eureka (`DecimalFormatter`). The Example project also contains a `CurrencyFormatter` which displays a number as currency according to the user's locale.
 
-For more information take a look at DecimalFormatter and CurrencyFormatter in the Example project.
+By default, setting a row's `formatter` only affects how a value is displayed when it is not being edited. To also format the value while the row is being edited, set `useFormatterDuringInput` to `true` when initializing the row. Formatting the value as it is being edited may require updating the cursor position and Eureka provides the following protocol that your formatter should conform to in order to handle cursor position:
 
 ```swift
 public protocol FormatterProtocol {
     func getNewPosition(forPosition forPosition: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition
 }
 ```
+
+Additionally, `FieldRow` subtypes have a `useFormatterOnDidBeginEditing` property. When using a `DecimalRow` with a formatter that allows decimal values and conforms to the user's locale (e.g. `DecimalFormatter`), if `useFormatterDuringInput` is `false`, `useFormatterOnDidBeginEditing` must be set to `true` so that the decimal mark in the value being edited matches the decimal mark on the keyboard.
 
 ### Date Rows
 
