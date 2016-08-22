@@ -76,13 +76,13 @@ extension Section {
             removeObserver(self, forKeyPath: "_rows")
         }
         
-        override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [NSKeyValueChangeKey : AnyObject]?, context: UnsafeMutablePointer<Void>?) {
+        open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
             let newRows = change![NSKeyValueChangeKey.newKey] as? [BaseRow] ?? []
             let oldRows = change![NSKeyValueChangeKey.oldKey] as? [BaseRow] ?? []
             guard let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey] else{ return }
             let delegateValue = section?.form?.delegate
             guard keyPathValue == "_rows" else { return }
-            switch changeType.uintValue {
+            switch (changeType as! NSNumber).uintValue {
             case NSKeyValueChange.setting.rawValue:
                 section?.rowsHaveBeenAdded(newRows, atIndexes:IndexSet(integer: 0))
                 delegateValue?.rowsHaveBeenAdded(newRows, atIndexPaths:[IndexPath(index: 0)])
@@ -128,7 +128,7 @@ public class Section {
     public var tag: String?
     
     /// The form that contains this section
-    public private(set) weak var form: Form?
+    public internal(set) weak var form: Form?
     
     /// The header of this section.
     public var header: HeaderFooterViewRepresentable? {
@@ -239,7 +239,7 @@ extension Section : RangeReplaceableCollection {
         formRow.wasAddedToFormInSection(self)
     }
     
-    public func append<S : Sequence where S.Iterator.Element == BaseRow>(contentsOf newElements: S) {
+    public func append<S : Sequence>(contentsOf newElements: S) where S.Iterator.Element == BaseRow {
         kvoWrapper.rows.addObjects(from: newElements.map { $0 })
         kvoWrapper._allRows.append(contentsOf: newElements)
         for row in newElements{
@@ -249,7 +249,7 @@ extension Section : RangeReplaceableCollection {
     
     public func reserveCapacity(_ n: Int){}
     
-    public func replaceSubrange<C : Collection where C.Iterator.Element == BaseRow>(_ subRange: Range<Int>, with newElements: C) {
+    public func replaceSubrange<C : Collection>(_ subRange: Range<Int>, with newElements: C) where C.Iterator.Element == BaseRow {
         for i in subRange.lowerBound..<subRange.upperBound {
             if let row = kvoWrapper.rows.object(at: i) as? BaseRow {
                 row.willBeRemovedFromForm()

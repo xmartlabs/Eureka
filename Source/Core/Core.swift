@@ -43,7 +43,7 @@ internal class RowDefaults {
 
 // MARK: FormCells
 
-public struct CellProvider<Cell: BaseCell where Cell: CellType> {
+public struct CellProvider<Cell: BaseCell> where Cell: CellType {
     
     /// Nibname of the cell that will be created.
     public private (set) var nibName: String?
@@ -197,7 +197,7 @@ public enum PresentationMode<VCType: UIViewController> {
                     fatalError()
                 }
                 porpoverController.sourceView = porpoverController.sourceView ?? presentingViewController.tableView
-                porpoverController.sourceRect = porpoverController.sourceRect ?? row.baseCell.frame
+                //porpoverController.sourceRect = porpoverController.sourceRect ?? row.baseCell.frame
                 presentingViewController.present(viewController, animated: true, completion: nil)
             }
         
@@ -408,7 +408,7 @@ public struct InlineRowHideOptions : OptionSet {
 }
 
 /// View controller that shows a form.
-public class FormViewController : UIViewController, FormViewControllerProtocol {
+open class FormViewController : UIViewController, FormViewControllerProtocol {
     
     @IBOutlet public var tableView: UITableView?
     
@@ -456,7 +456,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         super.init(coder: aDecoder)
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         if tableView == nil {
             tableView = UITableView(frame: view.bounds, style: tableViewStyle)
@@ -477,7 +477,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         tableView?.estimatedRowHeight = BaseRow.estimatedRowHeight
     }
     
-    public override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         let selectedIndexPaths = tableView?.indexPathsForSelectedRows ?? []
@@ -513,13 +513,13 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    public override func viewDidDisappear(_ animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    public override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         let baseRow = sender as? BaseRow
         baseRow?.prepareForSegue(segue)
@@ -528,7 +528,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     /**
      Returns the navigation accessory view if it is enabled. Returns nil otherwise.
      */
-    public func inputAccessoryViewForRow(_ row: BaseRow) -> UIView? {
+    open func inputAccessoryViewForRow(_ row: BaseRow) -> UIView? {
         let options = navigationOptions ?? Form.defaultNavigationOptions
         guard options.contains(.Enabled) else { return nil }
         guard row.baseCell.cellCanBecomeFirstResponder() else { return nil}
@@ -545,7 +545,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     
     //MARK: FormDelegate
     
-    public func rowValueHasBeenChanged(_ row: BaseRow, oldValue: Any?, newValue: Any?) {}
+    open func rowValueHasBeenChanged(_ row: BaseRow, oldValue: Any?, newValue: Any?) {}
     
     //MARK: FormViewControllerProtocol
     
@@ -574,52 +574,52 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     /**
      Returns the animation for the insertion of the given rows.
      */
-    public func insertAnimationForRows(_ rows: [BaseRow]) -> UITableViewRowAnimation {
+    open func insertAnimationForRows(_ rows: [BaseRow]) -> UITableViewRowAnimation {
         return .fade
     }
     
     /**
      Returns the animation for the deletion of the given rows.
      */
-    public func deleteAnimationForRows(_ rows: [BaseRow]) -> UITableViewRowAnimation {
+    open func deleteAnimationForRows(_ rows: [BaseRow]) -> UITableViewRowAnimation {
         return .fade
     }
     
     /**
      Returns the animation for the reloading of the given rows.
      */
-    public func reloadAnimationOldRows(_ oldRows: [BaseRow], newRows: [BaseRow]) -> UITableViewRowAnimation {
+    open func reloadAnimationOldRows(_ oldRows: [BaseRow], newRows: [BaseRow]) -> UITableViewRowAnimation {
         return .automatic
     }
     
     /**
      Returns the animation for the insertion of the given sections.
      */
-    public func insertAnimationForSections(_ sections: [Section]) -> UITableViewRowAnimation {
+    open func insertAnimationForSections(_ sections: [Section]) -> UITableViewRowAnimation {
         return .automatic
     }
     
     /**
      Returns the animation for the deletion of the given sections.
      */
-    public func deleteAnimationForSections(_ sections: [Section]) -> UITableViewRowAnimation {
+    open func deleteAnimationForSections(_ sections: [Section]) -> UITableViewRowAnimation {
         return .automatic
     }
     
     /**
      Returns the animation for the reloading of the given sections.
      */
-    public func reloadAnimationOldSections(_ oldSections: [Section], newSections: [Section]) -> UITableViewRowAnimation {
+    open func reloadAnimationOldSections(_ oldSections: [Section], newSections: [Section]) -> UITableViewRowAnimation {
         return .automatic
     }
     
     //MARK: TextField and TextView Delegate
     
-    public func textInputShouldBeginEditing<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
+    open func textInputShouldBeginEditing<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
         return true
     }
     
-    public func textInputDidBeginEditing<T>(_ textInput: UITextInput, cell: Cell<T>) {
+    open func textInputDidBeginEditing<T>(_ textInput: UITextInput, cell: Cell<T>) {
         if let row = cell.row as? KeyboardReturnHandler {
             let nextRow = nextRowForRow(cell.row, withDirection: .down)
             if let textField = textInput as? UITextField {
@@ -631,23 +631,23 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         }
     }
     
-    public func textInputShouldEndEditing<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
+    open func textInputShouldEndEditing<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
         return true
     }
     
-    public func textInputDidEndEditing<T>(_ textInput: UITextInput, cell: Cell<T>) {
+    open func textInputDidEndEditing<T>(_ textInput: UITextInput, cell: Cell<T>) {
         
     }
     
-    public func textInput<T>(_ textInput: UITextInput, shouldChangeCharactersInRange range: NSRange, replacementString string: String, cell: Cell<T>) -> Bool {
+    open func textInput<T>(_ textInput: UITextInput, shouldChangeCharactersInRange range: NSRange, replacementString string: String, cell: Cell<T>) -> Bool {
         return true
     }
     
-    public func textInputShouldClear<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
+    open func textInputShouldClear<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
         return true
     }
 
-    public func textInputShouldReturn<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
+    open func textInputShouldReturn<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool {
         if let nextRow = nextRowForRow(cell.row, withDirection: .down){
             if nextRow.baseCell.cellCanBecomeFirstResponder(){
                 nextRow.baseCell.cellBecomeFirstResponder()
@@ -660,7 +660,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     
     //MARK: Private
     
-    private var oldBottomInset : CGFloat?
+    var oldBottomInset : CGFloat?
 }
 
 extension FormViewController : UITableViewDelegate {
@@ -814,17 +814,20 @@ extension FormViewController {
     public func keyboardWillShow(_ notification: Notification){
         guard let table = tableView, let cell = table.findFirstResponder()?.formCell() else { return }
         let keyBoardInfo = (notification as NSNotification).userInfo!
-        let keyBoardFrame = table.window!.convert((keyBoardInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue)!, to: table.superview)
+        
+        let endFrame = keyBoardInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue
+        
+        let keyBoardFrame = table.window!.convert(endFrame.cgRectValue, to: table.superview)
         let newBottomInset = table.frame.origin.y + table.frame.size.height - keyBoardFrame.origin.y
         var tableInsets = table.contentInset
         var scrollIndicatorInsets = table.scrollIndicatorInsets
         oldBottomInset = oldBottomInset ?? tableInsets.bottom
-        if newBottomInset > oldBottomInset {
+        if newBottomInset > oldBottomInset! {
             tableInsets.bottom = newBottomInset
             scrollIndicatorInsets.bottom = tableInsets.bottom
             UIView.beginAnimations(nil, context: nil)
-            UIView.setAnimationDuration(keyBoardInfo[UIKeyboardAnimationDurationUserInfoKey]!.doubleValue)
-            UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: keyBoardInfo[UIKeyboardAnimationCurveUserInfoKey]!.intValue)!)
+            UIView.setAnimationDuration((keyBoardInfo[UIKeyboardAnimationDurationUserInfoKey]! as AnyObject).doubleValue)
+            UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: (keyBoardInfo[UIKeyboardAnimationCurveUserInfoKey]! as AnyObject).intValue)!)
             table.contentInset = tableInsets
             table.scrollIndicatorInsets = scrollIndicatorInsets
             if let selectedRow = table.indexPath(for: cell) {
@@ -846,8 +849,8 @@ extension FormViewController {
         scrollIndicatorInsets.bottom = tableInsets.bottom
         oldBottomInset = nil
         UIView.beginAnimations(nil, context: nil)
-        UIView.setAnimationDuration(keyBoardInfo[UIKeyboardAnimationDurationUserInfoKey]!.doubleValue)
-        UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: keyBoardInfo[UIKeyboardAnimationCurveUserInfoKey]!.intValue)!)
+        UIView.setAnimationDuration((keyBoardInfo[UIKeyboardAnimationDurationUserInfoKey]! as AnyObject).doubleValue)
+        UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: (keyBoardInfo[UIKeyboardAnimationCurveUserInfoKey]! as AnyObject).intValue)!)
         table.contentInset = tableInsets
         table.scrollIndicatorInsets = scrollIndicatorInsets
         UIView.commitAnimations()
@@ -878,7 +881,7 @@ extension FormViewController {
         }
     }
     
-    private func nextRowForRow(_ currentRow: BaseRow, withDirection direction: Direction) -> BaseRow? {
+    func nextRowForRow(_ currentRow: BaseRow, withDirection direction: Direction) -> BaseRow? {
         
         let options = navigationOptions ?? Form.defaultNavigationOptions
         guard options.contains(.Enabled) else { return nil }

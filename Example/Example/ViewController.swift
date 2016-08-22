@@ -429,8 +429,8 @@ class FieldRowCustomizationController : FormViewController {
                     $0.placeholder = "textFieldPercentage = 0.6"
                 }
                 .cellUpdate {
-                    $0.cell.textField.textAlignment = .left
-                    $0.cell.textLabel?.textAlignment = .right
+                    $1.cell.textField.textAlignment = .left
+                    $1.cell.textLabel?.textAlignment = .right
                 }
                 <<< NameRow() {
                     $0.title = "Another Title"
@@ -438,8 +438,8 @@ class FieldRowCustomizationController : FormViewController {
                     $0.placeholder = "textFieldPercentage = 0.6"
                 }
                 .cellUpdate {
-                    $0.cell.textField.textAlignment = .left
-                    $0.cell.textLabel?.textAlignment = .right
+                    $1.cell.textField.textAlignment = .left
+                    $1.cell.textLabel?.textAlignment = .right
                 }
                 <<< NameRow() {
                     $0.title = "One more"
@@ -447,8 +447,8 @@ class FieldRowCustomizationController : FormViewController {
                     $0.placeholder = "textFieldPercentage = 0.7"
                 }
                 .cellUpdate {
-                    $0.cell.textField.textAlignment = .left
-                    $0.cell.textLabel?.textAlignment = .right
+                    $1.cell.textField.textAlignment = .left
+                    $1.cell.textLabel?.textAlignment = .right
                 }
         
             +++ Section("TextAreaRow")
@@ -573,7 +573,7 @@ class NativeEventFormViewController : FormViewController {
                 }
             
             <<< TextRow("Location").cellSetup {
-                    $0.cell.textField.placeholder = $0.row.tag
+                    $1.cell.textField.placeholder = $0.row.tag
                 }
         
             +++

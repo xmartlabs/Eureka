@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class _SelectorViewController<Row: SelectableRowType where Row: BaseRow, Row: TypedRowType>: FormViewController, TypedRowControllerType {
+public class _SelectorViewController<Row: SelectableRowType>: FormViewController, TypedRowControllerType where Row: BaseRow, Row: TypedRowType {
     
     /// The row that pushed or presented this controller
     public var row: RowOf<Row.Cell.Value>!
@@ -17,7 +17,7 @@ public class _SelectorViewController<Row: SelectableRowType where Row: BaseRow, 
     /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
-    public var selectableRowCellUpdate: ((cell: Row.Cell, row: Row) -> ())?
+    public var selectableRowCellUpdate: ((_ cell: Row.Cell, _ row: Row) -> ())?
     
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -40,12 +40,12 @@ public class _SelectorViewController<Row: SelectableRowType where Row: BaseRow, 
             }
         }
         for option in options {
-            form.first! <<< Row.init(String(option)){ lrow in
+            form.first! <<< Row.init(String(describing: option)){ lrow in
                     lrow.title = self.row.displayValueFor?(option)
                     lrow.selectableValue = option
                     lrow.value = self.row.value == option ? option : nil
                 }.cellUpdate { [weak self] cell, row in
-                    self?.selectableRowCellUpdate?(cell: cell, row: row)
+                    self?.selectableRowCellUpdate?(cell, row)
                 }
         }
     }
@@ -58,7 +58,7 @@ public class SelectorViewController<T:Equatable> : _SelectorViewController<ListC
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
-    convenience public init(_ callback: (UIViewController) -> ()){
+    convenience public init(_ callback: ((UIViewController) -> ())?){
         self.init(nibName: nil, bundle: nil)
         completionCallback = callback
     }

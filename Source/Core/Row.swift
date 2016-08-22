@@ -25,7 +25,7 @@
 
 import Foundation
 
-public class RowOf<T: Equatable>: BaseRow {
+open class RowOf<T: Equatable>: BaseRow {
     
     /// The typed value of this row.
     public var value : T?{
@@ -37,7 +37,7 @@ public class RowOf<T: Equatable>: BaseRow {
                 callbackOnChange?()
             }
             guard let t = tag else { return }
-            form.tagToValues[t] = value as? AnyObject ?? NSNull()
+            form.tagToValues[t] = (value as AnyObject) 
             if let rowObservers = form.rowObservers[t]?[.hidden]{
                 for rowObserver in rowObservers {
                     (rowObserver as? Hidable)?.evaluateHidden()
@@ -63,7 +63,7 @@ public class RowOf<T: Equatable>: BaseRow {
     /// Block variable used to get the String that should be displayed for the value of this row.
     public var displayValueFor : ((T?) -> String?)? = {
         if let t = $0 {
-            return String(t)
+            return String(describing: t)
         }
         return nil
     }
@@ -74,7 +74,7 @@ public class RowOf<T: Equatable>: BaseRow {
 }
 
 /// Generic class that represents an Eureka row.
-public class Row<Cell: CellType where Cell: BaseCell>: RowOf<Cell.Value>, TypedRowType {
+open class Row<Cell: CellType>: RowOf<Cell.Value>, TypedRowType where Cell: BaseCell {
     
     /// Responsible for creating the cell for this row.
     public var cellProvider = CellProvider<Cell>()
@@ -84,7 +84,7 @@ public class Row<Cell: CellType where Cell: BaseCell>: RowOf<Cell.Value>, TypedR
     
     private var _cell: Cell! {
         didSet {
-            RowDefaults.cellSetup["\(self.dynamicType)"]?(_cell, self)
+            RowDefaults.cellSetup["\(type(of: self))"]?(_cell, self)
             (callbackCellSetup as? ((Cell) -> ()))?(_cell)
         }
     }
@@ -114,7 +114,7 @@ public class Row<Cell: CellType where Cell: BaseCell>: RowOf<Cell.Value>, TypedR
         super.updateCell()
         cell.update()
         customUpdateCell()
-        RowDefaults.cellUpdate["\(self.dynamicType)"]?(cell, self)
+        RowDefaults.cellUpdate["\(type(of: self))"]?(cell, self)
         callbackCellUpdate?()
     }
     
@@ -136,7 +136,7 @@ public class Row<Cell: CellType where Cell: BaseCell>: RowOf<Cell.Value>, TypedR
     override public func highlightCell() {
         super.highlightCell()
         cell.highlight()
-        RowDefaults.onCellHighlight["\(self.dynamicType)"]?(cell, self)
+        RowDefaults.onCellHighlight["\(type(of: self))"]?(cell, self)
         callbackOnCellHighlight?()
     }
     
@@ -146,7 +146,7 @@ public class Row<Cell: CellType where Cell: BaseCell>: RowOf<Cell.Value>, TypedR
     public override func unhighlightCell() {
         super.unhighlightCell()
         cell.unhighlight()
-        RowDefaults.onCellUnHighlight["\(self.dynamicType)"]?(cell, self)
+        RowDefaults.onCellUnHighlight["\(type(of: self))"]?(cell, self)
         callbackOnCellUnHighlight?()
     }
     
