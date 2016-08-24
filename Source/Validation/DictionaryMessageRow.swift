@@ -34,6 +34,8 @@ public class DictionaryMessageRow : Row<DictionaryMessage,DictionaryMessageCell>
 // MARK: -- Message Cell
 
 public class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
+    
+    public static var labelInsets : UIEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
     public var cellBackgroundColor : UIColor? {
         didSet {
             style()
@@ -59,8 +61,9 @@ public class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(label)
-        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[label]-0-|", options: [], metrics: nil, views: ["label": label]))
-        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-20-[label]-20-|", options: [], metrics: nil, views: ["label": label]))
+        
+        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-\(self.dynamicType.labelInsets.top)-[label]-\(self.dynamicType.labelInsets.bottom)-|", options: [], metrics: nil, views: ["label": label]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-\(self.dynamicType.labelInsets.left)-[label]-\(self.dynamicType.labelInsets.right)-|", options: [], metrics: nil, views: ["label": label]))
         return label
         }()
     
