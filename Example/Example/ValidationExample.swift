@@ -269,7 +269,7 @@ class ValidationExample: FormViewController {
                             case "Two lines":
                                 self.row_independent?.value = DictionaryMessage(messages: ["Message1":"I am shown","Message2":"I can be hidden by Segmented row above"])
                             default:
-                                self.row_independent?.value = nil
+                                self.row_independent?.value = DictionaryMessage(messages: [:])
                         }
                         self.row_independent?.reload()
                     })

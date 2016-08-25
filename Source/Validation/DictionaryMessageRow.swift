@@ -69,7 +69,7 @@ public class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
     
     // MARK: - Private Properties
     private lazy var hideCellConstraint : NSLayoutConstraint = { [unowned self] in
-        let constraint = NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 0)
+        let constraint = NSLayoutConstraint(item: self.contentView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 0)
         constraint.priority = UILayoutPriorityRequired
         return constraint
         }()
@@ -93,11 +93,11 @@ public class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
         detailTextLabel?.text = nil
         messageLabel.text = self.message?.concatenatedMessage()
         if self.message?.concatenatedMessage().characters.count ?? 0 == 0 {
-            self.addConstraint(hideCellConstraint)
+            contentView.addConstraint(hideCellConstraint)
             self.hidden = true
         }
         else {
-            self.removeConstraint(hideCellConstraint)
+            contentView.removeConstraint(hideCellConstraint)
             self.hidden = false
         }
     }
