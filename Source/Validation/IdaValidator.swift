@@ -53,6 +53,21 @@ public class IdaBaseValidator {
     public func validate(notify:Bool) -> ValidationResult {
         return ValidationResult()
     }
+    private var fireTime: UInt64 = 0
+    public var delayTimeWhileEditing: Int64 {
+        //Default is a quarter-second delay
+        return Int64(NSEC_PER_SEC)/2
+    }
+    public func delayedValidation(notify:Bool, delayTime: Int64) {
+        let popTime = dispatch_time(DISPATCH_TIME_NOW, delayTime);
+        fireTime = popTime
+
+        dispatch_after(popTime, dispatch_get_main_queue()){ [weak self] in
+            if let _ = self where popTime == self!.fireTime {
+                self!.validate(notify)
+            }
+        }
+    }
     // MARK: - Keeping Listeners
     private var wr_listeners:[Weak<AnyObject>]=[]
     public func addListener(listener:IdaValidationListener, strong:Bool) {
