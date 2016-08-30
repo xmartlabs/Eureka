@@ -34,7 +34,7 @@ public class RowOf<T: Equatable>: BaseRow {
             guard let form = section?.form else { return }
             if let delegate = form.delegate {
                 delegate.rowValueHasBeenChanged(self, oldValue: oldValue, newValue: value)
-                validatorWhileEditing?.delayedValidation(true, delayTime: validatorWhileEditing!.delayTimeWhileEditing)
+                validatorWhileEditing?.validate(true)
                 callbackOnChange?()
             }
             guard let t = tag else { return }

@@ -93,11 +93,11 @@ public class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
         detailTextLabel?.text = nil
         messageLabel.text = self.message?.concatenatedMessage()
         if self.message?.concatenatedMessage().characters.count ?? 0 == 0 {
-            hideCellConstraint.active = true
+            contentView.addConstraint(hideCellConstraint)
             self.hidden = true
         }
         else {
-            hideCellConstraint.active = false
+            contentView.removeConstraint(hideCellConstraint)
             self.hidden = false
         }
     }
