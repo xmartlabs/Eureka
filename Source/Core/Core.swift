@@ -418,19 +418,25 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         return form
         }()
     
+    private var _oldform: Form?
+
     public var form : Form {
-        get { return _form }
+        get { _oldform = _form; return _form }
         set {
             _form.delegate = nil
             tableView?.endEditing(false)
             _form = newValue
             _form.delegate = self
-            if isViewLoaded() && tableView?.window != nil {
-                tableView?.reloadData()
+
+            guard _oldform === _form else {
+                if isViewLoaded() && tableView?.window != nil {
+                    tableView?.reloadData()
+                }
+                return
             }
         }
     }
-    
+
     /// Accessory view that is responsible for the navigation between rows
     lazy public var navigationAccessoryView : NavigationAccessoryView = {
         [unowned self] in
