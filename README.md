@@ -372,9 +372,11 @@ To easily get the selected row/s of a `SelectableSection` there are two methods:
 
 ## Custom rows
 
+It is very common that you need a row that is different from those included in Eureka. If this is the case you will have to create your own row but this should not be difficult. You can read [this tutorial on how to create custom rows](https://blog.xmartlabs.com/2016/09/06/Eureka-custom-row-tutorial/) to get started. You might also want to have a look at [EurekaCommunity] which includes some extra rows ready to be added to Eureka.
+
 ### Basic custom rows
 
-To create a row with custom behavior and appearance you'll probably want to create subclasses of `Row` and `Cell`.
+To create a row with custom behaviour and appearance you'll probably want to create subclasses of `Row` and `Cell`.
 
 Remember that `Row` is the abstraction Eureka uses, while the `Cell` is the actual `UITableViewCell` in charge of the view.
 As the `Row` contains the `Cell`, both `Row` and `Cell` must be defined for the same **value** type.
@@ -920,11 +922,12 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [FormViewController]: Example/Source/Controllers.swift
 
 <!--- External -->
-[XLForm]: http://github.com/xmartlabs/XLForm
+[XLForm]: https://github.com/xmartlabs/XLForm
 [DSL]: https://en.wikipedia.org/wiki/Domain-specific_language
 [StackOverflow]: http://stackoverflow.com/questions/tagged/eureka-forms
 [our blog post]: http://blog.xmartlabs.com/2015/09/29/Introducing-Eureka-iOS-form-library-written-in-pure-Swift/
 [twitter]: https://twitter.com/xmartlabs
+[EurekaCommunity]: https://github.com/EurekaCommunity
 
 # Change Log
 
