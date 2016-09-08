@@ -166,6 +166,9 @@ extension BaseRow {
             self.section?.form?.rowsByTag[t] = self
             self.section?.form?.tagToValues[t] = baseValue as? AnyObject ?? NSNull()
         }
+    }
+    
+    final func updateRowInSection() {
         addToRowObservers()
         evaluateHidden()
         evaluateDisabled()
