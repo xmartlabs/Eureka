@@ -53,7 +53,16 @@ class CallbacksTests: XCTestCase {
         onChangeTest(SliderRow(), value: 5.0)
         onChangeTest(StepperRow(), value: 2.5)
     }
-    
+
+    func testOnValidate() {
+        onValidateTest(TextRow(), value: "text")
+        onValidateTest(IntRow(), value: 33)
+        onValidateTest(DecimalRow(), value: 35.7)
+        onValidateTest(URLRow(), value: NSURL(string: "http://xmartlabs.com")!)
+        onValidateTest(DateRow(), value: NSDate().dateByAddingTimeInterval(100))
+        onValidateTest(DateInlineRow(), value: NSDate().dateByAddingTimeInterval(100))
+    }
+
     func testCellSetup() {
         cellSetupTest(TextRow())
         cellSetupTest(IntRow())
@@ -128,7 +137,15 @@ class CallbacksTests: XCTestCase {
         row.value = value
         XCTAssertTrue(invoked)
     }
-    
+
+    private func onValidateTest<Row, Value where Row: BaseRow, Row: RowType, Row: TypedRowType, Row.Value == Row.Cell.Value, Value == Row.Value>(row: Row, value: Value) {
+        var invoked = false
+        row.onValidate { row, results in invoked = true }
+        formVC.form +++ Section() <<< row
+        formVC.formValidationErrors()
+        XCTAssertTrue(invoked)
+    }
+
     private func cellSetupTest<Row, Value where  Row: BaseRow, Row : RowType, Row: TypedRowType, Row.Value == Row.Cell.Value, Value == Row.Value>(row:Row){
         var invoked = false
         row.cellSetup { cell, row in

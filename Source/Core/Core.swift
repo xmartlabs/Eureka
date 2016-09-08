@@ -340,6 +340,8 @@ public protocol FormViewControllerProtocol {
     func insertAnimationForSections(sections : [Section]) -> UITableViewRowAnimation
     func deleteAnimationForSections(sections : [Section]) -> UITableViewRowAnimation
     func reloadAnimationOldSections(oldSections: [Section], newSections:[Section]) -> UITableViewRowAnimation
+
+    func formValidationErrors() -> [ValidationResult]
 }
 
 /**
@@ -546,6 +548,7 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     //MARK: FormDelegate
     
     public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {}
+    public func rowValueHasBeenValidated(row: BaseRow, validationResults: [ValidationResult]) {}
     
     //MARK: FormViewControllerProtocol
     
@@ -657,7 +660,11 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
         tableView?.endEditing(true)
         return true
     }
-    
+
+    public func formValidationErrors() -> [ValidationResult] {
+        return form.validationErrors()
+    }
+
     //MARK: Private
     
     private var oldBottomInset : CGFloat?
