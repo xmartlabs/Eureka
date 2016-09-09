@@ -37,7 +37,7 @@ open class RowOf<T: Equatable>: BaseRow {
                 callbackOnChange?()
             }
             guard let t = tag else { return }
-            form.tagToValues[t] = (value as AnyObject) 
+            form.tagToValues[t] = (value != nil ? value! : NSNull())
             if let rowObservers = form.rowObservers[t]?[.hidden]{
                 for rowObserver in rowObservers {
                     (rowObserver as? Hidable)?.evaluateHidden()

@@ -73,7 +73,7 @@ class HiddenRowsTests: BaseEurekaTests {
         // make sure we can unwrap
         XCTAssertNotNil(intDep)
         XCTAssertNotNil(nameDep)
-        
+
         // test rowObservers
         XCTAssertEqual(intDep!.count, 3)
         XCTAssertEqual(nameDep!.count, 3)
@@ -117,6 +117,14 @@ class HiddenRowsTests: BaseEurekaTests {
         XCTAssertTrue(nameDep!.contains(where: { $0.tag == "s3_hrt" }))
         XCTAssertTrue(nameDep!.contains(where: { $0.tag == "txt1_hrt" }))
         XCTAssertFalse(nameDep!.contains(where: { $0.tag == "int1_hrt" }))
+
+        // Test a condition with nil
+        let newRow = TextRow("new_row") {
+            $0.hidden = "$txt1_hrt == nil"
+        }
+
+        form.last! <<< newRow
+        XCTAssertTrue(newRow.hiddenCache)
     }
     
     func testItemsByTag(){
