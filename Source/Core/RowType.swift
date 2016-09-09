@@ -210,7 +210,7 @@ extension RowType where Self: TypedRowType, Self: BaseRow {
      - returns: this row
      */
     @discardableResult
-    public func cellUpdate(_ callback: ((_ cell: Cell, _ row: Self) -> ())) -> Self{
+    public func cellUpdate(_ callback: @escaping ((_ cell: Cell, _ row: Self) -> ())) -> Self{
         callbackCellUpdate = { [unowned self] in  callback(self.cell, self) }
         return self
     }
@@ -221,7 +221,7 @@ extension RowType where Self: TypedRowType, Self: BaseRow {
      - returns: this row
      */
     @discardableResult
-    public func cellSetup(_ callback: ((_ cell: Cell, _ row: Self) -> ())) -> Self{
+    public func cellSetup(_ callback: @escaping ((_ cell: Cell, _ row: Self) -> ())) -> Self{
         callbackCellSetup = { [unowned self] (cell:Cell) in  callback(cell, self) }
         return self
     }
@@ -232,7 +232,7 @@ extension RowType where Self: TypedRowType, Self: BaseRow {
      - returns: this row
      */
     @discardableResult
-    public func onCellSelection(_ callback: ((_ cell: Cell, _ row: Self) -> ())) -> Self{
+    public func onCellSelection(_ callback: @escaping ((_ cell: Cell, _ row: Self) -> ())) -> Self{
         callbackCellOnSelection = { [unowned self] in  callback(self.cell, self) }
         return self
     }
