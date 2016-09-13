@@ -533,11 +533,7 @@ There are some things to consider when you do this:
         <img src="Example/Media/RowStatics/TextAreaRow.png"/>
         </center><br><br>
         </td>
-        <td><center><b>Postal Address Row</b><br>
-        <img src="Example/Media/RowStatics/PostalAddressRow.png"/>
-        </center><br><br>
-        </td>
-        <td><center><b>Picture Row</b><br>
+        <td><center><b>Image Row</b><br>
         <img src="Example/Media/RowStatics/PictureRow.png"/>
         </center><br><br>
         </td>

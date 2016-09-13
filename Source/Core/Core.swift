@@ -432,12 +432,7 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     }
     
     /// Accessory view that is responsible for the navigation between rows
-    lazy public var navigationAccessoryView : NavigationAccessoryView = {
-        [unowned self] in
-        let naview = NavigationAccessoryView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0))
-        naview.tintColor = self.view.tintColor
-        return naview
-        }()
+    open var navigationAccessoryView : NavigationAccessoryView!
     
     /// Defines the behaviour of the navigation between rows
     public var navigationOptions : RowNavigationOptions?
@@ -479,6 +474,8 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationAccessoryView = NavigationAccessoryView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0))
+        navigationAccessoryView.tintColor = self.view.tintColor
 
         let selectedIndexPaths = tableView?.indexPathsForSelectedRows ?? []
         tableView?.reloadRows(at: selectedIndexPaths, with: .none)

@@ -26,10 +26,10 @@
 import Foundation
 
 /// Class for the navigation accessory view used in FormViewController
-public class NavigationAccessoryView : UIToolbar {
-    public var previousButton: UIBarButtonItem!
-    public var nextButton: UIBarButtonItem!
-    public var doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: nil)
+open class NavigationAccessoryView : UIToolbar {
+    open var previousButton: UIBarButtonItem!
+    open var nextButton: UIBarButtonItem!
+    open var doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: nil)
     private var fixedSpace = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
     private var flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     
@@ -65,5 +65,5 @@ public class NavigationAccessoryView : UIToolbar {
         nextButton = UIBarButtonItem(image: imageRightChevron, style: .plain, target: nil, action: nil)
     }
     
-    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {}
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {}
 }
