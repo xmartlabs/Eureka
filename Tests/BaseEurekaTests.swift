@@ -29,7 +29,6 @@ class BaseEurekaTests: XCTestCase {
     var dateForm = Form()
     var fieldForm = Form()
     var shortForm = Form()
-	var postalAddressForm = Form()
     var manySectionsForm = Form()
     var formVC = FormViewController()
     
@@ -69,12 +68,7 @@ class BaseEurekaTests: XCTestCase {
             <<< TwitterRow("TwitterRow_f1"){ $0.title = "Twitter" }
             <<< AccountRow("AccountRow_f1"){ $0.title = "Account" }
             <<< ZipCodeRow("ZipCodeRow_f1"){ $0.title = "Zip Code" }
-		
-		postalAddressForm +++ Section("Postal Address Section")
-			<<< PostalAddressRow("PostalAddressRow_f1"){
-				$0.title = "Postal Address"
-			}
-		
+				
         manySectionsForm =  Section("Section A")
                         +++ Section("Section B")
                         +++ Section("Section C")
@@ -89,7 +83,6 @@ class BaseEurekaTests: XCTestCase {
         dateForm = Form()
         shortForm = Form()
         fieldForm = Form()
-		postalAddressForm = Form()
         manySectionsForm = Form()
         formVC = FormViewController()
     }
@@ -100,8 +93,6 @@ class BaseEurekaTests: XCTestCase {
         XCTAssertEqual(shortForm[0].count, 2)
         XCTAssertEqual(fieldForm.count, 1)
         XCTAssertEqual(fieldForm[0].count, 11)
-		XCTAssertEqual(postalAddressForm.count, 1)
-		XCTAssertEqual(postalAddressForm[0].count, 1)
         XCTAssertEqual(manySectionsForm.count, 6)
         XCTAssertEqual(manySectionsForm[0].count, 0)
     }

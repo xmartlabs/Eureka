@@ -49,7 +49,6 @@ class CallbacksTests: XCTestCase {
         onChangeTest(row:DateRow(), value: NSDate().addingTimeInterval(100) as Date)
         onChangeTest(row:DateInlineRow(), value: NSDate().addingTimeInterval(100) as Date)
         onChangeTest(row:PopoverSelectorRow<String>(), value: "text")
-        onChangeTest(row:PostalAddressRow(), value: PostalAddress(street: "a", state: "b", postalCode: "c", city: "d", country: "e"))
         onChangeTest(row:SliderRow(), value: 5.0)
         onChangeTest(row:StepperRow(), value: 2.5)
     }
@@ -62,7 +61,6 @@ class CallbacksTests: XCTestCase {
         cellSetupTest(row:DateRow())
         cellSetupTest(row:DateInlineRow())
         cellSetupTest(row:PopoverSelectorRow<String>())
-        cellSetupTest(row:PostalAddressRow())
         cellSetupTest(row:SliderRow())
         cellSetupTest(row:StepperRow())
     }
@@ -75,7 +73,6 @@ class CallbacksTests: XCTestCase {
         cellUpdateTest(row:DateRow())
         cellUpdateTest(row:DateInlineRow())
         cellUpdateTest(row:PopoverSelectorRow<String>())
-        cellUpdateTest(row:PostalAddressRow())
         cellUpdateTest(row:SliderRow())
         cellUpdateTest(row:StepperRow())
     }
@@ -88,7 +85,6 @@ class CallbacksTests: XCTestCase {
         defaultCellSetupTest(row:DateRow())
         defaultCellSetupTest(row:DateInlineRow())
         defaultCellSetupTest(row:PopoverSelectorRow<String>())
-        defaultCellSetupTest(row:PostalAddressRow())
         defaultCellSetupTest(row:SliderRow())
         defaultCellSetupTest(row:StepperRow())
     }
@@ -101,7 +97,6 @@ class CallbacksTests: XCTestCase {
        defaultCellUpdateTest(row: DateRow())
        defaultCellUpdateTest(row: DateInlineRow())
        defaultCellUpdateTest(row: PopoverSelectorRow<String>())
-       defaultCellUpdateTest(row: PostalAddressRow())
        defaultCellUpdateTest(row: SliderRow())
        defaultCellUpdateTest(row: StepperRow())
     }
@@ -114,7 +109,6 @@ class CallbacksTests: XCTestCase {
        defaultInitializerTest(row: DateRow())
        defaultInitializerTest(row: DateInlineRow())
        defaultInitializerTest(row: PopoverSelectorRow<String>())
-       defaultInitializerTest(row: PostalAddressRow())
        defaultInitializerTest(row: SliderRow())
        defaultInitializerTest(row: StepperRow())
     }
