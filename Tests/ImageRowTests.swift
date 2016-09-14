@@ -17,13 +17,13 @@ class ImageRowTests: XCTestCase {
     var availableSources: ImageRowSourceTypes {
         var result: ImageRowSourceTypes = []
         
-        if UIImagePickerController.isSourceTypeAvailable(.PhotoLibrary) {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             result.insert(ImageRowSourceTypes.PhotoLibrary)
         }
-        if UIImagePickerController.isSourceTypeAvailable(.Camera) {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
             result.insert(ImageRowSourceTypes.Camera)
         }
-        if UIImagePickerController.isSourceTypeAvailable(.SavedPhotosAlbum) {
+        if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
             result.insert(ImageRowSourceTypes.SavedPhotosAlbum)
         }
         return result
@@ -67,9 +67,9 @@ class ImageRowTests: XCTestCase {
     }
     
     func testImagePickerControllerSourceTypeRawValue() {
-        XCTAssert(UIImagePickerControllerSourceType.PhotoLibrary.rawValue == ImageRowSourceTypes.PhotoLibrary.imagePickerControllerSourceTypeRawValue)
-        XCTAssert(UIImagePickerControllerSourceType.Camera.rawValue == ImageRowSourceTypes.Camera.imagePickerControllerSourceTypeRawValue)
-        XCTAssert(UIImagePickerControllerSourceType.SavedPhotosAlbum.rawValue == ImageRowSourceTypes.SavedPhotosAlbum.imagePickerControllerSourceTypeRawValue)
+        XCTAssert(UIImagePickerControllerSourceType.photoLibrary.rawValue == ImageRowSourceTypes.PhotoLibrary.imagePickerControllerSourceTypeRawValue)
+        XCTAssert(UIImagePickerControllerSourceType.camera.rawValue == ImageRowSourceTypes.Camera.imagePickerControllerSourceTypeRawValue)
+        XCTAssert(UIImagePickerControllerSourceType.savedPhotosAlbum.rawValue == ImageRowSourceTypes.SavedPhotosAlbum.imagePickerControllerSourceTypeRawValue)
     }
     
     func testImageRow() {
