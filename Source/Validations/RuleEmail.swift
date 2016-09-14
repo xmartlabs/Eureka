@@ -1,7 +1,7 @@
-//  Eureka.h
+//  RuleEmail.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,14 +22,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+import Foundation
 
-//! Project version number for Eureka.
-FOUNDATION_EXPORT double EurekaVersionNumber;
-
-//! Project version string for Eureka.
-FOUNDATION_EXPORT const unsigned char EurekaVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <Eureka/PublicHeader.h>
-
-
+public class RuleEmail: RuleRegExp {
+    
+    public init() {
+        super.init(regExpr: RegExprPattern.EmailAddress.rawValue)
+        self.validationError = ValidationError(msg: "Field value should a valid email!")
+    }
+    
+}

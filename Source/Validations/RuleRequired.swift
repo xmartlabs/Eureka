@@ -1,7 +1,7 @@
-//  Eureka.h
+//  RuleRequire.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,14 +22,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+import Foundation
 
-//! Project version number for Eureka.
-FOUNDATION_EXPORT double EurekaVersionNumber;
-
-//! Project version string for Eureka.
-FOUNDATION_EXPORT const unsigned char EurekaVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <Eureka/PublicHeader.h>
-
-
+public struct RuleRequired<T: Equatable>: RuleType {
+    
+    public init(){}
+    
+    public var id: String?
+    public var validationError = ValidationError(msg: "Field required!")
+    
+    public func isValid(value: T?) -> ValidationError? {
+        if let str = value as? String {
+            return str.isEmpty ? validationError : nil
+        }
+        return value != nil ? nil : validationError
+    }
+}

@@ -1,7 +1,7 @@
-//  Eureka.h
+//  RuleURL.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,14 +22,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+import Foundation
+import UIKit
 
-//! Project version number for Eureka.
-FOUNDATION_EXPORT double EurekaVersionNumber;
-
-//! Project version string for Eureka.
-FOUNDATION_EXPORT const unsigned char EurekaVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <Eureka/PublicHeader.h>
-
-
+public struct RuleURL: RuleType {
+    
+    public init() {}
+    
+    public var id: String?
+    public var validationError = ValidationError(msg: "Field value must be an URL!")
+    
+    public func isValid(value: URL?) -> ValidationError? {
+        guard let value = value else  { return validationError }
+        let regEx = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
+        let predicate = NSPredicate(format:"SELF MATCHES %@", regEx)
+        guard predicate.evaluate(with: value.absoluteString) else {
+            return validationError
+        }
+        return nil
+    }
+}

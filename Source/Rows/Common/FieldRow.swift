@@ -203,6 +203,9 @@ public class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T
                 textField.placeholder = (row as? FieldRowConformance)?.placeholder
             }
         }
+        if row.isHighlighted {
+            textLabel?.textColor = tintColor
+        }
     }
     
     public override func cellCanBecomeFirstResponder() -> Bool {

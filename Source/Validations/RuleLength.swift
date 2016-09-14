@@ -1,7 +1,7 @@
-//  Eureka.h
+//  RuleLength.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,14 +22,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
-
-//! Project version number for Eureka.
-FOUNDATION_EXPORT double EurekaVersionNumber;
-
-//! Project version string for Eureka.
-FOUNDATION_EXPORT const unsigned char EurekaVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <Eureka/PublicHeader.h>
+import Foundation
 
 
+public struct RuleMinLength: RuleType {
+    
+    let min: UInt
+    
+    public var id: String?
+    public var validationError: ValidationError
+    
+    public init(minLength: UInt){
+        min = minLength
+        validationError = ValidationError(msg: "Field value must have at least \(min) characters")
+    }
+    
+    public func isValid(value: String?) -> ValidationError? {
+        guard let value = value, value.characters.count >= Int(min) else { return validationError }
+        return nil
+    }
+}
+
+public struct RuleMaxLength: RuleType {
+    
+    let max: UInt
+    
+    public var id: String?
+    public var validationError: ValidationError
+    
+    public init(maxLength: UInt){
+        max = maxLength
+        validationError = ValidationError(msg: "Field value must have less than \(max) characters")
+    }
+    
+    public func isValid(value: String?) -> ValidationError? {
+        guard let value = value , value.characters.count <= Int(max) else { return validationError }
+        return nil
+    }
+}
