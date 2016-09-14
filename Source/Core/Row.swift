@@ -58,8 +58,6 @@ public class RowOf<T: Equatable>: BaseRow {
                 validate()
                 updateCell()
             }
-            used = true
-
         }
         get {
             return _value
@@ -86,7 +84,7 @@ public class RowOf<T: Equatable>: BaseRow {
 
     internal var rules: [ValidationRuleHelper<T>] = []
 
-    public func validate() -> [ValidationError] {
+    public override func validate() -> [ValidationError] {
         validationErrors = rules.flatMap { $0.validateFn(value) }
         return validationErrors
     }
