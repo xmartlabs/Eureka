@@ -46,17 +46,7 @@ public protocol BaseCellType : class {
      Method called each time the cell is selected (tapped on by the user).
      */
     func didSelect()
-    
-    /**
-     Method called each time the cell is selected (tapped on by the user).
-     */
-    func highlight()
-    
-    /**
-     Method called each time the cell is deselected (looses first responder).
-     */
-    func unhighlight()
-    
+        
     /**
      Called when cell is about to become first responder
      

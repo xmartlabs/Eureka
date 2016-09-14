@@ -1,7 +1,7 @@
-//  AppDelegate.swift
+//  RuleURL.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,16 +22,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+import Foundation
 import UIKit
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
-
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Take a look at Main.storyboard
-        return true
+public struct RuleURL: RuleType {
+    
+    public init() {}
+    
+    public var id: String?
+    public var validationError = ValidationError(msg: "Field value must be an URL!")
+    
+    public func isValid(value: NSURL?) -> ValidationError? {
+        guard let value = value else  { return validationError }
+        let regEx = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
+        let predicate = NSPredicate(format:"SELF MATCHES %@", regEx)
+        guard predicate.evaluateWithObject(value.absoluteString) else {
+            return validationError
+        }
+        return nil
     }
 }
-

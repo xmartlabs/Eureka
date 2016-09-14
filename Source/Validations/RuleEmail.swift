@@ -1,7 +1,7 @@
-//  AppDelegate.swift
+//  RuleEmail.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,16 +22,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import UIKit
+import Foundation
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
-
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Take a look at Main.storyboard
-        return true
+public class RuleEmail: RuleRegExp {
+    
+    public init() {
+        super.init(regExpr: RegExprPattern.EmailAddress.rawValue)
+        self.validationError = ValidationError(msg: "Field value should a valid email!")
     }
+    
 }
-

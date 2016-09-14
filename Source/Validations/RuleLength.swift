@@ -1,7 +1,7 @@
-//  AppDelegate.swift
+//  RuleLength.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,16 +22,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import UIKit
+import Foundation
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow?
-
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Take a look at Main.storyboard
-        return true
+public struct RuleMinLength: RuleType {
+    
+    let min: UInt
+    
+    public var id: String?
+    public var validationError: ValidationError
+    
+    public init(minLength: UInt){
+        min = minLength
+        validationError = ValidationError(msg: "Field value must have at least \(min) characters")
+    }
+    
+    public func isValid(value: String?) -> ValidationError? {
+        guard let value = value where value.characters.count >= Int(min) else { return validationError }
+        return nil
     }
 }
 
+public struct RuleMaxLength: RuleType {
+    
+    let max: UInt
+    
+    public var id: String?
+    public var validationError: ValidationError
+    
+    public init(maxLength: UInt){
+        max = maxLength
+        validationError = ValidationError(msg: "Field value must have less than \(max) characters")
+    }
+    
+    public func isValid(value: String?) -> ValidationError? {
+        guard let value = value  where value.characters.count <= Int(max) else { return validationError }
+        return nil
+    }
+}

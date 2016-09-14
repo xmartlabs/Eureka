@@ -26,15 +26,31 @@ import Foundation
 
 public class BaseRow : BaseRowType {
     
-    var callbackOnChange: (()->Void)?
-    var callbackCellUpdate: (()->Void)?
+    var callbackOnChange: (()-> Void)?
+    var callbackCellUpdate: (()-> Void)?
     var callbackCellSetup: Any?
-    var callbackCellOnSelection: (()->Void)?
-    var callbackOnCellHighlight: (()->Void)?
-    var callbackOnCellUnHighlight: (()->Void)?
+    var callbackCellOnSelection: (()-> Void)?
     var callbackOnExpandInlineRow: Any?
     var callbackOnCollapseInlineRow: Any?
+    var callbackOnCellHighlightChanged: (()-> Void)?
+    var callbackOnRowValidationChanged: (() -> Void)?
     var _inlineRow: BaseRow?
+    
+    public var validationOptions: ValidationOptions = .ValidatesOnBlur
+    // validation state
+    public internal(set) var validationErrors = [ValidationError]() {
+        didSet {
+            if validationErrors != oldValue {
+                RowDefaults.onRowValidationChanged["\(self.dynamicType)"]?(baseCell, self)
+                callbackOnRowValidationChanged?()
+            }
+        }
+    }
+    
+    public internal(set) var used = false
+    public internal(set) var blurred = false
+    public var isValid: Bool { return validationErrors.isEmpty }
+    public var isHighlighted: Bool = false
     
     /// The title will be displayed in the textLabel of the row.
     public var title: String?
@@ -90,19 +106,6 @@ public class BaseRow : BaseRowType {
      Method called when the cell belonging to this row was selected. Must call the corresponding method in its cell.
      */
     public func didSelect() {}
-    
-    /**
-     Method that is responsible for highlighting the cell.
-     */
-    public func highlightCell() {}
-    
-    @available(*, unavailable, message="Deprecated. Use 'highlightCell' instead.")
-    public func hightlightCell() { highlightCell() }
-    
-    /**
-     Method that is responsible for unhighlighting the cell.
-     */
-    public func unhighlightCell() {}
     
     public func prepareForSegue(segue: UIStoryboardSegue) {}
     

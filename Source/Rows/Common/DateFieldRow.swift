@@ -44,6 +44,9 @@ public class DateCell : Cell<NSDate>, CellType {
         if let minuteIntervalValue = (row as? DatePickerRowProtocol)?.minuteInterval{
             datePicker.minuteInterval = minuteIntervalValue
         }
+        if row.isHighlighted {
+            textLabel?.textColor = tintColor
+        }
     }
     
     public override func didSelect() {

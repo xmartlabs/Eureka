@@ -1,7 +1,7 @@
-//  AppDelegate.swift
+//  RuleClosure.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,16 +22,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import UIKit
+import Foundation
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow?
+public struct RuleClosure<T: Equatable>: RuleType {
+    
+    public var id: String?
+    public var validationError: ValidationError
+    
+    public var closure: (T?) -> ValidationError?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Take a look at Main.storyboard
-        return true
+    public func isValid(value: T?) -> ValidationError? {
+        return closure(value)
+    }
+    
+    public init(validationError: ValidationError = ValidationError(msg: "Field validation fails.."), closure: ((T?) -> ValidationError?)) {
+        self.validationError = validationError
+        self.closure = closure
     }
 }
-

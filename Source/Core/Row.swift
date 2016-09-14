@@ -26,11 +26,10 @@
 import Foundation
 
 public class RowOf<T: Equatable>: BaseRow {
-    
-    /// The typed value of this row.
-    public var value : T?{
+
+    private var _value: T? {
         didSet {
-            guard value != oldValue else { return }
+            guard _value != oldValue else { return }
             guard let form = section?.form else { return }
             if let delegate = form.delegate {
                 delegate.rowValueHasBeenChanged(self, oldValue: oldValue, newValue: value)
@@ -50,45 +49,91 @@ public class RowOf<T: Equatable>: BaseRow {
             }
         }
     }
-    
+
+    /// The typed value of this row.
+    public var value : T?{
+        set (newValue){
+            _value = newValue
+            if validationOptions.contains(.ValidatesOnChange) || (blurred && validationOptions.contains(.ValidatesOnChangeAfterBlurred)) || !isValid   {
+                validate()
+                updateCell()
+            }
+            used = true
+
+        }
+        get {
+            return _value
+        }
+    }
+
     /// The untyped value of this row.
     public override var baseValue: Any? {
         get { return value }
         set { value = newValue as? T }
     }
-    
+
     /// Variable used in rows with options that serves to generate the options for that row.
     public var dataProvider: DataProvider<T>?
-    
+
     /// Block variable used to get the String that should be displayed for the value of this row.
-    public var displayValueFor : (T? -> String?)? = {
-        if let t = $0 {
-            return String(t)
-        }
-        return nil
+    public var displayValueFor : ((T?) -> String?)? = {
+        return $0.map { String($0) }
     }
-    
+
     public required init(tag: String?){
         super.init(tag: tag)
     }
+
+    internal var rules: [ValidationRuleHelper<T>] = []
+
+    public func validate() -> [ValidationError] {
+        validationErrors = rules.flatMap { $0.validateFn(value) }
+        return validationErrors
+    }
+
+    public func addRule<Rule: RuleType where T == Rule.RowValueType>(rule: Rule) {
+        let validFn: ((T?) -> ValidationError?) = { [weak self] (val: T?) in
+            guard let _ = self else { return nil }
+            return rule.isValid(val)
+        }
+        rules.append(ValidationRuleHelper(validateFn: validFn, rule: rule))
+    }
+
+    public func addRuleSet(set: RuleSet<T>){
+        rules.appendContentsOf(set.rules)
+    }
+
+    public func removeRuleWith(identifier: String) {
+        if let index = rules.indexOf({ (validationRuleHelper) -> Bool in
+            return validationRuleHelper.rule.id == identifier
+        }){
+            rules.removeAtIndex(index)
+        }
+    }
+
+    public func removeAllRules() {
+        validationErrors.removeAll()
+        rules.removeAll()
+    }
+
 }
 
 /// Generic class that represents an Eureka row.
 public class Row<T: Equatable, Cell: CellType where Cell: TypedCellType, Cell: BaseCell, Cell.Value == T>: RowOf<T>,  TypedRowType {
-    
+
     /// Responsible for creating the cell for this row.
     public var cellProvider = CellProvider<Cell>()
-    
+
     /// The type of the cell associated to this row.
     public let cellType: Cell.Type! = Cell.self
-    
+
     private var _cell: Cell! {
         didSet {
             RowDefaults.cellSetup["\(self.dynamicType)"]?(_cell, self)
             (callbackCellSetup as? (Cell -> ()))?(_cell)
         }
     }
-    
+
     /// The cell associated to this row.
     public var cell : Cell! {
         return _cell ?? {
@@ -99,14 +144,14 @@ public class Row<T: Equatable, Cell: CellType where Cell: TypedCellType, Cell: B
             return _cell
         }()
     }
-    
+
     /// The untyped cell associated to this row
     public override var baseCell: BaseCell { return cell }
-    
+
     public required init(tag: String?) {
         super.init(tag: tag)
     }
-    
+
     /**
      Method that reloads the cell
      */
@@ -117,7 +162,7 @@ public class Row<T: Equatable, Cell: CellType where Cell: TypedCellType, Cell: B
         RowDefaults.cellUpdate["\(self.dynamicType)"]?(cell, self)
         callbackCellUpdate?()
     }
-    
+
     /**
      Method called when the cell belonging to this row was selected. Must call the corresponding method in its cell.
      */
@@ -129,37 +174,15 @@ public class Row<T: Equatable, Cell: CellType where Cell: TypedCellType, Cell: B
         customDidSelect()
         callbackCellOnSelection?()
     }
-    
-    /**
-     Method that is responsible for highlighting the cell.
-     */
-    override public func highlightCell() {
-        super.highlightCell()
-        cell.highlight()
-        RowDefaults.onCellHighlight["\(self.dynamicType)"]?(cell, self)
-        callbackOnCellHighlight?()
-    }
-    
-    /**
-     Method that is responsible for unhighlighting the cell.
-     */
-    public override func unhighlightCell() {
-        super.unhighlightCell()
-        cell.unhighlight()
-        RowDefaults.onCellUnHighlight["\(self.dynamicType)"]?(cell, self)
-        callbackOnCellUnHighlight?()
-    }
-    
+
     /**
      Will be called inside `didSelect` method of the row. Can be used to customize row selection from the definition of the row.
      */
     public func customDidSelect(){}
-    
+
     /**
      Will be called inside `updateCell` method of the row. Can be used to customize reloading a row from its definition.
      */
     public func customUpdateCell(){}
-    
+
 }
-
-

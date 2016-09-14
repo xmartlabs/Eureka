@@ -185,6 +185,9 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
                 textField.placeholder = (row as? FieldRowConformance)?.placeholder
             }
         }
+        if row.isHighlighted {
+            textLabel?.textColor = tintColor
+        }
     }
     
     public override func cellCanBecomeFirstResponder() -> Bool {

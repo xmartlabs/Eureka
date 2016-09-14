@@ -1,7 +1,7 @@
-//  AppDelegate.swift
+//  RuleRequire.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,16 +22,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import UIKit
+import Foundation
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
-
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Take a look at Main.storyboard
-        return true
+public struct RuleRequired<T: Equatable>: RuleType {
+    
+    public init(){}
+    
+    public var id: String?
+    public var validationError = ValidationError(msg: "Field required!")
+    
+    public func isValid(value: T?) -> ValidationError? {
+        if let str = value as? String {
+            return str.isEmpty ? validationError : nil
+        }
+        return value != nil ? nil : validationError
     }
 }
-

@@ -1,7 +1,7 @@
 //  Core.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,14 +30,14 @@ import UIKit
 internal class RowDefaults {
     static var cellUpdate = Dictionary<String, (BaseCell, BaseRow) -> Void>()
     static var cellSetup = Dictionary<String, (BaseCell, BaseRow) -> Void>()
-    static var onCellHighlight = Dictionary<String, (BaseCell, BaseRow) -> Void>()
-    static var onCellUnHighlight = Dictionary<String, (BaseCell, BaseRow) -> Void>()
-    static var rowInitialization = Dictionary<String, BaseRow -> Void>()
+    static var onCellHighlightChanged = Dictionary<String, (BaseCell, BaseRow) -> Void>()
+    static var rowInitialization = Dictionary<String, (BaseRow) -> Void>()
+    static var onRowValidationChanged = Dictionary<String, (BaseCell, BaseRow) -> Void>()
     static var rawCellUpdate = Dictionary<String, Any>()
     static var rawCellSetup = Dictionary<String, Any>()
-    static var rawOnCellHighlight = Dictionary<String, Any>()
-    static var rawOnCellUnHighlight = Dictionary<String, Any>()
+    static var rawOnCellHighlightChanged = Dictionary<String, Any>()
     static var rawRowInitialization = Dictionary<String, Any>()
+    static var rawOnRowValidationChanged = Dictionary<String, Any>()
 }
 
 
@@ -553,7 +553,10 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
     Called when a cell becomes first responder
     */
     public final func beginEditing<T:Equatable>(cell: Cell<T>) {
-        cell.row.highlightCell()
+        cell.row.isHighlighted = true
+        cell.row.updateCell()
+        RowDefaults.onCellHighlightChanged["\(self.dynamicType)"]?(cell, cell.row)
+        cell.row.callbackOnCellHighlightChanged?()
         guard let _ = tableView where (form.inlineRowHideOptions ?? Form.defaultInlineRowHideOptions).contains(.FirstResponderChanges) else { return }
         let row = cell.baseRow
         let inlineRow = row._inlineRow
@@ -568,7 +571,14 @@ public class FormViewController : UIViewController, FormViewControllerProtocol {
      Called when a cell resigns first responder
      */
     public final func endEditing<T:Equatable>(cell: Cell<T>) {
-        cell.row.unhighlightCell()
+        cell.row.isHighlighted = false
+        cell.row.blurred = true
+        cell.row.updateCell()
+        RowDefaults.onCellHighlightChanged["\(self.dynamicType)"]?(cell, cell.row)
+        cell.row.callbackOnCellHighlightChanged?()
+        if cell.row.validationOptions.contains(.ValidatesOnBlur) ||  cell.row.validationOptions.contains(.ValidatesOnChangeAfterBlurred) {
+            cell.row.validate()
+        }
     }
     
     /**

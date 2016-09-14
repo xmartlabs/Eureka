@@ -1,7 +1,7 @@
 //  CustomCells.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -571,9 +571,9 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
     }
     
     
-    func tappedDone(sender: UIBarButtonItem){
-        let target = mapView.convertPoint(ellipsisLayer.position, toCoordinateFromView: mapView)
-        row.value? = CLLocation(latitude: target.latitude, longitude: target.longitude)
+    func tappedDone(_ sender: UIBarButtonItem){
+        let target = mapView.convert(ellipsisLayer.position, toCoordinateFrom: mapView)
+        row.value = CLLocation(latitude: target.latitude, longitude: target.longitude)
         completionCallback?(self)
     }
     

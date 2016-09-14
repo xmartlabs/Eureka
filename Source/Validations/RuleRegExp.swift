@@ -1,7 +1,7 @@
-//  AppDelegate.swift
+//  RegexRule.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,16 +22,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import UIKit
+import Foundation
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
-
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Take a look at Main.storyboard
-        return true
-    }
+public enum RegExprPattern: String {
+    case EmailAddress = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-+]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z‌​]{2,})$"
+    case URL = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
+    case ContainsNumber = ".*\\d.*"
+    case ContainsCapital = "^.*?[A-Z].*?$"
+    case ContainsLowercase = "^.*?[a-z].*?$"
 }
 
+public class RuleRegExp: RuleType {
+
+    public var regExpr: String = ""
+    public var id: String?
+    public var validationError = ValidationError(msg: "Invalid field value!")
+    
+    public init(regExpr: String){
+        self.regExpr = regExpr
+    }
+    
+    public func isValid(value: String?) -> ValidationError? {
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regExpr)
+        guard predicate.evaluateWithObject(value) else {
+            return validationError
+        }
+        return nil
+    }
+}

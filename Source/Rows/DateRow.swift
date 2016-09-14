@@ -63,13 +63,6 @@ public class _CountDownRow: _DateFieldRow {
 public final class DateRow: _DateRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
-        onCellHighlight { cell, row in
-            let color = cell.detailTextLabel?.textColor
-            row.onCellUnHighlight { cell, _ in
-                cell.detailTextLabel?.textColor = color
-            }
-            cell.detailTextLabel?.textColor = cell.tintColor
-        }
     }
 }
 
@@ -78,13 +71,6 @@ public final class DateRow: _DateRow, RowType {
 public final class TimeRow: _TimeRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
-        onCellHighlight { cell, row in
-            let color = cell.detailTextLabel?.textColor
-            row.onCellUnHighlight { cell, _ in
-                cell.detailTextLabel?.textColor = color
-            }
-            cell.detailTextLabel?.textColor = cell.tintColor
-        }
     }
 }
 
@@ -92,13 +78,6 @@ public final class TimeRow: _TimeRow, RowType {
 public final class DateTimeRow: _DateTimeRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
-        onCellHighlight { cell, row in
-            let color = cell.detailTextLabel?.textColor
-            row.onCellUnHighlight { cell, _ in
-                cell.detailTextLabel?.textColor = color
-            }
-            cell.detailTextLabel?.textColor = cell.tintColor
-        }
     }
 }
 
@@ -106,13 +85,6 @@ public final class DateTimeRow: _DateTimeRow, RowType {
 public final class CountDownRow: _CountDownRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
-        onCellHighlight { cell, row in
-            let color = cell.detailTextLabel?.textColor
-            row.onCellUnHighlight { cell, _ in
-                cell.detailTextLabel?.textColor = color
-            }
-            cell.detailTextLabel?.textColor = cell.tintColor
-        }
     }
 }
 
