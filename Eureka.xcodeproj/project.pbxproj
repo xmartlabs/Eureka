@@ -18,6 +18,9 @@
 		2859CDC41C7D19C50002982F /* HeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDC31C7D19C50002982F /* HeaderFooterView.swift */; };
 		2859CDC61C7D1A2E0002982F /* NavigationAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDC51C7D1A2E0002982F /* NavigationAccessoryView.swift */; };
 		2859CDE91C7DD78E0002982F /* BaseRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDE81C7DD78E0002982F /* BaseRow.swift */; };
+		287A142B1D89DF1E00FFE6EB /* ValidationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A142A1D89DF1E00FFE6EB /* ValidationsTests.swift */; };
+		287A14321D8A07ED00FFE6EB /* ImageRowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A142F1D8A07C300FFE6EB /* ImageRowTests.swift */; };
+		287A14331D8A07ED00FFE6EB /* SelectableSectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A142D1D8A07B700FFE6EB /* SelectableSectionTests.swift */; };
 		287E7D7E1D625A260065F4DE /* RuleRequired.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E7D7D1D625A260065F4DE /* RuleRequired.swift */; };
 		287E7D801D74E42D0065F4DE /* RuleRegExp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E7D7F1D74E42D0065F4DE /* RuleRegExp.swift */; };
 		287E7D821D74E64C0065F4DE /* RuleURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E7D811D74E64C0065F4DE /* RuleURL.swift */; };
@@ -137,6 +140,9 @@
 		2859CE1F1C7E092B0002982F /* MultipleSelectorRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleSelectorRow.swift; sourceTree = "<group>"; };
 		2859CE211C7E13470002982F /* GenericMultipleSelectorRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GenericMultipleSelectorRow.swift; path = Common/GenericMultipleSelectorRow.swift; sourceTree = "<group>"; };
 		2859CE231C7E141B0002982F /* SelectableSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectableSection.swift; sourceTree = "<group>"; };
+		287A142A1D89DF1E00FFE6EB /* ValidationsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ValidationsTests.swift; path = Tests/ValidationsTests.swift; sourceTree = SOURCE_ROOT; };
+		287A142D1D8A07B700FFE6EB /* SelectableSectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectableSectionTests.swift; path = Tests/SelectableSectionTests.swift; sourceTree = SOURCE_ROOT; };
+		287A142F1D8A07C300FFE6EB /* ImageRowTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageRowTests.swift; path = Tests/ImageRowTests.swift; sourceTree = SOURCE_ROOT; };
 		287E7D7D1D625A260065F4DE /* RuleRequired.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RuleRequired.swift; path = Source/Validations/RuleRequired.swift; sourceTree = SOURCE_ROOT; };
 		287E7D7F1D74E42D0065F4DE /* RuleRegExp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RuleRegExp.swift; path = Source/Validations/RuleRegExp.swift; sourceTree = SOURCE_ROOT; };
 		287E7D811D74E64C0065F4DE /* RuleURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RuleURL.swift; path = Source/Validations/RuleURL.swift; sourceTree = SOURCE_ROOT; };
@@ -337,6 +343,8 @@
 		51729DF91B9A4F5E004A00EB /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				287A142F1D8A07C300FFE6EB /* ImageRowTests.swift */,
+				287A142D1D8A07B700FFE6EB /* SelectableSectionTests.swift */,
 				28B1D7711C7F90C900605EB3 /* BaseEurekaTests.swift */,
 				28B1D7721C7F90C900605EB3 /* CallbacksTests.swift */,
 				28B1D7731C7F90C900605EB3 /* CollectionTests.swift */,
@@ -348,6 +356,7 @@
 				28B1D7791C7F90C900605EB3 /* RowByTagTests.swift */,
 				28B1D77A1C7F90C900605EB3 /* RowCallbackTests.swift */,
 				28B1D77B1C7F90C900605EB3 /* SetValuesTests.swift */,
+				287A142A1D89DF1E00FFE6EB /* ValidationsTests.swift */,
 				51729DFC1B9A4F5E004A00EB /* Info.plist */,
 			);
 			name = Tests;
@@ -426,6 +435,7 @@
 					51729DEA1B9A4F5E004A00EB = {
 						CreatedOnToolsVersion = 7.0;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 					51729DF41B9A4F5E004A00EB = {
 						CreatedOnToolsVersion = 7.0;
@@ -551,7 +561,10 @@
 				28B1D7901C7F911900605EB3 /* RowCallbackTests.swift in Sources */,
 				28B1D78E1C7F911900605EB3 /* OperatorsTest.swift in Sources */,
 				28B1D78D1C7F911900605EB3 /* HiddenRowsTests.swift in Sources */,
+				287A14331D8A07ED00FFE6EB /* SelectableSectionTests.swift in Sources */,
 				28B1D78A1C7F911900605EB3 /* DateTests.swift in Sources */,
+				287A142B1D89DF1E00FFE6EB /* ValidationsTests.swift in Sources */,
+				287A14321D8A07ED00FFE6EB /* ImageRowTests.swift in Sources */,
 				28B1D78F1C7F911900605EB3 /* RowByTagTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -662,6 +675,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -683,6 +697,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";

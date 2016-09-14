@@ -47,7 +47,6 @@ open class BaseRow : BaseRowType {
         }
     }
     
-    public internal(set) var used = false
     public internal(set) var blurred = false
     public var isValid: Bool { return validationErrors.isEmpty }
     public var isHighlighted: Bool = false
@@ -68,6 +67,10 @@ open class BaseRow : BaseRowType {
     public var baseValue: Any? {
         set {}
         get { return nil }
+    }
+    
+    public func validate() -> [ValidationError] {
+        return []
     }
     
     public static var estimatedRowHeight: CGFloat = 44.0

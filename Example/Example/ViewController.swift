@@ -1294,6 +1294,13 @@ class ValidationsController: FormViewController {
                         }
         
         
+            +++ Section()
+                <<< ButtonRow() {
+                    $0.title = "Tap to force form validation"
+                }
+                .onCellSelection { cell, row in
+                    row.section?.form?.validates()
+                }
         
     
     }

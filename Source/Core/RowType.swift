@@ -68,6 +68,11 @@ public protocol BaseRowType: Taggable {
      Method called when the cell belonging to this row was selected. Must call the corresponding method in its cell.
      */
     func didSelect()
+    
+    /**
+     Typically we don't need to explicitly call this method since it is called by Eureka framework. It will validates the row if you invoke it.
+     */
+    func validate() -> [ValidationError]
 }
 
 public protocol TypedRowType: BaseRowType {

@@ -346,3 +346,17 @@ extension Form {
         kvoWrapper.sections.insert(section, at: formIndex == NSNotFound ? 0 : formIndex + 1 )
     }
 }
+
+extension Form {
+    
+    @discardableResult
+    public func validates() -> [ValidationError] {
+        var result = [ValidationError]()
+        result = allRows.reduce(result) { res, row in
+            var res = res
+            res.append(contentsOf: row.validate())
+            return res
+        }
+        return result
+    }
+}
