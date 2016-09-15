@@ -1,4 +1,4 @@
-//  OptionsRow.swift
+//  RuleLength.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -24,16 +24,39 @@
 
 import Foundation
 
-open class OptionsRow<Cell: CellType> : Row<Cell>, NoValueDisplayTextConformance where Cell: BaseCell {
+
+public struct RuleMinLength: RuleType {
     
-    public var options: [Cell.Value] {
-        get { return dataProvider?.arrayData ?? [] }
-        set { dataProvider = DataProvider(arrayData: newValue) }
+    let min: UInt
+    
+    public var id: String?
+    public var validationError: ValidationError
+    
+    public init(minLength: UInt){
+        min = minLength
+        validationError = ValidationError(msg: "Field value must have at least \(min) characters")
     }
-    public var selectorTitle: String?
-    public var noValueDisplayText: String?
     
-    required public init(tag: String?) {
-        super.init(tag: tag)
+    public func isValid(value: String?) -> ValidationError? {
+        guard let value = value, value.characters.count >= Int(min) else { return validationError }
+        return nil
+    }
+}
+
+public struct RuleMaxLength: RuleType {
+    
+    let max: UInt
+    
+    public var id: String?
+    public var validationError: ValidationError
+    
+    public init(maxLength: UInt){
+        max = maxLength
+        validationError = ValidationError(msg: "Field value must have less than \(max) characters")
+    }
+    
+    public func isValid(value: String?) -> ValidationError? {
+        guard let value = value , value.characters.count <= Int(max) else { return validationError }
+        return nil
     }
 }

@@ -1,4 +1,4 @@
-//  OptionsRow.swift
+//  RuleEmail.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -24,16 +24,11 @@
 
 import Foundation
 
-open class OptionsRow<Cell: CellType> : Row<Cell>, NoValueDisplayTextConformance where Cell: BaseCell {
+public class RuleEmail: RuleRegExp {
     
-    public var options: [Cell.Value] {
-        get { return dataProvider?.arrayData ?? [] }
-        set { dataProvider = DataProvider(arrayData: newValue) }
+    public init() {
+        super.init(regExpr: RegExprPattern.EmailAddress.rawValue)
+        self.validationError = ValidationError(msg: "Field value should a valid email!")
     }
-    public var selectorTitle: String?
-    public var noValueDisplayText: String?
     
-    required public init(tag: String?) {
-        super.init(tag: tag)
-    }
 }

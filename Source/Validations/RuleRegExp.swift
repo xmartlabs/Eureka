@@ -1,4 +1,4 @@
-//  OptionsRow.swift
+//  RegexRule.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -24,16 +24,29 @@
 
 import Foundation
 
-open class OptionsRow<Cell: CellType> : Row<Cell>, NoValueDisplayTextConformance where Cell: BaseCell {
+public enum RegExprPattern: String {
+    case EmailAddress = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-+]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z‌​]{2,})$"
+    case URL = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
+    case ContainsNumber = ".*\\d.*"
+    case ContainsCapital = "^.*?[A-Z].*?$"
+    case ContainsLowercase = "^.*?[a-z].*?$"
+}
+
+public class RuleRegExp: RuleType {
+
+    public var regExpr: String = ""
+    public var id: String?
+    public var validationError = ValidationError(msg: "Invalid field value!")
     
-    public var options: [Cell.Value] {
-        get { return dataProvider?.arrayData ?? [] }
-        set { dataProvider = DataProvider(arrayData: newValue) }
+    public init(regExpr: String){
+        self.regExpr = regExpr
     }
-    public var selectorTitle: String?
-    public var noValueDisplayText: String?
     
-    required public init(tag: String?) {
-        super.init(tag: tag)
+    public func isValid(value: String?) -> ValidationError? {
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regExpr)
+        guard predicate.evaluate(with: value) else {
+            return validationError
+        }
+        return nil
     }
 }

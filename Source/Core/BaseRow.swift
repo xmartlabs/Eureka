@@ -26,15 +26,32 @@ import Foundation
 
 open class BaseRow : BaseRowType {
     
-    var callbackOnChange: (()->Void)?
-    var callbackCellUpdate: (()->Void)?
+    var callbackOnChange: (()-> Void)?
+    var callbackCellUpdate: (()-> Void)?
     var callbackCellSetup: Any?
-    var callbackCellOnSelection: (()->Void)?
-    var callbackOnCellHighlight: (()->Void)?
-    var callbackOnCellUnHighlight: (()->Void)?
+    var callbackCellOnSelection: (()-> Void)?
     var callbackOnExpandInlineRow: Any?
     var callbackOnCollapseInlineRow: Any?
+    var callbackOnCellHighlightChanged: (()-> Void)?
+    var callbackOnRowValidationChanged: (() -> Void)?
     var _inlineRow: BaseRow?
+    
+    public var validationOptions: ValidationOptions = .validatesOnBlur
+    // validation state
+    public internal(set) var validationErrors = [ValidationError]() {
+        didSet {
+            guard validationErrors != oldValue else { return }
+            RowDefaults.onRowValidationChanged["\(type(of: self))"]?(baseCell, self)
+            callbackOnRowValidationChanged?()
+        }
+    }
+    
+    public internal(set) var blurred = false
+    public internal(set) var used = false
+    
+    
+    public var isValid: Bool { return validationErrors.isEmpty }
+    public var isHighlighted: Bool = false
     
     /// The title will be displayed in the textLabel of the row.
     public var title: String?
@@ -52,6 +69,10 @@ open class BaseRow : BaseRowType {
     public var baseValue: Any? {
         set {}
         get { return nil }
+    }
+    
+    public func validate() -> [ValidationError] {
+        return []
     }
     
     public static var estimatedRowHeight: CGFloat = 44.0
@@ -90,19 +111,6 @@ open class BaseRow : BaseRowType {
      Method called when the cell belonging to this row was selected. Must call the corresponding method in its cell.
      */
     public func didSelect() {}
-    
-    /**
-     Method that is responsible for highlighting the cell.
-     */
-    public func highlightCell() {}
-    
-    @available(*, unavailable, message: "Deprecated. Use 'highlightCell' instead.")
-    public func hightlightCell() { highlightCell() }
-    
-    /**
-     Method that is responsible for unhighlighting the cell.
-     */
-    public func unhighlightCell() {}
     
     public func prepareForSegue(_ segue: UIStoryboardSegue) {}
     

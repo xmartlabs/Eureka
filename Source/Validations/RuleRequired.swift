@@ -1,4 +1,4 @@
-//  OptionsRow.swift
+//  RuleRequire.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -24,16 +24,17 @@
 
 import Foundation
 
-open class OptionsRow<Cell: CellType> : Row<Cell>, NoValueDisplayTextConformance where Cell: BaseCell {
+public struct RuleRequired<T: Equatable>: RuleType {
     
-    public var options: [Cell.Value] {
-        get { return dataProvider?.arrayData ?? [] }
-        set { dataProvider = DataProvider(arrayData: newValue) }
-    }
-    public var selectorTitle: String?
-    public var noValueDisplayText: String?
+    public init(){}
     
-    required public init(tag: String?) {
-        super.init(tag: tag)
+    public var id: String?
+    public var validationError = ValidationError(msg: "Field required!")
+    
+    public func isValid(value: T?) -> ValidationError? {
+        if let str = value as? String {
+            return str.isEmpty ? validationError : nil
+        }
+        return value != nil ? nil : validationError
     }
 }

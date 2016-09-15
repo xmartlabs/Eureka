@@ -1,4 +1,4 @@
-//  OptionsRow.swift
+//  RuleURL.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -23,17 +23,21 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
-open class OptionsRow<Cell: CellType> : Row<Cell>, NoValueDisplayTextConformance where Cell: BaseCell {
+public struct RuleURL: RuleType {
     
-    public var options: [Cell.Value] {
-        get { return dataProvider?.arrayData ?? [] }
-        set { dataProvider = DataProvider(arrayData: newValue) }
-    }
-    public var selectorTitle: String?
-    public var noValueDisplayText: String?
+    public init() {}
     
-    required public init(tag: String?) {
-        super.init(tag: tag)
+    public var id: String?
+    public var validationError = ValidationError(msg: "Field value must be an URL!")
+    
+    public func isValid(value: URL?) -> ValidationError? {
+        guard let value = value else  { return validationError }
+        let predicate = NSPredicate(format:"SELF MATCHES %@", RegExprPattern.URL.rawValue)
+        guard predicate.evaluate(with: value.absoluteString) else {
+            return validationError
+        }
+        return nil
     }
 }
