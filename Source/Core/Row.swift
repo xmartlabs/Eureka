@@ -54,6 +54,8 @@ open class RowOf<T: Equatable>: BaseRow {
     public var value : T?{
         set (newValue){
             _value = newValue
+            guard let _ = section?.form else { return }
+            used = true
             if validationOptions.contains(.validatesOnChange) || (blurred && validationOptions.contains(.validatesOnChangeAfterBlurred)) || !isValid   {
                 validate()
                 updateCell()
@@ -91,8 +93,7 @@ open class RowOf<T: Equatable>: BaseRow {
     }
 
     public func addRule<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType{
-        let validFn: ((T?) -> ValidationError?) = { [weak self] (val: T?) in
-            guard let _ = self else { return nil }
+        let validFn: ((T?) -> ValidationError?) = { (val: T?) in
             return rule.isValid(value: val)
         }
         rules.append(ValidationRuleHelper(validateFn: validFn, rule: rule))
