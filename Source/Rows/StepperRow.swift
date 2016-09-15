@@ -48,10 +48,8 @@ public class StepperCell : Cell<Double>, CellType {
         addConstraint(NSLayoutConstraint(item: valueLabel, attribute: .centerY, relatedBy: .equal, toItem: stepper, attribute: .centerY, multiplier: 1.0, constant: 0))
         
         stepper.addTarget(self, action: #selector(StepperCell.valueChanged), for: .valueChanged)
-        stepper.value = row.value ?? 0
         
         valueLabel.textColor = stepper.tintColor
-        valueLabel.text = "\(row.value ?? 0)"
     }
     
     deinit {
@@ -61,6 +59,8 @@ public class StepperCell : Cell<Double>, CellType {
     public override func update() {
         super.update()
         stepper.isEnabled = !row.isDisabled
+        stepper.value = row.value ?? 0
+        valueLabel.text = "\(row.value ?? 0)"
         stepper.alpha = row.isDisabled ? 0.3 : 1.0
         valueLabel.alpha = row.isDisabled ? 0.3 : 1.0
     }
