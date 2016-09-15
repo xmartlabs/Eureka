@@ -40,14 +40,16 @@ public class BaseRow : BaseRowType {
     // validation state
     public internal(set) var validationErrors = [ValidationError]() {
         didSet {
-            if validationErrors != oldValue {
-                RowDefaults.onRowValidationChanged["\(self.dynamicType)"]?(baseCell, self)
-                callbackOnRowValidationChanged?()
-            }
+            guard validationErrors != oldValue else { return }
+            RowDefaults.onRowValidationChanged["\(self.dynamicType)"]?(baseCell, self)
+            callbackOnRowValidationChanged?()
         }
     }
     
     public internal(set) var blurred = false
+    public internal(set) var used = false
+    
+    
     public var isValid: Bool { return validationErrors.isEmpty }
     public var isHighlighted: Bool = false
     

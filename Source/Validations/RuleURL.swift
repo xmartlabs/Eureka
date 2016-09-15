@@ -34,8 +34,7 @@ public struct RuleURL: RuleType {
     
     public func isValid(value: NSURL?) -> ValidationError? {
         guard let value = value else  { return validationError }
-        let regEx = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
-        let predicate = NSPredicate(format:"SELF MATCHES %@", regEx)
+        let predicate = NSPredicate(format:"SELF MATCHES %@", RegExprPattern.URL.rawValue)
         guard predicate.evaluateWithObject(value.absoluteString) else {
             return validationError
         }

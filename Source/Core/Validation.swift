@@ -25,11 +25,7 @@
 import Foundation
 
 
-public protocol ValidationErrorType: ErrorType, Equatable {
-    var msg: String? { get }
-}
-
-public struct ValidationError: ValidationErrorType {
+public struct ValidationError: Equatable {
     public let msg: String?
 }
 

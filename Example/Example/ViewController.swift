@@ -1097,10 +1097,6 @@ class ValidationsController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        LabelRow.defaultCellSetup = { cell, row in
-            cell.height = { 30 }
-        }
         LabelRow.defaultCellUpdate = { cell, row in
             cell.contentView.backgroundColor = .red
             cell.textLabel?.textColor = .white
@@ -1161,7 +1157,7 @@ class ValidationsController: FormViewController {
                     }
             
             
-            +++ Section(header: "GreaterThan 999 Rule, SmallerThan 2 Rule", footer: "Options: Validates on blurred")
+            +++ Section(header: "Should be GreaterThan 2 and SmallerThan 999", footer: "Options: Validates on blurred")
         
                     <<< IntRow() {
                         $0.title = "Range Rule"
@@ -1196,6 +1192,7 @@ class ValidationsController: FormViewController {
                             for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
                                 let labelRow = LabelRow() {
                                     $0.title = validationMsg
+                                    $0.cell.height = { 30 }
                                 }
                                 row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
                             }
@@ -1224,6 +1221,7 @@ class ValidationsController: FormViewController {
                             for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
                                 let labelRow = LabelRow() {
                                     $0.title = validationMsg
+                                    $0.cell.height = { 30 }
                                 }
                                 row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
                             }
@@ -1251,6 +1249,7 @@ class ValidationsController: FormViewController {
                             for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
                                 let labelRow = LabelRow() {
                                     $0.title = validationMsg
+                                    $0.cell.height = { 30 }
                                 }
                                 row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
                             }
@@ -1277,6 +1276,7 @@ class ValidationsController: FormViewController {
                             for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
                                 let labelRow = LabelRow() {
                                     $0.title = validationMsg
+                                    $0.cell.height = { 30 }
                                 }
                                 row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
                             }
@@ -1304,6 +1304,7 @@ class ValidationsController: FormViewController {
                                 for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
                                     let labelRow = LabelRow() {
                                         $0.title = validationMsg
+                                        $0.cell.height = { 30 }
                                     }
                                     row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
                                 }
