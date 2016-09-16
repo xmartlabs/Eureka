@@ -56,7 +56,11 @@ public enum HeaderFooterProvider<ViewType: UIView> {
         case .Callback(let builder):
             return builder()
         case .NibFile(let nibName, let bundle):
-            return (bundle ?? NSBundle(forClass: ViewType.self)).loadNibNamed(nibName, owner: nil, options: nil)[0] as! ViewType
+            #if swift(>=2.3)
+                return (bundle ?? NSBundle(forClass: ViewType.self)).loadNibNamed(nibName, owner: nil, options: nil)?[0] as! ViewType
+            #else
+                return (bundle ?? NSBundle(forClass: ViewType.self)).loadNibNamed(nibName, owner: nil, options: nil)[0] as! ViewType
+            #endif
         }
     }
 }
