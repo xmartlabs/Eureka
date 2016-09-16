@@ -24,7 +24,7 @@
 
 import Foundation
 
-public class _SelectorViewController<Row: SelectableRowType>: FormViewController, TypedRowControllerType where Row: BaseRow, Row: TypedRowType {
+open class _SelectorViewController<Row: SelectableRowType>: FormViewController, TypedRowControllerType where Row: BaseRow, Row: TypedRowType {
     
     /// The row that pushed or presented this controller
     public var row: RowOf<Row.Cell.Value>!
@@ -43,7 +43,7 @@ public class _SelectorViewController<Row: SelectableRowType>: FormViewController
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         guard let options = row.dataProvider?.arrayData else { return }
         
@@ -68,7 +68,7 @@ public class _SelectorViewController<Row: SelectableRowType>: FormViewController
 }
 
 /// Selector Controller (used to select one option among a list)
-public class SelectorViewController<T:Equatable> : _SelectorViewController<ListCheckRow<T>>  {
+open class SelectorViewController<T:Equatable> : _SelectorViewController<ListCheckRow<T>>  {
     
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)

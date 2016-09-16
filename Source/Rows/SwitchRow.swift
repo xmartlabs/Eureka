@@ -26,7 +26,7 @@ import Foundation
 
 // MARK: SwitchCell
 
-public class SwitchCell : Cell<Bool>, CellType {
+open class SwitchCell : Cell<Bool>, CellType {
     
     public typealias Value = Bool
     
@@ -38,11 +38,11 @@ public class SwitchCell : Cell<Bool>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public var switchControl: UISwitch? {
+    open var switchControl: UISwitch? {
         return accessoryView as? UISwitch
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         selectionStyle = .none
         accessoryView = UISwitch()
@@ -54,7 +54,7 @@ public class SwitchCell : Cell<Bool>, CellType {
         switchControl?.removeTarget(self, action: nil, for: .allEvents)
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         switchControl?.isOn = row.value ?? false
         switchControl?.isEnabled = !row.isDisabled
@@ -67,7 +67,7 @@ public class SwitchCell : Cell<Bool>, CellType {
 
 // MARK: SwitchRow
 
-public class _SwitchRow: Row<SwitchCell> {
+open class _SwitchRow: Row<SwitchCell> {
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = nil

@@ -24,7 +24,7 @@
 
 import Foundation
 
-public class PickerInlineCell<T: Equatable> : Cell<T>, CellType {
+open class PickerInlineCell<T: Equatable> : Cell<T>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -34,18 +34,18 @@ public class PickerInlineCell<T: Equatable> : Cell<T>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         accessoryType = .none
         editingAccessoryType =  .none
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         selectionStyle = row.isDisabled ? .none : .default
     }
     
-    public override func didSelect() {
+    open override func didSelect() {
         super.didSelect()
         row.deselect()
     }
@@ -53,11 +53,11 @@ public class PickerInlineCell<T: Equatable> : Cell<T>, CellType {
 
 //MARK: PickerInlineRow
 
-public class _PickerInlineRow<T> : Row<PickerInlineCell<T>>, NoValueDisplayTextConformance where T: Equatable {
+open class _PickerInlineRow<T> : Row<PickerInlineCell<T>>, NoValueDisplayTextConformance where T: Equatable {
     
     public typealias InlineRow = PickerRow<T>
-    public var options = [T]()
-    public var noValueDisplayText: String?
+    open var options = [T]()
+    open var noValueDisplayText: String?
     
     required public init(tag: String?) {
         super.init(tag: tag)
