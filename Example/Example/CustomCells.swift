@@ -191,7 +191,11 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
     private func layoutConstraints() -> [NSLayoutConstraint] {
         let views = ["floatLabeledTextField": floatLabelTextField]
         let metrics = ["vMargin":8.0]
+        #if swift(>=2.3)
+        return NSLayoutConstraint.constraintsWithVisualFormat("H:|-[floatLabeledTextField]-|", options: .AlignAllLastBaseline, metrics: metrics, views: views) + NSLayoutConstraint.constraintsWithVisualFormat("V:|-(vMargin)-[floatLabeledTextField]-(vMargin)-|", options: .AlignAllLastBaseline, metrics: metrics, views: views)
+        #else
         return NSLayoutConstraint.constraintsWithVisualFormat("H:|-[floatLabeledTextField]-|", options: .AlignAllBaseline, metrics: metrics, views: views) + NSLayoutConstraint.constraintsWithVisualFormat("V:|-(vMargin)-[floatLabeledTextField]-(vMargin)-|", options: .AlignAllBaseline, metrics: metrics, views: views)
+        #endif
     }
     
     public func textFieldDidChange(textField : UITextField){

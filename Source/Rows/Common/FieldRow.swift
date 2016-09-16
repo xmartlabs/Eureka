@@ -213,14 +213,14 @@ public class _FieldCell<T where T: Equatable, T: InputTypeInitiable> : Cell<T>, 
         dynamicConstraints = []
         var views : [String: AnyObject] =  ["textField": textField]
         #if swift(>=2.3)
-        dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-11-[textField]-11-|", options: .AlignAllFirstBaseline, metrics: nil, views: ["textField": textField])
+        dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-11-[textField]-11-|", options: .AlignAllLastBaseline, metrics: nil, views: ["textField": textField])
         #else
         dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-11-[textField]-11-|", options: .AlignAllBaseline, metrics: nil, views: ["textField": textField])
         #endif
         
         if let label = titleLabel, let text = label.text where !text.isEmpty {
             #if swift(>=2.3)
-            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-11-[titleLabel]-11-|", options: .AlignAllFirstBaseline, metrics: nil, views: ["titleLabel": label])
+            dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-11-[titleLabel]-11-|", options: .AlignAllLastBaseline, metrics: nil, views: ["titleLabel": label])
             #else
             dynamicConstraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-11-[titleLabel]-11-|", options: .AlignAllBaseline, metrics: nil, views: ["titleLabel": label])
             #endif
