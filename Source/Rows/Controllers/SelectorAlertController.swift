@@ -25,7 +25,7 @@
 import Foundation
 
 /// Selector UIAlertController
-public class SelectorAlertController<T: Equatable> : UIAlertController, TypedRowControllerType {
+open class SelectorAlertController<T: Equatable> : UIAlertController, TypedRowControllerType {
     
     /// The row that pushed or presented this controller
     public var row: RowOf<T>!
@@ -48,7 +48,7 @@ public class SelectorAlertController<T: Equatable> : UIAlertController, TypedRow
         completionCallback = callback
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         guard let options = row.dataProvider?.arrayData else { return }
         addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: nil))

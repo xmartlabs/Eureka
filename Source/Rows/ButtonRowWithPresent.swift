@@ -24,10 +24,10 @@
 
 import Foundation
 
-public class _ButtonRowWithPresent<VCType: TypedRowControllerType>: Row<ButtonCellOf<VCType.RowValue>>, PresenterRowType where VCType: UIViewController {
+open class _ButtonRowWithPresent<VCType: TypedRowControllerType>: Row<ButtonCellOf<VCType.RowValue>>, PresenterRowType where VCType: UIViewController {
     
-    public var presentationMode: PresentationMode<VCType>?
-    public var onPresentCallback : ((FormViewController, VCType)->())?
+    open var presentationMode: PresentationMode<VCType>?
+    open var onPresentCallback : ((FormViewController, VCType)->())?
     
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -35,7 +35,7 @@ public class _ButtonRowWithPresent<VCType: TypedRowControllerType>: Row<ButtonCe
         cellStyle = .default
     }
     
-    public override func customUpdateCell() {
+    open override func customUpdateCell() {
         super.customUpdateCell()
         let leftAligmnment = presentationMode != nil
         cell.textLabel?.textAlignment = leftAligmnment ? .left : .center
@@ -51,7 +51,7 @@ public class _ButtonRowWithPresent<VCType: TypedRowControllerType>: Row<ButtonCe
         }
     }
     
-    public override func customDidSelect() {
+    open override func customDidSelect() {
         super.customDidSelect()
         if let presentationMode = presentationMode, !isDisabled {
             if let controller = presentationMode.createController(){
@@ -65,7 +65,7 @@ public class _ButtonRowWithPresent<VCType: TypedRowControllerType>: Row<ButtonCe
         }
     }
     
-    public override func prepareForSegue(_ segue: UIStoryboardSegue) {
+    open override func prepareForSegue(_ segue: UIStoryboardSegue) {
         super.prepareForSegue(segue)
         guard let rowVC = segue.destination as? VCType else {
             return

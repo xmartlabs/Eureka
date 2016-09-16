@@ -24,7 +24,7 @@
 
 import Foundation
 
-public class ListCheckCell<T: Equatable> : Cell<T>, CellType {
+open class ListCheckCell<T: Equatable> : Cell<T>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -34,7 +34,7 @@ public class ListCheckCell<T: Equatable> : Cell<T>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         accessoryType = row.value != nil ? .checkmark : .none
         editingAccessoryType = accessoryType
@@ -50,13 +50,13 @@ public class ListCheckCell<T: Equatable> : Cell<T>, CellType {
         }
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         accessoryType =  .checkmark
         editingAccessoryType = accessoryType
     }
     
-    public override func didSelect() {
+    open override func didSelect() {
         row.deselect()
         row.updateCell()
     }

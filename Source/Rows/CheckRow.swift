@@ -36,7 +36,7 @@ public final class CheckCell : Cell<Bool>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         accessoryType = row.value == true ? .checkmark : .none
         editingAccessoryType = accessoryType
@@ -52,13 +52,13 @@ public final class CheckCell : Cell<Bool>, CellType {
         }
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         accessoryType =  .checkmark
         editingAccessoryType = accessoryType
     }
     
-    public override func didSelect() {
+    open override func didSelect() {
         row.value = row.value ?? false ? false : true
         row.deselect()
         row.updateCell()
@@ -68,7 +68,7 @@ public final class CheckCell : Cell<Bool>, CellType {
 
 // MARK: CheckRow
 
-public class _CheckRow: Row<CheckCell> {
+open class _CheckRow: Row<CheckCell> {
     
     required public init(tag: String?) {
         super.init(tag: tag)

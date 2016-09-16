@@ -456,7 +456,7 @@ class NavigationAccessoryController : FormViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         navigationOptions = RowNavigationOptions.Enabled.union(.SkipCanNotBecomeFirstResponderRow)
         navigationOptionsBackup = navigationOptions
         
@@ -1300,7 +1300,7 @@ class ValidationsController: FormViewController {
                     $0.title = "Tap to force form validation"
                 }
                 .onCellSelection { cell, row in
-                    row.section?.form?.validates()
+                    row.section?.form?.validate()
                 }
         
     

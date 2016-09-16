@@ -114,7 +114,7 @@ extension SelectableSectionType where Self: Section, Self.Iterator == IndexingIt
 }
 
 /// A subclass of Section that serves to create a section with a list of selectable options.
-public class SelectableSection<Row: SelectableRowType> : Section, SelectableSectionType where Row: BaseRow  {
+open class SelectableSection<Row: SelectableRowType> : Section, SelectableSectionType where Row: BaseRow  {
     
     public typealias SelectableRow = Row
     
@@ -137,7 +137,7 @@ public class SelectableSection<Row: SelectableRowType> : Section, SelectableSect
         fatalError("init() has not been implemented")
     }
     
-    public override func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexes: IndexSet) {
+    open override func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexes: IndexSet) {
         prepareSelectableRows(rows)
     }
 }

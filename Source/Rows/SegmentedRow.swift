@@ -26,14 +26,14 @@ import Foundation
 
 //MARK: SegmentedCell
 
-public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
+open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     
-    public var titleLabel : UILabel? {
+    open var titleLabel : UILabel? {
         textLabel?.translatesAutoresizingMaskIntoConstraints = false
         textLabel?.setContentHuggingPriority(500, for: .horizontal)
         return textLabel
     }
-    lazy public var segmentedControl : UISegmentedControl = {
+    lazy open var segmentedControl : UISegmentedControl = {
         let result = UISegmentedControl()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.setContentHuggingPriority(250, for: .horizontal)
@@ -69,7 +69,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         height = { BaseRow.estimatedRowHeight }
         selectionStyle = .none
@@ -81,7 +81,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         contentView.addConstraint(NSLayoutConstraint(item: segmentedControl, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0))
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         detailTextLabel?.text = nil
         
@@ -108,7 +108,7 @@ public class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         items().enumerated().forEach { segmentedControl.insertSegment(withTitle: $0.element, at: $0.offset, animated: false) }
     }
     
-    public override func updateConstraints() {
+    open override func updateConstraints() {
         contentView.removeConstraints(dynamicConstraints)
         dynamicConstraints = []
         var views : [String: AnyObject] =  ["segmentedControl": segmentedControl]

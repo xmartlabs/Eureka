@@ -24,7 +24,7 @@
 
 import Foundation
 
-public class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
+open class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -34,7 +34,7 @@ public class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         accessoryType = .disclosureIndicator
         editingAccessoryType = accessoryType
@@ -46,10 +46,10 @@ public class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
 open class SelectorRow<Cell: CellType, VCType: TypedRowControllerType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell, VCType: UIViewController, VCType.RowValue == Cell.Value {
     
     /// Defines how the view controller will be presented, pushed, etc.
-    public var presentationMode: PresentationMode<VCType>?
+    open var presentationMode: PresentationMode<VCType>?
     
     /// Will be called before the presentation occurs.
-    public var onPresentCallback : ((FormViewController, VCType)->())?
+    open var onPresentCallback : ((FormViewController, VCType)->())?
     
     required public init(tag: String?) {
         super.init(tag: tag)

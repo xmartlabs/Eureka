@@ -549,7 +549,7 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     /**
     Called when a cell becomes first responder
     */
-    public final func beginEditing<T:Equatable>(_ cell: Cell<T>) {
+    public func beginEditing<T:Equatable>(_ cell: Cell<T>) {
         cell.row.isHighlighted = true
         cell.row.updateCell()
         RowDefaults.onCellHighlightChanged["\(type(of: self))"]?(cell, cell.row)
@@ -567,7 +567,7 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     /**
      Called when a cell resigns first responder
      */
-    public final func endEditing<T:Equatable>(_ cell: Cell<T>) {
+    public func endEditing<T:Equatable>(_ cell: Cell<T>) {
         cell.row.isHighlighted = false
         cell.row.blurred = true
         cell.row.updateCell()
@@ -674,11 +674,11 @@ extension FormViewController : UITableViewDelegate {
     
     //MARK: UITableViewDelegate
     
-    public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    open func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         return indexPath
     }
     
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard tableView == self.tableView else { return }
         let row = form[indexPath]
         // row.baseCell.cellBecomeFirstResponder() may be cause InlineRow collapsed then section count will be changed. Use orignal indexPath will out of  section's bounds.
@@ -688,27 +688,27 @@ extension FormViewController : UITableViewDelegate {
         row.didSelect()
     }
     
-    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard tableView == self.tableView else { return tableView.rowHeight }
         let row = form[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
         return row.baseCell.height?() ?? tableView.rowHeight
     }
     
-    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    open func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         guard tableView == self.tableView else { return tableView.rowHeight }
         let row = form[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
         return row.baseCell.height?() ?? tableView.estimatedRowHeight
     }
     
-    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return form[section].header?.viewForSection(form[section], type: .header)
     }
     
-    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return form[section].footer?.viewForSection(form[section], type:.footer)
     }
     
-    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if let height = form[section].header?.height {
             return height()
         }
@@ -721,7 +721,7 @@ extension FormViewController : UITableViewDelegate {
         return view.bounds.height
     }
     
-    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if let height = form[section].footer?.height {
             return height()
         }
@@ -739,24 +739,24 @@ extension FormViewController : UITableViewDataSource {
     
     //MARK: UITableViewDataSource
     
-    public func numberOfSections(in tableView: UITableView) -> Int {
+    open func numberOfSections(in tableView: UITableView) -> Int {
         return form.count
     }
     
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return form[section].count
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     	form[indexPath].updateCell()
         return form[indexPath].baseCell
     }
     
-    public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return form[section].header?.title
     }
     
-    public func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return form[section].footer?.title
     }
 }
@@ -765,37 +765,37 @@ extension FormViewController: FormDelegate {
     
     //MARK: FormDelegate
     
-    public func sectionsHaveBeenAdded(_ sections: [Section], atIndexes: IndexSet){
+    open func sectionsHaveBeenAdded(_ sections: [Section], atIndexes: IndexSet){
         tableView?.beginUpdates()
         tableView?.insertSections(atIndexes, with: insertAnimationForSections(sections))
         tableView?.endUpdates()
     }
     
-    public func sectionsHaveBeenRemoved(_ sections: [Section], atIndexes: IndexSet){
+    open func sectionsHaveBeenRemoved(_ sections: [Section], atIndexes: IndexSet){
         tableView?.beginUpdates()
         tableView?.deleteSections(atIndexes, with: deleteAnimationForSections(sections))
         tableView?.endUpdates()
     }
     
-    public func sectionsHaveBeenReplaced(oldSections:[Section], newSections: [Section], atIndexes: IndexSet){
+    open func sectionsHaveBeenReplaced(oldSections:[Section], newSections: [Section], atIndexes: IndexSet){
         tableView?.beginUpdates()
         tableView?.reloadSections(atIndexes, with: reloadAnimationOldSections(oldSections, newSections: newSections))
         tableView?.endUpdates()
     }
     
-    public func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexPaths: [IndexPath]) {
+    open func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexPaths: [IndexPath]) {
         tableView?.beginUpdates()
         tableView?.insertRows(at: atIndexPaths, with: insertAnimationForRows(rows))
         tableView?.endUpdates()
     }
     
-    public func rowsHaveBeenRemoved(_ rows: [BaseRow], atIndexPaths: [IndexPath]) {
+    open func rowsHaveBeenRemoved(_ rows: [BaseRow], atIndexPaths: [IndexPath]) {
         tableView?.beginUpdates()
         tableView?.deleteRows(at: atIndexPaths, with: deleteAnimationForRows(rows))
         tableView?.endUpdates()
     }
 
-    public func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [IndexPath]){
+    open func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [IndexPath]){
         tableView?.beginUpdates()
         tableView?.reloadRows(at: atIndexPaths, with: reloadAnimationOldRows(oldRows, newRows: newRows))
         tableView?.endUpdates()
@@ -806,7 +806,7 @@ extension FormViewController : UIScrollViewDelegate {
     
     //MARK: UIScrollViewDelegate
     
-    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         tableView?.endEditing(true)
     }
 }

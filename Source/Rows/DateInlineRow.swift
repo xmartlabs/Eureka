@@ -36,7 +36,7 @@ extension DatePickerRowProtocol {
 }
 
 
-public class _DateInlineRow: _DateInlineFieldRow {
+open class _DateInlineRow: _DateInlineFieldRow {
     
     public typealias InlineRow = DatePickerRow
     
@@ -46,12 +46,12 @@ public class _DateInlineRow: _DateInlineFieldRow {
         dateFormatter?.dateStyle = .medium
     }
     
-    public func setupInlineRow(_ inlineRow: DatePickerRow) {
+    open func setupInlineRow(_ inlineRow: DatePickerRow) {
         configureInlineRow(inlineRow)
     }
 }
 
-public class _TimeInlineRow: _DateInlineFieldRow {
+open class _TimeInlineRow: _DateInlineFieldRow {
     
     public typealias InlineRow = TimePickerRow
     
@@ -61,12 +61,12 @@ public class _TimeInlineRow: _DateInlineFieldRow {
         dateFormatter?.dateStyle = .none
     }
     
-    public func setupInlineRow(_ inlineRow: TimePickerRow) {
+    open func setupInlineRow(_ inlineRow: TimePickerRow) {
         configureInlineRow(inlineRow)
     }
 }
 
-public class _DateTimeInlineRow: _DateInlineFieldRow {
+open class _DateTimeInlineRow: _DateInlineFieldRow {
     
     public typealias InlineRow = DateTimePickerRow
     
@@ -76,12 +76,12 @@ public class _DateTimeInlineRow: _DateInlineFieldRow {
         dateFormatter?.dateStyle = .short
     }
     
-    public func setupInlineRow(_ inlineRow: DateTimePickerRow) {
+    open func setupInlineRow(_ inlineRow: DateTimePickerRow) {
         configureInlineRow(inlineRow)
     }
 }
 
-public class _CountDownInlineRow: _DateInlineFieldRow {
+open class _CountDownInlineRow: _DateInlineFieldRow {
     
     public typealias InlineRow = CountDownPickerRow
     

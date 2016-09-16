@@ -24,9 +24,9 @@
 
 import Foundation
 
-public class DatePickerCell : Cell<Date>, CellType {
+open class DatePickerCell : Cell<Date>, CellType {
     
-    public lazy var datePicker: UIDatePicker = { [unowned self] in
+    open lazy var datePicker: UIDatePicker = { [unowned self] in
         let picker = UIDatePicker()
         picker.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(picker)
@@ -44,7 +44,7 @@ public class DatePickerCell : Cell<Date>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         accessoryType = .none
         editingAccessoryType =  .none
@@ -55,7 +55,7 @@ public class DatePickerCell : Cell<Date>, CellType {
         datePicker.removeTarget(self, action: nil, for: .allEvents)
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         selectionStyle = row.isDisabled ? .none : .default
         datePicker.isUserInteractionEnabled = !row.isDisabled
@@ -89,11 +89,11 @@ public class DatePickerCell : Cell<Date>, CellType {
     }
 }
 
-public class _DatePickerRow : Row<DatePickerCell>, DatePickerRowProtocol {
+open class _DatePickerRow : Row<DatePickerCell>, DatePickerRowProtocol {
     
-    public var minimumDate : Date?
-    public var maximumDate : Date?
-    public var minuteInterval : Int?
+    open var minimumDate : Date?
+    open var maximumDate : Date?
+    open var minuteInterval : Int?
     
     required public init(tag: String?) {
         super.init(tag: tag)

@@ -31,9 +31,9 @@ public protocol DatePickerRowProtocol: class {
 }
 
 
-public class DateCell : Cell<Date>, CellType {
+open class DateCell : Cell<Date>, CellType {
     
-    lazy public var datePicker = UIDatePicker()
+    lazy open var datePicker = UIDatePicker()
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -43,7 +43,7 @@ public class DateCell : Cell<Date>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         accessoryType = .none
         editingAccessoryType =  .none
@@ -55,7 +55,7 @@ public class DateCell : Cell<Date>, CellType {
         datePicker.removeTarget(self, action: nil, for: .allEvents)
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         selectionStyle = row.isDisabled ? .none : .default
         datePicker.setDate(row.value ?? Date(), animated: row is CountDownPickerRow)
@@ -69,12 +69,12 @@ public class DateCell : Cell<Date>, CellType {
         }
     }
     
-    public override func didSelect() {
+    open override func didSelect() {
         super.didSelect()
         row.deselect()
     }
     
-    override public var inputView : UIView? {
+    override open var inputView : UIView? {
         if let v = row.value{
             datePicker.setDate(v, animated:row is CountDownRow)
         }
@@ -101,11 +101,11 @@ public class DateCell : Cell<Date>, CellType {
         }
     }
     
-    public override func cellCanBecomeFirstResponder() -> Bool {
+    open override func cellCanBecomeFirstResponder() -> Bool {
         return canBecomeFirstResponder
     }
 
-    override public var canBecomeFirstResponder: Bool {
+    override open var canBecomeFirstResponder: Bool {
         get {
             return !row.isDisabled
         }
@@ -113,21 +113,21 @@ public class DateCell : Cell<Date>, CellType {
 }
 
 
-public class _DateFieldRow: Row<DateCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
+open class _DateFieldRow: Row<DateCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
     
     /// The minimum value for this row's UIDatePicker
-    public var minimumDate : Date?
+    open var minimumDate : Date?
     
     /// The maximum value for this row's UIDatePicker
-    public var maximumDate : Date?
+    open var maximumDate : Date?
     
     /// The interval between options for this row's UIDatePicker
-    public var minuteInterval : Int?
+    open var minuteInterval : Int?
     
     /// The formatter for the date picked by the user
-    public var dateFormatter: DateFormatter?
+    open var dateFormatter: DateFormatter?
     
-    public var noValueDisplayText: String? = nil
+    open var noValueDisplayText: String? = nil
     
     required public init(tag: String?) {
         super.init(tag: tag)

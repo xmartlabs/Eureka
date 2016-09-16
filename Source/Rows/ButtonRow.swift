@@ -26,7 +26,7 @@ import Foundation
 
 // MARK: ButtonCell
 
-public class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
+open class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -36,7 +36,7 @@ public class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         selectionStyle = row.isDisabled ? .none : .default
         accessoryType = .none
@@ -48,7 +48,7 @@ public class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
         textLabel?.textColor  = UIColor(red: red, green: green, blue: blue, alpha: row.isDisabled ? 0.3 : 1.0)
     }
     
-    public override func didSelect() {
+    open override func didSelect() {
         super.didSelect()
         row.deselect()
     }
@@ -59,8 +59,8 @@ public typealias ButtonCell = ButtonCellOf<String>
 
 //MARK: ButtonRow
 
-public class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
-    public var presentationMode: PresentationMode<UIViewController>?
+open class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
+    open var presentationMode: PresentationMode<UIViewController>?
     
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -68,7 +68,7 @@ public class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
         cellStyle = .default
     }
     
-    public override func customDidSelect() {
+    open override func customDidSelect() {
         super.customDidSelect()
         if !isDisabled {
             if let presentationMode = presentationMode {
@@ -82,7 +82,7 @@ public class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
         }
     }
     
-    public override func customUpdateCell() {
+    open override func customUpdateCell() {
         super.customUpdateCell()
         let leftAligmnment = presentationMode != nil
         cell.textLabel?.textAlignment = leftAligmnment ? .left : .center
@@ -98,7 +98,7 @@ public class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
         }
     }
     
-    public override func prepareForSegue(_ segue: UIStoryboardSegue) {
+    open override func prepareForSegue(_ segue: UIStoryboardSegue) {
         super.prepareForSegue(segue)
         let rowVC = segue.destination as? RowControllerType
         rowVC?.completionCallback = self.presentationMode?.completionHandler

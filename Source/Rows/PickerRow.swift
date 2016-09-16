@@ -26,9 +26,9 @@ import Foundation
 
 //MARK: PickerCell
 
-public class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerViewDelegate where T: Equatable{
+open class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerViewDelegate where T: Equatable{
     
-    public lazy var picker: UIPickerView = { [unowned self] in
+    open lazy var picker: UIPickerView = { [unowned self] in
         let picker = UIPickerView()
         picker.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(picker)
@@ -47,7 +47,7 @@ public class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPicker
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         accessoryType = .none
         editingAccessoryType = .none
@@ -60,7 +60,7 @@ public class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPicker
         picker.dataSource = nil
     }
     
-    public override func update(){
+    open override func update(){
         super.update()
         textLabel?.text = nil
         detailTextLabel?.text = nil
@@ -70,19 +70,19 @@ public class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPicker
         }
     }
     
-    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
+    open func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    open func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return pickerRow?.options.count ?? 0
     }
     
-    public func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    open func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return pickerRow?.displayValueFor?(pickerRow?.options[row])
     }
     
-    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    open func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if let picker = pickerRow, !picker.options.isEmpty {
             picker.value = picker.options[row]
         }
@@ -92,9 +92,9 @@ public class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPicker
 
 //MARK: PickerRow
 
-public class _PickerRow<T> : Row<PickerCell<T>> where T: Equatable{
+open class _PickerRow<T> : Row<PickerCell<T>> where T: Equatable{
     
-    public var options = [T]()
+    open var options = [T]()
     
     required public init(tag: String?) {
         super.init(tag: tag)

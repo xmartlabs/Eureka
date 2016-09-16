@@ -25,7 +25,7 @@
 import Foundation
 
 /// Selector Controller used to pick an image
-public class ImagePickerController : UIImagePickerController, TypedRowControllerType, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+open class ImagePickerController : UIImagePickerController, TypedRowControllerType, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     /// The row that pushed or presented this controller
     public var row: RowOf<UIImage>!
@@ -33,18 +33,18 @@ public class ImagePickerController : UIImagePickerController, TypedRowController
     /// A closure to be called when the controller disappears.
     public var completionCallback : ((UIViewController) -> ())?
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
     }
     
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    open func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         (row as? ImageRow)?.imageURL = info[UIImagePickerControllerReferenceURL] as? URL
         row.value = info[UIImagePickerControllerOriginalImage] as? UIImage
         completionCallback?(self)
     }
     
-    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
+    open func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
         completionCallback?(self)
     }
 }
