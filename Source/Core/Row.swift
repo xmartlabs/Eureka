@@ -178,11 +178,11 @@ open class Row<Cell: CellType>: RowOf<Cell.Value>, TypedRowType where Cell: Base
     /**
      Will be called inside `didSelect` method of the row. Can be used to customize row selection from the definition of the row.
      */
-    public func customDidSelect(){}
+    open func customDidSelect(){}
 
     /**
      Will be called inside `updateCell` method of the row. Can be used to customize reloading a row from its definition.
      */
-    public func customUpdateCell(){}
+    open func customUpdateCell(){}
 
 }

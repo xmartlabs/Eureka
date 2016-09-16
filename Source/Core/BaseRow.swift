@@ -112,7 +112,7 @@ open class BaseRow : BaseRowType {
      */
     public func didSelect() {}
     
-    public func prepareForSegue(_ segue: UIStoryboardSegue) {}
+    open func prepareForSegue(_ segue: UIStoryboardSegue) {}
     
     /**
      Returns the NSIndexPath where this row is in the current form.
