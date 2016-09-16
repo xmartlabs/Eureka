@@ -114,7 +114,7 @@ extension Section {
      *  If this section contains a row (hidden or not) with the passed parameter as tag then that row will be returned.
      *  If not, it returns nil.
      */
-    public func rowByTag<Row: RowType>(_ tag: String) -> Row? {
+    public func rowBy<Row: RowType>(tag: String) -> Row? {
         guard let index = kvoWrapper._allRows.index(where: { $0.tag == tag }) else { return nil }
         return kvoWrapper._allRows[index] as? Row
     }

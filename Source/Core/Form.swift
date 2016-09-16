@@ -73,30 +73,30 @@ public final class Form {
     /**
      Returns the row whose tag is passed as parameter. Uses a dictionary to get the row faster
      */
-    public func rowByTag<T: Equatable>(_ tag: String) -> RowOf<T>? {
-        let row: BaseRow? = rowByTag(tag)
+    public func rowBy<T: Equatable>(tag: String) -> RowOf<T>? {
+        let row: BaseRow? = rowBy(tag: tag)
         return row as? RowOf<T>
     }
     
     /**
      Returns the row whose tag is passed as parameter. Uses a dictionary to get the row faster
      */
-    public func rowByTag<Row: RowType>(_ tag: String) -> Row? {
-        let row: BaseRow? = rowByTag(tag)
+    public func rowBy<Row: RowType>(tag: String) -> Row? {
+        let row: BaseRow? = rowBy(tag: tag)
         return row as? Row
     }
     
     /**
      Returns the row whose tag is passed as parameter. Uses a dictionary to get the row faster
      */
-    public func rowByTag(_ tag: String) -> BaseRow? {
+    public func rowBy(tag: String) -> BaseRow? {
         return rowsByTag[tag]
     }
     
     /**
      Returns the section whose tag is passed as parameter.
      */
-    public func sectionByTag(_ tag: String) -> Section? {
+    public func sectionBy(tag: String) -> Section? {
         return kvoWrapper._allSections.filter( { $0.tag == tag }).first
     }
     
@@ -131,7 +131,7 @@ public final class Form {
      */
     public func setValues(_ values: [String: Any?]){
         for (key, value) in values{
-            let row: BaseRow? = rowByTag(key)
+            let row: BaseRow? = rowBy(tag: key)
             row?.baseValue = value
         }
     }

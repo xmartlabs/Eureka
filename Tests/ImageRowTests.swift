@@ -73,17 +73,17 @@ class ImageRowTests: XCTestCase {
     }
     
     func testImageRow() {
-        guard let defaultImageRow = formVC.form.rowByTag("DefaultImageRow") as? ImageRow else {
+        guard let defaultImageRow = formVC.form.rowBy(tag: "DefaultImageRow") as? ImageRow else {
             XCTFail()
             return
         }
         
-        guard let singleSourceImageRow = formVC.form.rowByTag("SingleSourceImageRow") as? ImageRow else {
+        guard let singleSourceImageRow = formVC.form.rowBy(tag: "SingleSourceImageRow") as? ImageRow else {
             XCTFail()
             return
         }
         
-        guard let twoSourcesImageRow = formVC.form.rowByTag("TwoSourcesImageRow") as? ImageRow else {
+        guard let twoSourcesImageRow = formVC.form.rowBy(tag: "TwoSourcesImageRow") as? ImageRow else {
             XCTFail()
             return
         }

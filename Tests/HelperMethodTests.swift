@@ -28,12 +28,12 @@ import XCTest
 class HelperMethodTests: BaseEurekaTests {
 
     func testRowByTag(){
-        // Tests rowByTag() method
+        // Tests rowBy(tag: ) method
         
-        let urlRow : URLRow? = fieldForm.rowByTag("UrlRow_f1")
+        let urlRow : URLRow? = fieldForm.rowBy(tag: "UrlRow_f1")
         XCTAssertNotNil(urlRow)
         
-        let phoneRow : PhoneRow? = fieldForm.rowByTag("phone")
+        let phoneRow : PhoneRow? = fieldForm.rowBy(tag: "phone")
         XCTAssertNil(phoneRow)
     }
     
@@ -44,7 +44,7 @@ class HelperMethodTests: BaseEurekaTests {
         let row6 = form.nextRowForRow(form[0][5])
         
         XCTAssertEqual(row6, form[0][6])
-        XCTAssertEqual(row6, form.rowByTag("IntRow_f1") as? IntRow)
+        XCTAssertEqual(row6, form.rowBy(tag: "IntRow_f1") as? IntRow)
         
         
         let row_5_and_6: MutableSlice<Section> = form[0][Range(5...6)]
@@ -74,7 +74,7 @@ class HelperMethodTests: BaseEurekaTests {
         let form = fieldForm + shortForm + dateForm
         XCTAssertEqual(form.rows.count, 21)
         XCTAssertEqual(form.rows[12], shortForm[0][1])
-        XCTAssertEqual(form.rows[20], form.rowByTag("IntervalDateRow_d1") as? DateRow)
+        XCTAssertEqual(form.rows[20], form.rowBy(tag: "IntervalDateRow_d1") as? DateRow)
     }
     
     func testAllRowsWrappedByTagMethod(){

@@ -51,19 +51,19 @@ class RowByTagTests: XCTestCase {
     
     func testRowByTag() {
         
-        let labelRow: LabelRow? = form.rowByTag("LabelRow")
+        let labelRow: LabelRow? = form.rowBy(tag: "LabelRow")
         XCTAssertNotNil(labelRow)
         
-        let buttonRow: ButtonRow? = form.rowByTag("ButtonRow")
+        let buttonRow: ButtonRow? = form.rowBy(tag: "ButtonRow")
         XCTAssertNotNil(buttonRow)
         
-        let actionSheetRow: ActionSheetRow<String>? = form.rowByTag("ActionSheetRow")
+        let actionSheetRow: ActionSheetRow<String>? = form.rowBy(tag: "ActionSheetRow")
         XCTAssertNotNil(actionSheetRow)
         
-        let alertRow: AlertRow<Int>? = form.rowByTag("AlertRow")
+        let alertRow: AlertRow<Int>? = form.rowBy(tag: "AlertRow")
         XCTAssertNotNil(alertRow)
 
-        let pushRow: PushRow<NSURL>? = form.rowByTag("PushRow")
+        let pushRow: PushRow<NSURL>? = form.rowBy(tag: "PushRow")
         XCTAssertNotNil(pushRow)
     }
     

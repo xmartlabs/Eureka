@@ -32,7 +32,7 @@ class HiddenRowsTests: BaseEurekaTests {
     }
     let row11 = TextRow("txt1_hrt"){
         $0.hidden = .function(["NameRow_s1"], { form in
-                        if let r1 : NameRow = form.rowByTag("NameRow_s1") {
+                        if let r1 : NameRow = form.rowBy(tag: "NameRow_s1") {
                             return r1.value?.contains(" is ") ?? false
                         }
                         return false
@@ -45,7 +45,7 @@ class HiddenRowsTests: BaseEurekaTests {
     }
     let row20 = TextRow("txt2_hrt"){
         $0.hidden = .function(["IntRow_s1", "NameRow_s1"], { form in
-                        if let r1 : IntRow = form.rowByTag("IntRow_s1"), let r2 : NameRow = form.rowByTag("NameRow_s1")  {
+                        if let r1 : IntRow = form.rowBy(tag: "IntRow_s1"), let r2 : NameRow = form.rowBy(tag: "NameRow_s1")  {
                             return r1.value == 88 || r2.value?.hasSuffix("real") ?? false
                         }
                         return false
@@ -129,14 +129,14 @@ class HiddenRowsTests: BaseEurekaTests {
     
     func testItemsByTag(){
         // test that all rows and sections with tag are there
-        XCTAssertEqual(form.rowByTag("NameRow_s1"), form[0][0])
-        XCTAssertEqual(form.rowByTag("IntRow_s1"), form[0][1])
+        XCTAssertEqual(form.rowBy(tag: "NameRow_s1"), form[0][0])
+        XCTAssertEqual(form.rowBy(tag: "IntRow_s1"), form[0][1])
         
-        XCTAssertEqual(form.rowByTag("int1_hrt"), row10)
-        XCTAssertEqual(form.rowByTag("txt1_hrt"), row11)
+        XCTAssertEqual(form.rowBy(tag: "int1_hrt"), row10)
+        XCTAssertEqual(form.rowBy(tag: "txt1_hrt"), row11)
         
-        XCTAssertEqual(form.sectionByTag("s3_hrt"), sec2)
-        XCTAssertEqual(form.rowByTag("txt2_hrt"), row20)
+        XCTAssertEqual(form.sectionBy(tag: "s3_hrt"), sec2)
+        XCTAssertEqual(form.rowBy(tag: "txt2_hrt"), row20)
         
         // check that these are all in there
         XCTAssertEqual(form.rowsByTag.count, 5)
@@ -148,12 +148,12 @@ class HiddenRowsTests: BaseEurekaTests {
         
         
         // we still want the same results here
-        XCTAssertEqual(form.rowByTag("NameRow_s1"), form[0][0])
-        XCTAssertEqual(form.rowByTag("IntRow_s1"), form[0][1])
-        XCTAssertEqual(form.rowByTag("int1_hrt"), row10)
-        XCTAssertEqual(form.rowByTag("txt1_hrt"), row11)
-        XCTAssertEqual(form.sectionByTag("s3_hrt"), sec2)
-        XCTAssertEqual(form.rowByTag("txt2_hrt"), row20)
+        XCTAssertEqual(form.rowBy(tag: "NameRow_s1"), form[0][0])
+        XCTAssertEqual(form.rowBy(tag: "IntRow_s1"), form[0][1])
+        XCTAssertEqual(form.rowBy(tag: "int1_hrt"), row10)
+        XCTAssertEqual(form.rowBy(tag: "txt1_hrt"), row11)
+        XCTAssertEqual(form.sectionBy(tag: "s3_hrt"), sec2)
+        XCTAssertEqual(form.rowBy(tag: "txt2_hrt"), row20)
         XCTAssertEqual(form.rowsByTag.count, 5)
         
         // and let them come up again
@@ -165,7 +165,7 @@ class HiddenRowsTests: BaseEurekaTests {
         XCTAssertEqual(form.rowsByTag["IntRow_s1"], form[0][1])
         XCTAssertEqual(form.rowsByTag["int1_hrt"], row10)
         XCTAssertEqual(form.rowsByTag["txt1_hrt"], row11)
-        XCTAssertEqual(form.sectionByTag("s3_hrt"), sec2)
+        XCTAssertEqual(form.sectionBy(tag: "s3_hrt"), sec2)
         XCTAssertEqual(form.rowsByTag["txt2_hrt"], row20)
         XCTAssertEqual(form.rowsByTag.count, 5)
     }

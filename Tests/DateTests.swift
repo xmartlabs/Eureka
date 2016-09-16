@@ -35,9 +35,9 @@ class DateTests: BaseEurekaTests {
     
     func testMinMax(){
         
-        let minRow : DateRow! = formVC.form.rowByTag("MinDateRow_d1")
-        let maxRow : DateRow!  = formVC.form.rowByTag("MaxDateRow_d1")
-        let minMaxRow : DateRow! = formVC.form.rowByTag("MinMaxDateRow_d1")
+        let minRow : DateRow! = formVC.form.rowBy(tag: "MinDateRow_d1")
+        let maxRow : DateRow!  = formVC.form.rowBy(tag: "MaxDateRow_d1")
+        let minMaxRow : DateRow! = formVC.form.rowBy(tag: "MinMaxDateRow_d1")
         
         XCTAssertNotNil(minRow.indexPath())
         XCTAssertNotNil(maxRow.indexPath())
@@ -63,7 +63,7 @@ class DateTests: BaseEurekaTests {
     }
     
     func testInterval(){
-        let row : DateRow? = formVC.form.rowByTag("IntervalDateRow_d1")
+        let row : DateRow? = formVC.form.rowBy(tag: "IntervalDateRow_d1")
         
         XCTAssertNotNil(row?.indexPath())
         

@@ -41,7 +41,7 @@ class HomeViewController : FormViewController {
         form =
             
             Section() {
-                $0.header = HeaderFooterView<EurekaLogoView>(HeaderFooterProvider.class)
+                $0.header = HeaderFooterView<EurekaLogoView>(.class)
             }
         
                 <<< ButtonRow("Rows") {
@@ -339,9 +339,10 @@ class CustomCellsController : FormViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         form +++
             Section() {
-                var header = HeaderFooterView<EurekaLogoViewNib>(HeaderFooterProvider.nibFile(name: "EurekaSectionHeader", bundle: nil))
+                var header = HeaderFooterView<EurekaLogoViewNib>(.nibFile(name: "EurekaSectionHeader", bundle: nil))
                 header.onSetupView = { (view, section) -> () in
                                             view.imageView.alpha = 0;
                                             UIView.animate(withDuration: 2.0, animations: { [weak view] in
@@ -468,10 +469,10 @@ class NavigationAccessoryController : FormViewController {
                 }.onChange { [weak self] in
                     if $0.value == true {
                         self?.navigationOptions = self?.navigationOptionsBackup
-                        self?.form.rowByTag("set_disabled")?.baseValue = self?.navigationOptions?.contains(.StopDisabledRow)
-                        self?.form.rowByTag("set_skip")?.baseValue = self?.navigationOptions?.contains(.SkipCanNotBecomeFirstResponderRow)
-                        self?.form.rowByTag("set_disabled")?.updateCell()
-                        self?.form.rowByTag("set_skip")?.updateCell()
+                        self?.form.rowBy(tag: "set_disabled")?.baseValue = self?.navigationOptions?.contains(.StopDisabledRow)
+                        self?.form.rowBy(tag: "set_skip")?.baseValue = self?.navigationOptions?.contains(.SkipCanNotBecomeFirstResponderRow)
+                        self?.form.rowBy(tag: "set_disabled")?.updateCell()
+                        self?.form.rowBy(tag: "set_skip")?.updateCell()
                     }
                     else {
                         self?.navigationOptionsBackup = self?.navigationOptions
@@ -567,8 +568,8 @@ class NativeEventFormViewController : FormViewController {
                 SwitchRow("All-day") {
                     $0.title = $0.tag
                 }.onChange { [weak self] row in
-                    let startDate: DateTimeInlineRow! = self?.form.rowByTag("Starts")
-                    let endDate: DateTimeInlineRow! = self?.form.rowByTag("Ends")
+                    let startDate: DateTimeInlineRow! = self?.form.rowBy(tag: "Starts")
+                    let endDate: DateTimeInlineRow! = self?.form.rowBy(tag: "Ends")
                     
                     if row.value ?? false {
                         startDate.dateFormatter?.dateStyle = .medium
@@ -593,7 +594,7 @@ class NativeEventFormViewController : FormViewController {
                     $0.value = Date().addingTimeInterval(60*60*24)
                 }
                 .onChange { [weak self] row in
-                    let endRow: DateTimeInlineRow! = self?.form.rowByTag("Ends")
+                    let endRow: DateTimeInlineRow! = self?.form.rowBy(tag: "Ends")
                     if row.value?.compare(endRow.value!) == .orderedDescending {
                         endRow.value = Date(timeInterval: 60*60*24, since: row.value!)
                         endRow.cell!.backgroundColor = .white
@@ -602,7 +603,7 @@ class NativeEventFormViewController : FormViewController {
                 }
                 .onExpandInlineRow { cell, row, inlineRow in
                     inlineRow.cellUpdate { [weak self] cell, dateRow in
-                        let allRow: SwitchRow! = self?.form.rowByTag("All-day")
+                        let allRow: SwitchRow! = self?.form.rowBy(tag: "All-day")
                         if allRow.value ?? false {
                             cell.datePicker.datePickerMode = .date
                         }
@@ -622,7 +623,7 @@ class NativeEventFormViewController : FormViewController {
                     $0.value = Date().addingTimeInterval(60*60*25)
                 }
                 .onChange { [weak self] row in
-                    let startRow: DateTimeInlineRow! = self?.form.rowByTag("Starts")
+                    let startRow: DateTimeInlineRow! = self?.form.rowBy(tag: "Starts")
                     if row.value?.compare(startRow.value!) == .orderedAscending {
                         row.cell!.backgroundColor = .red
                     }
@@ -633,7 +634,7 @@ class NativeEventFormViewController : FormViewController {
                 }
                 .onExpandInlineRow { cell, row, inlineRow in
                     inlineRow.cellUpdate { [weak self] cell, dateRow in
-                        let allRow: SwitchRow! = self?.form.rowByTag("All-day")
+                        let allRow: SwitchRow! = self?.form.rowBy(tag: "All-day")
                         if allRow.value ?? false {
                             cell.datePicker.datePickerMode = .date
                         }
@@ -667,12 +668,12 @@ class NativeEventFormViewController : FormViewController {
             }
             .onChange { [weak self] row in
                 if row.value == .Never {
-                    if let second : PushRow<EventAlert> = self?.form.rowByTag("Another Alert"), let secondIndexPath = second.indexPath() {
+                    if let second : PushRow<EventAlert> = self?.form.rowBy(tag: "Another Alert"), let secondIndexPath = second.indexPath() {
                         row.section?.remove(at: (secondIndexPath as NSIndexPath).row)
                     }
                 }
                 else{
-                    guard let _ : PushRow<EventAlert> = self?.form.rowByTag("Another Alert") else {
+                    guard let _ : PushRow<EventAlert> = self?.form.rowBy(tag: "Another Alert") else {
                         let second = PushRow<EventAlert>("Another Alert") {
                             $0.title = $0.tag
                             $0.value = .Never
@@ -813,14 +814,14 @@ class HiddenRowsExample : FormViewController {
                 <<< SwitchRow("Show Next Section"){
                     $0.title = $0.tag
                     $0.hidden = .function(["Show Next Row"], { form -> Bool in
-                        let row: RowOf<Bool>! = form.rowByTag("Show Next Row")
+                        let row: RowOf<Bool>! = form.rowBy(tag: "Show Next Row")
                         return row.value ?? false == false
                     })
                 }
         
             +++ Section(footer: "This section is shown only when 'Show Next Row' switch is enabled"){
                     $0.hidden = .function(["Show Next Section"], { form -> Bool in
-                        let row: RowOf<Bool>! = form.rowByTag("Show Next Section")
+                        let row: RowOf<Bool>! = form.rowBy(tag: "Show Next Section")
                         return row.value ?? false == false
                     })
                 }
@@ -859,7 +860,7 @@ class DisabledRowsExample : FormViewController {
                 <<< TextRow() {
                     $0.title = "Gonna be disabled soon.."
                     $0.disabled = Eureka.Condition.function(["Disable Next Section?"], { (form) -> Bool in
-                        let row: SwitchRow! = form.rowByTag("Disable Next Section?")
+                        let row: SwitchRow! = form.rowBy(tag: "Disable Next Section?")
                         return row.value ?? false
                     })
                 }

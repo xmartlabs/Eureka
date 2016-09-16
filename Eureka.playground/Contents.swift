@@ -101,7 +101,7 @@ formController.form.last! <<< LabelRow("Confirm") {
 //: Now let's see how this works:
 
 formController.view
-formController.form.rowByTag("Segments2")?.baseValue = "🐶"
+formController.form.rowBy(tag: "Segments2")?.baseValue = "🐶"
 formController.view
 
 //: We can do the same using functions. Functions are specially useful for more complicated conditions. This applies when the value of the row we depend on is not compatible with NSPredicates (which is not the current case, but anyway).
@@ -109,7 +109,7 @@ formController.view
 formController.form.last! <<< LabelRow("Confirm2") {
     $0.title = "Well chosen!!"
     $0.hidden = Condition.function(["Segments2"]){ form in
-        if let r:SegmentedRow<String> = form.rowByTag("Segments2") {
+        if let r:SegmentedRow<String> = form.rowBy(tag: "Segments2") {
             return r.value != "🐼"
         }
         return true
@@ -119,7 +119,7 @@ formController.form.last! <<< LabelRow("Confirm2") {
 //: Now let's see how this works:
 
 formController.view
-formController.form.rowByTag("Segments2")?.baseValue = "🐼"
+formController.form.rowBy(tag: "Segments2")?.baseValue = "🐼"
 formController.view
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            

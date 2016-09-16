@@ -71,9 +71,9 @@ class RowCallbackTests: BaseEurekaTests {
 
     func testCellSetupAndUpdate() {
 
-        let chkRow : CheckRow! = formVC.form.rowByTag("row1")
-        let intRow : IntRow! = formVC.form.rowByTag("row2")
-        let textRow : TextRow! = formVC.form.rowByTag("row3")
+        let chkRow : CheckRow! = formVC.form.rowBy(tag: "row1")
+        let intRow : IntRow! = formVC.form.rowBy(tag: "row2")
+        let textRow : TextRow! = formVC.form.rowBy(tag: "row3")
         
         // check that they all have indexPath
         XCTAssertNotNil(chkRow.indexPath())
