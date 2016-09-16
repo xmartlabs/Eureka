@@ -58,7 +58,7 @@ open class SelectorRow<Cell: CellType, VCType: TypedRowControllerType>: OptionsR
     /**
      Extends `didSelect` method
      */
-    public override func customDidSelect() {
+    open override func customDidSelect() {
         super.customDidSelect()
         guard let presentationMode = presentationMode, !isDisabled else { return }
         if let controller = presentationMode.createController(){
@@ -75,7 +75,7 @@ open class SelectorRow<Cell: CellType, VCType: TypedRowControllerType>: OptionsR
     /**
      Prepares the pushed row setting its title and completion callback.
      */
-    public override func prepareForSegue(_ segue: UIStoryboardSegue) {
+    open override func prepareForSegue(_ segue: UIStoryboardSegue) {
         super.prepareForSegue(segue)
         guard let rowVC = segue.destination as? VCType else { return }
         rowVC.title = selectorTitle ?? rowVC.title
