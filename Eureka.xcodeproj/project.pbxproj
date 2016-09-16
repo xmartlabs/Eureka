@@ -293,7 +293,7 @@
 			name = SelectableRows;
 			sourceTree = "<group>";
 		};
-		287E7D7C1D62552C0065F4DE /* Valiadtions */ = {
+		287E7D7C1D62552C0065F4DE /* Validations */ = {
 			isa = PBXGroup;
 			children = (
 				287E7D7D1D625A260065F4DE /* RuleRequired.swift */,
@@ -304,7 +304,7 @@
 				287E7D8F1D7601850065F4DE /* RuleLength.swift */,
 				280FBE5E1D873CCE00900064 /* RuleClosure.swift */,
 			);
-			name = Valiadtions;
+			name = Validations;
 			sourceTree = "<group>";
 		};
 		51729DE11B9A4F5E004A00EB = {
@@ -330,7 +330,7 @@
 			children = (
 				2859CD901C7CF1FD0002982F /* Core */,
 				2859CD971C7CF2020002982F /* Rows */,
-				287E7D7C1D62552C0065F4DE /* Valiadtions */,
+				287E7D7C1D62552C0065F4DE /* Validations */,
 				8690E4BC1CFDE02A004CDB1C /* Resources */,
 				51729E661B9A5FA5004A00EB /* Eureka.h */,
 				51729DF01B9A4F5E004A00EB /* Info.plist */,
