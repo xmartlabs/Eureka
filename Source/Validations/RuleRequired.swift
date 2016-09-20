@@ -1,4 +1,4 @@
-//  MultipleSelectorRow.swift
+//  RuleRequire.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -24,15 +24,17 @@
 
 import Foundation
 
-open class _MultipleSelectorRow<T: Hashable, Cell: CellType>: GenericMultipleSelectorRow<T, Cell, MultipleSelectorViewController<T>> where Cell: BaseCell, Cell: TypedCellType, Cell.Value == Set<T> {
-    public required init(tag: String?) {
-        super.init(tag: tag)
-    }
-}
-
-/// A selector row where the user can pick several options from a pushed view controller
-public final class MultipleSelectorRow<T: Hashable> : _MultipleSelectorRow<T, PushSelectorCell<Set<T>>>, RowType {
-    public required init(tag: String?) {
-        super.init(tag: tag)
+public struct RuleRequired<T: Equatable>: RuleType {
+    
+    public init(){}
+    
+    public var id: String?
+    public var validationError = ValidationError(msg: "Field required!")
+    
+    public func isValid(value: T?) -> ValidationError? {
+        if let str = value as? String {
+            return str.isEmpty ? validationError : nil
+        }
+        return value != nil ? nil : validationError
     }
 }

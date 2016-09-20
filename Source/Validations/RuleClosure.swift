@@ -1,4 +1,4 @@
-//  MultipleSelectorRow.swift
+//  RuleClosure.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -24,15 +24,20 @@
 
 import Foundation
 
-open class _MultipleSelectorRow<T: Hashable, Cell: CellType>: GenericMultipleSelectorRow<T, Cell, MultipleSelectorViewController<T>> where Cell: BaseCell, Cell: TypedCellType, Cell.Value == Set<T> {
-    public required init(tag: String?) {
-        super.init(tag: tag)
-    }
-}
 
-/// A selector row where the user can pick several options from a pushed view controller
-public final class MultipleSelectorRow<T: Hashable> : _MultipleSelectorRow<T, PushSelectorCell<Set<T>>>, RowType {
-    public required init(tag: String?) {
-        super.init(tag: tag)
+public struct RuleClosure<T: Equatable>: RuleType {
+    
+    public var id: String?
+    public var validationError: ValidationError
+    
+    public var closure: (T?) -> ValidationError?
+
+    public func isValid(value: T?) -> ValidationError? {
+        return closure(value)
+    }
+    
+    public init(validationError: ValidationError = ValidationError(msg: "Field validation fails.."), closure: @escaping ((T?) -> ValidationError?)) {
+        self.validationError = validationError
+        self.closure = closure
     }
 }

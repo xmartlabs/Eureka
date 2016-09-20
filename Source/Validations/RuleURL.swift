@@ -1,4 +1,4 @@
-//  MultipleSelectorRow.swift
+//  RuleURL.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -23,16 +23,21 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
-open class _MultipleSelectorRow<T: Hashable, Cell: CellType>: GenericMultipleSelectorRow<T, Cell, MultipleSelectorViewController<T>> where Cell: BaseCell, Cell: TypedCellType, Cell.Value == Set<T> {
-    public required init(tag: String?) {
-        super.init(tag: tag)
-    }
-}
-
-/// A selector row where the user can pick several options from a pushed view controller
-public final class MultipleSelectorRow<T: Hashable> : _MultipleSelectorRow<T, PushSelectorCell<Set<T>>>, RowType {
-    public required init(tag: String?) {
-        super.init(tag: tag)
+public struct RuleURL: RuleType {
+    
+    public init() {}
+    
+    public var id: String?
+    public var validationError = ValidationError(msg: "Field value must be an URL!")
+    
+    public func isValid(value: URL?) -> ValidationError? {
+        guard let value = value else  { return validationError }
+        let predicate = NSPredicate(format:"SELF MATCHES %@", RegExprPattern.URL.rawValue)
+        guard predicate.evaluate(with: value.absoluteString) else {
+            return validationError
+        }
+        return nil
     }
 }

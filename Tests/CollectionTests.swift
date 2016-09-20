@@ -1,7 +1,7 @@
 //  CollectionTests.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,14 +30,14 @@ class CollectionTests: BaseEurekaTests {
     func testSectionRangeReplaceableCollectionTypeConformance() {
         // test if the collection function work as expected
         
-        fieldForm[0].replaceRange(3...6, with: [CheckRow("check1_ctx")])          // replacing 4 rows with 1
+        fieldForm[0].replaceSubrange(Range(3...6), with: [CheckRow("check1_ctx")])          // replacing 4 rows with 1
         XCTAssertEqual(fieldForm[0].count, 8)                                                       // fieldform had 10 rows prior to replacing
         fieldForm[0][4] = CheckRow("check2_ctx")                                                    // replacing 5th row
         XCTAssertEqual(fieldForm[0].count, 8)
         
         XCTAssertEqual(fieldForm[0].filter({ $0 is CheckRow }).count, 2)                            // Do I have 2 CheckRows??
 
-        fieldForm[0].appendContentsOf([CheckRow("check3_ctx"), CheckRow("check4_ctx"), CheckRow("check5_ctx")])
+        fieldForm[0].append(contentsOf: [CheckRow("check3_ctx"), CheckRow("check4_ctx"), CheckRow("check5_ctx")])
         // is the same as fieldForm[0] += [...]
         
         XCTAssertEqual(fieldForm[0].count, 11)
@@ -46,14 +46,14 @@ class CollectionTests: BaseEurekaTests {
     func testFormRangeReplaceableCollectionTypeConformance() {
         // test if the collection function work as expected
         
-        manySectionsForm.replaceRange(2..<5, with: [Section("Out of order"), Section()])         // replacing 3 rows with 2
+        manySectionsForm.replaceSubrange(2..<5, with: [Section("Out of order"), Section()])         // replacing 3 rows with 2
         XCTAssertEqual(manySectionsForm.count, 5)                                                                  // fieldform had 10 rows prior to replacing
         manySectionsForm[3] = Section("There is no order anyway")                                               // replacing 4th row
         XCTAssertEqual(manySectionsForm.count, 5)
         
-        XCTAssertEqual(manySectionsForm.filter({ $0.header?.title?.containsString("order") ?? false}).count, 2)
+        XCTAssertEqual(manySectionsForm.filter({ $0.header?.title?.contains("order") ?? false}).count, 2)
         
-        manySectionsForm.appendContentsOf([Section("1"), Section("2")])
+        manySectionsForm.append(contentsOf: [Section("1"), Section("2")])
         // is the same as fieldForm[0] += [...]
         
         XCTAssertEqual(manySectionsForm.count, 7)
@@ -80,7 +80,7 @@ class CollectionTests: BaseEurekaTests {
         XCTAssertEqual(delegate.rowsAdded, 1)
         
         form[2][1] = TextRow("textrow7_ctx")                                                    // replacerowIn+1, replacerowOut+1,
-        form.replaceRange(0...1, with: [Section("replaced in")])              // replacesectionOut+1, sectionremoved+1, replacesectionin+1
+        form.replaceSubrange(Range(0...1), with: [Section("replaced in")])              // replacesectionOut+1, sectionremoved+1, replacesectionin+1
         
         XCTAssertEqual(delegate.sectionsRemoved, 1)
         

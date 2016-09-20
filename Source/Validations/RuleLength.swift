@@ -1,4 +1,4 @@
-//  MultipleSelectorRow.swift
+//  RuleLength.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -24,15 +24,39 @@
 
 import Foundation
 
-open class _MultipleSelectorRow<T: Hashable, Cell: CellType>: GenericMultipleSelectorRow<T, Cell, MultipleSelectorViewController<T>> where Cell: BaseCell, Cell: TypedCellType, Cell.Value == Set<T> {
-    public required init(tag: String?) {
-        super.init(tag: tag)
+
+public struct RuleMinLength: RuleType {
+    
+    let min: UInt
+    
+    public var id: String?
+    public var validationError: ValidationError
+    
+    public init(minLength: UInt){
+        min = minLength
+        validationError = ValidationError(msg: "Field value must have at least \(min) characters")
+    }
+    
+    public func isValid(value: String?) -> ValidationError? {
+        guard let value = value, value.characters.count >= Int(min) else { return validationError }
+        return nil
     }
 }
 
-/// A selector row where the user can pick several options from a pushed view controller
-public final class MultipleSelectorRow<T: Hashable> : _MultipleSelectorRow<T, PushSelectorCell<Set<T>>>, RowType {
-    public required init(tag: String?) {
-        super.init(tag: tag)
+public struct RuleMaxLength: RuleType {
+    
+    let max: UInt
+    
+    public var id: String?
+    public var validationError: ValidationError
+    
+    public init(maxLength: UInt){
+        max = maxLength
+        validationError = ValidationError(msg: "Field value must have less than \(max) characters")
+    }
+    
+    public func isValid(value: String?) -> ValidationError? {
+        guard let value = value , value.characters.count <= Int(max) else { return validationError }
+        return nil
     }
 }

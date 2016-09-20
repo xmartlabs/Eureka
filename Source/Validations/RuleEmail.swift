@@ -1,4 +1,4 @@
-//  MultipleSelectorRow.swift
+//  RuleEmail.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -24,15 +24,11 @@
 
 import Foundation
 
-open class _MultipleSelectorRow<T: Hashable, Cell: CellType>: GenericMultipleSelectorRow<T, Cell, MultipleSelectorViewController<T>> where Cell: BaseCell, Cell: TypedCellType, Cell.Value == Set<T> {
-    public required init(tag: String?) {
-        super.init(tag: tag)
+public class RuleEmail: RuleRegExp {
+    
+    public init() {
+        super.init(regExpr: RegExprPattern.EmailAddress.rawValue)
+        self.validationError = ValidationError(msg: "Field value should a valid email!")
     }
-}
-
-/// A selector row where the user can pick several options from a pushed view controller
-public final class MultipleSelectorRow<T: Hashable> : _MultipleSelectorRow<T, PushSelectorCell<Set<T>>>, RowType {
-    public required init(tag: String?) {
-        super.init(tag: tag)
-    }
+    
 }

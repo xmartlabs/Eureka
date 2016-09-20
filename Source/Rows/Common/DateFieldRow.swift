@@ -1,64 +1,87 @@
-//
 //  DateFieldRow.swift
-//  Eureka
+//  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Created by Martin Barreto on 2/24/16.
-//  Copyright © 2016 Xmartlabs. All rights reserved.
+//  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
 //
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 import Foundation
 
 public protocol DatePickerRowProtocol: class {
-    var minimumDate : NSDate? { get set }
-    var maximumDate : NSDate? { get set }
+    var minimumDate : Date? { get set }
+    var maximumDate : Date? { get set }
     var minuteInterval : Int? { get set }
 }
 
 
-public class DateCell : Cell<NSDate>, CellType {
+open class DateCell : Cell<Date>, CellType {
     
-    lazy public var datePicker = UIDatePicker()
+    lazy open var datePicker = UIDatePicker()
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    public override func setup() {
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    open override func setup() {
         super.setup()
-        accessoryType = .None
-        editingAccessoryType =  .None
+        accessoryType = .none
+        editingAccessoryType =  .none
         datePicker.datePickerMode = datePickerMode()
-        datePicker.addTarget(self, action: #selector(DateCell.datePickerValueChanged(_:)), forControlEvents: .ValueChanged)
+        datePicker.addTarget(self, action: #selector(DateCell.datePickerValueChanged(_:)), for: .valueChanged)
     }
     
     deinit {
-        datePicker.removeTarget(self, action: nil, forControlEvents: .AllEvents)
+        datePicker.removeTarget(self, action: nil, for: .allEvents)
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
-        selectionStyle = row.isDisabled ? .None : .Default
-        datePicker.setDate(row.value ?? NSDate(), animated: row is CountDownPickerRow)
+        selectionStyle = row.isDisabled ? .none : .default
+        datePicker.setDate(row.value ?? Date(), animated: row is CountDownPickerRow)
         datePicker.minimumDate = (row as? DatePickerRowProtocol)?.minimumDate
         datePicker.maximumDate = (row as? DatePickerRowProtocol)?.maximumDate
         if let minuteIntervalValue = (row as? DatePickerRowProtocol)?.minuteInterval{
             datePicker.minuteInterval = minuteIntervalValue
         }
+        if isHighlighted {
+            textLabel?.textColor = tintColor
+        }
     }
     
-    public override func didSelect() {
+    open override func didSelect() {
         super.didSelect()
         row.deselect()
     }
     
-    override public var inputView : UIView? {
+    override open var inputView : UIView? {
         if let v = row.value{
             datePicker.setDate(v, animated:row is CountDownRow)
         }
         return datePicker
     }
     
-    func datePickerValueChanged(sender: UIDatePicker){
+    func datePickerValueChanged(_ sender: UIDatePicker){
         row.value = sender.date
         detailTextLabel?.text = row.displayValueFor?(row.value)
     }
@@ -66,49 +89,51 @@ public class DateCell : Cell<NSDate>, CellType {
     private func datePickerMode() -> UIDatePickerMode{
         switch row {
         case is DateRow:
-            return .Date
+            return .date
         case is TimeRow:
-            return .Time
+            return .time
         case is DateTimeRow:
-            return .DateAndTime
+            return .dateAndTime
         case is CountDownRow:
-            return .CountDownTimer
+            return .countDownTimer
         default:
-            return .Date
+            return .date
         }
     }
     
-    public override func cellCanBecomeFirstResponder() -> Bool {
-        return canBecomeFirstResponder()
+    open override func cellCanBecomeFirstResponder() -> Bool {
+        return canBecomeFirstResponder
     }
-    
-    public override func canBecomeFirstResponder() -> Bool {
-        return !row.isDisabled;
+
+    override open var canBecomeFirstResponder: Bool {
+        get {
+            return !row.isDisabled
+        }
     }
 }
 
 
-public class _DateFieldRow: Row<NSDate, DateCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
+open class _DateFieldRow: Row<DateCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
     
     /// The minimum value for this row's UIDatePicker
-    public var minimumDate : NSDate?
+    open var minimumDate : Date?
     
     /// The maximum value for this row's UIDatePicker
-    public var maximumDate : NSDate?
+    open var maximumDate : Date?
     
     /// The interval between options for this row's UIDatePicker
-    public var minuteInterval : Int?
+    open var minuteInterval : Int?
     
     /// The formatter for the date picked by the user
-    public var dateFormatter: NSDateFormatter?
+    open var dateFormatter: DateFormatter?
     
-    public var noValueDisplayText: String? = nil
+    open var noValueDisplayText: String? = nil
     
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = { [unowned self] value in
             guard let val = value, let formatter = self.dateFormatter else { return nil }
-            return formatter.stringFromDate(val)
+            return formatter.string(from: val)
         }
     }
 }
