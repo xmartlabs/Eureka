@@ -25,7 +25,7 @@
 
 import Foundation
 
-public class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
+open class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -35,14 +35,14 @@ public class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         accessoryType = .none
         editingAccessoryType = accessoryType
         selectionStyle = row.isDisabled ? .none : .default
     }
     
-    public override func didSelect() {
+    open override func didSelect() {
         super.didSelect()
         row.deselect()
     }

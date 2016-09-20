@@ -27,21 +27,21 @@ import Foundation
 
 
 /// Generic options selector row that allows multiple selection.
-public class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: TypedRowControllerType>: Row<Cell>, PresenterRowType, NoValueDisplayTextConformance where Cell: BaseCell, Cell.Value == Set<T>, VCType: UIViewController, VCType.RowValue == Set<T> {
+open class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: TypedRowControllerType>: Row<Cell>, PresenterRowType, NoValueDisplayTextConformance where Cell: BaseCell, Cell.Value == Set<T>, VCType: UIViewController, VCType.RowValue == Set<T> {
     
     /// Defines how the view controller will be presented, pushed, etc.
-    public var presentationMode: PresentationMode<VCType>?
+    open var presentationMode: PresentationMode<VCType>?
     
     /// Will be called before the presentation occurs.
-    public var onPresentCallback : ((FormViewController, VCType)->())?
+    open var onPresentCallback : ((FormViewController, VCType)->())?
     
     /// Title to be displayed for the options
-    public var selectorTitle: String?
+    open var selectorTitle: String?
     
-    public var noValueDisplayText: String?
+    open var noValueDisplayText: String?
     
     /// Options from which the user will choose
-    public var options: [T] {
+    open var options: [T] {
         get { return self.dataProvider?.arrayData?.map({ $0.first! }) ?? [] }
         set { self.dataProvider = DataProvider(arrayData: newValue.map({ Set<T>(arrayLiteral: $0) })) }
     }
@@ -58,7 +58,7 @@ public class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: Typ
     /**
      Extends `didSelect` method
      */
-    public override func customDidSelect() {
+    open override func customDidSelect() {
         super.customDidSelect()
         guard let presentationMode = presentationMode, !isDisabled else { return }
         if let controller = presentationMode.createController(){
@@ -75,7 +75,7 @@ public class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: Typ
     /**
      Prepares the pushed row setting its title and completion callback.
      */
-    public override func prepareForSegue(_ segue: UIStoryboardSegue) {
+    open override func prepareForSegue(_ segue: UIStoryboardSegue) {
         super.prepareForSegue(segue)
         guard let rowVC = segue.destination as? VCType else { return }
         rowVC.title = selectorTitle ?? rowVC.title

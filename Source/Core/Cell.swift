@@ -59,7 +59,7 @@ open class BaseCell : UITableViewCell, BaseCellType {
     open func setup(){}
     open func update() {}
 
-    public func didSelect() {}
+    open func didSelect() {}
 
     /**
      If the cell can become first responder. By default returns false

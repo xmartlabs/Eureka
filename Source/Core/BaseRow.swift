@@ -105,12 +105,12 @@ open class BaseRow : BaseRowType {
     /**
      Method that reloads the cell
      */
-    public func updateCell() {}
+    open func updateCell() {}
     
     /**
      Method called when the cell belonging to this row was selected. Must call the corresponding method in its cell.
      */
-    public func didSelect() {}
+    open func didSelect() {}
     
     open func prepareForSegue(_ segue: UIStoryboardSegue) {}
     
@@ -137,7 +137,7 @@ extension BaseRow {
     /**
      Evaluates if the row should be hidden or not and updates the form accordingly
      */
-    public final func evaluateHidden() {
+    public func evaluateHidden() {
         guard let h = hidden, let form = section?.form else { return }
         switch h {
         case .function(_ , let callback):
@@ -156,7 +156,7 @@ extension BaseRow {
     /**
      Evaluates if the row should be disabled or not and updates it accordingly
      */
-    public final func evaluateDisabled() {
+    public func evaluateDisabled() {
         guard let d = disabled, let form = section?.form else { return }
         switch d {
         case .function(_ , let callback):

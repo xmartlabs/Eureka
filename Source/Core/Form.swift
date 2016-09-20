@@ -264,7 +264,7 @@ extension Form {
         
         deinit { removeObserver(self, forKeyPath: "_sections") }
         
-        open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
             
             let newSections = change?[NSKeyValueChangeKey.newKey] as? [Section] ?? []
             let oldSections = change?[NSKeyValueChangeKey.oldKey] as? [Section] ?? []
@@ -350,7 +350,7 @@ extension Form {
 extension Form {
     
     @discardableResult
-    public func validates() -> [ValidationError] {
+    public func validate() -> [ValidationError] {
         var result = [ValidationError]()
         result = allRows.reduce(result) { res, row in
             var res = res

@@ -24,10 +24,10 @@
 import Foundation
 
 
-public class _AlertRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
+open class _AlertRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
     
-    public var onPresentCallback : ((FormViewController, SelectorAlertController<Cell.Value>)->())?
-    lazy public var presentationMode: PresentationMode<SelectorAlertController<Cell.Value>>? = {
+    open var onPresentCallback : ((FormViewController, SelectorAlertController<Cell.Value>)->())?
+    lazy open var presentationMode: PresentationMode<SelectorAlertController<Cell.Value>>? = {
         return .presentModally(controllerProvider: ControllerProvider.callback { [weak self] in
             let vc = SelectorAlertController<Cell.Value>(title: self?.selectorTitle, message: nil, preferredStyle: .alert)
             vc.row = self
@@ -43,7 +43,7 @@ public class _AlertRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where
         super.init(tag: tag)
     }
     
-    public override func customDidSelect() {
+    open override func customDidSelect() {
         super.customDidSelect()
         if let presentationMode = presentationMode, !isDisabled  {
             if let controller = presentationMode.createController(){

@@ -25,7 +25,7 @@
 import UIKit
 
 /// The cell of the SliderRow
-public class SliderCell: Cell<Float>, CellType {
+open class SliderCell: Cell<Float>, CellType {
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
@@ -47,25 +47,25 @@ public class SliderCell: Cell<Float>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public var titleLabel: UILabel! {
+    open var titleLabel: UILabel! {
         textLabel?.translatesAutoresizingMaskIntoConstraints = false
         textLabel?.setContentHuggingPriority(500, for: .horizontal)
         return textLabel
     }
-    public var valueLabel: UILabel! {
+    open var valueLabel: UILabel! {
         detailTextLabel?.translatesAutoresizingMaskIntoConstraints = false
         detailTextLabel?.setContentHuggingPriority(500, for: .horizontal)
         return detailTextLabel
     }
-    lazy public var slider: UISlider = {
+    lazy open var slider: UISlider = {
         let result = UISlider()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.setContentHuggingPriority(500, for: .horizontal)
         return result
     }()
-    public var formatter: NumberFormatter?
+    open var formatter: NumberFormatter?
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         selectionStyle = .none
         slider.minimumValue = sliderRow.minimumValue
@@ -80,7 +80,7 @@ public class SliderCell: Cell<Float>, CellType {
         addConstraints()
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         if !shouldShowTitle() {
             textLabel?.text = nil

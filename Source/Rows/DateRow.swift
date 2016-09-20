@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 import Foundation
 
-public class _DateRow: _DateFieldRow {
+open class _DateRow: _DateFieldRow {
     required public init(tag: String?) {
         super.init(tag: tag)
         dateFormatter = DateFormatter()
@@ -34,7 +34,7 @@ public class _DateRow: _DateFieldRow {
 }
 
 
-public class _TimeRow: _DateFieldRow {
+open class _TimeRow: _DateFieldRow {
     required public init(tag: String?) {
         super.init(tag: tag)
         dateFormatter = DateFormatter()
@@ -44,7 +44,7 @@ public class _TimeRow: _DateFieldRow {
     }
 }
 
-public class _DateTimeRow: _DateFieldRow {
+open class _DateTimeRow: _DateFieldRow {
     required public init(tag: String?) {
         super.init(tag: tag)
         dateFormatter = DateFormatter()
@@ -54,7 +54,7 @@ public class _DateTimeRow: _DateFieldRow {
     }
 }
 
-public class _CountDownRow: _DateFieldRow {
+open class _CountDownRow: _DateFieldRow {
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = { [unowned self] value in

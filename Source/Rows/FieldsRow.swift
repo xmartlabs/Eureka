@@ -24,7 +24,7 @@
 
 import Foundation
 
-public class TextCell : _FieldCell<String>, CellType {
+open class TextCell : _FieldCell<String>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -34,7 +34,7 @@ public class TextCell : _FieldCell<String>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         textField.autocorrectionType = .default
         textField.autocapitalizationType = .sentences
@@ -43,7 +43,7 @@ public class TextCell : _FieldCell<String>, CellType {
 }
 
 
-public class IntCell : _FieldCell<Int>, CellType {
+open class IntCell : _FieldCell<Int>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,7 +53,7 @@ public class IntCell : _FieldCell<Int>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         textField.autocorrectionType = .default
         textField.autocapitalizationType = .none
@@ -61,7 +61,7 @@ public class IntCell : _FieldCell<Int>, CellType {
     }
 }
 
-public class PhoneCell : _FieldCell<String>, CellType {
+open class PhoneCell : _FieldCell<String>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -71,13 +71,13 @@ public class PhoneCell : _FieldCell<String>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         textField.keyboardType = .phonePad
     }
 }
 
-public class NameCell : _FieldCell<String>, CellType {
+open class NameCell : _FieldCell<String>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -87,7 +87,7 @@ public class NameCell : _FieldCell<String>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .words
@@ -95,7 +95,7 @@ public class NameCell : _FieldCell<String>, CellType {
     }
 }
 
-public class EmailCell : _FieldCell<String>, CellType {
+open class EmailCell : _FieldCell<String>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -105,7 +105,7 @@ public class EmailCell : _FieldCell<String>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
@@ -113,7 +113,7 @@ public class EmailCell : _FieldCell<String>, CellType {
     }
 }
 
-public class PasswordCell : _FieldCell<String>, CellType {
+open class PasswordCell : _FieldCell<String>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -123,7 +123,7 @@ public class PasswordCell : _FieldCell<String>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
@@ -132,7 +132,7 @@ public class PasswordCell : _FieldCell<String>, CellType {
     }
 }
 
-public class DecimalCell : _FieldCell<Double>, CellType {
+open class DecimalCell : _FieldCell<Double>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -142,14 +142,14 @@ public class DecimalCell : _FieldCell<Double>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
         textField.keyboardType = .decimalPad
     }
 }
 
-public class URLCell : _FieldCell<URL>, CellType {
+open class URLCell : _FieldCell<URL>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -159,7 +159,7 @@ public class URLCell : _FieldCell<URL>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
@@ -167,7 +167,7 @@ public class URLCell : _FieldCell<URL>, CellType {
     }
 }
 
-public class TwitterCell : _FieldCell<String>, CellType {
+open class TwitterCell : _FieldCell<String>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -177,7 +177,7 @@ public class TwitterCell : _FieldCell<String>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
@@ -185,7 +185,7 @@ public class TwitterCell : _FieldCell<String>, CellType {
     }
 }
 
-public class AccountCell : _FieldCell<String>, CellType {
+open class AccountCell : _FieldCell<String>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -195,7 +195,7 @@ public class AccountCell : _FieldCell<String>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
@@ -203,7 +203,7 @@ public class AccountCell : _FieldCell<String>, CellType {
     }
 }
 
-public class ZipCodeCell : _FieldCell<String>, CellType {
+open class ZipCodeCell : _FieldCell<String>, CellType {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -213,7 +213,7 @@ public class ZipCodeCell : _FieldCell<String>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .allCharacters
@@ -221,13 +221,13 @@ public class ZipCodeCell : _FieldCell<String>, CellType {
     }
 }
 
-public class _TextRow: FieldRow<TextCell> {
+open class _TextRow: FieldRow<TextCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _IntRow: FieldRow<IntCell> {
+open class _IntRow: FieldRow<IntCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
         let numberFormatter = NumberFormatter()
@@ -238,32 +238,32 @@ public class _IntRow: FieldRow<IntCell> {
     }
 }
 
-public class _PhoneRow: FieldRow<PhoneCell> {
+open class _PhoneRow: FieldRow<PhoneCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _NameRow: FieldRow<NameCell> {
+open class _NameRow: FieldRow<NameCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _EmailRow: FieldRow<EmailCell> {
+open class _EmailRow: FieldRow<EmailCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _PasswordRow: FieldRow<PasswordCell> {
+open class _PasswordRow: FieldRow<PasswordCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
 
-public class _DecimalRow: FieldRow<DecimalCell> {
+open class _DecimalRow: FieldRow<DecimalCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
         let numberFormatter = NumberFormatter()
@@ -274,25 +274,25 @@ public class _DecimalRow: FieldRow<DecimalCell> {
     }
 }
 
-public class _URLRow: FieldRow<URLCell> {
+open class _URLRow: FieldRow<URLCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _TwitterRow: FieldRow<TwitterCell> {
+open class _TwitterRow: FieldRow<TwitterCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _AccountRow: FieldRow<AccountCell> {
+open class _AccountRow: FieldRow<AccountCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-public class _ZipCodeRow: FieldRow<ZipCodeCell> {
+open class _ZipCodeRow: FieldRow<ZipCodeCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }

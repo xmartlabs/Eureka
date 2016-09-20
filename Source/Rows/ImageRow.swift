@@ -64,12 +64,12 @@ public enum ImageClearAction {
 
 //MARK: Row
 
-public class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> where Cell: BaseCell, Cell: TypedCellType, Cell.Value == UIImage {
+open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> where Cell: BaseCell, Cell: TypedCellType, Cell.Value == UIImage {
     
 
-    public var sourceTypes: ImageRowSourceTypes
-    public internal(set) var imageURL: URL?
-    public var clearAction = ImageClearAction.yes(style: .destructive)
+    open var sourceTypes: ImageRowSourceTypes
+    open internal(set) var imageURL: URL?
+    open var clearAction = ImageClearAction.yes(style: .destructive)
     
     private var _sourceType: UIImagePickerControllerSourceType = .camera
     
@@ -100,7 +100,7 @@ public class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController>
         }
     }
     
-    public override func customDidSelect() {
+    open override func customDidSelect() {
         guard !isDisabled else {
             super.customDidSelect()
             return
@@ -156,7 +156,7 @@ public class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController>
         }
     }
     
-    public override func prepareForSegue(_ segue: UIStoryboardSegue) {
+    open override func prepareForSegue(_ segue: UIStoryboardSegue) {
         super.prepareForSegue(segue)
         guard let rowVC = segue.destination as? ImagePickerController else {
             return
@@ -164,7 +164,7 @@ public class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController>
         rowVC.sourceType = _sourceType
     }
     
-    public override func customUpdateCell() {
+    open override func customUpdateCell() {
         super.customUpdateCell()
         cell.accessoryType = .none
         if let image = self.value {

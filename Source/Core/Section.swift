@@ -76,7 +76,7 @@ extension Section {
             removeObserver(self, forKeyPath: "_rows")
         }
         
-        open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
             let newRows = change![NSKeyValueChangeKey.newKey] as? [BaseRow] ?? []
             let oldRows = change![NSKeyValueChangeKey.oldKey] as? [BaseRow] ?? []
             guard let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey] else{ return }
@@ -122,7 +122,7 @@ extension Section {
 
 
 /// The class representing the sections in a Eureka form.
-public class Section {
+open class Section {
     
     /// The tag is used to uniquely identify a Section. Must be unique among sections and rows.
     public var tag: String?
@@ -183,17 +183,17 @@ public class Section {
     /**
      *  Delegate method called by the framework when one or more rows have been added to the section.
      */
-    public func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexes:IndexSet) {}
+    open func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexes:IndexSet) {}
     
     /**
      *  Delegate method called by the framework when one or more rows have been removed from the section.
      */
-    public func rowsHaveBeenRemoved(_ rows: [BaseRow], atIndexes:IndexSet) {}
+    open func rowsHaveBeenRemoved(_ rows: [BaseRow], atIndexes:IndexSet) {}
     
     /**
      *  Delegate method called by the framework when one or more rows have been replaced in the section.
      */
-    public func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexes: IndexSet) {}
+    open func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexes: IndexSet) {}
     
     //MARK: Private
     lazy var kvoWrapper: KVOWrapper = { [unowned self] in return KVOWrapper(section: self) }()

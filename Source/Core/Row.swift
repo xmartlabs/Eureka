@@ -51,7 +51,7 @@ open class RowOf<T: Equatable>: BaseRow {
     }
 
     /// The typed value of this row.
-    public var value : T?{
+    open var value : T?{
         set (newValue){
             _value = newValue
             guard let _ = section?.form else { return }
@@ -155,7 +155,7 @@ open class Row<Cell: CellType>: RowOf<Cell.Value>, TypedRowType where Cell: Base
     /**
      Method that reloads the cell
      */
-    override public func updateCell() {
+    override open func updateCell() {
         super.updateCell()
         cell.update()
         customUpdateCell()
@@ -166,7 +166,7 @@ open class Row<Cell: CellType>: RowOf<Cell.Value>, TypedRowType where Cell: Base
     /**
      Method called when the cell belonging to this row was selected. Must call the corresponding method in its cell.
      */
-    public override func didSelect() {
+    open override func didSelect() {
         super.didSelect()
         if !isDisabled {
             cell?.didSelect()

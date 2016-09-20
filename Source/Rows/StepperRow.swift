@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: StepperCell
 
-public class StepperCell : Cell<Double>, CellType {
+open class StepperCell : Cell<Double>, CellType {
     
     public typealias Value = Double
     
@@ -23,20 +23,20 @@ public class StepperCell : Cell<Double>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public lazy var stepper: UIStepper = {
+    open lazy var stepper: UIStepper = {
         let s = UIStepper()
         s.translatesAutoresizingMaskIntoConstraints = false
         return s
     }()
     
-    public lazy var valueLabel: UILabel = {
+    open lazy var valueLabel: UILabel = {
         let l = UILabel()
         l.translatesAutoresizingMaskIntoConstraints = false
         l.numberOfLines = 1
         return l
     }()
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         selectionStyle = .none
         
@@ -56,7 +56,7 @@ public class StepperCell : Cell<Double>, CellType {
         stepper.removeTarget(self, action: nil, for: .allEvents)
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         stepper.isEnabled = !row.isDisabled
         stepper.value = row.value ?? 0
@@ -73,7 +73,7 @@ public class StepperCell : Cell<Double>, CellType {
 
 // MARK: StepperRow
 
-public class _StepperRow: Row<StepperCell> {
+open class _StepperRow: Row<StepperCell> {
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = nil

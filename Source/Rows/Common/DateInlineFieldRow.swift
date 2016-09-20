@@ -25,7 +25,7 @@
 import Foundation
 
 
-public class DateInlineCell : Cell<Date>, CellType {
+open class DateInlineCell : Cell<Date>, CellType {
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -35,39 +35,39 @@ public class DateInlineCell : Cell<Date>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func setup() {
+    open override func setup() {
         super.setup()
         accessoryType = .none
         editingAccessoryType =  .none
     }
     
-    public override func update() {
+    open override func update() {
         super.update()
         selectionStyle = row.isDisabled ? .none : .default
     }
     
-    public override func didSelect() {
+    open override func didSelect() {
         super.didSelect()
         row.deselect()
     }
 }
 
 
-public class _DateInlineFieldRow: Row<DateInlineCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
+open class _DateInlineFieldRow: Row<DateInlineCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
     
     /// The minimum value for this row's UIDatePicker
-    public var minimumDate : Date?
+    open var minimumDate : Date?
     
     /// The maximum value for this row's UIDatePicker
-    public var maximumDate : Date?
+    open var maximumDate : Date?
     
     /// The interval between options for this row's UIDatePicker
-    public var minuteInterval : Int?
+    open var minuteInterval : Int?
     
     /// The formatter for the date picked by the user
-    public var dateFormatter: DateFormatter?
+    open var dateFormatter: DateFormatter?
     
-    public var noValueDisplayText: String?
+    open var noValueDisplayText: String?
     
     required public init(tag: String?) {
         super.init(tag: tag)
