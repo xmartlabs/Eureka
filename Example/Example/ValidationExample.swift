@@ -250,11 +250,13 @@ class ValidationExample: FormViewController {
     
     // MARK: - Showing Validation Demo
     var row_independent : DictionaryMessageRow? {
-        return form.rowByTag("Independent") as? DictionaryMessageRow
+
+        return form.rowBy(tag: "Independent") as? DictionaryMessageRow
     }
     var row_Age : IntRow? {
-        return form.rowByTag("Age") as? IntRow
+        return form.rowBy(tag: "Age") as? IntRow
     }
+    
     fileprivate func initializeForm_ShowingValidationResult() {
         form +++ Section("Showing Result")
             +++ Section("Message Row Alone")
@@ -327,7 +329,18 @@ class ValidationExample: FormViewController {
         row_Age?.validatorWhileEditing = age_boundValidator
     }
     
-    class CustomizedDictionaryMessageRow : DictionaryMessageRow {
+    final class CustomizedDictionaryMessageRow : Row<DictionaryMessageCell>, MessageRow, RowType {weak var mainRow: BaseRow?
+        open var cellBackgroundColor : UIColor? {
+            didSet {
+                cell.cellBackgroundColor = cellBackgroundColor
+            }
+        }
+        open var cellTextColor : UIColor? {
+            didSet {
+                cell.cellTextColor = cellTextColor
+            }
+        }
+        
         required init(tag: String?) {
             super.init(tag: tag)
             cellBackgroundColor = UIColor.yellow

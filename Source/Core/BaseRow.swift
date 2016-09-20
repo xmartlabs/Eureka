@@ -163,7 +163,7 @@ open class BaseRow : BaseRowType {
         if let messageRow = MessageRowType?.init(), let indexPath = indexPath() {
             self.messageRow = messageRow
             messageRow.message = self.message
-            section?.insert(messageRow, atIndex: indexPath.row + messageRowOffset)
+            section?.insert(messageRow, at: indexPath.row + messageRowOffset)
             baseCell.formViewController()?.makeRowVisible(messageRow)
         }
     }
@@ -171,7 +171,7 @@ open class BaseRow : BaseRowType {
         guard let rowToHide = messageRow, let indexPath = indexPath() else {
             return
         }
-        section?.removeAtIndex(indexPath.row + messageRowOffset)
+        section?.remove(at: indexPath.row + messageRowOffset)
         messageRow = nil
     }
     

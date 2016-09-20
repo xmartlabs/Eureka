@@ -7,6 +7,6 @@
 //
 
 import Foundation
-protocol MessageRow : class {
+public protocol MessageRow : class {
     weak var mainRow : BaseRow? { get set }
 }

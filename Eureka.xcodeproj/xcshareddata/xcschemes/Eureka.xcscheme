@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "51729DEA1B9A4F5E004A00EB"
-               BuildableName = "Eureka.framework"
+               BuildableName = "Eureka"
                BlueprintName = "Eureka"
                ReferencedContainer = "container:Eureka.xcodeproj">
             </BuildableReference>

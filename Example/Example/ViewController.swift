@@ -98,7 +98,7 @@ class HomeViewController : FormViewController {
                 }
                 <<< ButtonRow("Validation Example") { (row:ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .SegueName(segueName: "ValidationExampleSegue", completionCallback: nil)
+                    row.presentationMode = .segueName(segueName: "ValidationExampleSegue", completionCallback: nil)
                 }
         +++ Section()
                 <<< ButtonRow() { (row: ButtonRow) -> Void in

@@ -9,8 +9,8 @@ import Foundation
 
 // MARK: -- Message Row
 
-open class DictionaryMessageRow : Row<DictionaryMessage,DictionaryMessageCell>, MessageRow, RowType {
-    weak var mainRow: BaseRow?
+public final class DictionaryMessageRow : Row<DictionaryMessageCell>, MessageRow, RowType {
+    weak public var mainRow: BaseRow?
     open var cellBackgroundColor : UIColor? {
         didSet {
             cell.cellBackgroundColor = cellBackgroundColor
@@ -21,7 +21,7 @@ open class DictionaryMessageRow : Row<DictionaryMessage,DictionaryMessageCell>, 
             cell.cellTextColor = cellTextColor
         }
     }
-    
+
     required public init(tag: String?) {
         super.init(tag: tag)
         cellStyle = .default
