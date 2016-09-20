@@ -8,15 +8,15 @@
 
 import Foundation
 
-public class ValidationResult {
+open class ValidationResult {
     ///Target of validation.
-    public var target:Any!
+    open var target:Any!
     ///True if the validation went successful and thus the target is valid.
-    public var isValid:Bool = false
+    open var isValid:Bool = false
     ///Payload contains additional information about validation. For example, it can be readable message on the validation result like "Body fat is percent. Should be lower than 100."
-    public var payload:Any?
+    open var payload:Any?
     ///Classifies the validation result. It tells what kind of validation was happened and how this validation result should be processed. Classifier is used to classify the validation result when two different types of validation result are of same class type.
-    public var classifier:String!
+    open var classifier:String!
     public init() {
     }
     public convenience init(target:Any!, classifier:String!) {
@@ -32,12 +32,12 @@ public class ValidationResult {
 }
 
 public protocol IdaValidationListener:class {
-    func processValidationResult(validationResult:ValidationResult)
+    func processValidationResult(_ validationResult:ValidationResult)
 }
 
-public class IdaBaseValidator {
-    public var baseTarget:Any!
-    public var tag:String?
+open class IdaBaseValidator {
+    open var baseTarget:Any!
+    open var tag:String?
     // MARK: - Initializers
     public init(tag: String?, baseTarget: Any?) {
         self.tag = tag
@@ -50,31 +50,31 @@ public class IdaBaseValidator {
         self.init(tag: tag, baseTarget: nil)
     }
     // MARK: - Validation
-    public func validate(notify:Bool) -> ValidationResult {
+    open func validate(_ notify:Bool) -> ValidationResult {
         return ValidationResult()
     }
     // MARK: - Keeping Listeners
-    private var wr_listeners:[Weak<AnyObject>]=[]
-    public func addListener(listener:IdaValidationListener, strong:Bool) {
+    fileprivate var wr_listeners:[Weak<AnyObject>]=[]
+    open func addListener(_ listener:IdaValidationListener, strong:Bool) {
         // find the previously added reference
         guard listenerWeakReference(listener) == nil else{
             return
         }
         wr_listeners.append(Weak(value: listener, strong:strong))
     }
-    public func removeListener(listener:IdaValidationListener) {
+    open func removeListener(_ listener:IdaValidationListener) {
         if let weakReference = listenerWeakReference(listener) {
-            wr_listeners.removeAtIndex(indexOfWeakReference(weakReference))
+            wr_listeners.remove(at: indexOfWeakReference(weakReference))
         }
     }
-    public func iterateListeners( blockForListener: ((listener:IdaValidationListener)->Void) ) {
+    open func iterateListeners( _ blockForListener: ((_ listener:IdaValidationListener)->Void) ) {
         var emptyReferencesRange = NSMakeRange(0, 0)
         
         for i in 0 ..< wr_listeners.count {
             let wr_listener = wr_listeners[i]
             if let listener = wr_listener.value {
                 if let listener = listener as? IdaValidationListener {
-                    blockForListener(listener: listener)
+                    blockForListener(listener)
                 }
             }
             else {
@@ -83,16 +83,16 @@ public class IdaBaseValidator {
         }
         
         if let removeRange = emptyReferencesRange.toRange() {
-            wr_listeners.removeRange(removeRange)
+            wr_listeners.removeSubrange(removeRange)
         }
     }
-    public func notifyListeners(result:ValidationResult) {
+    open func notifyListeners(_ result:ValidationResult) {
         self.iterateListeners({ (listener) in
             listener.processValidationResult(result)
         })
     }
     // MARK: Private worker methods
-    private func listenerWeakReference(listener:IdaValidationListener) -> Weak<AnyObject>? {
+    fileprivate func listenerWeakReference(_ listener:IdaValidationListener) -> Weak<AnyObject>? {
         
         var resultWeak:Weak<AnyObject>?
         
@@ -111,13 +111,13 @@ public class IdaBaseValidator {
         
         // remove empty weakReferences
         if let removeRange = emptyReferencesRange.toRange() {
-            wr_listeners.removeRange(removeRange)
+            wr_listeners.removeSubrange(removeRange)
         }
         
         return resultWeak
     }
     
-    private func indexOfWeakReference(weakReference:Weak<AnyObject>) -> Int {
+    fileprivate func indexOfWeakReference(_ weakReference:Weak<AnyObject>) -> Int {
         for i in 0 ..< wr_listeners.count {
             if ( weakReference === wr_listeners[i] ){
                 return i
@@ -127,10 +127,10 @@ public class IdaBaseValidator {
     }
 }
 
-public class IdaValidator<TargetType> : IdaBaseValidator {
+open class IdaValidator<TargetType> : IdaBaseValidator {
     // MARK: - Properties
-    public var target:TargetType!
-    override public var baseTarget: Any! {
+    open var target:TargetType!
+    override open var baseTarget: Any! {
         get {
             return target
         }
@@ -166,7 +166,7 @@ private class Weak<T: AnyObject> {
             }
         }
     }
-    private(set) var  isStrong: Bool = false
+    fileprivate(set) var  isStrong: Bool = false
     
     init (value: T, strong:Bool) {
         isStrong = strong

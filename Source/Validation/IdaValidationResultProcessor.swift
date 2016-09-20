@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class IdaValidationResultProcessor: NSObject, IdaValidationListener {
-    public func processValidationResult(validationResult: ValidationResult) {
+open class IdaValidationResultProcessor: NSObject, IdaValidationListener {
+    open func processValidationResult(_ validationResult: ValidationResult) {
     }
 }
