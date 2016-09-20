@@ -10,15 +10,15 @@ import Foundation
 
 public typealias ValidationRule = (Any?) -> ValidationResult
 
-public class IdaDefinableValidator: IdaValidator<Any> {
-    public var rule:ValidationRule
+open class IdaDefinableValidator: IdaValidator<Any> {
+    open var rule:ValidationRule
     // MARK: - Initialization
-    public init (tag:String?, target:Any, rule:ValidationRule) {
+    public init (tag:String?, target:Any, rule:@escaping ValidationRule) {
         self.rule = rule
         super.init(tag: tag, target: target)
     }
     // MARK: - Validation
-    public override func validate(notify: Bool) -> ValidationResult {
+    open override func validate(_ notify: Bool) -> ValidationResult {
         let result = rule(target)
         if (notify) {
             self.notifyListeners(result)

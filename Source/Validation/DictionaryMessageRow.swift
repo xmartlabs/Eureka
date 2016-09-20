@@ -9,14 +9,14 @@ import Foundation
 
 // MARK: -- Message Row
 
-public class DictionaryMessageRow : Row<DictionaryMessage,DictionaryMessageCell>, MessageRow, RowType {
+open class DictionaryMessageRow : Row<DictionaryMessage,DictionaryMessageCell>, MessageRow, RowType {
     weak var mainRow: BaseRow?
-    public var cellBackgroundColor : UIColor? {
+    open var cellBackgroundColor : UIColor? {
         didSet {
             cell.cellBackgroundColor = cellBackgroundColor
         }
     }
-    public var cellTextColor : UIColor? {
+    open var cellTextColor : UIColor? {
         didSet {
             cell.cellTextColor = cellTextColor
         }
@@ -24,7 +24,7 @@ public class DictionaryMessageRow : Row<DictionaryMessage,DictionaryMessageCell>
     
     required public init(tag: String?) {
         super.init(tag: tag)
-        cellStyle = .Default
+        cellStyle = .default
     }
     convenience public init() {
         self.init(nil)
@@ -33,15 +33,15 @@ public class DictionaryMessageRow : Row<DictionaryMessage,DictionaryMessageCell>
 
 // MARK: -- Message Cell
 
-public class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
+open class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
     
-    public static var labelInsets : UIEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-    public var cellBackgroundColor : UIColor? {
+    open static var labelInsets : UIEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+    open var cellBackgroundColor : UIColor? {
         didSet {
             style()
         }
     }
-    public var cellTextColor : UIColor? {
+    open var cellTextColor : UIColor? {
         didSet {
             style()
         }
@@ -50,61 +50,65 @@ public class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Public Properties
     var message : DictionaryMessage? {
         return messageRow?.value
     }
     
-    public lazy var messageLabel : UILabel = { [unowned self] in
+    open lazy var messageLabel : UILabel = { [unowned self] in
         let label = UILabel()
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(label)
         
-        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-\(self.dynamicType.labelInsets.top)-[label]-\(self.dynamicType.labelInsets.bottom)-|", options: [], metrics: nil, views: ["label": label]))
-        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-\(self.dynamicType.labelInsets.left)-[label]-\(self.dynamicType.labelInsets.right)-|", options: [], metrics: nil, views: ["label": label]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(type(of: self).labelInsets.top)-[label]-\(type(of: self).labelInsets.bottom)-|", options: [], metrics: nil, views: ["label": label]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(type(of: self).labelInsets.left)-[label]-\(type(of: self).labelInsets.right)-|", options: [], metrics: nil, views: ["label": label]))
         return label
         }()
     
     // MARK: - Private Properties
-    private lazy var hideCellConstraint : NSLayoutConstraint = { [unowned self] in
-        let constraint = NSLayoutConstraint(item: self.contentView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 0)
+    fileprivate lazy var hideCellConstraint : NSLayoutConstraint = { [unowned self] in
+        let constraint = NSLayoutConstraint(item: self.contentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
         constraint.priority = UILayoutPriorityRequired
         return constraint
         }()
-    private var messageRow : DictionaryMessageRow? {
+    fileprivate var messageRow : DictionaryMessageRow? {
         return row as? DictionaryMessageRow
     }
     
     // MARK: - Overriding methods
-    public override func setup() {
+    open override func setup() {
         super.setup()
         contentView.clipsToBounds = true
         self.clipsToBounds = true
-        selectionStyle = .None
+        selectionStyle = .none
         
         style() // using messageLabel will add it to `self`.
     }
     
-    public override func update() {
+    open override func update() {
         style()
         textLabel?.text = nil
         detailTextLabel?.text = nil
         messageLabel.text = self.message?.concatenatedMessage()
         if self.message?.concatenatedMessage().characters.count ?? 0 == 0 {
             contentView.addConstraint(hideCellConstraint)
-            self.hidden = true
+            self.isHidden = true
         }
         else {
             contentView.removeConstraint(hideCellConstraint)
-            self.hidden = false
+            self.isHidden = false
         }
     }
     
-    private func style() {
-        messageLabel.textColor = cellTextColor ?? UIColor.whiteColor()
-        self.backgroundColor = cellBackgroundColor ?? UIColor.redColor()
+    fileprivate func style() {
+        messageLabel.textColor = cellTextColor ?? UIColor.white
+        self.backgroundColor = cellBackgroundColor ?? UIColor.red
         // Hide seperator
         self.separatorInset = UIEdgeInsetsMake(0, self.bounds.size.width, 0, 0);
     }
@@ -112,7 +116,7 @@ public class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
 
 // MARK: -- Message Type
 
-public class DictionaryMessage : Equatable {
+open class DictionaryMessage : Equatable {
     var messages:[String:String] = [:]
     func concatenatedMessage() -> String {
         var concatenatedString = ""
@@ -128,7 +132,7 @@ public class DictionaryMessage : Equatable {
     public init(messages:[String:String]) {
         self.messages = messages
     }
-    public subscript(key:String) -> String? {
+    open subscript(key:String) -> String? {
         get {
             return messages[key]
         }

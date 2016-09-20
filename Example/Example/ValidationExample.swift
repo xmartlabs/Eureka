@@ -46,12 +46,12 @@ class ValidationExample: FormViewController {
     var row_segment : SegmentedRow<String>!
     
     
-    private func initializeForm() {
+    fileprivate func initializeForm() {
         initializeForm_ExamplesWithLogic()
         initializeForm_ExamplesLogBased()
         initializeForm_ShowingValidationResult()
     }
-    private func initializeForm_ExamplesWithLogic() {
+    fileprivate func initializeForm_ExamplesWithLogic() {
         
         form +++ Section("Switch")
             <<< SwitchRow("I agree to Privacy Policy") {
@@ -90,12 +90,12 @@ class ValidationExample: FormViewController {
         
         // Add Validators
         // Validator 1. Bounds
-        validation_limit = IdaDecimalComparisonValidator(tag: "Bounds", leftRow: row_lowerValue, rightRow: row_higherValue, validCases: [.OrderedAscending , .OrderedSame], resultClassifier: IdaDecimalComparisonValidator.ProposedResultClassifierPrefix + ".Bounds")
+        validation_limit = IdaDecimalComparisonValidator(tag: "Bounds", leftRow: row_lowerValue, rightRow: row_higherValue, validCases: [.orderedAscending , .orderedSame], resultClassifier: IdaDecimalComparisonValidator.ProposedResultClassifierPrefix + ".Bounds")
         row_lowerValue.validatorAfterEditing = validation_limit
         row_higherValue.validatorAfterEditing = validation_limit
         
         // Validator 2. Blood Pressure
-        validation_bloodPressure = IdaDecimalComparisonValidator(tag: "BloodPressure", leftRow: row_systolic, rightRow: row_diastolic, validCases: [.OrderedDescending], resultClassifier: IdaDecimalComparisonValidator.ProposedResultClassifierPrefix + ".BloodPressure")
+        validation_bloodPressure = IdaDecimalComparisonValidator(tag: "BloodPressure", leftRow: row_systolic, rightRow: row_diastolic, validCases: [.orderedDescending], resultClassifier: IdaDecimalComparisonValidator.ProposedResultClassifierPrefix + ".BloodPressure")
         row_systolic.validatorWhileEditing = validation_bloodPressure
         row_diastolic.validatorWhileEditing = validation_bloodPressure
         row_systolic.validatorAfterEditing = validation_bloodPressure
@@ -106,13 +106,13 @@ class ValidationExample: FormViewController {
             print ("numeric validation result")
             print (result)
             let (left,right) = result.target as! (DecimalRow,DecimalRow)
-            var invalidColor = UIColor.redColor()
+            var invalidColor = UIColor.red
             if result.classifier == IdaDecimalComparisonValidator.ProposedResultClassifierPrefix + ".BloodPressure" {
                 invalidColor = UIColor(red: 0.5, green: 0, blue: 0, alpha: 1)
             }
             
-            left.cell.textLabel?.textColor = result.isValid ? UIColor.blackColor() : invalidColor
-            right.cell.textLabel?.textColor = result.isValid ? UIColor.blackColor() : invalidColor
+            left.cell.textLabel?.textColor = result.isValid ? UIColor.black : invalidColor
+            right.cell.textLabel?.textColor = result.isValid ? UIColor.black : invalidColor
         })
         validation_limit.addListener(numericValidationResultProccessor, strong: false)
         validation_bloodPressure.addListener(numericValidationResultProccessor, strong: false)
@@ -133,7 +133,7 @@ class ValidationExample: FormViewController {
             if let startTime = startTime {
                 // Check if the value is within the meaningful zone.
                 if let endTime = endTime {
-                    if startTime.compare(endTime) != .OrderedAscending {
+                    if startTime.compare(endTime) != .orderedAscending {
                         isValid = false
                         payloadLeftPart = "Start time should be ahead of end time."
                     }
@@ -148,7 +148,7 @@ class ValidationExample: FormViewController {
             if let endTime = endTime {
                 // Check if the value is within the meaningful zone.
                 if let startTime = startTime {
-                    if startTime.compare(endTime) != .OrderedAscending {
+                    if startTime.compare(endTime) != .orderedAscending {
                         isValid = false
                         payloadRightPart = "End time should be after start time."
                     }
@@ -169,14 +169,14 @@ class ValidationExample: FormViewController {
         })
         validation_duration.addListener(IdaDefinableValidationResultProcessor(processor: { result , callback in
             let (rowStart,rowEnd) = result.target as! (DateTimeInlineRow, DateTimeInlineRow)
-            var rowStartColor = UIColor.whiteColor()
-            var rowEndColor = UIColor.whiteColor()
+            var rowStartColor = UIColor.white
+            var rowEndColor = UIColor.white
             if let payload = result.payload as? [String:String] {
                 if payload["start"] != nil {
-                    rowStartColor = UIColor.redColor()
+                    rowStartColor = UIColor.red
                 }
                 if payload["end"] != nil {
-                    rowEndColor = UIColor.redColor()
+                    rowEndColor = UIColor.red
                 }
             }
             rowStart.baseCell.backgroundColor = rowStartColor
@@ -187,7 +187,7 @@ class ValidationExample: FormViewController {
         row_end.validatorAfterEditing = validation_duration
     }
     
-    private func initializeForm_SimpleValidations() {
+    fileprivate func initializeForm_SimpleValidations() {
         var row_glucoseLevel : IntRow!
         form +++ Section("Simple Validations")
             <<< IntRow("Glucose Level") {
@@ -196,7 +196,7 @@ class ValidationExample: FormViewController {
             }
     }
     
-    private func initializeForm_ExamplesLogBased() {
+    fileprivate func initializeForm_ExamplesLogBased() {
         
         
         form +++ Section("Log Based Tests")
@@ -255,7 +255,7 @@ class ValidationExample: FormViewController {
     var row_Age : IntRow? {
         return form.rowByTag("Age") as? IntRow
     }
-    private func initializeForm_ShowingValidationResult() {
+    fileprivate func initializeForm_ShowingValidationResult() {
         form +++ Section("Showing Result")
             +++ Section("Message Row Alone")
                 <<< SegmentedRow<String>("ControlIndependentMessage") {
@@ -330,8 +330,8 @@ class ValidationExample: FormViewController {
     class CustomizedDictionaryMessageRow : DictionaryMessageRow {
         required init(tag: String?) {
             super.init(tag: tag)
-            cellBackgroundColor = UIColor.yellowColor()
-            cellTextColor = UIColor.blueColor()
+            cellBackgroundColor = UIColor.yellow
+            cellTextColor = UIColor.blue
         }
         convenience init() {
             self.init(nil)
@@ -342,15 +342,15 @@ class ValidationExample: FormViewController {
 // MARK: - Helpers
 // MARK: Switch Validation
 internal class SwitchDemoValidationResultPresenter : IdaValidationResultProcessor {
-    override internal func processValidationResult(validationResult: ValidationResult) {
+    override internal func processValidationResult(_ validationResult: ValidationResult) {
         let row = validationResult.target as! SwitchRow
-        row.cell.textLabel?.textColor = validationResult.isValid ? UIColor.blackColor() : UIColor.redColor()
+        row.cell.textLabel?.textColor = validationResult.isValid ? UIColor.black : UIColor.red
     }
 }
 
 
 extension IdaDefinableValidator {
-    public class func SwitchDemoValidator(row:SwitchRow) -> IdaDefinableValidator {
+    public class func SwitchDemoValidator(_ row:SwitchRow) -> IdaDefinableValidator {
         let validator = IdaDefinableValidator(tag: nil, target: row) { (target) -> ValidationResult in
             let row = target as! SwitchRow
             let validationResult = ValidationResult()
@@ -373,24 +373,24 @@ extension IdaDefinableValidator {
 // MARK: Number Comparison
 internal class IdaDecimalComparisonValidator : IdaValidator<(left:DecimalRow,right:DecimalRow)> {
     static let ProposedResultClassifierPrefix = "IdaDecimalComparisonValidationResult"
-    var validCases:[NSComparisonResult]
+    var validCases:[ComparisonResult]
     var resultClassifier:String?
-    init(tag:String!, leftRow:DecimalRow, rightRow:DecimalRow, validCases:[NSComparisonResult], resultClassifier:String?) {
+    init(tag:String!, leftRow:DecimalRow, rightRow:DecimalRow, validCases:[ComparisonResult], resultClassifier:String?) {
         self.validCases = validCases
         self.resultClassifier = resultClassifier
         super.init(tag: tag, target:(left:leftRow,right:rightRow))
     }
-    override func validate(notify: Bool) -> ValidationResult {
+    override func validate(_ notify: Bool) -> ValidationResult {
         var isValid = false
         var payloadMessage = "Validator's target is not set"
         if let (left,right) = self.target {
-            if let leftValue = left.value, rightValue = right.value {
-                var comparisonResult : NSComparisonResult = .OrderedSame
+            if let leftValue = left.value, let rightValue = right.value {
+                var comparisonResult : ComparisonResult = .orderedSame
                 if leftValue < rightValue {
-                    comparisonResult = .OrderedAscending
+                    comparisonResult = .orderedAscending
                 }
                 else if leftValue > rightValue {
-                    comparisonResult = .OrderedDescending
+                    comparisonResult = .orderedDescending
                 }
                 if validCases.contains(comparisonResult) {
                     isValid = true
@@ -414,7 +414,7 @@ internal class IdaDecimalComparisonValidator : IdaValidator<(left:DecimalRow,rig
 
 // This is dummy validator to log that it's fired.
 internal class DummyValidator : IdaValidator<BaseRow> {
-    override func validate(notify: Bool) -> ValidationResult {
+    override func validate(_ notify: Bool) -> ValidationResult {
         print("Validator Fired. Validator Tag : "+(self.tag ?? "")+"Row Tag : "+(target.tag ?? ""))
         return ValidationResult(target: target, classifier: "DummyValidator")
     }

@@ -8,17 +8,17 @@
 
 import Foundation
 
-public typealias ValidationResultProcessor = (result:ValidationResult, callback:(success:Bool, payload:Any?)->Void)->Void
+public typealias ValidationResultProcessor = (_ result:ValidationResult, _ callback:(_ success:Bool, _ payload:Any?)->Void)->Void
 
-public class IdaDefinableValidationResultProcessor:IdaValidationResultProcessor {
-    public var processor:ValidationResultProcessor
+open class IdaDefinableValidationResultProcessor:IdaValidationResultProcessor {
+    open var processor:ValidationResultProcessor
     
-    public init(processor:ValidationResultProcessor) {
+    public init(processor:@escaping ValidationResultProcessor) {
         self.processor = processor
     }
     
-    public override func processValidationResult(validationResult: ValidationResult) {
-        self.processor(result: validationResult) { success, payload in
+    open override func processValidationResult(_ validationResult: ValidationResult) {
+        self.processor(validationResult) { success, payload in
             //
         }
     }
