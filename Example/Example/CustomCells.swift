@@ -51,7 +51,7 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
         for subview in contentView.subviews {
             if let button = subview as? UIButton {
                 button.setImage(UIImage(named: "checkedDay"), for: .selected)
-                button.setImage(UIImage(named: "uncheckedDay"), for: UIControlState())
+                button.setImage(UIImage(named: "uncheckedDay"), for: .normal)
                 button.adjustsImageWhenHighlighted = false
                 imageTopTitleBottom(button)
             }
@@ -152,7 +152,7 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
     lazy public var floatLabelTextField: FloatLabelTextField = { [unowned self] in
         let floatTextField = FloatLabelTextField()
         floatTextField.translatesAutoresizingMaskIntoConstraints = false
-        floatTextField.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
+        floatTextField.font = .preferredFont(forTextStyle: .body)
         floatTextField.titleFont = .boldSystemFont(ofSize: 11.0)
         floatTextField.clearButtonMode = .whileEditing
         return floatTextField
@@ -253,7 +253,7 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
     //MARK: TextFieldDelegate
     
     public func textFieldDidBeginEditing(_ textField: UITextField) {
-        formViewController()?.beginEditing(self)
+        formViewController()?.beginEditing(of: self)
         if let fieldRowConformance = row as? FormatterConformance, let _ = fieldRowConformance.formatter, fieldRowConformance.useFormatterOnDidBeginEditing ?? fieldRowConformance.useFormatterDuringInput {
             textField.text = displayValue(useFormatter: true)
         } else {
@@ -262,7 +262,7 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
-        formViewController()?.endEditing(self)
+        formViewController()?.endEditing(of: self)
         formViewController()?.textInputDidEndEditing(textField, cell: self)
         textFieldDidChange(textField)
         textField.text = displayValue(useFormatter: (row as? FormatterConformance)?.formatter != nil)

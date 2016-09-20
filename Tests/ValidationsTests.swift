@@ -89,22 +89,22 @@ class ValidationsTests: XCTestCase {
         let formVC = FormViewController(style: .grouped)
         let row = TextRow()
         row.addRule(rule: RuleRequired())
-        XCTAssertFalse(row.blurred)
+        XCTAssertFalse(row.wasBlurred)
         formVC.form +++ row
-        formVC.endEditing(row.cell)
-        XCTAssertTrue(row.blurred)
+        formVC.endEditing(of: row.cell)
+        XCTAssertTrue(row.wasBlurred)
     }
     
     func testUsed(){
         let formVC = FormViewController(style: .grouped)
         let row = TextRow()
         row.addRule(rule: RuleRequired())
-        XCTAssertFalse(row.used)
+        XCTAssertFalse(row.wasChanged)
         row.value = "Hi!"
-        XCTAssertFalse(row.used) // because it's not added in the form yet
+        XCTAssertFalse(row.wasChanged) // because it's not added in the form yet
         formVC.form +++ row
         row.value = "Eureka!"
-        XCTAssertTrue(row.used) // because it was added to the form
+        XCTAssertTrue(row.wasChanged) // because it was added to the form
     }
 
     

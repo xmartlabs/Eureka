@@ -174,23 +174,23 @@ import UIKit
 	
 	private func showTitle(_ animated:Bool) {
 		let dur = animated ? animationDuration : 0
-		UIView.animate(withDuration: dur, delay:0, options: UIViewAnimationOptions.beginFromCurrentState.union(UIViewAnimationOptions.curveEaseOut), animations:{
+		UIView.animate(withDuration: dur, delay:0, options: UIViewAnimationOptions.beginFromCurrentState.union(.curveEaseOut), animations:{
 				// Animation
 				self.title.alpha = 1.0
 				var r = self.title.frame
 				r.origin.y = self.titleYPadding
 				self.title.frame = r
-			}, completion:nil)
+			})
 	}
 	
 	private func hideTitle(_ animated:Bool) {
 		let dur = animated ? animationDuration : 0
-		UIView.animate(withDuration: dur, delay:0, options: UIViewAnimationOptions.beginFromCurrentState.union(UIViewAnimationOptions.curveEaseIn), animations:{
+		UIView.animate(withDuration: dur, delay:0, options: UIViewAnimationOptions.beginFromCurrentState.union(.curveEaseIn), animations:{
 			// Animation
 			self.title.alpha = 0.0
 			var r = self.title.frame
 			r.origin.y = self.title.font.lineHeight + self.hintYPadding
 			self.title.frame = r
-			}, completion:nil)
+			})
 	}
 }

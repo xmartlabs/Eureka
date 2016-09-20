@@ -78,7 +78,7 @@ public class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController>
         super.init(tag: tag)
         presentationMode = .presentModally(controllerProvider: ControllerProvider.callback { return ImagePickerController() }, completionCallback: { [weak self] vc in
             self?.select()
-            vc.dismiss(animated: true, completion: nil)
+            vc.dismiss(animated: true)
             })
         self.displayValueFor = nil
         
@@ -151,7 +151,7 @@ public class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController>
             sourceActionSheet.addAction(cancelOption)
             
             if let presentingViewController = cell.formViewController() {
-                presentingViewController.present(sourceActionSheet, animated: true, completion:nil)
+                presentingViewController.present(sourceActionSheet, animated: true)
             }
         }
     }

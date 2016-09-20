@@ -55,8 +55,8 @@ open class RowOf<T: Equatable>: BaseRow {
         set (newValue){
             _value = newValue
             guard let _ = section?.form else { return }
-            used = true
-            if validationOptions.contains(.validatesOnChange) || (blurred && validationOptions.contains(.validatesOnChangeAfterBlurred)) || !isValid   {
+            wasChanged = true
+            if validationOptions.contains(.validatesOnChange) || (wasBlurred && validationOptions.contains(.validatesOnChangeAfterBlurred)) || !isValid   {
                 validate()
                 updateCell()
             }

@@ -194,7 +194,7 @@ public class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T
         textField.text = row.displayValueFor?(row.value)
         textField.isEnabled = !row.isDisabled
         textField.textColor = row.isDisabled ? .gray : .black
-        textField.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
+        textField.font = .preferredFont(forTextStyle: .body)
         if let placeholder = (row as? FieldRowConformance)?.placeholder {
             if let color = (row as? FieldRowConformance)?.placeholderColor {
                 textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
@@ -315,7 +315,7 @@ public class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T
     //MARK: TextFieldDelegate
     
     public func textFieldDidBeginEditing(_ textField: UITextField) {
-        formViewController()?.beginEditing(self)
+        formViewController()?.beginEditing(of: self)
         formViewController()?.textInputDidBeginEditing(textField, cell: self)
         if let fieldRowConformance = row as? FormatterConformance, let _ = fieldRowConformance.formatter, fieldRowConformance.useFormatterOnDidBeginEditing ?? fieldRowConformance.useFormatterDuringInput {
             textField.text = displayValue(useFormatter: true)
@@ -325,7 +325,7 @@ public class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
-        formViewController()?.endEditing(self)
+        formViewController()?.endEditing(of: self)
         formViewController()?.textInputDidEndEditing(textField, cell: self)
         textFieldDidChange(textField)
         textField.text = displayValue(useFormatter: (row as? FormatterConformance)?.formatter != nil)

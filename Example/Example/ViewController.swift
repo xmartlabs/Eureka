@@ -51,7 +51,7 @@ class HomeViewController : FormViewController {
             
                 <<< ButtonRow("Native iOS Event Form") { row in
                         row.title = row.tag
-                        row.presentationMode = .segueName(segueName: "NativeEventsFormNavigationControllerSegue", completionCallback:{  vc in vc.dismiss(animated: true, completion: nil) })
+                        row.presentationMode = .segueName(segueName: "NativeEventsFormNavigationControllerSegue", completionCallback:{  vc in vc.dismiss(animated: true) })
                     }
             
                 <<< ButtonRow("Accesory View Navigation") { (row: ButtonRow) in
@@ -110,7 +110,7 @@ class HomeViewController : FormViewController {
         let alertController = UIAlertController(title: "OnCellSelection", message: "Button Row Action", preferredStyle: .alert)
         let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(defaultAction)
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
         
     }
     

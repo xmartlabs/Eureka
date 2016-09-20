@@ -33,7 +33,7 @@ public class _AlertRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where
             vc.row = self
             return vc
             }, completionCallback: { [weak self] in
-                $0.dismiss(animated: true, completion: nil)
+                $0.dismiss(animated: true)
                 self?.cell?.formViewController()?.tableView?.reloadData()
             }
         )

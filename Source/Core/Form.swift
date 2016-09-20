@@ -28,12 +28,12 @@ import Foundation
 
 /// The delegate of the Eureka form.
 public protocol FormDelegate : class {
-    func sectionsHaveBeenAdded(_ sections: [Section], atIndexes: IndexSet)
-    func sectionsHaveBeenRemoved(_ sections: [Section], atIndexes: IndexSet)
-    func sectionsHaveBeenReplaced(oldSections:[Section], newSections: [Section], atIndexes: IndexSet)
-    func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexPaths:[IndexPath])
-    func rowsHaveBeenRemoved(_ rows: [BaseRow], atIndexPaths:[IndexPath])
-    func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [IndexPath])
+    func sectionsHaveBeenAdded(_ sections: [Section], at: IndexSet)
+    func sectionsHaveBeenRemoved(_ sections: [Section], at: IndexSet)
+    func sectionsHaveBeenReplaced(oldSections:[Section], newSections: [Section], at: IndexSet)
+    func rowsHaveBeenAdded(_ rows: [BaseRow], at:[IndexPath])
+    func rowsHaveBeenRemoved(_ rows: [BaseRow], at:[IndexPath])
+    func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], at: [IndexPath])
     func rowValueHasBeenChanged(_ row: BaseRow, oldValue: Any?, newValue: Any?)
 }
 
@@ -273,16 +273,16 @@ extension Form {
             switch (changeType as! NSNumber).uintValue {
             case NSKeyValueChange.setting.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as? IndexSet ?? IndexSet(integer: 0)
-                delegateValue.sectionsHaveBeenAdded(newSections, atIndexes: indexSet)
+                delegateValue.sectionsHaveBeenAdded(newSections, at: indexSet)
             case NSKeyValueChange.insertion.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
-                delegateValue.sectionsHaveBeenAdded(newSections, atIndexes: indexSet)
+                delegateValue.sectionsHaveBeenAdded(newSections, at: indexSet)
             case NSKeyValueChange.removal.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
-                delegateValue.sectionsHaveBeenRemoved(oldSections, atIndexes: indexSet)
+                delegateValue.sectionsHaveBeenRemoved(oldSections, at: indexSet)
             case NSKeyValueChange.replacement.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
-                delegateValue.sectionsHaveBeenReplaced(oldSections: oldSections, newSections: newSections, atIndexes: indexSet)
+                delegateValue.sectionsHaveBeenReplaced(oldSections: oldSections, newSections: newSections, at: indexSet)
             default:
                 assertionFailure()
             }

@@ -115,28 +115,28 @@ public class MyFormDelegate : FormDelegate {
         valuesChanged += 1
     }
     
-    public func sectionsHaveBeenAdded(_ sections: [Section], atIndexes: IndexSet){
+    public func sectionsHaveBeenAdded(_ sections: [Section], at: IndexSet){
         sectionsAdded += sections.count
     }
     
-    public func sectionsHaveBeenRemoved(_ sections: [Section], atIndexes: IndexSet){
+    public func sectionsHaveBeenRemoved(_ sections: [Section], at: IndexSet){
         sectionsRemoved += sections.count
     }
     
-    public func sectionsHaveBeenReplaced(oldSections:[Section], newSections: [Section], atIndexes: IndexSet){
+    public func sectionsHaveBeenReplaced(oldSections:[Section], newSections: [Section], at: IndexSet){
         sectionsReplacedIn += newSections.count
         sectionsReplacedOut += oldSections.count
     }
     
-    public func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexPaths:[IndexPath]){
+    public func rowsHaveBeenAdded(_ rows: [BaseRow], at:[IndexPath]){
         rowsAdded += rows.count
     }
     
-    public func rowsHaveBeenRemoved(_ rows: [BaseRow], atIndexPaths:[IndexPath]){
+    public func rowsHaveBeenRemoved(_ rows: [BaseRow], at:[IndexPath]){
         rowsRemoved += rows.count
     }
     
-    public func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [IndexPath]){
+    public func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], at: [IndexPath]){
         rowsReplacedIn += newRows.count
         rowsReplacedOut += oldRows.count
     }

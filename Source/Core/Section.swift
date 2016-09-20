@@ -85,24 +85,24 @@ extension Section {
             switch (changeType as! NSNumber).uintValue {
             case NSKeyValueChange.setting.rawValue:
                 section?.rowsHaveBeenAdded(newRows, atIndexes:IndexSet(integer: 0))
-                delegateValue?.rowsHaveBeenAdded(newRows, atIndexPaths:[IndexPath(index: 0)])
+                delegateValue?.rowsHaveBeenAdded(newRows, at:[IndexPath(index: 0)])
             case NSKeyValueChange.insertion.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
                 section?.rowsHaveBeenAdded(newRows, atIndexes: indexSet)
                 if let _index = section?.index {
-                    delegateValue?.rowsHaveBeenAdded(newRows, atIndexPaths: indexSet.map { IndexPath(row: $0, section: _index ) } )
+                    delegateValue?.rowsHaveBeenAdded(newRows, at: indexSet.map { IndexPath(row: $0, section: _index ) } )
                 }
             case NSKeyValueChange.removal.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
                 section?.rowsHaveBeenRemoved(oldRows, atIndexes: indexSet)
                 if let _index = section?.index {
-                    delegateValue?.rowsHaveBeenRemoved(oldRows, atIndexPaths: indexSet.map { IndexPath(row: $0, section: _index ) } )
+                    delegateValue?.rowsHaveBeenRemoved(oldRows, at: indexSet.map { IndexPath(row: $0, section: _index ) } )
                 }
             case NSKeyValueChange.replacement.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
                 section?.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, atIndexes: indexSet)
                 if let _index = section?.index {
-                    delegateValue?.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, atIndexPaths: indexSet.map { IndexPath(row: $0, section: _index)})
+                    delegateValue?.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, at: indexSet.map { IndexPath(row: $0, section: _index)})
                 }
             default:
                 assertionFailure()

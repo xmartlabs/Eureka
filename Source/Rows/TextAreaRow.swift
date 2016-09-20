@@ -86,7 +86,7 @@ public class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: E
         }
         textView.keyboardType = .default
         textView.delegate = self
-        textView.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
+        textView.font = .preferredFont(forTextStyle: .body)
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = UIEdgeInsets.zero
         placeholderLabel.font = textView.font
@@ -151,7 +151,7 @@ public class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: E
     
     
     public func textViewDidBeginEditing(_ textView: UITextView) {
-        formViewController()?.beginEditing(self)
+        formViewController()?.beginEditing(of: self)
         formViewController()?.textInputDidBeginEditing(textView, cell: self)
         if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter, textAreaConformance.useFormatterOnDidBeginEditing ?? textAreaConformance.useFormatterDuringInput {
             textView.text = self.displayValue(useFormatter: true)
@@ -162,7 +162,7 @@ public class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: E
     }
     
     public func textViewDidEndEditing(_ textView: UITextView) {
-        formViewController()?.endEditing(self)
+        formViewController()?.endEditing(of: self)
         formViewController()?.textInputDidEndEditing(textView, cell: self)
         textViewDidChange(textView)
         textView.text = displayValue(useFormatter: (row as? FormatterConformance)?.formatter != nil)

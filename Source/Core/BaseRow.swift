@@ -46,8 +46,8 @@ open class BaseRow : BaseRowType {
         }
     }
     
-    public internal(set) var blurred = false
-    public internal(set) var used = false
+    public internal(set) var wasBlurred = false
+    public internal(set) var wasChanged = false
     
     
     public var isValid: Bool { return validationErrors.isEmpty }

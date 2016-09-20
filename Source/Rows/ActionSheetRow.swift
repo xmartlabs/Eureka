@@ -63,7 +63,7 @@ public class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType
             return vc
             },
                                completionCallback: { [weak self] in
-                                $0.dismiss(animated: true, completion: nil)
+                                $0.dismiss(animated: true)
                                 self?.cell?.formViewController()?.tableView?.reloadData()
             })
     }()
