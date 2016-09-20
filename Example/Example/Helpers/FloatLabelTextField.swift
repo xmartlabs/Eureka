@@ -164,9 +164,9 @@ import UIKit
 	private func setTitlePositionForTextAlignment() {
 		let r = textRect(forBounds: bounds)
 		var x = r.origin.x
-		if textAlignment == NSTextAlignment.center {
+		if textAlignment == .center {
 			x = r.origin.x + (r.size.width * 0.5) - title.frame.size.width
-		} else if textAlignment == NSTextAlignment.right {
+		} else if textAlignment == .right {
 			x = r.origin.x + r.size.width - title.frame.size.width
 		}
 		title.frame = CGRect(x:x, y:title.frame.origin.y, width:title.frame.size.width, height:title.frame.size.height)

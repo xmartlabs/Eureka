@@ -84,8 +84,8 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
             if let onExpandInlineRowCallback = onExpandInlineRowCallback {
                 onExpandInlineRowCallback(cell, self, inline)
             }
-            if let indexPath = indexPath() {
-                section.insert(inline, at: (indexPath as NSIndexPath).row + 1)
+            if let indexPath = indexPath {
+                section.insert(inline, at: indexPath.row + 1)
                 _inlineRow = inline
                 cell.formViewController()?.makeRowVisible(inline)
             }
@@ -96,11 +96,11 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
      Method that can be called to collapse (close) an inline row.
      */
     public func collapseInlineRow() {
-        if let selectedRowPath = indexPath(), let inlineRow = _inlineRow {
+        if let selectedRowPath = indexPath, let inlineRow = _inlineRow {
             if let onCollapseInlineRowCallback = onCollapseInlineRowCallback {
                 onCollapseInlineRowCallback(cell, self, inlineRow as! InlineRow)
             }
-            section?.remove(at: (selectedRowPath as NSIndexPath).row + 1)
+            section?.remove(at: selectedRowPath.row + 1)
             _inlineRow = nil
         }
     }

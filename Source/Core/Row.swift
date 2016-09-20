@@ -32,7 +32,7 @@ open class RowOf<T: Equatable>: BaseRow {
             guard _value != oldValue else { return }
             guard let form = section?.form else { return }
             if let delegate = form.delegate {
-                delegate.rowValueHasBeenChanged(self, oldValue: oldValue, newValue: value)
+                delegate.valueHasBeenChanged(for: self, oldValue: oldValue, newValue: value)
                 callbackOnChange?()
             }
             guard let t = tag else { return }
@@ -92,18 +92,18 @@ open class RowOf<T: Equatable>: BaseRow {
         return validationErrors
     }
 
-    public func addRule<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType{
+    public func add<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType{
         let validFn: ((T?) -> ValidationError?) = { (val: T?) in
             return rule.isValid(value: val)
         }
         rules.append(ValidationRuleHelper(validateFn: validFn, rule: rule))
     }
 
-    public func addRuleSet(set: RuleSet<T>){
-        rules.append(contentsOf: set.rules)
+    public func add(ruleSet: RuleSet<T>){
+        rules.append(contentsOf: ruleSet.rules)
     }
 
-    public func removeRuleWith(identifier: String) {
+    public func remove(ruleWithIdentifier identifier: String) {
         if let index = rules.index(where: { (validationRuleHelper) -> Bool in
             return validationRuleHelper.rule.id == identifier
         }){
@@ -137,7 +137,7 @@ open class Row<Cell: CellType>: RowOf<Cell.Value>, TypedRowType where Cell: Base
     /// The cell associated to this row.
     public var cell : Cell! {
         return _cell ?? {
-            let result = cellProvider.createCell(self.cellStyle)
+            let result = cellProvider.makeCell(style: self.cellStyle)
             result.row = self
             result.setup()
             _cell = result

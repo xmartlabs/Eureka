@@ -57,7 +57,7 @@ public protocol BaseCellType : class {
     /**
      Method called when the cell becomes first responder
      */
-    func cellBecomeFirstResponder(_ direction: Direction) -> Bool
+    func cellBecomeFirstResponder(withDirection: Direction) -> Bool
     
     /**
      Method called when the cell resigns first responder

@@ -101,28 +101,28 @@ open class _DatePickerRow : Row<DatePickerCell>, DatePickerRowProtocol {
     }
 }
 
-/// A row with an NSDate as value where the user can select a date directly.
+/// A row with an Date as value where the user can select a date directly.
 public final class DatePickerRow : _DatePickerRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-/// A row with an NSDate as value where the user can select a time directly.
+/// A row with an Date as value where the user can select a time directly.
 public final class TimePickerRow : _DatePickerRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-/// A row with an NSDate as value where the user can select date and time directly.
+/// A row with an Date as value where the user can select date and time directly.
 public final class DateTimePickerRow : _DatePickerRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-/// A row with an NSDate as value where the user can select hour and minute as a countdown timer.
+/// A row with an Date as value where the user can select hour and minute as a countdown timer.
 public final class CountDownPickerRow : _DatePickerRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)

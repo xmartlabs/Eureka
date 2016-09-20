@@ -72,7 +72,7 @@ open class BaseCell : UITableViewCell, BaseCellType {
      Called when the cell becomes first responder
      */
     @discardableResult
-    open func cellBecomeFirstResponder(_ direction: Direction = .down) -> Bool {
+    open func cellBecomeFirstResponder(withDirection: Direction = .down) -> Bool {
         return becomeFirstResponder()
     }
 
@@ -133,9 +133,7 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
     open override func didSelect() {}
 
     override open var canBecomeFirstResponder: Bool {
-        get {
-            return false
-        }
+        get { return false }
     }
 
     open override func becomeFirstResponder() -> Bool {

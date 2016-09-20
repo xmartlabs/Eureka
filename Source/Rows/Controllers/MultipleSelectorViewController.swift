@@ -35,7 +35,7 @@ open class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType> :
     public var selectableRowCellUpdate: ((_ cell: Row.Cell, _ row: Row) -> ())?
 
     /// A closure to be called when the controller disappears.
-    public var completionCallback : ((UIViewController) -> ())?
+    public var onDismissCallback : ((UIViewController) -> ())?
     
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -43,7 +43,7 @@ open class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType> :
     
     convenience public init(_ callback: ((UIViewController) -> ())?){
         self.init(nibName: nil, bundle: nil)
-        completionCallback = callback
+        onDismissCallback = callback
     }
     
     public required init?(coder aDecoder: NSCoder) {

@@ -76,7 +76,7 @@ open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> w
     public required init(tag: String?) {
         sourceTypes = .All
         super.init(tag: tag)
-        presentationMode = .presentModally(controllerProvider: ControllerProvider.callback { return ImagePickerController() }, completionCallback: { [weak self] vc in
+        presentationMode = .presentModally(controllerProvider: ControllerProvider.callback { return ImagePickerController() }, onDismiss: { [weak self] vc in
             self?.select()
             vc.dismiss(animated: true)
             })
@@ -87,15 +87,15 @@ open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> w
     // copy over the existing logic from the SelectorRow
     func displayImagePickerController(_ sourceType: UIImagePickerControllerSourceType) {
         if let presentationMode = presentationMode, !isDisabled {
-            if let controller = presentationMode.createController(){
+            if let controller = presentationMode.makeController(){
                 controller.row = self
                 controller.sourceType = sourceType
                 onPresentCallback?(cell.formViewController()!, controller)
-                presentationMode.presentViewController(controller, row: self, presentingViewController: cell.formViewController()!)
+                presentationMode.present(controller, row: self, presentingController: cell.formViewController()!)
             }
             else{
                 _sourceType = sourceType
-                presentationMode.presentViewController(nil, row: self, presentingViewController: cell.formViewController()!)
+                presentationMode.present(nil, row: self, presentingController: cell.formViewController()!)
             }
         }
     }
@@ -156,8 +156,8 @@ open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> w
         }
     }
     
-    open override func prepareForSegue(_ segue: UIStoryboardSegue) {
-        super.prepareForSegue(segue)
+    open override func prepare(for segue: UIStoryboardSegue) {
+        super.prepare(for: segue)
         guard let rowVC = segue.destination as? ImagePickerController else {
             return
         }

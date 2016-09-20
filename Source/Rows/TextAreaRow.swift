@@ -120,7 +120,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         return !row.isDisabled && textView.canBecomeFirstResponder
     }
     
-    open override func cellBecomeFirstResponder(_ fromDiretion: Direction) -> Bool {
+    open override func cellBecomeFirstResponder(withDirection: Direction) -> Bool {
         return textView.becomeFirstResponder()
     }
     
@@ -142,7 +142,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
-            return textView.isFirstResponder ? formatter.editingString(for: v as AnyObject) : formatter.string(for: v as AnyObject)
+            return textView.isFirstResponder ? formatter.editingString(for: v) : formatter.string(for: v)
         }
         return String(describing: v)
     }

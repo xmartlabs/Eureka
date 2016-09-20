@@ -76,26 +76,26 @@ class RowCallbackTests: BaseEurekaTests {
         let textRow : TextRow! = formVC.form.rowBy(tag: "row3")
         
         // check that they all have indexPath
-        XCTAssertNotNil(chkRow.indexPath())
-        XCTAssertNotNil(intRow.indexPath())
-        XCTAssertNotNil(textRow.indexPath())
+        XCTAssertNotNil(chkRow.indexPath)
+        XCTAssertNotNil(intRow.indexPath)
+        XCTAssertNotNil(textRow.indexPath)
         
         // make sure cellSetup is called for each cell
         
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: intRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: intRow.indexPath!)
         
         
         XCTAssertEqual(chkRow.cell.textLabel?.text, "checkrow + Setup")
         XCTAssertEqual(textRow.cell.textLabel?.text, "aftersetup")
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: textRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: textRow.indexPath!)
         XCTAssertEqual(textRow.cell.textLabel?.text, "afterupdate")
         
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: chkRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: chkRow.indexPath!)
         
         //make sure cell update is called for each cell
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: chkRow.indexPath()!)
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: intRow.indexPath()!)
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: textRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: chkRow.indexPath!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: intRow.indexPath!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: textRow.indexPath!)
         
         XCTAssertEqual(chkRow?.cell.textLabel?.text, chkRow?.title)
         XCTAssertEqual(intRow?.cell.textLabel?.text, "introw")

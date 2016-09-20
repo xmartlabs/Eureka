@@ -91,8 +91,8 @@ open class _CountDownInlineRow: _DateInlineFieldRow {
             guard let date = $0 else {
                 return nil
             }
-            let hour = Calendar.current.component(.hour, from: date as Date)
-            let min = Calendar.current.component(.minute, from: date as Date)
+            let hour = Calendar.current.component(.hour, from: date)
+            let min = Calendar.current.component(.minute, from: date)
             if hour == 1{
                 return "\(hour) hour \(min) min"
             }
@@ -105,7 +105,7 @@ open class _CountDownInlineRow: _DateInlineFieldRow {
     }
 }
 
-/// A row with an NSDate as value where the user can select a date from an inline picker view.
+/// A row with an Date as value where the user can select a date from an inline picker view.
 public final class DateInlineRow_<T>: _DateInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -129,7 +129,7 @@ public final class DateInlineRow_<T>: _DateInlineRow, RowType, InlineRowType {
 public typealias DateInlineRow = DateInlineRow_<Date>
 
 
-/// A row with an NSDate as value where the user can select date and time from an inline picker view.
+/// A row with an Date as value where the user can select date and time from an inline picker view.
 public final class DateTimeInlineRow_<T>: _DateTimeInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -154,7 +154,7 @@ public final class DateTimeInlineRow_<T>: _DateTimeInlineRow, RowType, InlineRow
 public typealias DateTimeInlineRow = DateTimeInlineRow_<Date>
 
 
-/// A row with an NSDate as value where the user can select a time from an inline picker view.
+/// A row with an Date as value where the user can select a time from an inline picker view.
 public final class TimeInlineRow_<T>: _TimeInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -177,7 +177,7 @@ public final class TimeInlineRow_<T>: _TimeInlineRow, RowType, InlineRowType {
 
 public typealias TimeInlineRow = TimeInlineRow_<Date>
 
-///// A row with an NSDate as value where the user can select hour and minute as a countdown timer in an inline picker view.
+///// A row with an Date as value where the user can select hour and minute as a countdown timer in an inline picker view.
 public final class CountDownInlineRow_<T>: _CountDownInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)

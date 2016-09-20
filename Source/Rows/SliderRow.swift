@@ -29,7 +29,7 @@ open class SliderCell: Cell<Float>, CellType {
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil){ [weak self] notification in
+        NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil){ [weak self] notification in
             guard let me = self else { return }
             if me.shouldShowTitle() {
                 me.contentView.addSubview(me.titleLabel)
@@ -40,7 +40,7 @@ open class SliderCell: Cell<Float>, CellType {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIContentSizeCategoryDidChange, object: nil)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -90,7 +90,7 @@ open class SliderCell: Cell<Float>, CellType {
     }
     
     func addConstraints(justLabelConstraints: Bool = false) {
-        let views = ["titleLabel" : titleLabel, "valueLabel" : valueLabel, "slider" : slider] as [String : Any]
+        let views: [String : Any] = ["titleLabel" : titleLabel, "valueLabel" : valueLabel, "slider" : slider]
         //TODO: in Iphone 6 Plus hPadding should be 20
         let metrics = ["hPadding" : 15.0, "vPadding" : 12.0, "spacing" : 12.0]
         if shouldShowTitle() {

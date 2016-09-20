@@ -31,7 +31,7 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
     public var enableDeselection = true
     
     /// A closure to be called when the controller disappears.
-    public var completionCallback : ((UIViewController) -> ())?
+    public var onDismissCallback : ((UIViewController) -> ())?
     
     public var selectableRowCellUpdate: ((_ cell: Row.Cell, _ row: Row) -> ())?
     
@@ -51,7 +51,7 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
             if let sec = section as? SelectableSection<Row> {
                 sec.onSelectSelectableRow = { _, row in
                     self?.row.value = row.value
-                    self?.completionCallback?(self!)
+                    self?.onDismissCallback?(self!)
                 }
             }
         }
@@ -76,7 +76,7 @@ open class SelectorViewController<T:Equatable> : _SelectorViewController<ListChe
     
     convenience public init(_ callback: ((UIViewController) -> ())?){
         self.init(nibName: nil, bundle: nil)
-        completionCallback = callback
+        onDismissCallback = callback
     }
     
     public required init?(coder aDecoder: NSCoder) {
