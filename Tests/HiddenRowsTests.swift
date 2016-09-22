@@ -1,7 +1,7 @@
 //  HiddenRowsTests.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,20 +31,21 @@ class HiddenRowsTests: BaseEurekaTests {
         $0.hidden = "$IntRow_s1 > 23"
     }
     let row11 = TextRow("txt1_hrt"){
-        $0.hidden = .Function(["NameRow_s1"], { form in
-                        if let r1 : NameRow = form.rowByTag("NameRow_s1") {
-                            return r1.value?.containsString(" is ") ?? false
+        $0.hidden = .function(["NameRow_s1"], { form in
+                        if let r1 : NameRow = form.rowBy(tag: "NameRow_s1") {
+                            return r1.value?.contains(" is ") ?? false
                         }
                         return false
                     })
     }
-    let sec2 = Section("Whatsoever"){
+    
+    let sec2 = Section("Whatsoever") {
         $0.tag = "s3_hrt"
         $0.hidden = "$NameRow_s1 contains 'God'"
     }
     let row20 = TextRow("txt2_hrt"){
-        $0.hidden = .Function(["IntRow_s1", "NameRow_s1"], { form in
-                        if let r1 : IntRow = form.rowByTag("IntRow_s1"), let r2 : NameRow = form.rowByTag("NameRow_s1")  {
+        $0.hidden = .function(["IntRow_s1", "NameRow_s1"], { form in
+                        if let r1 : IntRow = form.rowBy(tag: "IntRow_s1"), let r2 : NameRow = form.rowBy(tag: "NameRow_s1")  {
                             return r1.value == 88 || r2.value?.hasSuffix("real") ?? false
                         }
                         return false
@@ -66,24 +67,24 @@ class HiddenRowsTests: BaseEurekaTests {
 
     func testAddRowToObserver(){
         
-        let intDep = form.rowObservers["IntRow_s1"]?[.Hidden]
-        let nameDep = form.rowObservers["NameRow_s1"]?[.Hidden]
+        let intDep = form.rowObservers["IntRow_s1"]?[.hidden]
+        let nameDep = form.rowObservers["NameRow_s1"]?[.hidden]
         
         // make sure we can unwrap
         XCTAssertNotNil(intDep)
         XCTAssertNotNil(nameDep)
-        
+
         // test rowObservers
         XCTAssertEqual(intDep!.count, 3)
         XCTAssertEqual(nameDep!.count, 3)
         
-        XCTAssertTrue(intDep!.contains({ $0.tag == "txt2_hrt" }))
-        XCTAssertTrue(intDep!.contains({ $0.tag == "int1_hrt" }))
-        XCTAssertFalse(intDep!.contains({ $0.tag == "s3_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag ==  "txt2_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "s3_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "txt1_hrt" }))
-        XCTAssertFalse(nameDep!.contains({ $0.tag == "int1_hrt" }))
+        XCTAssertTrue(intDep!.contains(where: { $0.tag == "txt2_hrt" }))
+        XCTAssertTrue(intDep!.contains(where: { $0.tag == "int1_hrt" }))
+        XCTAssertFalse(intDep!.contains(where: { $0.tag == "s3_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag ==  "txt2_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "s3_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "txt1_hrt" }))
+        XCTAssertFalse(nameDep!.contains(where: { $0.tag == "int1_hrt" }))
         
         //This should not change when some rows hide ...
         form[0][0].baseValue = "God is real"
@@ -94,13 +95,13 @@ class HiddenRowsTests: BaseEurekaTests {
         XCTAssertEqual(intDep!.count, 3)
         XCTAssertEqual(nameDep!.count, 3)
         
-        XCTAssertTrue(intDep!.contains({ $0.tag == "txt2_hrt" }))
-        XCTAssertTrue(intDep!.contains({ $0.tag == "int1_hrt" }))
-        XCTAssertFalse(intDep!.contains({ $0.tag == "s3_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "txt2_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "s3_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "txt1_hrt" }))
-        XCTAssertFalse(nameDep!.contains({ $0.tag == "int1_hrt" }))
+        XCTAssertTrue(intDep!.contains(where: { $0.tag == "txt2_hrt" }))
+        XCTAssertTrue(intDep!.contains(where: { $0.tag == "int1_hrt" }))
+        XCTAssertFalse(intDep!.contains(where: { $0.tag == "s3_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "txt2_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "s3_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "txt1_hrt" }))
+        XCTAssertFalse(nameDep!.contains(where: { $0.tag == "int1_hrt" }))
         
         // ...nor if they reappear
         form[0][0].baseValue = "blah blah blah"
@@ -109,25 +110,33 @@ class HiddenRowsTests: BaseEurekaTests {
         //check everything is still the same
         XCTAssertEqual(intDep!.count, 3)
         XCTAssertEqual(nameDep!.count, 3)
-        XCTAssertTrue(intDep!.contains({ $0.tag == "txt2_hrt" }))
-        XCTAssertTrue(intDep!.contains({ $0.tag == "int1_hrt" }))
-        XCTAssertFalse(intDep!.contains({ $0.tag == "s3_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "txt2_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "s3_hrt" }))
-        XCTAssertTrue(nameDep!.contains({ $0.tag == "txt1_hrt" }))
-        XCTAssertFalse(nameDep!.contains({ $0.tag == "int1_hrt" }))
+        XCTAssertTrue(intDep!.contains(where: { $0.tag == "txt2_hrt" }))
+        XCTAssertTrue(intDep!.contains(where: { $0.tag == "int1_hrt" }))
+        XCTAssertFalse(intDep!.contains(where: { $0.tag == "s3_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "txt2_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "s3_hrt" }))
+        XCTAssertTrue(nameDep!.contains(where: { $0.tag == "txt1_hrt" }))
+        XCTAssertFalse(nameDep!.contains(where: { $0.tag == "int1_hrt" }))
+
+        // Test a condition with nil
+        let newRow = TextRow("new_row") {
+            $0.hidden = "$txt1_hrt == nil"
+        }
+
+        form.last! <<< newRow
+        XCTAssertTrue(newRow.hiddenCache)
     }
     
     func testItemsByTag(){
         // test that all rows and sections with tag are there
-        XCTAssertEqual(form.rowByTag("NameRow_s1"), form[0][0])
-        XCTAssertEqual(form.rowByTag("IntRow_s1"), form[0][1])
+        XCTAssertEqual(form.rowBy(tag: "NameRow_s1"), form[0][0])
+        XCTAssertEqual(form.rowBy(tag: "IntRow_s1"), form[0][1])
         
-        XCTAssertEqual(form.rowByTag("int1_hrt"), row10)
-        XCTAssertEqual(form.rowByTag("txt1_hrt"), row11)
+        XCTAssertEqual(form.rowBy(tag: "int1_hrt"), row10)
+        XCTAssertEqual(form.rowBy(tag: "txt1_hrt"), row11)
         
-        XCTAssertEqual(form.sectionByTag("s3_hrt"), sec2)
-        XCTAssertEqual(form.rowByTag("txt2_hrt"), row20)
+        XCTAssertEqual(form.sectionBy(tag: "s3_hrt"), sec2)
+        XCTAssertEqual(form.rowBy(tag: "txt2_hrt"), row20)
         
         // check that these are all in there
         XCTAssertEqual(form.rowsByTag.count, 5)
@@ -139,12 +148,12 @@ class HiddenRowsTests: BaseEurekaTests {
         
         
         // we still want the same results here
-        XCTAssertEqual(form.rowByTag("NameRow_s1"), form[0][0])
-        XCTAssertEqual(form.rowByTag("IntRow_s1"), form[0][1])
-        XCTAssertEqual(form.rowByTag("int1_hrt"), row10)
-        XCTAssertEqual(form.rowByTag("txt1_hrt"), row11)
-        XCTAssertEqual(form.sectionByTag("s3_hrt"), sec2)
-        XCTAssertEqual(form.rowByTag("txt2_hrt"), row20)
+        XCTAssertEqual(form.rowBy(tag: "NameRow_s1"), form[0][0])
+        XCTAssertEqual(form.rowBy(tag: "IntRow_s1"), form[0][1])
+        XCTAssertEqual(form.rowBy(tag: "int1_hrt"), row10)
+        XCTAssertEqual(form.rowBy(tag: "txt1_hrt"), row11)
+        XCTAssertEqual(form.sectionBy(tag: "s3_hrt"), sec2)
+        XCTAssertEqual(form.rowBy(tag: "txt2_hrt"), row20)
         XCTAssertEqual(form.rowsByTag.count, 5)
         
         // and let them come up again
@@ -156,7 +165,7 @@ class HiddenRowsTests: BaseEurekaTests {
         XCTAssertEqual(form.rowsByTag["IntRow_s1"], form[0][1])
         XCTAssertEqual(form.rowsByTag["int1_hrt"], row10)
         XCTAssertEqual(form.rowsByTag["txt1_hrt"], row11)
-        XCTAssertEqual(form.sectionByTag("s3_hrt"), sec2)
+        XCTAssertEqual(form.sectionBy(tag: "s3_hrt"), sec2)
         XCTAssertEqual(form.rowsByTag["txt2_hrt"], row20)
         XCTAssertEqual(form.rowsByTag.count, 5)
     }
@@ -251,8 +260,8 @@ class HiddenRowsTests: BaseEurekaTests {
                     $0.hidden = "$NameRow_s1 contains 'morning'"
                     $0.tag = "s2_ths"
                 }
-        form.insert(s1, atIndex: 1)
-        form.insert(s2, atIndex: 3)
+        form.insert(s1, at: 1)
+        form.insert(s2, at: 3)
         
         /* what we should have here
         
@@ -291,8 +300,8 @@ class HiddenRowsTests: BaseEurekaTests {
         let r3 = CheckRow("check3_tii_hrt"){ $0.hidden = "$NameRow_s1 contains 'good'" }
         let r4 = CheckRow("check4_tii_hrt"){ $0.hidden = "$NameRow_s1 contains 'good'" }
         
-        form[0].insert(r1, atIndex: 1)
-        form[1].insertContentsOf([r2,r3], at: 0)
+        form[0].insert(r1, at: 1)
+        form[1].insert(contentsOf: [r2,r3], at: 0)
         
         //test correct insert
         
@@ -307,7 +316,7 @@ class HiddenRowsTests: BaseEurekaTests {
         form[0][0].baseValue = "hello, good morning!"
         
         // insert another row
-        form[1].insert(r4, atIndex: 1)
+        form[1].insert(r4, at: 1)
         
         XCTAssertEqual(form[1].count, 2) // all inserted rows should be hidden
         XCTAssertEqual(form[1][0].tag, "int1_hrt")
@@ -329,7 +338,7 @@ class HiddenRowsTests: BaseEurekaTests {
         form[1].removeAll()
         
         //inserting 2 rows at the end, deleting 1
-        form[2].replaceRange(1..<2, with: [r2, r4])
+        form[2].replaceSubrange(1..<2, with: [r2, r4])
         
         XCTAssertEqual(form[1].count, 0)
         XCTAssertEqual(form[2].count, 1)

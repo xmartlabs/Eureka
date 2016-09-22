@@ -1,24 +1,40 @@
-//
 //  ImageRow.swift
-//  Eureka
+//  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Created by Martin Barreto on 2/23/16.
-//  Copyright © 2016 Xmartlabs. All rights reserved.
+//  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
 //
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 import Foundation
 
-public struct ImageRowSourceTypes : OptionSetType {
+public struct ImageRowSourceTypes : OptionSet {
     
     public let rawValue: Int
     public var imagePickerControllerSourceTypeRawValue: Int { return self.rawValue >> 1 }
     
     public init(rawValue: Int) { self.rawValue = rawValue }
-    private init(_ sourceType: UIImagePickerControllerSourceType) { self.init(rawValue: 1 << sourceType.rawValue) }
+    init(_ sourceType: UIImagePickerControllerSourceType) { self.init(rawValue: 1 << sourceType.rawValue) }
     
-    public static let PhotoLibrary  = ImageRowSourceTypes(.PhotoLibrary)
-    public static let Camera  = ImageRowSourceTypes(.Camera)
-    public static let SavedPhotosAlbum = ImageRowSourceTypes(.SavedPhotosAlbum)
+    public static let PhotoLibrary  = ImageRowSourceTypes(.photoLibrary)
+    public static let Camera  = ImageRowSourceTypes(.camera)
+    public static let SavedPhotosAlbum = ImageRowSourceTypes(.savedPhotosAlbum)
     public static let All: ImageRowSourceTypes = [Camera, PhotoLibrary, SavedPhotosAlbum]
     
 }
@@ -27,7 +43,7 @@ extension ImageRowSourceTypes {
     
 // MARK: Helpers
     
-    private var localizedString: String {
+    var localizedString: String {
         switch self {
         case ImageRowSourceTypes.Camera:
             return "Take photo"
@@ -42,49 +58,49 @@ extension ImageRowSourceTypes {
 }
 
 public enum ImageClearAction {
-    case No
-    case Yes(style: UIAlertActionStyle)
+    case no
+    case yes(style: UIAlertActionStyle)
 }
 
 //MARK: Row
 
-public class _ImageRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell.Value == UIImage>: SelectorRow<UIImage, Cell, ImagePickerController> {
+open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> where Cell: BaseCell, Cell: TypedCellType, Cell.Value == UIImage {
     
 
-    public var sourceTypes: ImageRowSourceTypes
-    public internal(set) var imageURL: NSURL?
-    public var clearAction = ImageClearAction.Yes(style: .Destructive)
+    open var sourceTypes: ImageRowSourceTypes
+    open internal(set) var imageURL: URL?
+    open var clearAction = ImageClearAction.yes(style: .destructive)
     
-    private var _sourceType: UIImagePickerControllerSourceType = .Camera
+    private var _sourceType: UIImagePickerControllerSourceType = .camera
     
     public required init(tag: String?) {
         sourceTypes = .All
         super.init(tag: tag)
-        presentationMode = .PresentModally(controllerProvider: ControllerProvider.Callback { return ImagePickerController() }, completionCallback: { [weak self] vc in
+        presentationMode = .presentModally(controllerProvider: ControllerProvider.callback { return ImagePickerController() }, onDismiss: { [weak self] vc in
             self?.select()
-            vc.dismissViewControllerAnimated(true, completion: nil)
+            vc.dismiss(animated: true)
             })
         self.displayValueFor = nil
         
     }
     
     // copy over the existing logic from the SelectorRow
-    private func displayImagePickerController(sourceType: UIImagePickerControllerSourceType) {
-        if let presentationMode = presentationMode where !isDisabled {
-            if let controller = presentationMode.createController(){
+    func displayImagePickerController(_ sourceType: UIImagePickerControllerSourceType) {
+        if let presentationMode = presentationMode, !isDisabled {
+            if let controller = presentationMode.makeController(){
                 controller.row = self
                 controller.sourceType = sourceType
                 onPresentCallback?(cell.formViewController()!, controller)
-                presentationMode.presentViewController(controller, row: self, presentingViewController: cell.formViewController()!)
+                presentationMode.present(controller, row: self, presentingController: cell.formViewController()!)
             }
             else{
                 _sourceType = sourceType
-                presentationMode.presentViewController(nil, row: self, presentingViewController: cell.formViewController()!)
+                presentationMode.present(nil, row: self, presentingController: cell.formViewController()!)
             }
         }
     }
     
-    public override func customDidSelect() {
+    open override func customDidSelect() {
         guard !isDisabled else {
             super.customDidSelect()
             return
@@ -92,17 +108,17 @@ public class _ImageRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType,
         deselect()
         var availableSources: ImageRowSourceTypes = []
             
-        if UIImagePickerController.isSourceTypeAvailable(.PhotoLibrary) {
-            availableSources.insert(.PhotoLibrary)
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let _ = availableSources.insert(.PhotoLibrary)
         }
-        if UIImagePickerController.isSourceTypeAvailable(.Camera) {
-            availableSources.insert(.Camera)
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let _ = availableSources.insert(.Camera)
         }
-        if UIImagePickerController.isSourceTypeAvailable(.SavedPhotosAlbum) {
-            availableSources.insert(.SavedPhotosAlbum)
+        if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
+            let _ = availableSources.insert(.SavedPhotosAlbum)
         }
 
-        sourceTypes.intersectInPlace(availableSources)
+        sourceTypes.formIntersection(availableSources)
         
         if sourceTypes.isEmpty {
             super.customDidSelect()
@@ -110,16 +126,17 @@ public class _ImageRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType,
         }
         
         // now that we know the number of actions aren't empty
-        let sourceActionSheet = UIAlertController(title: nil, message: selectorTitle, preferredStyle: .ActionSheet)
+        let sourceActionSheet = UIAlertController(title: nil, message: selectorTitle, preferredStyle: .actionSheet)
         guard let tableView = cell.formViewController()?.tableView  else { fatalError() }
         if let popView = sourceActionSheet.popoverPresentationController {
             popView.sourceView = tableView
-            popView.sourceRect = tableView.convertRect(cell.accessoryView?.frame ?? cell.contentView.frame, fromView: cell)
+            popView.sourceRect = tableView.convert(cell.accessoryView?.frame ?? cell.contentView.frame, from: cell)
         }
         createOptionsForAlertController(sourceActionSheet)
-        if case .Yes(let style) = clearAction where value != nil {
+        if case .yes(let style) = clearAction, value != nil {
             let clearPhotoOption = UIAlertAction(title: NSLocalizedString("Clear Photo", comment: ""), style: style, handler: { [weak self] _ in
                 self?.value = nil
+                self?.imageURL = nil
                 self?.updateCell()
                 })
             sourceActionSheet.addAction(clearPhotoOption)
@@ -130,29 +147,29 @@ public class _ImageRow<Cell: CellType where Cell: BaseCell, Cell: TypedCellType,
                 displayImagePickerController(imagePickerSourceType)
             }
         } else {
-            let cancelOption = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .Cancel, handler:nil)
+            let cancelOption = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler:nil)
             sourceActionSheet.addAction(cancelOption)
             
             if let presentingViewController = cell.formViewController() {
-                presentingViewController.presentViewController(sourceActionSheet, animated: true, completion:nil)
+                presentingViewController.present(sourceActionSheet, animated: true)
             }
         }
     }
     
-    public override func prepareForSegue(segue: UIStoryboardSegue) {
-        super.prepareForSegue(segue)
-        guard let rowVC = segue.destinationViewController as? ImagePickerController else {
+    open override func prepare(for segue: UIStoryboardSegue) {
+        super.prepare(for: segue)
+        guard let rowVC = segue.destination as? ImagePickerController else {
             return
         }
         rowVC.sourceType = _sourceType
     }
     
-    public override func customUpdateCell() {
+    open override func customUpdateCell() {
         super.customUpdateCell()
-        cell.accessoryType = .None
+        cell.accessoryType = .none
         if let image = self.value {
-            let imageView = UIImageView(frame: CGRectMake(0, 0, 44, 44))
-            imageView.contentMode = .ScaleAspectFill
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+            imageView.contentMode = .scaleAspectFill
             imageView.image = image
             imageView.clipsToBounds = true
             cell.accessoryView = imageView
@@ -169,15 +186,15 @@ extension _ImageRow {
     
 //MARK: Helpers
     
-    private func createOptionForAlertController(alertController: UIAlertController, sourceType: ImageRowSourceTypes) {
-        guard let pickerSourceType = UIImagePickerControllerSourceType(rawValue: sourceType.imagePickerControllerSourceTypeRawValue) where sourceTypes.contains(sourceType) else { return }
-        let option = UIAlertAction(title: NSLocalizedString(sourceType.localizedString, comment: ""), style: .Default, handler: { [weak self] _ in
+    func createOptionForAlertController(_ alertController: UIAlertController, sourceType: ImageRowSourceTypes) {
+        guard let pickerSourceType = UIImagePickerControllerSourceType(rawValue: sourceType.imagePickerControllerSourceTypeRawValue), sourceTypes.contains(sourceType) else { return }
+        let option = UIAlertAction(title: NSLocalizedString(sourceType.localizedString, comment: ""), style: .default, handler: { [weak self] _ in
             self?.displayImagePickerController(pickerSourceType)
         })
         alertController.addAction(option)
     }
     
-    private func createOptionsForAlertController(alertController: UIAlertController) {
+    func createOptionsForAlertController(_ alertController: UIAlertController) {
         createOptionForAlertController(alertController, sourceType: .Camera)
         createOptionForAlertController(alertController, sourceType: .PhotoLibrary)
         createOptionForAlertController(alertController, sourceType: .SavedPhotosAlbum)

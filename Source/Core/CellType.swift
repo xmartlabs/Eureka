@@ -46,17 +46,7 @@ public protocol BaseCellType : class {
      Method called each time the cell is selected (tapped on by the user).
      */
     func didSelect()
-    
-    /**
-     Method called each time the cell is selected (tapped on by the user).
-     */
-    func highlight()
-    
-    /**
-     Method called each time the cell is deselected (looses first responder).
-     */
-    func unhighlight()
-    
+        
     /**
      Called when cell is about to become first responder
      
@@ -67,7 +57,7 @@ public protocol BaseCellType : class {
     /**
      Method called when the cell becomes first responder
      */
-    func cellBecomeFirstResponder(direction: Direction) -> Bool
+    func cellBecomeFirstResponder(withDirection: Direction) -> Bool
     
     /**
      Method called when the cell resigns first responder
@@ -89,6 +79,6 @@ public protocol TypedCellType : BaseCellType {
     var row : RowOf<Value>! { get set }
 }
 
-public protocol CellType {}
+public protocol CellType: TypedCellType {}
 
 

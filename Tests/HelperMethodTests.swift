@@ -1,7 +1,7 @@
 //  HelperMethodTests.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,12 +28,12 @@ import XCTest
 class HelperMethodTests: BaseEurekaTests {
 
     func testRowByTag(){
-        // Tests rowByTag() method
+        // Tests rowBy(tag: ) method
         
-        let urlRow : URLRow? = fieldForm.rowByTag("UrlRow_f1")
+        let urlRow : URLRow? = fieldForm.rowBy(tag: "UrlRow_f1")
         XCTAssertNotNil(urlRow)
         
-        let phoneRow : PhoneRow? = fieldForm.rowByTag("phone")
+        let phoneRow : PhoneRow? = fieldForm.rowBy(tag: "phone")
         XCTAssertNil(phoneRow)
     }
     
@@ -41,31 +41,31 @@ class HelperMethodTests: BaseEurekaTests {
         // Tests the nextRowForRow() and the previousRowForRow() methods
         
         let form = fieldForm + shortForm + dateForm
-        let row6 = form.nextRowForRow(form[0][5])
+        let row6 = form.nextRow(for: form[0][5])
         
         XCTAssertEqual(row6, form[0][6])
-        XCTAssertEqual(row6, form.rowByTag("IntRow_f1") as? IntRow)
+        XCTAssertEqual(row6, form.rowBy(tag: "IntRow_f1") as? IntRow)
         
         
-        let row_5_and_6: MutableSlice<Section> = form[0][5...6]
+        let row_5_and_6: MutableSlice<Section> = form[0][Range(5...6)]
         XCTAssertEqual(row_5_and_6[5], form[0][5])
         XCTAssertEqual(row_5_and_6[6], form[0][6])
         
         
-        let row10n = form.nextRowForRow(form[0][8])
-        let rownil = form.nextRowForRow(form[2][7])
+        let row10n = form.nextRow(for: form[0][8])
+        let rownil = form.nextRow(for: form[2][7])
         
         XCTAssertEqual(row10n, form[0][9])
         XCTAssertNil(rownil)
         
-        let row10p = form.previousRowForRow(form[0][10])
-        let rowNilP = form.previousRowForRow(form[0][0])
+        let row10p = form.previousRow(for: form[0][10])
+        let rowNilP = form.previousRow(for: form[0][0])
         
         XCTAssertEqual(row10n, row10p)
         XCTAssertNil(rowNilP)
         
-        XCTAssertNotNil(form.nextRowForRow(form[1][1]))
-        XCTAssertEqual(form[1][1], form.previousRowForRow(form.nextRowForRow(form[1][1])!))
+        XCTAssertNotNil(form.nextRow(for: form[1][1]))
+        XCTAssertEqual(form[1][1], form.previousRow(for: form.nextRow(for: form[1][1])!))
     }
     
     func testAllRowsMethod(){
@@ -74,7 +74,7 @@ class HelperMethodTests: BaseEurekaTests {
         let form = fieldForm + shortForm + dateForm
         XCTAssertEqual(form.rows.count, 21)
         XCTAssertEqual(form.rows[12], shortForm[0][1])
-        XCTAssertEqual(form.rows[20], form.rowByTag("IntervalDateRow_d1") as? DateRow)
+        XCTAssertEqual(form.rows[20], form.rowBy(tag: "IntervalDateRow_d1") as? DateRow)
     }
     
     func testAllRowsWrappedByTagMethod(){
@@ -98,14 +98,14 @@ class HelperMethodTests: BaseEurekaTests {
         formVC.form +++ checkRow <<< switchRow <<< segmentedRow <<< intRow
         
         checkRow.updateCell()
-        XCTAssertTrue(checkRow.cell.selectionStyle == .None)
+        XCTAssertTrue(checkRow.cell.selectionStyle == .none)
         
         switchRow.updateCell()
         XCTAssertNotNil(switchRow.cell.switchControl)
-        XCTAssertFalse(switchRow.cell.switchControl!.enabled)
+        XCTAssertFalse(switchRow.cell.switchControl!.isEnabled)
         
         segmentedRow.updateCell()
-        XCTAssertFalse(segmentedRow.cell.segmentedControl.enabled)
+        XCTAssertFalse(segmentedRow.cell.segmentedControl.isEnabled)
         
         intRow.updateCell()
         XCTAssertFalse(intRow.cell.cellCanBecomeFirstResponder())

@@ -3,14 +3,14 @@
 <p align="center">
 <a href="https://travis-ci.org/xmartlabs/Eureka"><img src="https://travis-ci.org/xmartlabs/Eureka.svg?branch=master" alt="Build status" /></a>
 <img src="https://img.shields.io/badge/platform-iOS-blue.svg?style=flat" alt="Platform iOS" />
-<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift2-compatible-4BC51D.svg?style=flat" alt="Swift 2 compatible" /></a>
+<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift3-compatible-4BC51D.svg?style=flat" alt="Swift 3 compatible" /></a>
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible" /></a>
-<a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/badge/pod-1.7.0-blue.svg" alt="CocoaPods compatible" /></a>
+<a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/cocoapods/v/Eureka.svg" alt="CocoaPods compatible" /></a>
 <a href="https://raw.githubusercontent.com/xmartlabs/Eureka/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License: MIT" /></a>
 <a href="https://codebeat.co/projects/github-com-xmartlabs-eureka"><img alt="codebeat badge" src="https://codebeat.co/badges/16f29afb-f072-4633-9497-333c6eb71263" /></a>
 </p>
 
-Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation of [XLForm] in Swift 2.
+Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation of [XLForm] in Swift.
 
 ## Overview
 
@@ -28,6 +28,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
   + [Section Header and Footer]
   + [Dynamically hide and show rows (or sections)]
   + [List sections]
+  + [Validations]
 * [Custom rows]
   + [Basic custom rows]
   + [Custom inline rows]
@@ -41,7 +42,8 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
 ## Requirements
 
 * iOS 8.0+
-* Xcode 7.3.1+
+* Xcode 8+
+* Swift 3
 
 ### Example project
 
@@ -62,7 +64,7 @@ class MyFormViewController: FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        form +++ Section("Section1")
+        form = Section("Section1")
             <<< TextRow(){ row in
                 row.title = "Text Row"
                 row.placeholder = "Enter text here"
@@ -158,9 +160,9 @@ let row  = SwitchRow("SwitchRow") { row in      // initializer
                         row.title = (row.value ?? false) ? "The title expands when on" : "The title"
                         row.updateCell()
                     }.cellSetup { cell, row in
-                        cell.backgroundColor = .lightGrayColor()
+                        cell.backgroundColor = .lightGray
                     }.cellUpdate { cell, row in
-                        cell.textLabel?.font = .italicSystemFontOfSize(18.0)
+                        cell.textLabel?.font = .italicSystemFont(ofSize: 18.0)
                 }
 ```
 
@@ -171,22 +173,26 @@ let row  = SwitchRow("SwitchRow") { row in      // initializer
 * **onChange()**
 
 	Called when the value of a row changes. You might be interested in adjusting some parameters here or even make some other rows appear or disappear.
+
 * **onCellSelection()**
 
 	Called each time the user taps on the row and it gets selected.
+
 * **cellSetup()**
 
 	Called only once when the cell is first configured. Set permanent settings here.
+
 * **cellUpdate()**
 
 	Called each time the cell appears on screen. You can change the appearance here using variables that may not be present on cellSetup().
-* **onCellHighlight()**
 
-  Called whenever the cell or any subview become the first responder.
+* **onCellHighlightChanged()**
 
-* **onCellUnHighlight()**
+  Called whenever the cell or any subview become or resign the first responder.
 
-  Called whenever the cell or any subview resigns the first responder.
+* **onRowValidationChanged()**
+
+    Called whenever the the validation errors associated with a row changes.
 
 * **onExpandInlineRow()**
 
@@ -219,7 +225,7 @@ You can use a Custom View from a `.xib` file:
 
 ```swift
 Section() { section in
-    var header = HeaderFooterView<MyHeaderNibFile>(.NibFile(name: "MyHeaderNibFile", bundle: nil))
+    var header = HeaderFooterView<MyHeaderNibFile>(.nibFile(name: "MyHeaderNibFile", bundle: nil))
 
     // Will be called every time the header appears on screen
     header.onSetupView = { view, _ in
@@ -234,10 +240,10 @@ Or a custom `UIView` created programmatically
 
 ```swift
 Section(){ section in
-    var header = HeaderFooterView<MyCustomUIView>(.Class)
+    var header = HeaderFooterView<MyCustomUIView>(.class)
     header.height = {100}
     header.onSetupView = { view, _ in
-        view.backgroundColor = .redColor()
+        view.backgroundColor = .red
     }
     section.header = header
 }
@@ -246,9 +252,9 @@ Or just build the view with a Callback
 ```swift
 Section(){ section in
     section.header = {
-          var header = HeaderFooterView<UIView>(.Callback({
+          var header = HeaderFooterView<UIView>(.callback({
               let view = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-              view.backgroundColor = .redColor()
+              view.backgroundColor = .red
               return view
           }))
           header.height = { 100 }
@@ -268,9 +274,9 @@ To accomplish this each row has an `hidden` variable of optional type `Condition
 
 #### Hiding using a function condition
 
-Using the `Function` case of `Condition`:
+Using the `function` case of `Condition`:
 ```swift
-Condition.Function([String], (Form?)->Bool)
+Condition.function([String], (Form)->Bool)
 ```
 The array of `String` to pass should contain the tags of the rows this row depends on. Each time the value of any of those rows changes the function is reevaluated.
 The function then takes the `Form` and returns a `Bool` indicating whether the row should be hidden or not. This the most powerful way of setting up the `hidden` property as it has no explicit limitations of what can be done.
@@ -282,7 +288,7 @@ form +++ Section()
             }
             <<< LabelRow(){
 
-                $0.hidden = Condition.Function(["switchRowTag"], { form in
+                $0.hidden = Condition.function(["switchRowTag"], { form in
                     return !((form.rowByTag("switchRowTag") as? SwitchRow)?.value ?? false)
                 })
                 $0.title = "Switch is on!"
@@ -293,8 +299,8 @@ form +++ Section()
 
 ```swift
 public enum Condition {
-    case Function([String], (Form?)->Bool)
-    case Predicate(NSPredicate)
+    case function([String], (Form)->Bool)
+    case predicate(NSPredicate)
 }
 ```
 
@@ -305,10 +311,10 @@ This will only work if the values of the rows the predicate has to check are NSO
 Why could it then be useful to use predicates when they are more limited? Well, they can be much simpler, shorter and readable than functions. Look at this example:
 
 ```swift
-$0.hidden = Condition.Predicate(NSPredicate(format: "$switchTag == false"))
+$0.hidden = Condition.predicate(NSPredicate(format: "$switchTag == false"))
 ```
 
-And we can write it even shorter since `Condition` conforms to `StringLiteralConvertible`:
+And we can write it even shorter since `Condition` conforms to `ExpressibleByStringLiteral`:
 
 ```swift
 $0.hidden = "$switchTag == false"
@@ -322,7 +328,7 @@ We can also hide a row by doing:
 ```swift
 $0.hidden = true
 ```
-as `Condition` conforms to `BooleanLiteralConvertible`.
+as `Condition` conforms to `ExpressibleByBooleanLiteral`.
 
 Not setting the `hidden` variable will leave the row always visible.
 
@@ -369,6 +375,9 @@ Eureka includes the `ListCheckRow` which is used for example. In the custom rows
 
 To easily get the selected row/s of a `SelectableSection` there are two methods: `selectedRow()` and `selectedRows()` which can be called to get the selected row in case it is a `SingleSelection` section or all the selected rows if it is a `MultipleSelection` section.
 
+### Validations
+
+Will be documented soon...
 
 ## Custom rows
 
@@ -384,13 +393,13 @@ As the `Row` contains the `Cell`, both `Row` and `Cell` must be defined for the 
 ```swift
 // Custom Cell with value type: Bool
 // The cell is defined using a .xib, so we can set outlets :)
-public class CustomCell: Cell<Bool>, CellType{
+public class CustomCell: Cell<Bool>, CellType {
     @IBOutlet weak var switchControl: UISwitch!
     @IBOutlet weak var label: UILabel!
 
     public override func setup() {
         super.setup()
-        switchControl.addTarget(self, action: #selector(CustomCell.switchValueChanged), forControlEvents: .ValueChanged)
+        switchControl.addTarget(self, action: #selector(CustomCell.switchValueChanged), for: .valueChanged)
     }
 
     func switchValueChanged(){
@@ -400,12 +409,12 @@ public class CustomCell: Cell<Bool>, CellType{
 
     public override func update() {
         super.update()
-        backgroundColor = (row.value ?? false) ? .whiteColor() : .blackColor()
+        backgroundColor = (row.value ?? false) ? .white : .black
     }
 }
 
-// The custom Row also has value: Bool, and cell: CustomCell
-public final class CustomRow: Row<Bool, CustomCell>, RowType {
+// The custom Row also has the cell: CustomCell and its correspond value
+public final class CustomRow: Row<CustomCell>, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
         // We set the cellProvider to load the .xib corresponding to our cell
@@ -417,7 +426,7 @@ The result: <br>
 <img src="Example/Media/EurekaCustomRow.gif" alt="Screenshot of Disabled Row"/>
 
 <br>
-Custom rows need to subclass `Row<ValueType, CellType>` and conform to `RowType` protocol.
+Custom rows need to subclass `Row<CellType>` and conform to `RowType` protocol.
 Custom cells need to subclass `Cell<ValueType>` and conform to `CellType` protocol.
 
 Just like the callbacks cellSetup and CellUpdate, the `Cell` has the setup and update methods where you can customize it.
@@ -467,20 +476,32 @@ The onPresentCallback will be called when the row is about to present another vi
 The `presentationMode` is what defines how the controller is presented and which controller is presented. This presentation can be using a Segue identifier, a segue class, presenting a controller modally or pushing to a specific view controller. For example a CustomPushRow can be defined like this:
 
 ```swift
-public final class CustomPushRow<T: Equatable> : SelectorRow<T, PushSelectorCell<T>, SelectorViewController<T>>, RowType {
-    
+public final class CustomPushRow<T: Equatable>: SelectorRow<PushSelectorCell<T>, SelectorViewController<T>>, RowType {
+
     public required init(tag: String?) {
         super.init(tag: tag)
-        presentationMode = .Show(controllerProvider: ControllerProvider.Callback {
+        presentationMode = .show(controllerProvider: ControllerProvider.callback {
             return SelectorViewController<T>(){ _ in }
             }, completionCallback: { vc in
-                vc.navigationController?.popViewControllerAnimated(true)
+                vc.navigationController?.popViewController(animated: true)
         })
     }
 }
 ```
 
 You can place your own UIViewController instead of `SelectorViewController<T>` and your own cell instead of `PushSelectorCell<T>`.
+
+### Subclassing cells using the same row
+
+Sometimes we want to change the UI look of one of our rows but without changing the row type and all the logic associated to one row.
+There is currently one way to do this if you are using cells that are instantiated from nib files.
+
+What you have to do is define a subclass and a nibfile with a cell of that subclass type. This will create a row with that cell.
+
+There are some things to consider when you do this:
+* Your subclass has to implement the init methods of its subclass, specially `init?(coder aDecoder: NSCoder)`.
+* If you get an error saying `Unknown class <YOUR_CLASS_NAME> in Interface Builder file`, it might be that you have to instantiate that new type somewhere in your code to load it in the runtime. Calling `let t = YourClass.self` helped in my case.
+
 
 ## Row catalog
 
@@ -521,14 +542,6 @@ You can place your own UIViewController instead of `SelectorViewController<T>` a
     <tr>
         <td><center><b>Text Area Row</b><br>
         <img src="Example/Media/RowStatics/TextAreaRow.png"/>
-        </center><br><br>
-        </td>
-        <td><center><b>Postal Address Row</b><br>
-        <img src="Example/Media/RowStatics/PostalAddressRow.png"/>
-        </center><br><br>
-        </td>
-        <td><center><b>Picture Row</b><br>
-        <img src="Example/Media/RowStatics/PictureRow.png"/>
         </center><br><br>
         </td>
     </tr>
@@ -689,10 +702,10 @@ Specify Eureka into your project's `Podfile`:
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
+platform :ios, '9.0'
 use_frameworks!
 
-pod 'Eureka', '~> 1.7'
+pod 'Eureka', '~> 2.0'
 ```
 
 Then run the following command:
@@ -708,7 +721,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 1.7
+github "xmartlabs/Eureka" ~> 2.0
 ```
 
 #### Manually as Embedded Framework
@@ -753,12 +766,12 @@ The value of a row can be obtained with `row.value`. The type of this value is t
 
 To change the behaviour of this you should set the navigation options of your controller. The `FormViewController` has a `navigationOptions` variable which is an enum and can have one or more of the following values:
 
-- **Disabled**: no view at all
-- **Enabled**: enable view at the bottom
-- **StopDisabledRow**: if the navigation should stop when the next row is disabled
-- **SkipCanNotBecomeFirstResponderRow**: if the navigation should skip the rows that return false to `canBecomeFirstResponder()`
+- **disabled**: no view at all
+- **enabled**: enable view at the bottom
+- **stopDisabledRow**: if the navigation should stop when the next row is disabled
+- **skipCanNotBecomeFirstResponderRow**: if the navigation should skip the rows that return false to `canBecomeFirstResponder()`
 
-The default value is `Enabled & SkipCanNotBecomeFirstResponderRow`
+The default value is `enabled & skipCanNotBecomeFirstResponderRow`
 
 If you want to change the whole view of the bottom you will have to override the `navigationAccessoryView` variable in your subclass of `FormViewController`.
 
@@ -767,26 +780,26 @@ If you want to change the whole view of the bottom you will have to override the
 We can get a particular row by invoking any of the following functions exposed by the `Form` class:
 
 ```swift
-public func rowByTag<T: Equatable>(tag: String) -> RowOf<T>?
-public func rowByTag<Row: RowType>(tag: String) -> Row?
-public func rowByTag(tag: String) -> BaseRow?
+public func rowBy<T: Equatable>(tag: String) -> RowOf<T>?
+public func rowBy<Row: RowType>(tag: String) -> Row?
+public func rowBy(tag: String) -> BaseRow?
 ```
 
 For instance:
 
 ```swift
-let dateRow : DateRow? = form.rowByTag("dateRowTag")
-let labelRow: LabelRow? = form.rowByTag("labelRowTag")
+let dateRow : DateRow? = form.rowBy(tag: "dateRowTag")
+let labelRow: LabelRow? = form.rowBy(tag: "labelRowTag")
 
-let dateRow2: Row<NSDate>? = form.rowByTag("dateRowTag")
+let dateRow2: Row<NSDate>? = form.rowBy(tag: "dateRowTag")
 
-let labelRow2: BaseRow? = form.rowByTag("labelRowTag")
+let labelRow2: BaseRow? = form.rowBy(tag: "labelRowTag")
 ```
 
 #### How to get a Section using its tag value
 
 ```swift
-let section: Section?  = form.sectionByTag("sectionTag")
+let section: Section?  = form.sectionBy(tag: "sectionTag")
 ```
 
 #### How to set the form values using a dictionary
@@ -820,14 +833,14 @@ Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
 * Set up a new header/footer data ....
 
 ```swift
-section.header = "Header Title" // use string literal as a header/footer data. HeaderFooterView conforms to StringLiteralConvertible.
+section.header = "Header Title" // use string literal as a header/footer data. HeaderFooterView conforms to ExpressibleByStringLiteral.
 //or
 section.header = HeaderFooterView(title: "Header title \(variable)") // use String interpolation
 //or
-var header = HeaderFooterView<UIView>(.Class) // most flexible way to set up a header using any view type
+var header = HeaderFooterView<UIView>(.class) // most flexible way to set up a header using any view type
 header.height = { 60 }  // height can be calculated
 header.onSetupView = { view, section in  // each time the view is about to be displayed onSetupView is invoked.
-    view.backgroundColor = .orangeColor()
+    view.backgroundColor = .orange
 }
 section.header = header
 ```
@@ -840,16 +853,16 @@ section.reload()
 
 #### Don't want to use Eureka custom operators?
 
-As we've said `Form` and `Section` types conform to `MutableCollectionType` and `RangeReplaceableCollectionType`. A Form is a collection of Sections and a Section is a collection of Rows.
+As we've said `Form` and `Section` types conform to `MutableCollection` and `RangeReplaceableCollection`. A Form is a collection of Sections and a Section is a collection of Rows.
 
-`RangeReplaceableCollectionType` protocol extension provides many useful methods to modify collection.
+`RangeReplaceableCollection` protocol extension provides many useful methods to modify collection.
 
 ```swift
-extension RangeReplaceableCollectionType {
+extension RangeReplaceableCollection {
     public mutating func append(newElement: Self.Generator.Element)
-    public mutating func appendContentsOf<S : SequenceType where S.Generator.Element == Generator.Element>(newElements: S)
+    public mutating func appendContentsOf<S : Sequence where S.Generator.Element == Generator.Element>(newElements: S)
     public mutating func insert(newElement: Self.Generator.Element, atIndex i: Self.Index)
-    public mutating func insertContentsOf<C : CollectionType where C.Generator.Element == Generator.Element>(newElements: C, at i: Self.Index)
+    public mutating func insertContentsOf<C : Collection where C.Generator.Element == Generator.Element>(newElements: C, at i: Self.Index)
     public mutating func removeAtIndex(index: Self.Index) -> Self.Generator.Element
     public mutating func removeRange(subRange: Range<Self.Index>)
     public mutating func removeFirst(n: Int)
@@ -867,7 +880,7 @@ public func +++(left: Form, right: Section) -> Form {
     return left
 }
 
-public func +=< C : CollectionType where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
+public func +=< C : Collection where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
     lhs.appendContentsOf(rhs)
 }
 
@@ -876,7 +889,7 @@ public func <<<(left: Section, right: BaseRow) -> Section {
     return left
 }
 
-public func +=< C : CollectionType where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
+public func +=< C : Collection where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
     lhs.appendContentsOf(rhs)
 }
 ```
@@ -911,7 +924,7 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [FAQ]: #faq
 
 [List sections]: #list-sections
-
+[Validations]: #validations
 
 * [Installation]
 * [FAQ]

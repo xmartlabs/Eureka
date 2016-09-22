@@ -49,7 +49,7 @@ extension PresenterRowType {
      
      - returns: this row
      */
-    public func onPresent(callback: (FormViewController, ProviderType)->()) -> Self {
+    public func onPresent(_ callback: ((FormViewController, ProviderType)->())?) -> Self {
         onPresentCallback = callback
         return self
     }

@@ -1,7 +1,7 @@
 //  RowByTagTests.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -41,7 +41,7 @@ class RowByTagTests: XCTestCase {
         section <<< ButtonRow("ButtonRow")
         section <<< ActionSheetRow<String>("ActionSheetRow")
         section <<< AlertRow<Int>("AlertRow")
-        section <<< PushRow<NSURL>("PushRow")
+        section <<< PushRow<URL>("PushRow")
     }
     
     override func tearDown() {
@@ -51,19 +51,19 @@ class RowByTagTests: XCTestCase {
     
     func testRowByTag() {
         
-        let labelRow: LabelRow? = form.rowByTag("LabelRow")
+        let labelRow: LabelRow? = form.rowBy(tag: "LabelRow")
         XCTAssertNotNil(labelRow)
         
-        let buttonRow: ButtonRow? = form.rowByTag("ButtonRow")
+        let buttonRow: ButtonRow? = form.rowBy(tag: "ButtonRow")
         XCTAssertNotNil(buttonRow)
         
-        let actionSheetRow: ActionSheetRow<String>? = form.rowByTag("ActionSheetRow")
+        let actionSheetRow: ActionSheetRow<String>? = form.rowBy(tag: "ActionSheetRow")
         XCTAssertNotNil(actionSheetRow)
         
-        let alertRow: AlertRow<Int>? = form.rowByTag("AlertRow")
+        let alertRow: AlertRow<Int>? = form.rowBy(tag: "AlertRow")
         XCTAssertNotNil(alertRow)
 
-        let pushRow: PushRow<NSURL>? = form.rowByTag("PushRow")
+        let pushRow: PushRow<URL>? = form.rowBy(tag: "PushRow")
         XCTAssertNotNil(pushRow)
     }
     
