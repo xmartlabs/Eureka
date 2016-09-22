@@ -27,6 +27,10 @@ import Foundation
 
 public struct ValidationError: Equatable {
     public let msg: String?
+    
+    public init(msg: String) {
+        self.msg = msg
+    }
 }
 
 public func ==(lhs: ValidationError, rhs: ValidationError) -> Bool{
