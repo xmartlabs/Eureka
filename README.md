@@ -853,16 +853,16 @@ section.reload()
 
 #### Don't want to use Eureka custom operators?
 
-As we've said `Form` and `Section` types conform to `MutableCollectionType` and `RangeReplaceableCollectionType`. A Form is a collection of Sections and a Section is a collection of Rows.
+As we've said `Form` and `Section` types conform to `MutableCollection` and `RangeReplaceableCollection`. A Form is a collection of Sections and a Section is a collection of Rows.
 
-`RangeReplaceableCollectionType` protocol extension provides many useful methods to modify collection.
+`RangeReplaceableCollection` protocol extension provides many useful methods to modify collection.
 
 ```swift
-extension RangeReplaceableCollectionType {
+extension RangeReplaceableCollection {
     public mutating func append(newElement: Self.Generator.Element)
-    public mutating func appendContentsOf<S : SequenceType where S.Generator.Element == Generator.Element>(newElements: S)
+    public mutating func appendContentsOf<S : Sequence where S.Generator.Element == Generator.Element>(newElements: S)
     public mutating func insert(newElement: Self.Generator.Element, atIndex i: Self.Index)
-    public mutating func insertContentsOf<C : CollectionType where C.Generator.Element == Generator.Element>(newElements: C, at i: Self.Index)
+    public mutating func insertContentsOf<C : Collection where C.Generator.Element == Generator.Element>(newElements: C, at i: Self.Index)
     public mutating func removeAtIndex(index: Self.Index) -> Self.Generator.Element
     public mutating func removeRange(subRange: Range<Self.Index>)
     public mutating func removeFirst(n: Int)
@@ -880,7 +880,7 @@ public func +++(left: Form, right: Section) -> Form {
     return left
 }
 
-public func +=< C : CollectionType where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
+public func +=< C : Collection where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
     lhs.appendContentsOf(rhs)
 }
 
@@ -889,7 +889,7 @@ public func <<<(left: Section, right: BaseRow) -> Section {
     return left
 }
 
-public func +=< C : CollectionType where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
+public func +=< C : Collection where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
     lhs.appendContentsOf(rhs)
 }
 ```
