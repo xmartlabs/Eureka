@@ -62,6 +62,8 @@ open class BaseRow : BaseRowType {
     /// String that uniquely identifies a row. Must be unique among rows and sections.
     public var tag: String?
     
+    public var actions: [UITableViewRowAction]?
+    
     /// The untyped cell associated to this row.
     public var baseCell: BaseCell! { return nil }
     
