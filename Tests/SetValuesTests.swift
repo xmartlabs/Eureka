@@ -1,7 +1,7 @@
 //  SetValuesTests.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -61,26 +61,26 @@ class SetValuesTests: XCTestCase {
         
         form.setValues(["IntRow": intRowValue, "TextRow": textRowValue, "ActionSheetRow": actionSheetRowValue, "AlertRow": alertRowValue, "PushRow": pushRowValue, "No existing tag": 2.0])
         
-        let intRow: IntRow? = form.rowByTag("IntRow")
+        let intRow: IntRow? = form.rowBy(tag: "IntRow")
         XCTAssertEqual(intRow?.value, intRowValue)
         
-        let textRow: TextRow? = form.rowByTag("TextRow")
+        let textRow: TextRow? = form.rowBy(tag: "TextRow")
         XCTAssertEqual(textRow?.value, textRowValue)
 
-        let actionSheetRow: ActionSheetRow<String>? = form.rowByTag("ActionSheetRow")
+        let actionSheetRow: ActionSheetRow<String>? = form.rowBy(tag: "ActionSheetRow")
         XCTAssertEqual(actionSheetRow?.value, actionSheetRowValue)
         
-        let alertRow: AlertRow<Int>? = form.rowByTag("AlertRow")
+        let alertRow: AlertRow<Int>? = form.rowBy(tag: "AlertRow")
         XCTAssertNotNil(alertRow)
         XCTAssertEqual(alertRow!.value, alertRowValue)
         
-        var pushRow: PushRow<Float>? = form.rowByTag("PushRow")
+        var pushRow: PushRow<Float>? = form.rowBy(tag: "PushRow")
         XCTAssertNotNil(pushRow)
         XCTAssertEqual(pushRow!.value, pushRowValue)
         
         
         form.setValues(["PushRow": Float(1.0), "No existing tag": 2.0])
-        pushRow = form.rowByTag("PushRow")
+        pushRow = form.rowBy(tag: "PushRow")
         XCTAssertNotNil(pushRow)
         XCTAssertEqual(pushRow!.value, Float(1.0))
         

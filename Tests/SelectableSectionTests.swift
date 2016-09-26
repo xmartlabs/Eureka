@@ -1,7 +1,7 @@
 //  SelectableSectionTests.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,13 +33,13 @@ class SelectableSectionTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        var form = Form()
+        let form = Form()
         //create a form with two sections. The second one is of multiple selection
         
         let continents = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
         let oceans = ["Arctic", "Atlantic", "Indian", "Pacific", "Southern"]
         
-        form +++= SelectableSection<ListCheckRow<String>, String>() { _ in }
+        form +++ SelectableSection<ListCheckRow<String>>() { _ in }
         for option in continents {
             form.last! <<< ListCheckRow<String>(option){ lrow in
                 lrow.title = option
@@ -48,7 +48,7 @@ class SelectableSectionTests: XCTestCase {
             }
         }
 
-        form +++ SelectableSection<ListCheckRow<String>, String>("And which of the following oceans have you taken a bath in?", selectionType: .MultipleSelection)
+        form +++ SelectableSection<ListCheckRow<String>>("And which of the following oceans have you taken a bath in?", selectionType: .multipleSelection)
         for option in oceans {
             form.last! <<< ListCheckRow<String>(option){ lrow in
                 lrow.title = option
@@ -56,7 +56,7 @@ class SelectableSectionTests: XCTestCase {
             }
         }
         
-        form +++ SelectableSection<ListCheckRow<String>, String>("", selectionType: .SingleSelection(enableDeselection: false))
+        form +++ SelectableSection<ListCheckRow<String>>("", selectionType: .singleSelection(enableDeselection: false))
         for option in oceans {
             form.last! <<< ListCheckRow<String>("\(option)2"){ lrow in
                 lrow.title = option
@@ -66,7 +66,7 @@ class SelectableSectionTests: XCTestCase {
         formVC.form = form
         
         // load the view to test the cells
-        formVC.view.frame = CGRectMake(0, 0, 375, 3000)
+        formVC.view.frame = CGRect(x: 0, y: 0, width: 375, height: 3000)
         formVC.tableView?.frame = formVC.view.frame
     }
     
@@ -75,12 +75,13 @@ class SelectableSectionTests: XCTestCase {
     }
     
     func testSections() {
-        formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 1, inSection: 0))
-        formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 1, inSection: 1))
-        formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 3, inSection: 1))
         
-        let value1 = (formVC.form[0] as! SelectableSection<ListCheckRow<String>, String>).selectedRow()?.baseValue
-        let value2 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>, String>).selectedRows().map({$0.baseValue})
+        formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 1, section: 0))
+        formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 1, section: 1))
+        formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 3, section: 1))
+        
+        let value1 = (formVC.form[0] as! SelectableSection<ListCheckRow<String>>).selectedRow()?.baseValue
+        let value2 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>>).selectedRows().map({$0.baseValue})
         
         XCTAssertEqual(value1 as? String, "Antarctica")
         XCTAssertTrue(value2.count == 2)
@@ -88,11 +89,11 @@ class SelectableSectionTests: XCTestCase {
         XCTAssertEqual((value2[1] as? String), "Pacific")
         
         //Now deselect One of the multiple selection section and change the value of the first section
-        formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 6, inSection: 0))
-        formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 1, inSection: 1))
+        formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 6, section: 0))
+        formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 1, section: 1))
         
-        let value3 = (formVC.form[0] as! SelectableSection<ListCheckRow<String>, String>).selectedRow()?.baseValue
-        let value4 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>, String>).selectedRows().map({$0.baseValue})
+        let value3 = (formVC.form[0] as! SelectableSection<ListCheckRow<String>>).selectedRow()?.baseValue
+        let value4 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>>).selectedRows().map({$0.baseValue})
         
         XCTAssertEqual(value3 as? String, "South America")
         XCTAssertTrue(value4.count == 1)
@@ -100,23 +101,23 @@ class SelectableSectionTests: XCTestCase {
     }
     
     func testDeselectionDisabled() {
-        formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 2))
+        formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 0, section: 2))
         
-        var value1 = (formVC.form[2] as! SelectableSection<ListCheckRow<String>, String>).selectedRow()?.baseValue
+        var value1 = (formVC.form[2] as! SelectableSection<ListCheckRow<String>>).selectedRow()?.baseValue
         
         XCTAssertEqual(value1 as? String, "Arctic")
         
         // now try deselecting one of each and see that nothing changes.
-        formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 2))
+        formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 0, section: 2))
         
-        value1 = (formVC.form[2] as! SelectableSection<ListCheckRow<String>, String>).selectedRow()?.baseValue
+        value1 = (formVC.form[2] as! SelectableSection<ListCheckRow<String>>).selectedRow()?.baseValue
         
         XCTAssertEqual(value1 as? String, "Arctic")
         
         // But we can change the value in the first section
-        formVC.tableView(formVC.tableView!, didSelectRowAtIndexPath: NSIndexPath(forRow: 2, inSection: 2))
+        formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 2, section: 2))
         
-        value1 = (formVC.form[2] as! SelectableSection<ListCheckRow<String>, String>).selectedRow()?.baseValue
+        value1 = (formVC.form[2] as! SelectableSection<ListCheckRow<String>>).selectedRow()?.baseValue
         
         XCTAssertEqual(value1 as? String, "Indian")
         

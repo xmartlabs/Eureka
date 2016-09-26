@@ -1,7 +1,7 @@
 //  CallbacksTests.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,7 +33,7 @@ class CallbacksTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // load the view to test the cells
-        formVC.view.frame = CGRectMake(0, 0, 375, 3000)
+        formVC.view.frame = CGRect(x: 0, y: 0, width: 375, height: 3000)
         formVC.tableView?.frame = formVC.view.frame
     }
     
@@ -42,84 +42,78 @@ class CallbacksTests: XCTestCase {
     }
     
     func testOnChange() {
-        onChangeTest(TextRow(), value: "text")
-        onChangeTest(IntRow(), value: 33)
-        onChangeTest(DecimalRow(), value: 35.7)
-        onChangeTest(URLRow(), value: NSURL(string: "http://xmartlabs.com")!)
-        onChangeTest(DateRow(), value: NSDate().dateByAddingTimeInterval(100))
-        onChangeTest(DateInlineRow(), value: NSDate().dateByAddingTimeInterval(100))
-        onChangeTest(PopoverSelectorRow<String>(), value: "text")
-        onChangeTest(PostalAddressRow(), value: PostalAddress(street: "a", state: "b", postalCode: "c", city: "d", country: "e"))
-        onChangeTest(SliderRow(), value: 5.0)
-        onChangeTest(StepperRow(), value: 2.5)
+        onChangeTest(row:TextRow(), value: "text")
+        onChangeTest(row:IntRow(), value: 33)
+        onChangeTest(row:DecimalRow(), value: 35.7)
+        onChangeTest(row:URLRow(), value: URL(string: "http://xmartlabs.com")!)
+        onChangeTest(row:DateRow(), value: Date().addingTimeInterval(100))
+        onChangeTest(row:DateInlineRow(), value: Date().addingTimeInterval(100))
+        onChangeTest(row:PopoverSelectorRow<String>(), value: "text")
+        onChangeTest(row:SliderRow(), value: 5.0)
+        onChangeTest(row:StepperRow(), value: 2.5)
     }
     
     func testCellSetup() {
-        cellSetupTest(TextRow())
-        cellSetupTest(IntRow())
-        cellSetupTest(DecimalRow())
-        cellSetupTest(URLRow())
-        cellSetupTest(DateRow())
-        cellSetupTest(DateInlineRow())
-        cellSetupTest(PopoverSelectorRow<String>())
-        cellSetupTest(PostalAddressRow())
-        cellSetupTest(SliderRow())
-        cellSetupTest(StepperRow())
+        cellSetupTest(row:TextRow())
+        cellSetupTest(row:IntRow())
+        cellSetupTest(row:DecimalRow())
+        cellSetupTest(row:URLRow())
+        cellSetupTest(row:DateRow())
+        cellSetupTest(row:DateInlineRow())
+        cellSetupTest(row:PopoverSelectorRow<String>())
+        cellSetupTest(row:SliderRow())
+        cellSetupTest(row:StepperRow())
     }
     
     func testCellUpdate() {
-        cellUpdateTest(TextRow())
-        cellUpdateTest(IntRow())
-        cellUpdateTest(DecimalRow())
-        cellUpdateTest(URLRow())
-        cellUpdateTest(DateRow())
-        cellUpdateTest(DateInlineRow())
-        cellUpdateTest(PopoverSelectorRow<String>())
-        cellUpdateTest(PostalAddressRow())
-        cellUpdateTest(SliderRow())
-        cellUpdateTest(StepperRow())
+        cellUpdateTest(row:TextRow())
+        cellUpdateTest(row:IntRow())
+        cellUpdateTest(row:DecimalRow())
+        cellUpdateTest(row:URLRow())
+        cellUpdateTest(row:DateRow())
+        cellUpdateTest(row:DateInlineRow())
+        cellUpdateTest(row:PopoverSelectorRow<String>())
+        cellUpdateTest(row:SliderRow())
+        cellUpdateTest(row:StepperRow())
     }
     
     func testDefaultCellSetup() {
-        defaultCellSetupTest(TextRow())
-        defaultCellSetupTest(IntRow())
-        defaultCellSetupTest(DecimalRow())
-        defaultCellSetupTest(URLRow())
-        defaultCellSetupTest(DateRow())
-        defaultCellSetupTest(DateInlineRow())
-        defaultCellSetupTest(PopoverSelectorRow<String>())
-        defaultCellSetupTest(PostalAddressRow())
-        defaultCellSetupTest(SliderRow())
-        defaultCellSetupTest(StepperRow())
+        defaultCellSetupTest(row:TextRow())
+        defaultCellSetupTest(row:IntRow())
+        defaultCellSetupTest(row:DecimalRow())
+        defaultCellSetupTest(row:URLRow())
+        defaultCellSetupTest(row:DateRow())
+        defaultCellSetupTest(row:DateInlineRow())
+        defaultCellSetupTest(row:PopoverSelectorRow<String>())
+        defaultCellSetupTest(row:SliderRow())
+        defaultCellSetupTest(row:StepperRow())
     }
     
     func testDefaultCellUpdate() {
-        defaultCellUpdateTest(TextRow())
-        defaultCellUpdateTest(IntRow())
-        defaultCellUpdateTest(DecimalRow())
-        defaultCellUpdateTest(URLRow())
-        defaultCellUpdateTest(DateRow())
-        defaultCellUpdateTest(DateInlineRow())
-        defaultCellUpdateTest(PopoverSelectorRow<String>())
-        defaultCellUpdateTest(PostalAddressRow())
-        defaultCellUpdateTest(SliderRow())
-        defaultCellUpdateTest(StepperRow())
+       defaultCellUpdateTest(row: TextRow())
+       defaultCellUpdateTest(row: IntRow())
+       defaultCellUpdateTest(row: DecimalRow())
+       defaultCellUpdateTest(row: URLRow())
+       defaultCellUpdateTest(row: DateRow())
+       defaultCellUpdateTest(row: DateInlineRow())
+       defaultCellUpdateTest(row: PopoverSelectorRow<String>())
+       defaultCellUpdateTest(row: SliderRow())
+       defaultCellUpdateTest(row: StepperRow())
     }
     
     func testDefaultInitializers() {
-        defaultInitializerTest(TextRow())
-        defaultInitializerTest(IntRow())
-        defaultInitializerTest(DecimalRow())
-        defaultInitializerTest(URLRow())
-        defaultInitializerTest(DateRow())
-        defaultInitializerTest(DateInlineRow())
-        defaultInitializerTest(PopoverSelectorRow<String>())
-        defaultInitializerTest(PostalAddressRow())
-        defaultInitializerTest(SliderRow())
-        defaultInitializerTest(StepperRow())
+       defaultInitializerTest(row: TextRow())
+       defaultInitializerTest(row: IntRow())
+       defaultInitializerTest(row: DecimalRow())
+       defaultInitializerTest(row: URLRow())
+       defaultInitializerTest(row: DateRow())
+       defaultInitializerTest(row: DateInlineRow())
+       defaultInitializerTest(row: PopoverSelectorRow<String>())
+       defaultInitializerTest(row: SliderRow())
+       defaultInitializerTest(row: StepperRow())
     }
     
-    private func onChangeTest<Row, Value where Row: BaseRow, Row: RowType, Row: TypedRowType, Row.Value == Row.Cell.Value, Value == Row.Value>(row:Row, value:Value){
+    private func onChangeTest<Row, Value>(row:Row, value:Value) where Row: BaseRow, Row: RowType, Row: TypedRowType, Value == Row.Cell.Value {
         var invoked = false
         row.onChange { row in
             invoked = true
@@ -129,27 +123,27 @@ class CallbacksTests: XCTestCase {
         XCTAssertTrue(invoked)
     }
     
-    private func cellSetupTest<Row, Value where  Row: BaseRow, Row : RowType, Row: TypedRowType, Row.Value == Row.Cell.Value, Value == Row.Value>(row:Row){
+    private func cellSetupTest<Row, Value>(row:Row) where  Row: BaseRow, Row : RowType, Row: TypedRowType, Value == Row.Cell.Value {
         var invoked = false
         row.cellSetup { cell, row in
             invoked = true
         }
         formVC.form +++ Section() <<< row
-        row.cell // laod cell
+        let _ = row.cell // laod cell
         XCTAssertTrue(invoked)
     }
     
-    private func cellUpdateTest<Row, Value where  Row: BaseRow, Row : RowType, Row: TypedRowType, Row.Value == Row.Cell.Value, Value == Row.Value>(row:Row){
+    private func cellUpdateTest<Row, Value>(row:Row) where  Row: BaseRow, Row : RowType, Row: TypedRowType, Value == Row.Cell.Value {
         var invoked = false
         row.cellUpdate { cell, row in
             invoked = true
         }
         formVC.form +++ Section() <<< row
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: row.indexPath()!) // should invoke cell update
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row.indexPath!) // should invoke cell update
         XCTAssertTrue(invoked)
     }
     
-    private func defaultInitializerTest<Row where Row: BaseRow, Row : RowType,  Row: TypedRowType, Row.Value == Row.Cell.Value>(row:Row){
+    private func defaultInitializerTest<Row>(row:Row) where Row: BaseRow, Row : RowType,  Row: TypedRowType {
         var invoked = false
         Row.defaultRowInitializer = { row in
             invoked = true
@@ -158,23 +152,23 @@ class CallbacksTests: XCTestCase {
         XCTAssertTrue(invoked)
     }
     
-    private func defaultCellSetupTest<Row where Row: BaseRow, Row: RowType,  Row: TypedRowType, Row.Value == Row.Cell.Value>(row:Row){
+    private func defaultCellSetupTest<Row>(row:Row) where Row: BaseRow, Row: RowType,  Row: TypedRowType {
         var invoked = false
         Row.defaultCellSetup = { cell, row in
             invoked = true
         }
         formVC.form +++ row
-        row.cell // laod cell
+        let _ = row.cell // laod cell
         XCTAssertTrue(invoked)
     }
 
-    private func defaultCellUpdateTest<Row where Row: BaseRow, Row : RowType, Row: TypedRowType, Row.Value == Row.Cell.Value>(row:Row){
+    private func defaultCellUpdateTest<Row>(row:Row) where Row: BaseRow, Row : RowType, Row: TypedRowType {
         var invoked = false
         Row.defaultCellUpdate = { cell, row in
             invoked = true
         }
         formVC.form +++ row
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: row.indexPath()!) // should invoke cell update
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row.indexPath!) // should invoke cell update
         XCTAssertTrue(invoked)
     }
 }

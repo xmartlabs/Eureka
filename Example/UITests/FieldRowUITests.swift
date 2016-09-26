@@ -1,7 +1,7 @@
 //  ExampleUITests.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -55,33 +55,33 @@ class FieldRowUITests: XCTestCase {
         
         
         // get Decimal row text field
-        let decimalRowTextFieldElement = tablesQuery.cells.containingType(.StaticText, identifier:"DecimalRow").childrenMatchingType(.TextField).element
+        let decimalRowTextFieldElement = tablesQuery.cells.containing(.staticText, identifier:"DecimalRow").children(matching: .textField).element
         
         // chack initial value
-        XCTAssertEqual(decimalRowTextFieldElement.value as? String, decimalFormatter.editingStringForObjectValue(Double(5)), "Initial Decimal Row value is wrong, should be 5,00 or 5.00")
+        XCTAssertEqual(decimalRowTextFieldElement.value as? String, decimalFormatter.editingString(for: Double(5)), "Initial Decimal Row value is wrong, should be 5,00 or 5.00")
         
         
         // check that delete keyboard worlks properly
         decimalRowTextFieldElement.tap()
-        let deleteKey = app.keyboards.keys["Delete"]
+        let deleteKey = app.keys["Delete"]
         deleteKey.tap()
-        XCTAssertEqual(decimalRowTextFieldElement.value as? String, decimalFormatter.editingStringForObjectValue(Double(0.5)), "Decimal Row value is wrong, should be 0,50 or 0.50")
+        XCTAssertEqual(decimalRowTextFieldElement.value as? String, decimalFormatter.editingString(for: Double(0.5)), "Decimal Row value is wrong, should be 0,50 or 0.50")
         
         // check empty value
         for _ in 1...2 { deleteKey.tap() }
         //should be 0,00
-        XCTAssertEqual(decimalRowTextFieldElement.value as? String, decimalFormatter.editingStringForObjectValue(Double(0)), "Decimal Row value is wrong, should be 0,00 or 0.00")
+        XCTAssertEqual(decimalRowTextFieldElement.value as? String, decimalFormatter.editingString(for: Double(0)), "Decimal Row value is wrong, should be 0,00 or 0.00")
         
         
         // check result when entering digits
         decimalRowTextFieldElement.typeText("5678")
         // Should be 56,78
-        XCTAssertEqual(decimalRowTextFieldElement.value as? String, decimalFormatter.editingStringForObjectValue(Double(56.78)), "Decimal Row value is wrong, should be 56,78 or 56.78")
+        XCTAssertEqual(decimalRowTextFieldElement.value as? String, decimalFormatter.editingString(for: Double(56.78)), "Decimal Row value is wrong, should be 56,78 or 56.78")
         
         // one more check...
         decimalRowTextFieldElement.typeText("9")
         // SHOULD BE 567,89
-        XCTAssertEqual(decimalRowTextFieldElement.value as? String, decimalFormatter.editingStringForObjectValue(Double(567.89)), "Decimal Row value is wrong, should be 567,89 or 567.89")
+        XCTAssertEqual(decimalRowTextFieldElement.value as? String, decimalFormatter.editingString(for: Double(567.89)), "Decimal Row value is wrong, should be 567,89 or 567.89")
     }
     
     
@@ -91,20 +91,20 @@ class FieldRowUITests: XCTestCase {
         let tablesQuery = app.tables
         tablesQuery.cells.staticTexts["Rows"].tap()
         
-        let textField = tablesQuery.cells.containingType(.StaticText, identifier:"IntRow").childrenMatchingType(.TextField).element
+        let textField = tablesQuery.cells.containing(.staticText, identifier:"IntRow").children(matching: .textField).element
         
         // chack initial value
-        XCTAssertEqual(textField.value as? String, intFormatter.stringForObjectValue(Int(2015)), "Initial Int Row value is wrong, should be 2,015 or 2.015")
+        XCTAssertEqual(textField.value as? String, intFormatter.string(for: Int(2015)), "Initial Int Row value is wrong, should be 2,015 or 2.015")
         
         textField.tap()
         // should be 2015
         XCTAssertEqual(textField.value as? String, "2015", "Editing Initial Int Row value is wrong, should be 2015")
     
-        let deleteKey = app.keyboards.keys["Delete"]
+        let deleteKey = app.keys["Delete"]
         
         deleteKey.tap()
         // sould be 201
-        XCTAssertEqual(textField.value as? String, intFormatter.stringForObjectValue(Int(201)), "Int Row value is wrong, should be 201")
+        XCTAssertEqual(textField.value as? String, intFormatter.string(for: Int(201)), "Int Row value is wrong, should be 201")
         
         deleteKey.tap()
         deleteKey.tap()
@@ -115,7 +115,7 @@ class FieldRowUITests: XCTestCase {
         
         textField.typeText("1")
         // should be 1
-        XCTAssertEqual(textField.value as? String, intFormatter.stringForObjectValue(Int(1)), "Int Row value is wrong, should be 1")
+        XCTAssertEqual(textField.value as? String, intFormatter.string(for: Int(1)), "Int Row value is wrong, should be 1")
         
         
         textField.typeText("2345")
@@ -124,25 +124,25 @@ class FieldRowUITests: XCTestCase {
         
     
         // should be 12,345
-        XCTAssertEqual(textField.value as? String, intFormatter.stringForObjectValue(Int(12345)), "Int Row value is wrong, should be 12,345 or 12.345")
+        XCTAssertEqual(textField.value as? String, intFormatter.string(for: Int(12345)), "Int Row value is wrong, should be 12,345 or 12.345")
     }
     
     
     
     //MARK: Helpers
 
-    lazy var decimalFormatter: NSNumberFormatter = {
-        let numberFormatter = NSNumberFormatter()
-        numberFormatter.locale = .currentLocale()
-        numberFormatter.numberStyle = .DecimalStyle
+    lazy var decimalFormatter: NumberFormatter = {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale.current
+        numberFormatter.numberStyle = .decimal
         numberFormatter.minimumFractionDigits = 2
         return numberFormatter
     }()
     
-    lazy var intFormatter: NSNumberFormatter = {
-        let numberFormatter = NSNumberFormatter()
-        numberFormatter.locale = .currentLocale()
-        numberFormatter.numberStyle = .DecimalStyle
+    lazy var intFormatter: NumberFormatter = {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale.current
+        numberFormatter.numberStyle = .decimal
         numberFormatter.minimumFractionDigits = 0
         numberFormatter.maximumFractionDigits = 0
         return numberFormatter

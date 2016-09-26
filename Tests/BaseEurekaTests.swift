@@ -1,7 +1,7 @@
 //  BaseEurekaTests.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,7 +29,6 @@ class BaseEurekaTests: XCTestCase {
     var dateForm = Form()
     var fieldForm = Form()
     var shortForm = Form()
-	var postalAddressForm = Form()
     var manySectionsForm = Form()
     var formVC = FormViewController()
     
@@ -38,20 +37,20 @@ class BaseEurekaTests: XCTestCase {
         super.setUp()
         
         // load the view to test the cells
-        formVC.view.frame = CGRectMake(0, 0, 375, 3000)
+        formVC.view.frame = CGRect(x: 0, y: 0, width: 375, height: 3000)
         formVC.tableView?.frame = formVC.view.frame
 
         
         // Create a Date section containing one date row of each type and some extra rows that use minimumDate, maximumDate and minuteInterval restrictions
         dateForm +++ Section("Date Section")
-            <<< DateRow("DateRow_d1"){ $0.title = "Date"; $0.value = NSDate() }
-            <<< DateTimeRow("DateTimeRow_d1"){ $0.title = "DateTime"; $0.value = NSDate() }
-            <<< TimeRow("TimeRow_d1"){ $0.title = "Time"; $0.value = NSDate() }
-            <<< CountDownRow("CountDownRow_d1"){ $0.title = "CountDown"; $0.value = NSDate() }
-            <<< DateRow("MinDateRow_d1"){ $0.title = "Date(min)"; $0.value = NSDate(); $0.minimumDate = $0.value?.dateByAddingTimeInterval(-60*60*24) }
-            <<< DateRow("MaxDateRow_d1"){ $0.title = "Date(max)"; $0.value = NSDate(); $0.maximumDate = $0.value?.dateByAddingTimeInterval(60*60*24) }
-            <<< DateRow("MinMaxDateRow_d1"){ $0.title = "Date(min/max)"; $0.value = NSDate(); $0.minimumDate = $0.value?.dateByAddingTimeInterval(-60*60*24); $0.maximumDate = $0.value?.dateByAddingTimeInterval(60*60*24)  }
-            <<< DateRow("IntervalDateRow_d1"){ $0.title = "Date(interval)"; $0.value = NSDate(); $0.minuteInterval = 15 }
+            <<< DateRow("DateRow_d1"){ $0.title = "Date"; $0.value = Date() }
+            <<< DateTimeRow("DateTimeRow_d1"){ $0.title = "DateTime"; $0.value = Date() }
+            <<< TimeRow("TimeRow_d1"){ $0.title = "Time"; $0.value = Date() }
+            <<< CountDownRow("CountDownRow_d1"){ $0.title = "CountDown"; $0.value = Date() }
+            <<< DateRow("MinDateRow_d1"){ $0.title = "Date(min)"; $0.value = Date(); $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24) }
+            <<< DateRow("MaxDateRow_d1"){ $0.title = "Date(max)"; $0.value = Date(); $0.maximumDate = $0.value?.addingTimeInterval(60*60*24) }
+            <<< DateRow("MinMaxDateRow_d1"){ $0.title = "Date(min/max)"; $0.value = Date(); $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24); $0.maximumDate = $0.value?.addingTimeInterval(60*60*24)  }
+            <<< DateRow("IntervalDateRow_d1"){ $0.title = "Date(interval)"; $0.value = Date(); $0.minuteInterval = 15 }
         
         shortForm +++ Section("short")
             <<< NameRow("NameRow_s1"){ $0.title = "Name" }
@@ -69,12 +68,7 @@ class BaseEurekaTests: XCTestCase {
             <<< TwitterRow("TwitterRow_f1"){ $0.title = "Twitter" }
             <<< AccountRow("AccountRow_f1"){ $0.title = "Account" }
             <<< ZipCodeRow("ZipCodeRow_f1"){ $0.title = "Zip Code" }
-		
-		postalAddressForm +++ Section("Postal Address Section")
-			<<< PostalAddressRow("PostalAddressRow_f1"){
-				$0.title = "Postal Address"
-			}
-		
+				
         manySectionsForm =  Section("Section A")
                         +++ Section("Section B")
                         +++ Section("Section C")
@@ -89,7 +83,6 @@ class BaseEurekaTests: XCTestCase {
         dateForm = Form()
         shortForm = Form()
         fieldForm = Form()
-		postalAddressForm = Form()
         manySectionsForm = Form()
         formVC = FormViewController()
     }
@@ -100,8 +93,6 @@ class BaseEurekaTests: XCTestCase {
         XCTAssertEqual(shortForm[0].count, 2)
         XCTAssertEqual(fieldForm.count, 1)
         XCTAssertEqual(fieldForm[0].count, 11)
-		XCTAssertEqual(postalAddressForm.count, 1)
-		XCTAssertEqual(postalAddressForm[0].count, 1)
         XCTAssertEqual(manySectionsForm.count, 6)
         XCTAssertEqual(manySectionsForm[0].count, 0)
     }
@@ -120,32 +111,32 @@ public class MyFormDelegate : FormDelegate {
     public var rowsReplacedOut = 0
     public var sectionsReplacedOut = 0
     
-    public func rowValueHasBeenChanged(row: BaseRow, oldValue: Any?, newValue: Any?) {
+    public func valueHasBeenChanged(for: BaseRow, oldValue: Any?, newValue: Any?){
         valuesChanged += 1
     }
     
-    public func sectionsHaveBeenAdded(sections: [Section], atIndexes: NSIndexSet){
+    public func sectionsHaveBeenAdded(_ sections: [Section], at: IndexSet){
         sectionsAdded += sections.count
     }
     
-    public func sectionsHaveBeenRemoved(sections: [Section], atIndexes: NSIndexSet){
+    public func sectionsHaveBeenRemoved(_ sections: [Section], at: IndexSet){
         sectionsRemoved += sections.count
     }
     
-    public func sectionsHaveBeenReplaced(oldSections oldSections:[Section], newSections: [Section], atIndexes: NSIndexSet){
+    public func sectionsHaveBeenReplaced(oldSections:[Section], newSections: [Section], at: IndexSet){
         sectionsReplacedIn += newSections.count
         sectionsReplacedOut += oldSections.count
     }
     
-    public func rowsHaveBeenAdded(rows: [BaseRow], atIndexPaths:[NSIndexPath]){
+    public func rowsHaveBeenAdded(_ rows: [BaseRow], at:[IndexPath]){
         rowsAdded += rows.count
     }
     
-    public func rowsHaveBeenRemoved(rows: [BaseRow], atIndexPaths:[NSIndexPath]){
+    public func rowsHaveBeenRemoved(_ rows: [BaseRow], at:[IndexPath]){
         rowsRemoved += rows.count
     }
     
-    public func rowsHaveBeenReplaced(oldRows oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [NSIndexPath]){
+    public func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], at: [IndexPath]){
         rowsReplacedIn += newRows.count
         rowsReplacedOut += oldRows.count
     }

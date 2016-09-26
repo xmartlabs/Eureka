@@ -1,7 +1,7 @@
 //  RowCallbackTests.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,7 +33,7 @@ class RowCallbackTests: BaseEurekaTests {
             +++ Section("something")
             <<< CheckRow("row1").cellSetup { cell, row in
                 cell.textLabel?.text = "checkrow + Setup"
-                cell.backgroundColor = .redColor()
+                cell.backgroundColor = .red
             }
             <<< IntRow("row2").cellUpdate({ cell, row in
                 cell.textLabel?.text = "introw"
@@ -71,37 +71,37 @@ class RowCallbackTests: BaseEurekaTests {
 
     func testCellSetupAndUpdate() {
 
-        let chkRow : CheckRow! = formVC.form.rowByTag("row1")
-        let intRow : IntRow! = formVC.form.rowByTag("row2")
-        let textRow : TextRow! = formVC.form.rowByTag("row3")
+        let chkRow : CheckRow! = formVC.form.rowBy(tag: "row1")
+        let intRow : IntRow! = formVC.form.rowBy(tag: "row2")
+        let textRow : TextRow! = formVC.form.rowBy(tag: "row3")
         
         // check that they all have indexPath
-        XCTAssertNotNil(chkRow.indexPath())
-        XCTAssertNotNil(intRow.indexPath())
-        XCTAssertNotNil(textRow.indexPath())
+        XCTAssertNotNil(chkRow.indexPath)
+        XCTAssertNotNil(intRow.indexPath)
+        XCTAssertNotNil(textRow.indexPath)
         
         // make sure cellSetup is called for each cell
         
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: intRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: intRow.indexPath!)
         
         
         XCTAssertEqual(chkRow.cell.textLabel?.text, "checkrow + Setup")
         XCTAssertEqual(textRow.cell.textLabel?.text, "aftersetup")
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: textRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: textRow.indexPath!)
         XCTAssertEqual(textRow.cell.textLabel?.text, "afterupdate")
         
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: chkRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: chkRow.indexPath!)
         
         //make sure cell update is called for each cell
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: chkRow.indexPath()!)
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: intRow.indexPath()!)
-        formVC.tableView(formVC.tableView!, cellForRowAtIndexPath: textRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: chkRow.indexPath!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: intRow.indexPath!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: textRow.indexPath!)
         
         XCTAssertEqual(chkRow?.cell.textLabel?.text, chkRow?.title)
         XCTAssertEqual(intRow?.cell.textLabel?.text, "introw")
         XCTAssertEqual(textRow?.cell.textLabel?.text, "afterupdate")
         
-        XCTAssertEqual(chkRow?.cell.backgroundColor, .redColor())
+        XCTAssertEqual(chkRow?.cell.backgroundColor, .red)
         XCTAssertEqual(intRow?.cell.textLabel?.font, UIFont(name: "Baskerville-Italic", size: 20))
         XCTAssertEqual(textRow?.cell.textLabel?.font, UIFont(name: "Baskerville-Italic", size: 20))
         
