@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import Eureka
 
 /// Selector Controller used to pick an image
 open class ImagePickerController : UIImagePickerController, TypedRowControllerType, UIImagePickerControllerDelegate, UINavigationControllerDelegate {

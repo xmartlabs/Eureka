@@ -27,8 +27,8 @@ import Foundation
 public class RuleEmail: RuleRegExp {
     
     public init() {
-        super.init(regExpr: RegExprPattern.EmailAddress.rawValue)
-        self.validationError = ValidationError(msg: "Field value should a valid email!")
+        super.init(regExpr: RegExprPattern.EmailAddress.rawValue, allowsEmpty: true)
+        self.validationError = ValidationError(msg: "Field value should be a valid email!")
     }
     
 }

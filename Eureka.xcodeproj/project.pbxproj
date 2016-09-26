@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		280FBE5D1D87360900900064 /* RuleRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280FBE5C1D87360900900064 /* RuleRange.swift */; };
 		280FBE5F1D873CCE00900064 /* RuleClosure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280FBE5E1D873CCE00900064 /* RuleClosure.swift */; };
-		283D16D61C80B29A00DD6347 /* ImageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDB91C7D12210002982F /* ImageRow.swift */; };
-		283D16D71C80B2AD00DD6347 /* ImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CE161C7E02D10002982F /* ImagePickerController.swift */; };
 		2859CD951C7CF1FD0002982F /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CD921C7CF1FD0002982F /* Core.swift */; };
 		2859CD961C7CF1FD0002982F /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CD931C7CF1FD0002982F /* Helpers.swift */; };
 		2859CDBE1C7D137D0002982F /* Form.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDBD1C7D137D0002982F /* Form.swift */; };
@@ -19,7 +17,6 @@
 		2859CDC61C7D1A2E0002982F /* NavigationAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDC51C7D1A2E0002982F /* NavigationAccessoryView.swift */; };
 		2859CDE91C7DD78E0002982F /* BaseRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDE81C7DD78E0002982F /* BaseRow.swift */; };
 		287A142B1D89DF1E00FFE6EB /* ValidationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A142A1D89DF1E00FFE6EB /* ValidationsTests.swift */; };
-		287A14321D8A07ED00FFE6EB /* ImageRowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A142F1D8A07C300FFE6EB /* ImageRowTests.swift */; };
 		287A14331D8A07ED00FFE6EB /* SelectableSectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A142D1D8A07B700FFE6EB /* SelectableSectionTests.swift */; };
 		287E7D7E1D625A260065F4DE /* RuleRequired.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E7D7D1D625A260065F4DE /* RuleRequired.swift */; };
 		287E7D801D74E42D0065F4DE /* RuleRegExp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E7D7F1D74E42D0065F4DE /* RuleRegExp.swift */; };
@@ -115,7 +112,6 @@
 		2859CDB31C7D0E4B0002982F /* OptionsRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OptionsRow.swift; path = Common/OptionsRow.swift; sourceTree = "<group>"; };
 		2859CDB51C7D0EC60002982F /* PickerRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerRow.swift; sourceTree = "<group>"; };
 		2859CDB71C7D0FE70002982F /* PickerInlineRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerInlineRow.swift; sourceTree = "<group>"; };
-		2859CDB91C7D12210002982F /* ImageRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRow.swift; sourceTree = "<group>"; };
 		2859CDBB1C7D12930002982F /* SelectorRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectorRow.swift; path = Common/SelectorRow.swift; sourceTree = "<group>"; };
 		2859CDBD1C7D137D0002982F /* Form.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Form.swift; sourceTree = "<group>"; };
 		2859CDBF1C7D138D0002982F /* Section.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
@@ -134,7 +130,6 @@
 		2859CE101C7E01EE0002982F /* SelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectorViewController.swift; path = Controllers/SelectorViewController.swift; sourceTree = "<group>"; };
 		2859CE121C7E02310002982F /* MultipleSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultipleSelectorViewController.swift; path = Controllers/MultipleSelectorViewController.swift; sourceTree = "<group>"; };
 		2859CE141C7E02710002982F /* SelectorAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectorAlertController.swift; path = Controllers/SelectorAlertController.swift; sourceTree = "<group>"; };
-		2859CE161C7E02D10002982F /* ImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImagePickerController.swift; path = Controllers/ImagePickerController.swift; sourceTree = "<group>"; };
 		2859CE1B1C7E04630002982F /* ListCheckRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListCheckRow.swift; path = SelectableRows/ListCheckRow.swift; sourceTree = "<group>"; };
 		2859CE1D1C7E08300002982F /* PopoverSelectorRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverSelectorRow.swift; sourceTree = "<group>"; };
 		2859CE1F1C7E092B0002982F /* MultipleSelectorRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleSelectorRow.swift; sourceTree = "<group>"; };
@@ -142,7 +137,6 @@
 		2859CE231C7E141B0002982F /* SelectableSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectableSection.swift; sourceTree = "<group>"; };
 		287A142A1D89DF1E00FFE6EB /* ValidationsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ValidationsTests.swift; path = Tests/ValidationsTests.swift; sourceTree = SOURCE_ROOT; };
 		287A142D1D8A07B700FFE6EB /* SelectableSectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectableSectionTests.swift; path = Tests/SelectableSectionTests.swift; sourceTree = SOURCE_ROOT; };
-		287A142F1D8A07C300FFE6EB /* ImageRowTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageRowTests.swift; path = Tests/ImageRowTests.swift; sourceTree = SOURCE_ROOT; };
 		287E7D7D1D625A260065F4DE /* RuleRequired.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RuleRequired.swift; path = Source/Validations/RuleRequired.swift; sourceTree = SOURCE_ROOT; };
 		287E7D7F1D74E42D0065F4DE /* RuleRegExp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RuleRegExp.swift; path = Source/Validations/RuleRegExp.swift; sourceTree = SOURCE_ROOT; };
 		287E7D811D74E64C0065F4DE /* RuleURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RuleURL.swift; path = Source/Validations/RuleURL.swift; sourceTree = SOURCE_ROOT; };
@@ -242,7 +236,6 @@
 				2859CDF41C7DF2740002982F /* DateInlineRow.swift */,
 				2859CDFC1C7DF9430002982F /* DatePickerRow.swift */,
 				2859CE061C7DFBFA0002982F /* FieldsRow.swift */,
-				2859CDB91C7D12210002982F /* ImageRow.swift */,
 				2859CDA01C7CF3A10002982F /* LabelRow.swift */,
 				2859CE1F1C7E092B0002982F /* MultipleSelectorRow.swift */,
 				2859CDB51C7D0EC60002982F /* PickerRow.swift */,
@@ -277,7 +270,6 @@
 		2859CE0F1C7E01C70002982F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				2859CE161C7E02D10002982F /* ImagePickerController.swift */,
 				2859CE101C7E01EE0002982F /* SelectorViewController.swift */,
 				2859CE141C7E02710002982F /* SelectorAlertController.swift */,
 				2859CE121C7E02310002982F /* MultipleSelectorViewController.swift */,
@@ -343,7 +335,6 @@
 		51729DF91B9A4F5E004A00EB /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				287A142F1D8A07C300FFE6EB /* ImageRowTests.swift */,
 				287A142D1D8A07B700FFE6EB /* SelectableSectionTests.swift */,
 				28B1D7711C7F90C900605EB3 /* BaseEurekaTests.swift */,
 				28B1D7721C7F90C900605EB3 /* CallbacksTests.swift */,
@@ -498,7 +489,6 @@
 				28EEC02F1C7E49BF00300699 /* SelectorViewController.swift in Sources */,
 				28EEC0031C7E390300300699 /* DecimalFormatter.swift in Sources */,
 				28EE0FDE1D5E889F00B91340 /* Validation.swift in Sources */,
-				283D16D61C80B29A00DD6347 /* ImageRow.swift in Sources */,
 				2859CD951C7CF1FD0002982F /* Core.swift in Sources */,
 				2859CDBE1C7D137D0002982F /* Form.swift in Sources */,
 				280FBE5F1D873CCE00900064 /* RuleClosure.swift in Sources */,
@@ -520,7 +510,6 @@
 				287E7D801D74E42D0065F4DE /* RuleRegExp.swift in Sources */,
 				28EEC0101C7E399500300699 /* DateInlineFieldRow.swift in Sources */,
 				2859CDC61C7D1A2E0002982F /* NavigationAccessoryView.swift in Sources */,
-				283D16D71C80B2AD00DD6347 /* ImagePickerController.swift in Sources */,
 				49ADC7F91C8A83240073952B /* StepperRow.swift in Sources */,
 				28EE46AC1C7F712300EFF4A2 /* DateInlineRow.swift in Sources */,
 				28EEC01C1C7E3A7400300699 /* ButtonRowWithPresent.swift in Sources */,
@@ -564,7 +553,6 @@
 				287A14331D8A07ED00FFE6EB /* SelectableSectionTests.swift in Sources */,
 				28B1D78A1C7F911900605EB3 /* DateTests.swift in Sources */,
 				287A142B1D89DF1E00FFE6EB /* ValidationsTests.swift in Sources */,
-				287A14321D8A07ED00FFE6EB /* ImageRowTests.swift in Sources */,
 				28B1D78F1C7F911900605EB3 /* RowByTagTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

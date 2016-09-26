@@ -119,6 +119,20 @@ class ValidationsTests: XCTestCase {
         XCTAssertTrue(textRow.validate().count == 0, "errors collection must not contains Required rule error")
     }
     
+    
+    func testRuleEmail() {
+        let emailRule = RuleEmail()
+        
+        XCTAssertNil(emailRule.isValid(value: nil))
+        XCTAssertNil(emailRule.isValid(value: ""))
+        XCTAssertNil(emailRule.isValid(value: "a@b.com"))
+        
+        XCTAssertNotNil(emailRule.isValid(value: "abc"))
+        XCTAssertNotNil(emailRule.isValid(value: "abc.com"))
+        XCTAssertNotNil(emailRule.isValid(value: "abc@assa"))
+        
+    }
+    
 
     
 }

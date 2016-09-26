@@ -27,15 +27,22 @@ import UIKit
 
 public struct RuleURL: RuleType {
     
-    public init() {}
+    public init(allowsEmpty: Bool = true, requiresProtocol: Bool = false) {}
     
     public var id: String?
+    public var allowsEmpty = true
+    public var requiresProtocol = false
     public var validationError = ValidationError(msg: "Field value must be an URL!")
     
     public func isValid(value: URL?) -> ValidationError? {
-        guard let value = value else  { return validationError }
-        let predicate = NSPredicate(format:"SELF MATCHES %@", RegExprPattern.URL.rawValue)
-        guard predicate.evaluate(with: value.absoluteString) else {
+        if let value = value, value.absoluteString.isEmpty == false {
+            let predicate = NSPredicate(format:"SELF MATCHES %@", RegExprPattern.URL.rawValue)
+            guard predicate.evaluate(with: value.absoluteString) else {
+                return validationError
+            }
+            return nil
+        }
+        else if !allowsEmpty {
             return validationError
         }
         return nil

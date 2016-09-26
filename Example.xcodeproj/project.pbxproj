@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2837E2A01BA3A5A800A1952C /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2837E29E1BA3A5A800A1952C /* FloatLabelTextField.swift */; };
 		285F2B441BB79B86005991BA /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 285F2B431BB79B86005991BA /* MapKit.framework */; };
+		287A143F1D99A96100FFE6EB /* ImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A143D1D99A96100FFE6EB /* ImagePickerController.swift */; };
+		287A14401D99A96100FFE6EB /* ImageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A143E1D99A96100FFE6EB /* ImageRow.swift */; };
 		28C777241BA14A52000ED936 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51729E471B9A5841004A00EB /* Eureka.framework */; };
 		28C777251BA14A52000ED936 /* Eureka.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51729E471B9A5841004A00EB /* Eureka.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		28CD97C21BB32F0E00AFDA67 /* EurekaSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28CD97C01BB32F0E00AFDA67 /* EurekaSectionHeader.xib */; };
@@ -77,6 +79,8 @@
 /* Begin PBXFileReference section */
 		2837E29E1BA3A5A800A1952C /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FloatLabelTextField.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		285F2B431BB79B86005991BA /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		287A143D1D99A96100FFE6EB /* ImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImagePickerController.swift; path = Example/CustomRows/ImageRow/ImagePickerController.swift; sourceTree = "<group>"; };
+		287A143E1D99A96100FFE6EB /* ImageRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageRow.swift; path = Example/CustomRows/ImageRow/ImageRow.swift; sourceTree = "<group>"; };
 		28CD97C11BB32F0E00AFDA67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Example/Base.lproj/EurekaSectionHeader.xib; sourceTree = "<group>"; };
 		28E8554A1B9EA400004E5189 /* FieldRowUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FieldRowUITests.swift; path = Example/UITests/FieldRowUITests.swift; sourceTree = SOURCE_ROOT; };
 		51729E1A1B9A54F1004A00EB /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,6 +132,15 @@
 				285F2B431BB79B86005991BA /* MapKit.framework */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		287A143B1D99A91B00FFE6EB /* ImageRow */ = {
+			isa = PBXGroup;
+			children = (
+				287A143D1D99A96100FFE6EB /* ImagePickerController.swift */,
+				287A143E1D99A96100FFE6EB /* ImageRow.swift */,
+			);
+			name = ImageRow;
 			sourceTree = "<group>";
 		};
 		28CD97BE1BB32EC800AFDA67 /* Custom Section Header */ = {
@@ -195,6 +208,7 @@
 		51729E6A1B9A657E004A00EB /* Custom Row and Cell */ = {
 			isa = PBXGroup;
 			children = (
+				287A143B1D99A91B00FFE6EB /* ImageRow */,
 				2837E29D1BA3A5A800A1952C /* Helpers */,
 				51729E6F1B9A660A004A00EB /* WeekDaysCell.xib */,
 				51729E6D1B9A6601004A00EB /* CustomCells.swift */,
@@ -335,6 +349,8 @@
 			files = (
 				51729E201B9A54F1004A00EB /* ViewController.swift in Sources */,
 				51729E6E1B9A6601004A00EB /* CustomCells.swift in Sources */,
+				287A14401D99A96100FFE6EB /* ImageRow.swift in Sources */,
+				287A143F1D99A96100FFE6EB /* ImagePickerController.swift in Sources */,
 				51729E1E1B9A54F1004A00EB /* AppDelegate.swift in Sources */,
 				2837E2A01BA3A5A800A1952C /* FloatLabelTextField.swift in Sources */,
 			);
