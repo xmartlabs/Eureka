@@ -1,13 +1,16 @@
 # Eureka 2.0 Migration  Guide
 
-Eureka 2.0.0 includes complete Swift 3 Compatibility and adopts the new [API Design Guidelines](https://swift.org/documentation/api-design-guidelines/). It also includes new validations build-in feature.
-Bring support to swift 3 involves some API updates to follow apple Swift API best practices, we have also changed and deprecated some API.
-
-Most important changes will be listed below...
-
 #### Requirements:
 
 Eureka 2.0.0 needs Xcode 8, Swift3+ to work. Minimum supported iOS version is 8.0.
+
+#### Changes
+
+Eureka 2.0.0 includes complete Swift 3 Compatibility and adopts the new [API Design Guidelines](https://swift.org/documentation/api-design-guidelines/). It also includes the whole new validations build-in feature.
+Bring support to swift 3 involves some API updates to follow Apple's Swift API best practices, we have also changed and deprecated some API's.
+
+Most important changes will be listed below...
+
 
 Many properties, methods, types were renamed and Xcode should suggest the fix automatically.
 
@@ -32,12 +35,10 @@ There are also some breaking changes related with deprecated API:
 
 Removed APIs:
 
-* `PostalAddressRow` and `ImageRow` was deleted.
-*  row has been deleted. You can find it and many other custom rows at EurekaCommunity [organization account](https://github.com/eurekaCommunity).
+* `PostalAddressRow` and `ImageRow` was deleted. You can find them and many other custom rows at EurekaCommunity [organization account](https://github.com/eurekaCommunity).
+* `highlightCell` and `unhighlightCell` callbacks were deleted, now we should use `row.isHighlighted` from cell update to check from highlighted status and make UI modification according its value.
 
-`highlightCell` and `unhighlightCell` callbacks were deleted, now we should use `row.isHighlighted` from cell update to check from highlighted status and make UI modification according its value.
-
-In case you want to do something when highligth state switches its value you can set up `onCellHighlightChanged` callback.
+In case you want to do something when the row's highlighted state switches its value you can set up `onCellHighlightChanged` callback.
 
 Custom Rows changes:
 

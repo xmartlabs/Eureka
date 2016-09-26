@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 Pull requests associated with this milestone can be found in this [filter](https://github.com/xmartlabs/Eureka/issues?utf8=%E2%9C%93&q=milestone%3A2.0.0%20).
 
-We have made tons of changes in Eureka API to follow the new Swift API design guidelines.
+We have made tons of changes to the Eureka API to follow the new Swift API design guidelines.
 It's hard to enumerate all changes and most of them will be automatically suggested by Xcode.
 
 We have also added to Eureka a extensible build-in validations support.

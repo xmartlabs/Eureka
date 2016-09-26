@@ -1110,7 +1110,10 @@ class ValidationsController: FormViewController {
                     <<< TextRow() {
                         $0.title = "Email Rule"
                         $0.add(rule: RuleRequired())
-                        $0.add(rule: RuleEmail())
+                        var ruleSet = RuleSet<String>()
+                        ruleSet.add(rule: RuleRequired())
+                        ruleSet.add(rule: RuleEmail())
+                        $0.add(ruleSet: ruleSet)
                         $0.validationOptions = .validatesOnChangeAfterBlurred
                     }
     

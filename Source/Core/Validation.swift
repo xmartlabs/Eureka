@@ -27,6 +27,10 @@ import Foundation
 
 public struct ValidationError: Equatable {
     public let msg: String?
+    
+    public init(msg: String? = nil) {
+        self.msg = msg
+    }
 }
 
 public func ==(lhs: ValidationError, rhs: ValidationError) -> Bool{
@@ -70,6 +74,8 @@ internal struct ValidationRuleHelper<T: Equatable> {
 public struct RuleSet<T: Equatable> {
     
     internal var rules: [ValidationRuleHelper<T>] = []
+    
+    public init(){}
     
     public mutating func add<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType{
         let validFn: ((T?) -> ValidationError?) = { (val: T?) in
