@@ -26,9 +26,10 @@ import Foundation
 
 
 public struct ValidationError: Equatable {
-    public let msg: String?
     
-    public init(msg: String? = nil) {
+    public let msg: String
+    
+    public init(msg: String) {
         self.msg = msg
     }
 }
