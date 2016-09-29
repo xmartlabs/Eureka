@@ -76,9 +76,10 @@ open class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
         let constraint = NSLayoutConstraint(item: self.contentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
         constraint.priority = UILayoutPriorityRequired
         return constraint
-        }()
-    fileprivate var messageRow : DictionaryMessageRow? {
-        return row as? DictionaryMessageRow
+    }()
+
+    fileprivate var messageRow : Row<DictionaryMessageCell>? {
+        return row as? Row<DictionaryMessageCell>
     }
     
     // MARK: - Overriding methods
@@ -93,22 +94,21 @@ open class DictionaryMessageCell : Cell<DictionaryMessage>, CellType {
     
     open override func update() {
         style()
+
         textLabel?.text = nil
         detailTextLabel?.text = nil
         messageLabel.text = self.message?.concatenatedMessage()
-        if self.message?.concatenatedMessage().characters.count ?? 0 == 0 {
-            contentView.addConstraint(hideCellConstraint)
-            self.isHidden = true
-        }
-        else {
-            contentView.removeConstraint(hideCellConstraint)
-            self.isHidden = false
-        }
+
+        let msgLength = messageLabel.text?.characters.count ?? 0
+
+        self.isHidden = (msgLength == 0)
+        hideCellConstraint.isActive = self.isHidden
     }
     
     fileprivate func style() {
         messageLabel.textColor = cellTextColor ?? UIColor.white
         self.backgroundColor = cellBackgroundColor ?? UIColor.red
+
         // Hide seperator
         self.separatorInset = UIEdgeInsetsMake(0, self.bounds.size.width, 0, 0);
     }
