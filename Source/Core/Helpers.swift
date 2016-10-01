@@ -79,3 +79,26 @@ extension NSExpression {
         }
     }
 }
+
+extension UIColor {
+    /// Initializes UIColor from hex color in "#ARGB" format
+    convenience init? (eureka_hexColor hexColor: String) {
+        var rgbValue : UInt32 = 0
+        let scanner = Scanner(string: hexColor)
+        scanner.scanLocation = hexColor.hasPrefix("#") ? 1 : 0;
+        if scanner.scanHexInt32(&rgbValue) {
+            var alpha = CGFloat(1.0)
+            if hexColor.length >= 8 {
+                alpha = CGFloat((rgbValue & 0xFF0000) >> 24) / 255.0
+            }
+            let red = CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0
+            let green = CGFloat((rgbValue & 0xFF00) >> 8) / 255.0
+            let blue = CGFloat((rgbValue & 0xFF)) / 255.0
+            
+            self.init(red: red, green: green, blue: blue, alpha: alpha)
+            return
+        }
+        
+        return nil
+    }
+}

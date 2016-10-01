@@ -141,5 +141,18 @@ public final class SliderRow: Row<SliderCell>, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
+    
+    public override init?(dictionary: [String : Any]) {
+        super.init(dictionary: dictionary)
+        if let minimumValue = dictionary["minimumValue"] as? Float {
+            self.minimumValue = minimumValue
+        }
+        if let maximumValue = dictionary["maximumValue"] as? Float {
+            self.maximumValue = maximumValue
+        }
+        if let steps = dictionary["steps"] as? UInt {
+            self.steps = steps
+        }
+    }
 }
 

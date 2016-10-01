@@ -270,6 +270,11 @@ open class AreaRow<Cell: CellType>: FormatteableRow<Cell>, TextAreaConformance w
     public required init(tag: String?) {
         super.init(tag: tag)
     }
+    
+    public override init?(dictionary: [String : Any]) {
+        super.init(dictionary: dictionary)
+        self.placeholder = dictionary["placeholder"] as? String
+    }
 }
 
 open class _TextAreaRow: AreaRow<TextAreaCell> {

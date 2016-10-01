@@ -99,6 +99,13 @@ open class _PickerRow<T> : Row<PickerCell<T>> where T: Equatable{
     required public init(tag: String?) {
         super.init(tag: tag)
     }
+    
+    public override init?(dictionary: [String : Any]) {
+        super.init(dictionary: dictionary)
+        if let options = dictionary["options"] as? [T] {
+            self.options = options
+        }
+    }
 }
 
 /// A generic row where the user can pick an option from a picker view

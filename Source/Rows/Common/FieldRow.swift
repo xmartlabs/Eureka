@@ -79,6 +79,14 @@ open class FormatteableRow<Cell: CellType>: Row<Cell>, FormatterConformance wher
             return formatter.string(for: v)
         }
     }
+    
+    public override init?(dictionary: [String : Any]) {
+        super.init(dictionary: dictionary)
+        // TODO: Implemet comprehensive formatter unserializer
+        /*if let formatterDictionary = dictionary["formatter"] as? [String : Any] {
+            
+        }*/
+    }
 
 }
 
@@ -99,6 +107,14 @@ open class FieldRow<Cell: CellType>: FormatteableRow<Cell>, FieldRowConformance,
     
     public required init(tag: String?) {
         super.init(tag: tag)
+    }
+    
+    public override init? (dictionary: [String: Any]) {
+        super.init(dictionary: dictionary)
+        self.placeholder = dictionary["placeholder"] as? String
+        if let placeholderColorString = dictionary["placeholderColor"] as? String {
+            self.placeholderColor = UIColor(eureka_hexColor: placeholderColorString)
+        }
     }
 }
 
