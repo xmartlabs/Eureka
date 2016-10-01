@@ -144,10 +144,10 @@ open class _DateFieldRow: Row<DateCell>, DatePickerRowProtocol, NoValueDisplayTe
         if let valueString = dictionary["value"] as? String, let value = serializeDateFormatter.date(from: valueString) {
             self.value = value
         }
-        if let minimumString = dictionary["value"] as? String, let minimumDate = serializeDateFormatter.date(from: minimumString) {
+        if let minimumString = dictionary["minimumDate"] as? String, let minimumDate = serializeDateFormatter.date(from: minimumString) {
             self.minimumDate = minimumDate
         }
-        if let maximumString = dictionary["value"] as? String, let maximumDate = serializeDateFormatter.date(from: maximumString) {
+        if let maximumString = dictionary["maximumDate"] as? String, let maximumDate = serializeDateFormatter.date(from: maximumString) {
             self.maximumDate = maximumDate
         }
         self.minuteInterval = dictionary["minuteInterval"] as? Int

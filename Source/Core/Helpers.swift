@@ -88,7 +88,7 @@ extension UIColor {
         scanner.scanLocation = hexColor.hasPrefix("#") ? 1 : 0;
         if scanner.scanHexInt32(&rgbValue) {
             var alpha = CGFloat(1.0)
-            if hexColor.length >= 8 {
+            if hexColor.characters.count >= 8 {
                 alpha = CGFloat((rgbValue & 0xFF0000) >> 24) / 255.0
             }
             let red = CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0
