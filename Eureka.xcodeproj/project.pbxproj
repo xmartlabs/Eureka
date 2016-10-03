@@ -426,7 +426,7 @@
 					51729DEA1B9A4F5E004A00EB = {
 						CreatedOnToolsVersion = 7.0;
 						LastSwiftMigration = 0800;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					51729DF41B9A4F5E004A00EB = {
 						CreatedOnToolsVersion = 7.0;
