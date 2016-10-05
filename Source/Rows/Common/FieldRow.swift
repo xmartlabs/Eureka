@@ -123,11 +123,7 @@ extension TextFieldCell {
 
 open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: Equatable, T: InputTypeInitiable {
     
-    lazy open var textField : UITextField = {
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
+    public var textField: UITextField
     
     open var titleLabel : UILabel? {
         textLabel?.translatesAutoresizingMaskIntoConstraints = false
@@ -139,7 +135,12 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
     open var dynamicConstraints = [NSLayoutConstraint]()
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        
+        textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationWillResignActive, object: nil, queue: nil){ [weak self] notification in
             guard let me = self else { return }
             me.titleLabel?.removeObserver(me, forKeyPath: "text")
