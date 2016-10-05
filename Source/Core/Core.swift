@@ -547,7 +547,7 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     public final func beginEditing<T:Equatable>(of cell: Cell<T>) {
         cell.row.isHighlighted = true
         cell.row.updateCell()
-        RowDefaults.onCellHighlightChanged["\(type(of: self))"]?(cell, cell.row)
+        RowDefaults.onCellHighlightChanged["\(type(of: cell.row!))"]?(cell, cell.row)
         cell.row.callbackOnCellHighlightChanged?()
         guard let _ = tableView, (form.inlineRowHideOptions ?? Form.defaultInlineRowHideOptions).contains(.FirstResponderChanges) else { return }
         let row = cell.baseRow
