@@ -420,6 +420,7 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     public var form : Form {
         get { return _form }
         set {
+            guard form !== newValue else { return }
             _form.delegate = nil
             tableView?.endEditing(false)
             _form = newValue
