@@ -41,8 +41,8 @@ class ValidationsTests: XCTestCase {
     
     func testAddRule() {
         let textRow = TextRow()
-        textRow.addRule(rule: RuleRequired())
-        textRow.addRule(rule: RuleEmail())
+        textRow.addRule(RuleRequired())
+        textRow.addRule(RuleEmail())
         XCTAssertEqual(textRow.rules.count, 2)
         
         textRow.removeAllRules()
@@ -54,20 +54,20 @@ class ValidationsTests: XCTestCase {
         
         
         var ruleSet = RuleSet<String>()
-        ruleSet.addRule(rule: RuleRequired())
-        ruleSet.addRule(rule: RuleEmail())
+        ruleSet.addRule(RuleRequired())
+        ruleSet.addRule(RuleEmail())
         XCTAssertEqual(ruleSet.rules.count, 2)
         
         let textRow = TextRow()
-        textRow.addRuleSet(set: ruleSet)
+        textRow.addRuleSet(ruleSet)
         
         XCTAssertEqual(textRow.rules.count, 2)
     }
     
     func testRemoveRules(){
         let textRow = TextRow()
-        textRow.addRule(rule: RuleRequired())
-        textRow.addRule(rule: RuleEmail())
+        textRow.addRule(RuleRequired())
+        textRow.addRule(RuleEmail())
         XCTAssertEqual(textRow.rules.count, 2)
         
         textRow.removeAllRules()
@@ -75,20 +75,20 @@ class ValidationsTests: XCTestCase {
         
         var requiredRule = RuleRequired<String>()
         requiredRule.id = "required_rule_id"
-        textRow.addRule(rule: requiredRule)
-        textRow.addRule(rule: RuleEmail())
+        textRow.addRule(requiredRule)
+        textRow.addRule(RuleEmail())
         XCTAssertEqual(textRow.rules.count, 2)
         
-        textRow.removeRuleWith(identifier: "required_rule_id")
+        textRow.removeRuleWith("required_rule_id")
         XCTAssertEqual(textRow.rules.count, 1)
         
     }
 
     
     func testBlurred() {
-        let formVC = FormViewController(style: .grouped)
+        let formVC = FormViewController(style: .Grouped)
         let row = TextRow()
-        row.addRule(rule: RuleRequired())
+        row.addRule(RuleRequired())
         XCTAssertFalse(row.blurred)
         formVC.form +++ row
         formVC.endEditing(row.cell)
@@ -96,9 +96,9 @@ class ValidationsTests: XCTestCase {
     }
     
     func testUsed(){
-        let formVC = FormViewController(style: .grouped)
+        let formVC = FormViewController(style: .Grouped)
         let row = TextRow()
-        row.addRule(rule: RuleRequired())
+        row.addRule(RuleRequired())
         XCTAssertFalse(row.used)
         row.value = "Hi!"
         XCTAssertFalse(row.used) // because it's not added in the form yet
@@ -111,7 +111,7 @@ class ValidationsTests: XCTestCase {
     func testRequired() {
         
         let textRow = TextRow()
-        textRow.addRule(rule: RuleRequired())
+        textRow.addRule(RuleRequired())
         
         textRow.value = nil
         XCTAssertTrue(textRow.validate().count == 1, "errors collection must contains Required rule error")
