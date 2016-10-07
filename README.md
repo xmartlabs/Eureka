@@ -781,7 +781,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Eureka', '~> 2.0'
+pod 'Eureka', '~> 2.0.0-beta.1'
 ```
 
 Then run the following command:
@@ -797,7 +797,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 2.0
+github "xmartlabs/Eureka" ~> 2.0.0-beta.1
 ```
 
 #### Manually as Embedded Framework
