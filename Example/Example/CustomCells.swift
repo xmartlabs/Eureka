@@ -572,7 +572,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
     
     
     func tappedDone(_ sender: UIBarButtonItem){
-        let target = mapView.convert(ellipsisLayer.position, toCoordinateFrom: mapView)
+        let target = mapView.convertPoint(ellipsisLayer.position, toCoordinateFromView: mapView)
         row.value = CLLocation(latitude: target.latitude, longitude: target.longitude)
         completionCallback?(self)
     }

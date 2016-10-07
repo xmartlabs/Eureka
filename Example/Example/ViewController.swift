@@ -94,7 +94,7 @@ class HomeViewController : FormViewController {
                 }
                 <<< ButtonRow("Validations") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .segueName(segueName: "ValidationsControllerSegue", completionCallback: nil)
+                    row.presentationMode = .SegueName(segueName: "ValidationsControllerSegue", completionCallback: nil)
                 }
         +++ Section()
                 <<< ButtonRow() { (row: ButtonRow) -> Void in
@@ -1098,16 +1098,16 @@ class ValidationsController: FormViewController {
         super.viewDidLoad()
         
         LabelRow.defaultCellUpdate = { cell, row in
-            cell.contentView.backgroundColor = .red
-            cell.textLabel?.textColor = .white
-            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-            cell.textLabel?.textAlignment = .right
+            cell.contentView.backgroundColor = .redColor()
+            cell.textLabel?.textColor = .whiteColor()
+            cell.textLabel?.font = UIFont.boldSystemFontOfSize(13)
+            cell.textLabel?.textAlignment = .Right
             
         }
         
         TextRow.defaultCellUpdate = { cell, row in
             if !row.isValid {
-                cell.titleLabel?.textColor = .red
+                cell.titleLabel?.textColor = .redColor()
             }
         }
         
@@ -1116,8 +1116,8 @@ class ValidationsController: FormViewController {
             
                     <<< TextRow() {
                         $0.title = "Required Rule"
-                        $0.addRule(rule: RuleRequired())
-                        $0.validationOptions = .validatesOnChange
+                        $0.addRule(RuleRequired())
+                        $0.validationOptions = .ValidatesOnChange
                     }
             
             
@@ -1125,21 +1125,21 @@ class ValidationsController: FormViewController {
             
                     <<< TextRow() {
                         $0.title = "Email Rule"
-                        $0.addRule(rule: RuleRequired())
-                        $0.addRule(rule: RuleEmail())
-                        $0.validationOptions = .validatesOnChangeAfterBlurred
+                        $0.addRule(RuleRequired())
+                        $0.addRule(RuleEmail())
+                        $0.validationOptions = .ValidatesOnChangeAfterBlurred
                     }
     
             +++ Section(header: "URL Rule", footer: "Options: Validates on change")
         
                     <<< URLRow() {
                         $0.title = "URL Rule"
-                        $0.addRule(rule: RuleURL())
-                        $0.validationOptions = .validatesOnChange
+                        $0.addRule(RuleURL())
+                        $0.validationOptions = .ValidatesOnChange
                     }
                     .cellUpdate { cell, row in
                         if !row.isValid {
-                            cell.titleLabel?.textColor = .red
+                            cell.titleLabel?.textColor = .redColor()
                         }
                     }
         
@@ -1147,12 +1147,12 @@ class ValidationsController: FormViewController {
             +++ Section(header: "MinLength 8 Rule, MaxLength 13 Rule", footer: "Options: Validates on blurred")
                     <<< PasswordRow() {
                         $0.title = "Password"
-                        $0.addRule(rule: RuleMinLength(minLength: 8))
-                        $0.addRule(rule: RuleMaxLength(maxLength: 13))
+                        $0.addRule(RuleMinLength(minLength: 8))
+                        $0.addRule(RuleMaxLength(maxLength: 13))
                     }
                     .cellUpdate { cell, row in
                         if !row.isValid {
-                            cell.titleLabel?.textColor = .red
+                            cell.titleLabel?.textColor = .redColor()
                         }
                     }
             
@@ -1161,12 +1161,12 @@ class ValidationsController: FormViewController {
         
                     <<< IntRow() {
                         $0.title = "Range Rule"
-                        $0.addRule(rule: RuleGreaterThan(min: 2))
-                        $0.addRule(rule: RuleSmallerThan(max: 999))
+                        $0.addRule(RuleGreaterThan(min: 2))
+                        $0.addRule(RuleSmallerThan(max: 999))
                     }
                     .cellUpdate { cell, row in
                         if !row.isValid {
-                            cell.titleLabel?.textColor = .red
+                            cell.titleLabel?.textColor = .redColor()
                         }
                     }
 
@@ -1175,26 +1175,26 @@ class ValidationsController: FormViewController {
         
                     <<< TextRow() {
                         $0.title = "Required Rule"
-                        $0.addRule(rule: RuleRequired())
-                        $0.validationOptions = .validatesOnChange
+                        $0.addRule(RuleRequired())
+                        $0.validationOptions = .ValidatesOnChange
                     }
                     .cellUpdate { cell, row in
                         if !row.isValid {
-                            cell.titleLabel?.textColor = .red
+                            cell.titleLabel?.textColor = .redColor()
                         }
                     }
                     .onRowValidationChanged { cell, row in
                         let rowIndex = row.indexPath()!.row
                         while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                            row.section?.remove(at: rowIndex + 1)
+                            row.section?.removeAtIndex(rowIndex + 1)
                         }
                         if !row.isValid {
-                            for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                            for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerate() {
                                 let labelRow = LabelRow() {
                                     $0.title = validationMsg
                                     $0.cell.height = { 30 }
                                 }
-                                row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
+                                row.section?.insert(labelRow, atIndex: row.indexPath()!.row + index + 1)
                             }
                         }
                     }
@@ -1203,27 +1203,27 @@ class ValidationsController: FormViewController {
         
                     <<< EmailRow() {
                         $0.title = "Email Rule"
-                        $0.addRule(rule: RuleRequired())
-                        $0.addRule(rule: RuleEmail())
-                        $0.validationOptions = .validatesOnChangeAfterBlurred
+                        $0.addRule(RuleRequired())
+                        $0.addRule(RuleEmail())
+                        $0.validationOptions = .ValidatesOnChangeAfterBlurred
                     }
                     .cellUpdate { cell, row in
                         if !row.isValid {
-                            cell.titleLabel?.textColor = .red
+                            cell.titleLabel?.textColor = .redColor()
                         }
                     }
                     .onRowValidationChanged { cell, row in
                         let rowIndex = row.indexPath()!.row
                         while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                            row.section?.remove(at: rowIndex + 1)
+                            row.section?.removeAtIndex(rowIndex + 1)
                         }
                         if !row.isValid {
-                            for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                            for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerate() {
                                 let labelRow = LabelRow() {
                                     $0.title = validationMsg
                                     $0.cell.height = { 30 }
                                 }
-                                row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
+                                row.section?.insert(labelRow, atIndex: row.indexPath()!.row + index + 1)
                             }
                         }
                     }
@@ -1232,26 +1232,26 @@ class ValidationsController: FormViewController {
         
                     <<< URLRow() {
                             $0.title = "URL Rule"
-                            $0.addRule(rule: RuleURL())
-                            $0.validationOptions = .validatesOnChange
+                            $0.addRule(RuleURL())
+                            $0.validationOptions = .ValidatesOnChange
                         }
                         .cellUpdate { cell, row in
                             if !row.isValid {
-                                cell.titleLabel?.textColor = .red
+                                cell.titleLabel?.textColor = .redColor()
                             }
                     }
                     .onRowValidationChanged { cell, row in
                         let rowIndex = row.indexPath()!.row
                         while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                            row.section?.remove(at: rowIndex + 1)
+                            row.section?.removeAtIndex(rowIndex + 1)
                         }
                         if !row.isValid {
-                            for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                            for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerate() {
                                 let labelRow = LabelRow() {
                                     $0.title = validationMsg
                                     $0.cell.height = { 30 }
                                 }
-                                row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
+                                row.section?.insert(labelRow, atIndex: row.indexPath()!.row + index + 1)
                             }
                         }
                     }
@@ -1259,26 +1259,26 @@ class ValidationsController: FormViewController {
             
                     <<< PasswordRow() {
                             $0.title = "Password"
-                            $0.addRule(rule: RuleMinLength(minLength: 8))
-                            $0.addRule(rule: RuleMaxLength(maxLength: 13))
+                            $0.addRule(RuleMinLength(minLength: 8))
+                            $0.addRule(RuleMaxLength(maxLength: 13))
                         }
                         .cellUpdate { cell, row in
                             if !row.isValid {
-                                cell.titleLabel?.textColor = .red
+                                cell.titleLabel?.textColor = .redColor()
                             }
                     }
                     .onRowValidationChanged { cell, row in
                         let rowIndex = row.indexPath()!.row
                         while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                            row.section?.remove(at: rowIndex + 1)
+                            row.section?.removeAtIndex(rowIndex + 1)
                         }
                         if !row.isValid {
-                            for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                            for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerate() {
                                 let labelRow = LabelRow() {
                                     $0.title = validationMsg
                                     $0.cell.height = { 30 }
                                 }
-                                row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
+                                row.section?.insert(labelRow, atIndex: row.indexPath()!.row + index + 1)
                             }
                         }
                     }
@@ -1287,26 +1287,26 @@ class ValidationsController: FormViewController {
             
                     <<< IntRow() {
                             $0.title = "Range Rule"
-                            $0.addRule(rule: RuleGreaterThan(min: 2))
-                            $0.addRule(rule: RuleSmallerThan(max: 999))
+                            $0.addRule(RuleGreaterThan(min: 2))
+                            $0.addRule(RuleSmallerThan(max: 999))
                         }
                         .cellUpdate { cell, row in
                             if !row.isValid {
-                                cell.titleLabel?.textColor = .red
+                                cell.titleLabel?.textColor = .redColor()
                             }
                         }
                         .onRowValidationChanged { cell, row in
                             let rowIndex = row.indexPath()!.row
                             while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                                row.section?.remove(at: rowIndex + 1)
+                                row.section?.removeAtIndex(rowIndex + 1)
                             }
                             if !row.isValid {
-                                for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                                for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerate() {
                                     let labelRow = LabelRow() {
                                         $0.title = validationMsg
                                         $0.cell.height = { 30 }
                                     }
-                                    row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
+                                    row.section?.insert(labelRow, atIndex: row.indexPath()!.row + index + 1)
                                 }
                             }
                         }
