@@ -97,7 +97,7 @@ For example, a `SwitchRow` holds a `Bool` value, while a `TextRow` holds a `Stri
 
 ```swift
 // Get the value of a single row
-let row: TextRow? = form.rowByTag("MyRowTag")
+let row: TextRow? = form.rowBy(tag: "MyRowTag")
 let value = row.value
 
 // Get the value of all rows which have a Tag assigned
@@ -289,7 +289,7 @@ form +++ Section()
             <<< LabelRow(){
 
                 $0.hidden = Condition.function(["switchRowTag"], { form in
-                    return !((form.rowByTag("switchRowTag") as? SwitchRow)?.value ?? false)
+                    return !((form.rowBy(tag: "switchRowTag") as? SwitchRow)?.value ?? false)
                 })
                 $0.title = "Switch is on!"
         }
