@@ -435,8 +435,8 @@ Sometimes the collection of rules we want to use on a row is the same we want to
 
 ```swift
 var rules = RuleSet<String>()
-ruleSet.add(rule: RuleRequired())
-ruleSet.add(rule: RuleEmail())
+rules.add(rule: RuleRequired())
+rules.add(rule: RuleEmail())
 
 let row = TextRow() {
             $0.title = "Email Rule"
