@@ -32,9 +32,15 @@ public struct RuleMinLength: RuleType {
     public var id: String?
     public var validationError: ValidationError
     
-    public init(minLength: UInt){
+    public init(minLength: UInt, msg: String = ""){
         min = minLength
-        validationError = ValidationError(msg: "Field value must have at least \(min) characters")
+        var msg = msg
+        
+        if (msg == "") {
+            msg = "Field value must have at least \(min) characters"
+        }
+
+        validationError = ValidationError(msg: msg)
     }
     
     public func isValid(value: String?) -> ValidationError? {
@@ -50,9 +56,14 @@ public struct RuleMaxLength: RuleType {
     public var id: String?
     public var validationError: ValidationError
     
-    public init(maxLength: UInt){
+    public init(maxLength: UInt, msg: String = ""){
         max = maxLength
-        validationError = ValidationError(msg: "Field value must have less than \(max) characters")
+        var msg = msg
+        
+        if (msg == "") {
+            msg = "Field value must have less than \(max) characters"
+        }
+        validationError = ValidationError(msg: msg)
     }
     
     public func isValid(value: String?) -> ValidationError? {
