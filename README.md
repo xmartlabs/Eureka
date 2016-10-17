@@ -570,12 +570,24 @@ You can place your own UIViewController instead of `SelectorViewController<T>` a
 ### Subclassing cells using the same row
 
 Sometimes we want to change the UI look of one of our rows but without changing the row type and all the logic associated to one row.
-There is currently one way to do this if you are using cells that are instantiated from nib files.
+There is currently one way to do this **if you are using cells that are instantiated from nib files**. Currently, none of Eureka's core rows are instantiated from nib files but some of the custom rows in [EurekaCommunity] are, in particular the [PostalAddressRow](https://github.com/EurekaCommunity/PostalAddressRow) which was moved there.
 
-What you have to do is define a subclass and a nibfile with a cell of that subclass type. This will create a row with that cell.
+What you have to do is:
+* Create a nib file containing the cell you want to create.
+* Then set the class of the cell to be the existing cell you want to modify (if you want to change something more apart from pure UI then you should subclass that cell). Make sure the module of that class is correctly set
+* Connect the outlets to your class
+* Tell your row to use the new nib file. This is done by setting the `cellProvider` variable to use this nib. You should do this in the initialiser, either in each concrete instantiation or using the `defaultRowInitializer`. For example:
+
+```swift
+<<< PostalAddressRow() {
+     $0.cellProvider = CellProvider<PostalAddressCell>(nibName: "CustomNib", bundle: Bundle.main)
+}
+```
+
+You could also create a new row for this. In that case try to inherit from the same superclass as the row you want to change to inherit its logic.
 
 There are some things to consider when you do this:
-* Your subclass has to implement the init methods of its subclass, specially `init?(coder aDecoder: NSCoder)`.
+* If you want to see an example have a look at the [PostalAddressRow](https://github.com/EurekaCommunity/PostalAddressRow) or the [CreditCardRow](https://github.com/EurekaCommunity/CreditCardRow) which have use a custom nib file in their examples.
 * If you get an error saying `Unknown class <YOUR_CLASS_NAME> in Interface Builder file`, it might be that you have to instantiate that new type somewhere in your code to load it in the runtime. Calling `let t = YourClass.self` helped in my case.
 
 
