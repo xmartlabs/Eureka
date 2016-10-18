@@ -31,13 +31,10 @@ public struct RuleGreaterThan<T: Comparable>: RuleType {
     public var id: String?
     public var validationError: ValidationError
     
-    public init(min: T, msg: String = ""){
-        var msg = msg
-        if (msg == ""){
-            msg = "Field value must be greater than \(min)"
-        }
+    public init(min: T, msg: String? = nil){
+        let ruleMsg = msg ?? "Field value must be greater than \(min)"
         self.min = min
-        self.validationError = ValidationError(msg: msg)
+        self.validationError = ValidationError(msg: ruleMsg)
     }
     
     public func isValid(value: T?) -> ValidationError? {
@@ -54,13 +51,10 @@ public struct RuleGreaterOrEqualThan<T: Comparable>: RuleType {
     public var id: String?
     public var validationError: ValidationError
     
-    public init(min: T, msg: String = ""){
-        var msg = msg
-        if (msg == ""){
-            msg = "Field value must be greater or equals than \(min)"
-        }
+    public init(min: T, msg: String? = nil){
+        let ruleMsg = msg ?? "Field value must be greater or equals than \(min)"
         self.min = min
-        self.validationError = ValidationError(msg: msg)
+        self.validationError = ValidationError(msg: ruleMsg)
     }
     
     public func isValid(value: T?) -> ValidationError? {
@@ -77,14 +71,10 @@ public struct RuleSmallerThan<T: Comparable>: RuleType {
     public var id: String?
     public var validationError: ValidationError
     
-    public init(max: T, msg: String = "") {
-        var msg = msg
-        if (msg == ""){
-            msg = "Field value must be smaller than \(max)"
-        }
-        
+    public init(max: T, msg: String? = nil) {
+        let ruleMsg = msg ??  "Field value must be smaller than \(max)"
         self.max = max
-        self.validationError = ValidationError(msg: msg)
+        self.validationError = ValidationError(msg: ruleMsg)
     }
     
     public func isValid(value: T?) -> ValidationError? {
@@ -101,14 +91,10 @@ public struct RuleSmallerOrEqualThan<T: Comparable>: RuleType {
     public var id: String?
     public var validationError: ValidationError
     
-    public init(max: T, msg: String = "") {
-        var msg = msg
-        if (msg == ""){
-            msg = "Field value must be smaller or equals than \(max)"
-        }
-        
+    public init(max: T, msg: String? = nil) {
+        let ruleMsg = msg ?? "Field value must be smaller or equals than \(max)"
         self.max = max
-        self.validationError = ValidationError(msg: msg)
+        self.validationError = ValidationError(msg: ruleMsg)
     }
     
     public func isValid(value: T?) -> ValidationError? {
