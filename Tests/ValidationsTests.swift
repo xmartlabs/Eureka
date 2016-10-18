@@ -133,6 +133,17 @@ class ValidationsTests: XCTestCase {
         
     }
     
+    func testMaxLengthRule() {
+        let maxLengthRule = RuleMaxLength(maxLength: 10)
+        XCTAssertNil(maxLengthRule.isValid(value: nil))
+        XCTAssertNil(maxLengthRule.isValid(value: "123456789"))
+        XCTAssertNotNil(maxLengthRule.isValid(value:"12345678910"))
+    }
 
-    
+    func testminLengthRule() {
+        let minLengthRule = RuleMinLength(minLength: 5)
+        XCTAssertNil(minLengthRule.isValid(value: nil))
+        XCTAssertNil(minLengthRule.isValid(value: "12345"))
+        XCTAssertNotNil(minLengthRule.isValid(value:"1234"))
+    }
 }
