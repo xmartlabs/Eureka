@@ -38,7 +38,7 @@ open class BaseRow : BaseRowType {
     
     public var validationOptions: ValidationOptions = .validatesOnBlur
     // validation state
-    public internal(set) var validationErrors = [ValidationError]() {
+    public var validationErrors = [ValidationError]() {
         didSet {
             guard validationErrors != oldValue else { return }
             RowDefaults.onRowValidationChanged["\(type(of: self))"]?(baseCell, self)
