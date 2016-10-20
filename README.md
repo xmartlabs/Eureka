@@ -784,7 +784,9 @@ Let us know about it, we would be glad to mention it here. :)
 
 #### CocoaPods
 
-[CocoaPods](https://cocoapods.org/) is a dependency manager for Cocoa projects.
+[CocoaPods](https://cocoapods.org/) is a dependency manager for Cocoa projects. 
+
+**Cocoapods 1.1.0.rc.3 or newer version must be used.**
 
 Specify Eureka into your project's `Podfile`:
 
