@@ -809,7 +809,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 2.0.0-beta.1
+github "xmartlabs/Eureka" ~> 2.0.0
 ```
 
 #### Manually as Embedded Framework
