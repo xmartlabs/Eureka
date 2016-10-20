@@ -97,7 +97,7 @@ For example, a `SwitchRow` holds a `Bool` value, while a `TextRow` holds a `Stri
 
 ```swift
 // Get the value of a single row
-let row: TextRow? = form.rowByTag("MyRowTag")
+let row: TextRow? = form.rowBy(tag: "MyRowTag")
 let value = row.value
 
 // Get the value of all rows which have a Tag assigned
@@ -289,7 +289,7 @@ form +++ Section()
             <<< LabelRow(){
 
                 $0.hidden = Condition.function(["switchRowTag"], { form in
-                    return !((form.rowByTag("switchRowTag") as? SwitchRow)?.value ?? false)
+                    return !((form.rowBy(tag: "switchRowTag") as? SwitchRow)?.value ?? false)
                 })
                 $0.title = "Switch is on!"
         }
@@ -343,10 +343,10 @@ Note that if you want to disable a row permanently you can also set `disabled` v
 ### List Sections
 
 To display a list of options, Eureka includes a special section called `SelectableSection`.
-When creating one you need to pass the type of row to use in the options and the `selectionStyle`. The `selectionStyle` is an enum which can be either `MultipleSelection` or `SingleSelection(enableDeselection: Bool)` where the `enableDeselection` parameter determines if the selected rows can be deselected or not.
+When creating one you need to pass the type of row to use in the options and the `selectionStyle`. The `selectionStyle` is an enum which can be either `multipleSelection` or `singleSelection(enableDeselection: Bool)` where the `enableDeselection` parameter determines if the selected rows can be deselected or not.
 
 ```swift
-form +++ SelectableSection<ListCheckRow<String>, String>("Where do you live", selectionType: .SingleSelection(enableDeselection: true))
+form +++ SelectableSection<ListCheckRow<String>>("Where do you live", selectionType: .singleSelection(enableDeselection: true))
 
 let continents = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
 for option in continents {
@@ -377,7 +377,83 @@ To easily get the selected row/s of a `SelectableSection` there are two methods:
 
 ### Validations
 
-Will be documented soon...
+Eureka 2.0.0 introduces the very requested build-in validations feature.
+
+A row has a collection of `Rules` and a specific configuration that determines when validation rules should be evaluated.
+
+There are some rules provided by default, but you can also create new ones on your own.
+
+The provided rules are:
+* RuleRequired
+* RuleEmail
+* RuleURL
+* RuleGreaterThan, RuleGreaterOrEqualThan, RuleSmallerThan, RuleSmallerOrEqualThan
+* RuleMinLength, RuleMaxLength
+* RuleClosure
+
+Let's see how to set up the validation rules.
+
+```swift
+
+override func viewDidLoad() {
+        super.viewDidLoad()
+        form
+          +++ Section(header: "Required Rule", footer: "Options: Validates on change")
+
+            <<< TextRow() {
+                $0.title = "Required Rule"
+                $0.add(rule: RuleRequired())
+                $0.validationOptions = .validatesOnChange
+            }
+            .cellUpdate { cell, row in
+                if !row.isValid {
+                    cell.titleLabel?.textColor = .red
+                }
+            }
+
+          +++ Section(header: "Email Rule, Required Rule", footer: "Options: Validates on change after blurred")
+
+            <<< TextRow() {
+                $0.title = "Email Rule"
+                $0.add(rule: RuleRequired())
+                $0.add(rule: RuleEmail())
+                $0.validationOptions = .validatesOnChangeAfterBlurred
+            }
+            .cellUpdate { cell, row in
+                if !row.isValid {
+                    cell.titleLabel?.textColor = .red
+                }
+            }
+
+```
+
+As you can see in the previous code snippet we can set up as many rules as we want in a row by invoking row's `add(rule:)` function.
+
+Row also provides  `func remove(ruleWithIdentifier identifier: String)` to remove a rule. In order to use it we must assign an id to the rule after creating it.
+
+Sometimes the collection of rules we want to use on a row is the same we want to use on many other rows. In this case we can set up all validation rules using a `RuleSet` which is a collection of validation rules.
+
+```swift
+var rules = RuleSet<String>()
+rules.add(rule: RuleRequired())
+rules.add(rule: RuleEmail())
+
+let row = TextRow() {
+            $0.title = "Email Rule"
+            $0.add(ruleSet: rules)
+            $0.validationOptions = .validatesOnChangeAfterBlurred
+        }
+```
+
+Eureka allows us to specify when validation rules should be evaluated. We can do it by setting up `validationOptions` row's property, which can have the following values:
+
+
+* `.validatesOnChange` - Validates whenever a row value changes.
+* `.validatesOnBlur` - (Default value) validates right after the cell resigns first responder. Not applicable for all rows.
+* `.validatesOnChangeAfterBlurred` - Validates whenever the row value changes after it resigns first responder for the first time.
+* `.validatesOnDemand` - We should manually validate the row or form by invoking `validate()` method.
+
+If you want to validate the entire form (all the rows) you can manually invoke Form `validate()` method.
 
 ## Custom rows
 
@@ -494,12 +570,24 @@ You can place your own UIViewController instead of `SelectorViewController<T>` a
 ### Subclassing cells using the same row
 
 Sometimes we want to change the UI look of one of our rows but without changing the row type and all the logic associated to one row.
-There is currently one way to do this if you are using cells that are instantiated from nib files.
+There is currently one way to do this **if you are using cells that are instantiated from nib files**. Currently, none of Eureka's core rows are instantiated from nib files but some of the custom rows in [EurekaCommunity] are, in particular the [PostalAddressRow](https://github.com/EurekaCommunity/PostalAddressRow) which was moved there.
 
-What you have to do is define a subclass and a nibfile with a cell of that subclass type. This will create a row with that cell.
+What you have to do is:
+* Create a nib file containing the cell you want to create.
+* Then set the class of the cell to be the existing cell you want to modify (if you want to change something more apart from pure UI then you should subclass that cell). Make sure the module of that class is correctly set
+* Connect the outlets to your class
+* Tell your row to use the new nib file. This is done by setting the `cellProvider` variable to use this nib. You should do this in the initialiser, either in each concrete instantiation or using the `defaultRowInitializer`. For example:
+
+```swift
+<<< PostalAddressRow() {
+     $0.cellProvider = CellProvider<PostalAddressCell>(nibName: "CustomNib", bundle: Bundle.main)
+}
+```
+
+You could also create a new row for this. In that case try to inherit from the same superclass as the row you want to change to inherit its logic.
 
 There are some things to consider when you do this:
-* Your subclass has to implement the init methods of its subclass, specially `init?(coder aDecoder: NSCoder)`.
+* If you want to see an example have a look at the [PostalAddressRow](https://github.com/EurekaCommunity/PostalAddressRow) or the [CreditCardRow](https://github.com/EurekaCommunity/CreditCardRow) which have use a custom nib file in their examples.
 * If you get an error saying `Unknown class <YOUR_CLASS_NAME> in Interface Builder file`, it might be that you have to instantiate that new type somewhere in your code to load it in the runtime. Calling `let t = YourClass.self` helped in my case.
 
 
@@ -696,7 +784,9 @@ Let us know about it, we would be glad to mention it here. :)
 
 #### CocoaPods
 
-[CocoaPods](https://cocoapods.org/) is a dependency manager for Cocoa projects.
+[CocoaPods](https://cocoapods.org/) is a dependency manager for Cocoa projects. 
+
+**Cocoapods 1.1.0.rc.3 or newer version must be used.**
 
 Specify Eureka into your project's `Podfile`:
 
@@ -705,7 +795,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Eureka', '~> 2.0'
+pod 'Eureka', '~> 2.0.0-beta.1'
 ```
 
 Then run the following command:
@@ -721,7 +811,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 2.0
+github "xmartlabs/Eureka" ~> 2.0.0
 ```
 
 #### Manually as Embedded Framework
@@ -853,16 +943,16 @@ section.reload()
 
 #### Don't want to use Eureka custom operators?
 
-As we've said `Form` and `Section` types conform to `MutableCollectionType` and `RangeReplaceableCollectionType`. A Form is a collection of Sections and a Section is a collection of Rows.
+As we've said `Form` and `Section` types conform to `MutableCollection` and `RangeReplaceableCollection`. A Form is a collection of Sections and a Section is a collection of Rows.
 
-`RangeReplaceableCollectionType` protocol extension provides many useful methods to modify collection.
+`RangeReplaceableCollection` protocol extension provides many useful methods to modify collection.
 
 ```swift
-extension RangeReplaceableCollectionType {
+extension RangeReplaceableCollection {
     public mutating func append(newElement: Self.Generator.Element)
-    public mutating func appendContentsOf<S : SequenceType where S.Generator.Element == Generator.Element>(newElements: S)
+    public mutating func appendContentsOf<S : Sequence where S.Generator.Element == Generator.Element>(newElements: S)
     public mutating func insert(newElement: Self.Generator.Element, atIndex i: Self.Index)
-    public mutating func insertContentsOf<C : CollectionType where C.Generator.Element == Generator.Element>(newElements: C, at i: Self.Index)
+    public mutating func insertContentsOf<C : Collection where C.Generator.Element == Generator.Element>(newElements: C, at i: Self.Index)
     public mutating func removeAtIndex(index: Self.Index) -> Self.Generator.Element
     public mutating func removeRange(subRange: Range<Self.Index>)
     public mutating func removeFirst(n: Int)
@@ -880,7 +970,7 @@ public func +++(left: Form, right: Section) -> Form {
     return left
 }
 
-public func +=< C : CollectionType where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
+public func +=< C : Collection where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
     lhs.appendContentsOf(rhs)
 }
 
@@ -889,7 +979,7 @@ public func <<<(left: Section, right: BaseRow) -> Section {
     return left
 }
 
-public func +=< C : CollectionType where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
+public func +=< C : Collection where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
     lhs.appendContentsOf(rhs)
 }
 ```

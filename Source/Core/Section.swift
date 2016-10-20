@@ -27,9 +27,9 @@ import Foundation
 
 /// The delegate of the Eureka sections.
 public protocol SectionDelegate: class {
-    func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexes:IndexSet)
-    func rowsHaveBeenRemoved(_ rows: [BaseRow], atIndexes:IndexSet)
-    func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexes: IndexSet)
+    func rowsHaveBeenAdded(_ rows: [BaseRow], at: IndexSet)
+    func rowsHaveBeenRemoved(_ rows: [BaseRow], at: IndexSet)
+    func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], at: IndexSet)
 }
 
 // MARK: Section
@@ -44,7 +44,7 @@ extension Section : Hidable, SectionDelegate {}
 
 extension Section {
     
-    public func reload(_ rowAnimation: UITableViewRowAnimation = .none) {
+    public func reload(with rowAnimation: UITableViewRowAnimation = .none) {
         guard let tableView = (form?.delegate as? FormViewController)?.tableView, let index = index else { return }
         tableView.reloadSections(IndexSet(integer: index), with: rowAnimation)
     }
@@ -84,25 +84,25 @@ extension Section {
             guard keyPathValue == "_rows" else { return }
             switch (changeType as! NSNumber).uintValue {
             case NSKeyValueChange.setting.rawValue:
-                section?.rowsHaveBeenAdded(newRows, atIndexes:IndexSet(integer: 0))
-                delegateValue?.rowsHaveBeenAdded(newRows, atIndexPaths:[IndexPath(index: 0)])
+                section?.rowsHaveBeenAdded(newRows, at: IndexSet(integer: 0))
+                delegateValue?.rowsHaveBeenAdded(newRows, at:[IndexPath(index: 0)])
             case NSKeyValueChange.insertion.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
-                section?.rowsHaveBeenAdded(newRows, atIndexes: indexSet)
+                section?.rowsHaveBeenAdded(newRows, at: indexSet)
                 if let _index = section?.index {
-                    delegateValue?.rowsHaveBeenAdded(newRows, atIndexPaths: indexSet.map { IndexPath(row: $0, section: _index ) } )
+                    delegateValue?.rowsHaveBeenAdded(newRows, at: indexSet.map { IndexPath(row: $0, section: _index ) } )
                 }
             case NSKeyValueChange.removal.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
-                section?.rowsHaveBeenRemoved(oldRows, atIndexes: indexSet)
+                section?.rowsHaveBeenRemoved(oldRows, at: indexSet)
                 if let _index = section?.index {
-                    delegateValue?.rowsHaveBeenRemoved(oldRows, atIndexPaths: indexSet.map { IndexPath(row: $0, section: _index ) } )
+                    delegateValue?.rowsHaveBeenRemoved(oldRows, at: indexSet.map { IndexPath(row: $0, section: _index ) } )
                 }
             case NSKeyValueChange.replacement.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
-                section?.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, atIndexes: indexSet)
+                section?.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, at: indexSet)
                 if let _index = section?.index {
-                    delegateValue?.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, atIndexPaths: indexSet.map { IndexPath(row: $0, section: _index)})
+                    delegateValue?.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, at: indexSet.map { IndexPath(row: $0, section: _index)})
                 }
             default:
                 assertionFailure()
@@ -158,7 +158,7 @@ open class Section {
     
     public required init(){}
     
-    public required init( _ initializer: (Section) -> ()){
+    public required init(_ initializer: (Section) -> ()){
         initializer(self)
     }
     
@@ -183,17 +183,17 @@ open class Section {
     /**
      *  Delegate method called by the framework when one or more rows have been added to the section.
      */
-    open func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexes:IndexSet) {}
+    open func rowsHaveBeenAdded(_ rows: [BaseRow], at: IndexSet) {}
     
     /**
      *  Delegate method called by the framework when one or more rows have been removed from the section.
      */
-    open func rowsHaveBeenRemoved(_ rows: [BaseRow], atIndexes:IndexSet) {}
+    open func rowsHaveBeenRemoved(_ rows: [BaseRow], at: IndexSet) {}
     
     /**
      *  Delegate method called by the framework when one or more rows have been replaced in the section.
      */
-    open func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexes: IndexSet) {}
+    open func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], at: IndexSet) {}
     
     //MARK: Private
     lazy var kvoWrapper: KVOWrapper = { [unowned self] in return KVOWrapper(section: self) }()
@@ -220,7 +220,7 @@ extension Section : MutableCollection, BidirectionalCollection {
     }
 
     public subscript (range: Range<Int>) -> [BaseRow] {
-        get { return kvoWrapper.rows.objects(at: NSIndexSet(indexesIn: NSRange(range)) as IndexSet) as! [BaseRow] }
+        get { return kvoWrapper.rows.objects(at: IndexSet(integersIn: range)) as! [BaseRow] }
         set { kvoWrapper.rows.replaceObjects(in: NSRange(range), withObjectsFrom: newValue) }
     }
 
@@ -236,18 +236,16 @@ extension Section : RangeReplaceableCollection {
     public func append(_ formRow: BaseRow){
         kvoWrapper.rows.insert(formRow, at: kvoWrapper.rows.count)
         kvoWrapper._allRows.append(formRow)
-        formRow.wasAddedToFormInSection(self)
+        formRow.wasAddedTo(section: self)
     }
     
     public func append<S : Sequence>(contentsOf newElements: S) where S.Iterator.Element == BaseRow {
         kvoWrapper.rows.addObjects(from: newElements.map { $0 })
         kvoWrapper._allRows.append(contentsOf: newElements)
         for row in newElements{
-            row.wasAddedToFormInSection(self)
+            row.wasAddedTo(section: self)
         }
     }
-    
-    public func reserveCapacity(_ n: Int){}
     
     public func replaceSubrange<C : Collection>(_ subRange: Range<Int>, with newElements: C) where C.Iterator.Element == BaseRow {
         for i in subRange.lowerBound..<subRange.upperBound {
@@ -258,9 +256,9 @@ extension Section : RangeReplaceableCollection {
         }
         kvoWrapper.rows.replaceObjects(in: NSMakeRange(subRange.lowerBound, subRange.upperBound - subRange.lowerBound), withObjectsFrom: newElements.map { $0 })
         
-        kvoWrapper._allRows.insert(contentsOf: newElements, at: indexForInsertionAtIndex(subRange.lowerBound))
+        kvoWrapper._allRows.insert(contentsOf: newElements, at: indexForInsertion(at: subRange.lowerBound))
         for row in newElements{
-            row.wasAddedToFormInSection(self)
+            row.wasAddedTo(section: self)
         }
     }
     
@@ -273,7 +271,7 @@ extension Section : RangeReplaceableCollection {
         kvoWrapper._allRows.removeAll()
     }
     
-    private func indexForInsertionAtIndex(_ index: Int) -> Int {
+    private func indexForInsertion(at index: Int) -> Int {
         guard index != 0 else { return 0 }
         
         let row = kvoWrapper.rows[index-1]
@@ -291,7 +289,7 @@ extension Section /* Condition */{
     /**
      Function that evaluates if the section should be hidden and updates it accordingly.
      */
-    public func evaluateHidden(){
+    public final func evaluateHidden(){
         if let h = hidden, let f = form {
             switch h {
             case .function(_ , let callback):
@@ -311,12 +309,12 @@ extension Section /* Condition */{
     /**
      Internal function called when this section was added to a form.
      */
-    func wasAddedToForm(_ form: Form) {
+    func wasAddedTo(form: Form) {
         self.form = form
         addToRowObservers()
         evaluateHidden()
         for row in kvoWrapper._allRows {
-            row.wasAddedToFormInSection(self)
+            row.wasAddedTo(section: self)
         }
     }
     
@@ -327,9 +325,9 @@ extension Section /* Condition */{
         guard let h = hidden else { return }
         switch h {
         case .function(let tags, _):
-            form?.addRowObservers(self, rowTags: tags, type: .hidden)
+            form?.addRowObservers(to: self, rowTags: tags, type: .hidden)
         case .predicate(let predicate):
-            form?.addRowObservers(self, rowTags: predicate.predicateVars, type: .hidden)
+            form?.addRowObservers(to: self, rowTags: predicate.predicateVars, type: .hidden)
         }
     }
     
@@ -351,19 +349,19 @@ extension Section /* Condition */{
         guard let h = hidden else { return }
         switch h {
         case .function(let tags, _):
-            form?.removeRowObservers(self, rows: tags, type: .hidden)
+            form?.removeRowObservers(from: self, rowTags: tags, type: .hidden)
         case .predicate(let predicate):
-            form?.removeRowObservers(self, rows: predicate.predicateVars, type: .hidden)
+            form?.removeRowObservers(from: self, rowTags: predicate.predicateVars, type: .hidden)
         }
     }
     
-    func hideRow(_ row: BaseRow){
+    func hide(row: BaseRow){
         row.baseCell.cellResignFirstResponder()
         (row as? BaseInlineRowType)?.collapseInlineRow()
         kvoWrapper.rows.remove(row)
     }
     
-    func showRow(_ row: BaseRow){
+    func show(row: BaseRow){
         guard !kvoWrapper.rows.contains(row) else { return }
         guard var index = kvoWrapper._allRows.index(of: row) else { return }
         var formIndex = NSNotFound

@@ -362,7 +362,7 @@ public final class DecimalRow: _DecimalRow, RowType {
     }
 }
 
-/// A row where the user can enter an URL. The value of this row will be a NSURL.
+/// A row where the user can enter an URL. The value of this row will be a URL.
 public final class URLRow: _URLRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)

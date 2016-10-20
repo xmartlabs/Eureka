@@ -164,9 +164,9 @@ import UIKit
 	private func setTitlePositionForTextAlignment() {
 		let r = textRect(forBounds: bounds)
 		var x = r.origin.x
-		if textAlignment == NSTextAlignment.center {
+		if textAlignment == .center {
 			x = r.origin.x + (r.size.width * 0.5) - title.frame.size.width
-		} else if textAlignment == NSTextAlignment.right {
+		} else if textAlignment == .right {
 			x = r.origin.x + r.size.width - title.frame.size.width
 		}
 		title.frame = CGRect(x:x, y:title.frame.origin.y, width:title.frame.size.width, height:title.frame.size.height)
@@ -174,23 +174,23 @@ import UIKit
 	
 	private func showTitle(_ animated:Bool) {
 		let dur = animated ? animationDuration : 0
-		UIView.animate(withDuration: dur, delay:0, options: UIViewAnimationOptions.beginFromCurrentState.union(UIViewAnimationOptions.curveEaseOut), animations:{
+		UIView.animate(withDuration: dur, delay:0, options: UIViewAnimationOptions.beginFromCurrentState.union(.curveEaseOut), animations:{
 				// Animation
 				self.title.alpha = 1.0
 				var r = self.title.frame
 				r.origin.y = self.titleYPadding
 				self.title.frame = r
-			}, completion:nil)
+			})
 	}
 	
 	private func hideTitle(_ animated:Bool) {
 		let dur = animated ? animationDuration : 0
-		UIView.animate(withDuration: dur, delay:0, options: UIViewAnimationOptions.beginFromCurrentState.union(UIViewAnimationOptions.curveEaseIn), animations:{
+		UIView.animate(withDuration: dur, delay:0, options: UIViewAnimationOptions.beginFromCurrentState.union(.curveEaseIn), animations:{
 			// Animation
 			self.title.alpha = 0.0
 			var r = self.title.frame
 			r.origin.y = self.title.font.lineHeight + self.hintYPadding
 			self.title.frame = r
-			}, completion:nil)
+			})
 	}
 }

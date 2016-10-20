@@ -45,9 +45,9 @@ class CallbacksTests: XCTestCase {
         onChangeTest(row:TextRow(), value: "text")
         onChangeTest(row:IntRow(), value: 33)
         onChangeTest(row:DecimalRow(), value: 35.7)
-        onChangeTest(row:URLRow(), value: NSURL(string: "http://xmartlabs.com")! as URL)
-        onChangeTest(row:DateRow(), value: NSDate().addingTimeInterval(100) as Date)
-        onChangeTest(row:DateInlineRow(), value: NSDate().addingTimeInterval(100) as Date)
+        onChangeTest(row:URLRow(), value: URL(string: "http://xmartlabs.com")!)
+        onChangeTest(row:DateRow(), value: Date().addingTimeInterval(100))
+        onChangeTest(row:DateInlineRow(), value: Date().addingTimeInterval(100))
         onChangeTest(row:PopoverSelectorRow<String>(), value: "text")
         onChangeTest(row:SliderRow(), value: 5.0)
         onChangeTest(row:StepperRow(), value: 2.5)
@@ -139,7 +139,7 @@ class CallbacksTests: XCTestCase {
             invoked = true
         }
         formVC.form +++ Section() <<< row
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row.indexPath()!) // should invoke cell update
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row.indexPath!) // should invoke cell update
         XCTAssertTrue(invoked)
     }
     
@@ -168,7 +168,7 @@ class CallbacksTests: XCTestCase {
             invoked = true
         }
         formVC.form +++ row
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row.indexPath()!) // should invoke cell update
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row.indexPath!) // should invoke cell update
         XCTAssertTrue(invoked)
     }
 }

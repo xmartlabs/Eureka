@@ -39,19 +39,19 @@ class DateTests: BaseEurekaTests {
         let maxRow : DateRow!  = formVC.form.rowBy(tag: "MaxDateRow_d1")
         let minMaxRow : DateRow! = formVC.form.rowBy(tag: "MinMaxDateRow_d1")
         
-        XCTAssertNotNil(minRow.indexPath())
-        XCTAssertNotNil(maxRow.indexPath())
-        XCTAssertNotNil(minMaxRow.indexPath())
+        XCTAssertNotNil(minRow.indexPath)
+        XCTAssertNotNil(maxRow.indexPath)
+        XCTAssertNotNil(minMaxRow.indexPath)
         
         // make sure cellSetup is called for each cell
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: minRow.indexPath()!)
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: maxRow.indexPath()!)
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: minMaxRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: minRow.indexPath!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: maxRow.indexPath!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: minMaxRow.indexPath!)
         
         //make sure cell update is called for each cell
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: minRow.indexPath()!)
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: maxRow.indexPath()!)
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: minMaxRow.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: minRow.indexPath!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: maxRow.indexPath!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: minMaxRow.indexPath!)
         
         XCTAssertNil(minRow.cell.datePicker.maximumDate)
         XCTAssertEqual(minRow.cell.datePicker.minimumDate, minRow.value?.addingTimeInterval(-60*60*24))
@@ -65,13 +65,13 @@ class DateTests: BaseEurekaTests {
     func testInterval(){
         let row : DateRow? = formVC.form.rowBy(tag: "IntervalDateRow_d1")
         
-        XCTAssertNotNil(row?.indexPath())
+        XCTAssertNotNil(row?.indexPath)
         
         // make sure cellSetup is called for each cell
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row!.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row!.indexPath!)
         
         //make sure cell update is called for each cell
-        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row!.indexPath()!)
+        let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row!.indexPath!)
         
         XCTAssertEqual(row?.cell.datePicker.minuteInterval, 15)
 

@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import Eureka
 
 /// Selector Controller used to pick an image
 open class ImagePickerController : UIImagePickerController, TypedRowControllerType, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -31,7 +32,7 @@ open class ImagePickerController : UIImagePickerController, TypedRowControllerTy
     public var row: RowOf<UIImage>!
     
     /// A closure to be called when the controller disappears.
-    public var completionCallback : ((UIViewController) -> ())?
+    public var onDismissCallback : ((UIViewController) -> ())?
     
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,11 +42,11 @@ open class ImagePickerController : UIImagePickerController, TypedRowControllerTy
     open func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         (row as? ImageRow)?.imageURL = info[UIImagePickerControllerReferenceURL] as? URL
         row.value = info[UIImagePickerControllerOriginalImage] as? UIImage
-        completionCallback?(self)
+        onDismissCallback?(self)
     }
     
     open func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
-        completionCallback?(self)
+        onDismissCallback?(self)
     }
 }
 

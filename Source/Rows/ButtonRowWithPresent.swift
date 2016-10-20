@@ -54,24 +54,24 @@ open class _ButtonRowWithPresent<VCType: TypedRowControllerType>: Row<ButtonCell
     open override func customDidSelect() {
         super.customDidSelect()
         if let presentationMode = presentationMode, !isDisabled {
-            if let controller = presentationMode.createController(){
+            if let controller = presentationMode.makeController(){
                 controller.row = self
                 onPresentCallback?(cell.formViewController()!, controller)
-                presentationMode.presentViewController(controller, row: self, presentingViewController: cell.formViewController()!)
+                presentationMode.present(controller, row: self, presentingController: cell.formViewController()!)
             }
             else{
-                presentationMode.presentViewController(nil, row: self, presentingViewController: cell.formViewController()!)
+                presentationMode.present(nil, row: self, presentingController: cell.formViewController()!)
             }
         }
     }
     
-    open override func prepareForSegue(_ segue: UIStoryboardSegue) {
-        super.prepareForSegue(segue)
+    open override func prepare(for segue: UIStoryboardSegue) {
+        super.prepare(for: segue)
         guard let rowVC = segue.destination as? VCType else {
             return
         }
-        if let callback = self.presentationMode?.completionHandler{
-            rowVC.completionCallback = callback
+        if let callback = presentationMode?.onDismissCallback{
+            rowVC.onDismissCallback = callback
         }
         rowVC.row = self
         onPresentCallback?(cell.formViewController()!, rowVC)

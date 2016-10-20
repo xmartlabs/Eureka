@@ -39,10 +39,10 @@ class ValidationsTests: XCTestCase {
     }
     
     
-    func testAddRule() {
+    func testadd() {
         let textRow = TextRow()
-        textRow.addRule(rule: RuleRequired())
-        textRow.addRule(rule: RuleEmail())
+        textRow.add(rule: RuleRequired())
+        textRow.add(rule: RuleEmail())
         XCTAssertEqual(textRow.rules.count, 2)
         
         textRow.removeAllRules()
@@ -54,20 +54,20 @@ class ValidationsTests: XCTestCase {
         
         
         var ruleSet = RuleSet<String>()
-        ruleSet.addRule(rule: RuleRequired())
-        ruleSet.addRule(rule: RuleEmail())
+        ruleSet.add(rule: RuleRequired())
+        ruleSet.add(rule: RuleEmail())
         XCTAssertEqual(ruleSet.rules.count, 2)
         
         let textRow = TextRow()
-        textRow.addRuleSet(set: ruleSet)
+        textRow.add(ruleSet: ruleSet)
         
         XCTAssertEqual(textRow.rules.count, 2)
     }
     
     func testRemoveRules(){
         let textRow = TextRow()
-        textRow.addRule(rule: RuleRequired())
-        textRow.addRule(rule: RuleEmail())
+        textRow.add(rule: RuleRequired())
+        textRow.add(rule: RuleEmail())
         XCTAssertEqual(textRow.rules.count, 2)
         
         textRow.removeAllRules()
@@ -75,43 +75,42 @@ class ValidationsTests: XCTestCase {
         
         var requiredRule = RuleRequired<String>()
         requiredRule.id = "required_rule_id"
-        textRow.addRule(rule: requiredRule)
-        textRow.addRule(rule: RuleEmail())
+        textRow.add(rule: requiredRule)
+        textRow.add(rule: RuleEmail())
         XCTAssertEqual(textRow.rules.count, 2)
         
-        textRow.removeRuleWith(identifier: "required_rule_id")
+        textRow.remove(ruleWithIdentifier: "required_rule_id")
         XCTAssertEqual(textRow.rules.count, 1)
-        
     }
 
     
     func testBlurred() {
         let formVC = FormViewController(style: .grouped)
         let row = TextRow()
-        row.addRule(rule: RuleRequired())
-        XCTAssertFalse(row.blurred)
+        row.add(rule: RuleRequired())
+        XCTAssertFalse(row.wasBlurred)
         formVC.form +++ row
-        formVC.endEditing(row.cell)
-        XCTAssertTrue(row.blurred)
+        formVC.endEditing(of: row.cell)
+        XCTAssertTrue(row.wasBlurred)
     }
     
     func testUsed(){
         let formVC = FormViewController(style: .grouped)
         let row = TextRow()
-        row.addRule(rule: RuleRequired())
-        XCTAssertFalse(row.used)
+        row.add(rule: RuleRequired())
+        XCTAssertFalse(row.wasChanged)
         row.value = "Hi!"
-        XCTAssertFalse(row.used) // because it's not added in the form yet
+        XCTAssertFalse(row.wasChanged) // because it's not added in the form yet
         formVC.form +++ row
         row.value = "Eureka!"
-        XCTAssertTrue(row.used) // because it was added to the form
+        XCTAssertTrue(row.wasChanged) // because it was added to the form
     }
 
     
     func testRequired() {
         
         let textRow = TextRow()
-        textRow.addRule(rule: RuleRequired())
+        textRow.add(rule: RuleRequired())
         
         textRow.value = nil
         XCTAssertTrue(textRow.validate().count == 1, "errors collection must contains Required rule error")
@@ -120,6 +119,31 @@ class ValidationsTests: XCTestCase {
         XCTAssertTrue(textRow.validate().count == 0, "errors collection must not contains Required rule error")
     }
     
-
     
+    func testRuleEmail() {
+        let emailRule = RuleEmail()
+        
+        XCTAssertNil(emailRule.isValid(value: nil))
+        XCTAssertNil(emailRule.isValid(value: ""))
+        XCTAssertNil(emailRule.isValid(value: "a@b.com"))
+        
+        XCTAssertNotNil(emailRule.isValid(value: "abc"))
+        XCTAssertNotNil(emailRule.isValid(value: "abc.com"))
+        XCTAssertNotNil(emailRule.isValid(value: "abc@assa"))
+        
+    }
+    
+    func testMaxLengthRule() {
+        let maxLengthRule = RuleMaxLength(maxLength: 10)
+        XCTAssertNil(maxLengthRule.isValid(value: nil))
+        XCTAssertNil(maxLengthRule.isValid(value: "123456789"))
+        XCTAssertNotNil(maxLengthRule.isValid(value:"12345678910"))
+    }
+
+    func testminLengthRule() {
+        let minLengthRule = RuleMinLength(minLength: 5)
+        XCTAssertNil(minLengthRule.isValid(value: nil))
+        XCTAssertNil(minLengthRule.isValid(value: "12345"))
+        XCTAssertNotNil(minLengthRule.isValid(value:"1234"))
+    }
 }

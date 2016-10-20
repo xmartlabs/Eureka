@@ -86,7 +86,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         }
         textView.keyboardType = .default
         textView.delegate = self
-        textView.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
+        textView.font = .preferredFont(forTextStyle: .body)
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = UIEdgeInsets.zero
         placeholderLabel.font = textView.font
@@ -120,7 +120,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         return !row.isDisabled && textView.canBecomeFirstResponder
     }
     
-    open override func cellBecomeFirstResponder(_ fromDiretion: Direction) -> Bool {
+    open override func cellBecomeFirstResponder(withDirection: Direction) -> Bool {
         return textView.becomeFirstResponder()
     }
     
@@ -142,7 +142,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
-            return textView.isFirstResponder ? formatter.editingString(for: v as AnyObject) : formatter.string(for: v as AnyObject)
+            return textView.isFirstResponder ? formatter.editingString(for: v) : formatter.string(for: v)
         }
         return String(describing: v)
     }
@@ -151,7 +151,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     
     
     open func textViewDidBeginEditing(_ textView: UITextView) {
-        formViewController()?.beginEditing(self)
+        formViewController()?.beginEditing(of: self)
         formViewController()?.textInputDidBeginEditing(textView, cell: self)
         if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter, textAreaConformance.useFormatterOnDidBeginEditing ?? textAreaConformance.useFormatterDuringInput {
             textView.text = self.displayValue(useFormatter: true)
@@ -162,7 +162,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     }
     
     open func textViewDidEndEditing(_ textView: UITextView) {
-        formViewController()?.endEditing(self)
+        formViewController()?.endEditing(of: self)
         formViewController()?.textInputDidEndEditing(textView, cell: self)
         textViewDidChange(textView)
         textView.text = displayValue(useFormatter: (row as? FormatterConformance)?.formatter != nil)

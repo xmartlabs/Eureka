@@ -41,7 +41,7 @@ class RowByTagTests: XCTestCase {
         section <<< ButtonRow("ButtonRow")
         section <<< ActionSheetRow<String>("ActionSheetRow")
         section <<< AlertRow<Int>("AlertRow")
-        section <<< PushRow<NSURL>("PushRow")
+        section <<< PushRow<URL>("PushRow")
     }
     
     override func tearDown() {
@@ -63,7 +63,7 @@ class RowByTagTests: XCTestCase {
         let alertRow: AlertRow<Int>? = form.rowBy(tag: "AlertRow")
         XCTAssertNotNil(alertRow)
 
-        let pushRow: PushRow<NSURL>? = form.rowBy(tag: "PushRow")
+        let pushRow: PushRow<URL>? = form.rowBy(tag: "PushRow")
         XCTAssertNotNil(pushRow)
     }
     

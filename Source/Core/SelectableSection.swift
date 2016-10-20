@@ -83,7 +83,7 @@ extension SelectableSectionType where Self: Section, Self.Iterator == IndexingIt
     /**
      Internal function used to set up a collection of rows before they are added to the section
      */
-    func prepareSelectableRows(_ rows: [BaseRow]){
+    func prepare(selectableRows rows: [BaseRow]){
         for row in rows {
             if let row = row as? SelectableRow {
                 row.onCellSelection { [weak self] cell, row in
@@ -124,7 +124,7 @@ open class SelectableSection<Row: SelectableRowType> : Section, SelectableSectio
     /// A closure called when a row of this section is selected.
     public var onSelectSelectableRow: ((Row.Cell, Row) -> Void)?
     
-    public required init( _ initializer: (Section) -> ()) {
+    public required init(_ initializer: (Section) -> ()) {
         super.init(initializer)
     }
     
@@ -137,7 +137,7 @@ open class SelectableSection<Row: SelectableRowType> : Section, SelectableSectio
         fatalError("init() has not been implemented")
     }
     
-    open override func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexes: IndexSet) {
-        prepareSelectableRows(rows)
+    open override func rowsHaveBeenAdded(_ rows: [BaseRow], at: IndexSet) {
+        prepare(selectableRows: rows)
     }
 }

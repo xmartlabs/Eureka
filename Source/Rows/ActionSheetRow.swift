@@ -62,9 +62,9 @@ public class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType
             vc.row = self
             return vc
             },
-                               completionCallback: { [weak self] in
-                                $0.dismiss(animated: true, completion: nil)
-                                self?.cell?.formViewController()?.tableView?.reloadData()
+            onDismiss: { [weak self] in
+                $0.dismiss(animated: true)
+                self?.cell?.formViewController()?.tableView?.reloadData()
             })
     }()
     
@@ -75,13 +75,13 @@ public class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType
     public override func customDidSelect() {
         super.customDidSelect()
         if let presentationMode = presentationMode, !isDisabled {
-            if let controller = presentationMode.createController(){
+            if let controller = presentationMode.makeController(){
                 controller.row = self
                 onPresentCallback?(cell.formViewController()!, controller)
-                presentationMode.presentViewController(controller, row: self, presentingViewController: cell.formViewController()!)
+                presentationMode.present(controller, row: self, presentingController: cell.formViewController()!)
             }
             else{
-                presentationMode.presentViewController(nil, row: self, presentingViewController: cell.formViewController()!)
+                presentationMode.present(nil, row: self, presentingController: cell.formViewController()!)
             }
         }
     }

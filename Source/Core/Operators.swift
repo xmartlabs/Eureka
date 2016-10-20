@@ -52,19 +52,6 @@ public func +++(left: Form, right: Section) -> Form {
     return left
 }
 
-infix operator +++= : FormPrecedence
-
-/**
- Appends a section to a form without return statement
- 
- - parameter left:  the form
- - parameter right: the section to be appended
- */
-@available(*, unavailable, message:"Use +++ instead")
-public func +++=(left: inout Form, right: Section){
-    left = left +++ right
-}
-
 /**
  Appends a row to the last section of a form
  

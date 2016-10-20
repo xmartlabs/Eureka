@@ -35,8 +35,8 @@ open class _PopoverSelectorRow<Cell: CellType> : SelectorRow<Cell, SelectorViewC
             porpoverController.sourceView = tableView
             porpoverController.sourceRect = tableView.convert(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.contentView.frame, from: cell)
         }
-        presentationMode = .popover(controllerProvider: ControllerProvider.callback { return SelectorViewController<Cell.Value>(){ _ in } }, completionCallback: { [weak self] in
-            $0.dismiss(animated: true, completion: nil)
+        presentationMode = .popover(controllerProvider: ControllerProvider.callback { return SelectorViewController<Cell.Value>(){ _ in } }, onDismiss: { [weak self] in
+            $0.dismiss(animated: true)
             self?.reload()
             })
     }

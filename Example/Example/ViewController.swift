@@ -46,59 +46,59 @@ class HomeViewController : FormViewController {
         
                 <<< ButtonRow("Rows") {
                         $0.title = $0.tag
-                        $0.presentationMode = .segueName(segueName: "RowsExampleViewControllerSegue", completionCallback: nil)
+                        $0.presentationMode = .segueName(segueName: "RowsExampleViewControllerSegue", onDismiss: nil)
                     }
             
                 <<< ButtonRow("Native iOS Event Form") { row in
                         row.title = row.tag
-                        row.presentationMode = .segueName(segueName: "NativeEventsFormNavigationControllerSegue", completionCallback:{  vc in vc.dismiss(animated: true, completion: nil) })
+                        row.presentationMode = .segueName(segueName: "NativeEventsFormNavigationControllerSegue", onDismiss:{  vc in vc.dismiss(animated: true) })
                     }
             
                 <<< ButtonRow("Accesory View Navigation") { (row: ButtonRow) in
                         row.title = row.tag
-                        row.presentationMode = .segueName(segueName: "AccesoryViewControllerSegue", completionCallback: nil)
+                        row.presentationMode = .segueName(segueName: "AccesoryViewControllerSegue", onDismiss: nil)
                     }
             
                 <<< ButtonRow("Custom Cells") { (row: ButtonRow) -> () in
                         row.title = row.tag
-                        row.presentationMode = .segueName(segueName: "CustomCellsControllerSegue", completionCallback: nil)
+                        row.presentationMode = .segueName(segueName: "CustomCellsControllerSegue", onDismiss: nil)
                     }
             
                 <<< ButtonRow("Customization of rows with text input") { (row: ButtonRow) -> Void in
                         row.title = row.tag
-                        row.presentationMode = .segueName(segueName: "FieldCustomizationControllerSegue", completionCallback: nil)
+                        row.presentationMode = .segueName(segueName: "FieldCustomizationControllerSegue", onDismiss: nil)
                     }
             
                 <<< ButtonRow("Hidden rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .segueName(segueName: "HiddenRowsControllerSegue", completionCallback: nil)
+                    row.presentationMode = .segueName(segueName: "HiddenRowsControllerSegue", onDismiss: nil)
                     }
             
                 <<< ButtonRow("Disabled rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .segueName(segueName: "DisabledRowsControllerSegue", completionCallback: nil)
+                    row.presentationMode = .segueName(segueName: "DisabledRowsControllerSegue", onDismiss: nil)
                 }
             
                 <<< ButtonRow("Formatters") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .segueName(segueName: "FormattersControllerSegue", completionCallback: nil)
+                    row.presentationMode = .segueName(segueName: "FormattersControllerSegue", onDismiss: nil)
                 }
         
                 <<< ButtonRow("Inline rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .segueName(segueName: "InlineRowsControllerSegue", completionCallback: nil)
+                    row.presentationMode = .segueName(segueName: "InlineRowsControllerSegue", onDismiss: nil)
                 }
                 <<< ButtonRow("List Sections") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .segueName(segueName: "ListSectionsControllerSegue", completionCallback: nil)
+                    row.presentationMode = .segueName(segueName: "ListSectionsControllerSegue", onDismiss: nil)
                 }
                 <<< ButtonRow("Validations") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .segueName(segueName: "ValidationsControllerSegue", completionCallback: nil)
+                    row.presentationMode = .segueName(segueName: "ValidationsControllerSegue", onDismiss: nil)
                 }
-                <<< ButtonRow("Validation Example") { (row:ButtonRow) -> Void in
+                <<< ButtonRow("Validation Example - IDA") { (row:ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .segueName(segueName: "ValidationExampleSegue", completionCallback: nil)
+                    row.presentationMode = .segueName(segueName: "ValidationExampleSegue", onDismiss: nil)
                 }
         +++ Section()
                 <<< ButtonRow() { (row: ButtonRow) -> Void in
@@ -114,7 +114,7 @@ class HomeViewController : FormViewController {
         let alertController = UIAlertController(title: "OnCellSelection", message: "Button Row Action", preferredStyle: .alert)
         let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(defaultAction)
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
         
     }
     
@@ -541,7 +541,7 @@ class NavigationAccessoryController : FormViewController {
 //MARK: Native Event Example
 
 class NativeEventNavigationController: UINavigationController, RowControllerType {
-    var completionCallback : ((UIViewController) -> ())?
+    var onDismissCallback : ((UIViewController) -> ())?
 }
 
 class NativeEventFormViewController : FormViewController {
@@ -672,8 +672,8 @@ class NativeEventFormViewController : FormViewController {
             }
             .onChange { [weak self] row in
                 if row.value == .Never {
-                    if let second : PushRow<EventAlert> = self?.form.rowBy(tag: "Another Alert"), let secondIndexPath = second.indexPath() {
-                        row.section?.remove(at: (secondIndexPath as NSIndexPath).row)
+                    if let second : PushRow<EventAlert> = self?.form.rowBy(tag: "Another Alert"), let secondIndexPath = second.indexPath {
+                        row.section?.remove(at: secondIndexPath.row)
                     }
                 }
                 else{
@@ -683,7 +683,7 @@ class NativeEventFormViewController : FormViewController {
                             $0.value = .Never
                             $0.options = EventAlert.allValues
                         }
-                        row.section?.insert(second, at: (row.indexPath()! as NSIndexPath).row + 1)
+                        row.section?.insert(second, at: row.indexPath!.row + 1)
                         return
                     }
                 }
@@ -710,7 +710,7 @@ class NativeEventFormViewController : FormViewController {
     }
     
     func cancelTapped(_ barButtonItem: UIBarButtonItem) {
-        (navigationController as? NativeEventNavigationController)?.completionCallback?(self)
+        (navigationController as? NativeEventNavigationController)?.onDismissCallback?(self)
     }
  
     enum RepeatInterval : String, CustomStringConvertible {
@@ -1014,7 +1014,7 @@ class InlineRowsController: FormViewController {
                     var dateComp = DateComponents()
                     dateComp.hour = 18
                     dateComp.minute = 33
-                    (dateComp as NSDateComponents).timeZone = TimeZone.current
+                    dateComp.timeZone = TimeZone.current
                     $0.value = Calendar.current.date(from: dateComp)
                 }
         
@@ -1070,7 +1070,7 @@ class ListSectionsController: FormViewController {
         }
     }
     
-    override func rowValueHasBeenChanged(_ row: BaseRow, oldValue: Any?, newValue: Any?) {
+    override func valueHasBeenChanged(for row: BaseRow, oldValue: Any?, newValue: Any?) {
         if row.section === form[0] {
             print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRow()?.baseValue)")
         }
@@ -1104,7 +1104,7 @@ class ValidationsController: FormViewController {
             
                     <<< TextRow() {
                         $0.title = "Required Rule"
-                        $0.addRule(rule: RuleRequired())
+                        $0.add(rule: RuleRequired())
                         $0.validationOptions = .validatesOnChange
                     }
             
@@ -1113,8 +1113,11 @@ class ValidationsController: FormViewController {
             
                     <<< TextRow() {
                         $0.title = "Email Rule"
-                        $0.addRule(rule: RuleRequired())
-                        $0.addRule(rule: RuleEmail())
+                        $0.add(rule: RuleRequired())
+                        var ruleSet = RuleSet<String>()
+                        ruleSet.add(rule: RuleRequired())
+                        ruleSet.add(rule: RuleEmail())
+                        $0.add(ruleSet: ruleSet)
                         $0.validationOptions = .validatesOnChangeAfterBlurred
                     }
     
@@ -1122,7 +1125,7 @@ class ValidationsController: FormViewController {
         
                     <<< URLRow() {
                         $0.title = "URL Rule"
-                        $0.addRule(rule: RuleURL())
+                        $0.add(rule: RuleURL())
                         $0.validationOptions = .validatesOnChange
                     }
                     .cellUpdate { cell, row in
@@ -1135,8 +1138,8 @@ class ValidationsController: FormViewController {
             +++ Section(header: "MinLength 8 Rule, MaxLength 13 Rule", footer: "Options: Validates on blurred")
                     <<< PasswordRow() {
                         $0.title = "Password"
-                        $0.addRule(rule: RuleMinLength(minLength: 8))
-                        $0.addRule(rule: RuleMaxLength(maxLength: 13))
+                        $0.add(rule: RuleMinLength(minLength: 8))
+                        $0.add(rule: RuleMaxLength(maxLength: 13))
                     }
                     .cellUpdate { cell, row in
                         if !row.isValid {
@@ -1149,8 +1152,8 @@ class ValidationsController: FormViewController {
         
                     <<< IntRow() {
                         $0.title = "Range Rule"
-                        $0.addRule(rule: RuleGreaterThan(min: 2))
-                        $0.addRule(rule: RuleSmallerThan(max: 999))
+                        $0.add(rule: RuleGreaterThan(min: 2))
+                        $0.add(rule: RuleSmallerThan(max: 999))
                     }
                     .cellUpdate { cell, row in
                         if !row.isValid {
@@ -1163,7 +1166,7 @@ class ValidationsController: FormViewController {
         
                     <<< TextRow() {
                         $0.title = "Required Rule"
-                        $0.addRule(rule: RuleRequired())
+                        $0.add(rule: RuleRequired())
                         $0.validationOptions = .validatesOnChange
                     }
                     .cellUpdate { cell, row in
@@ -1172,7 +1175,7 @@ class ValidationsController: FormViewController {
                         }
                     }
                     .onRowValidationChanged { cell, row in
-                        let rowIndex = row.indexPath()!.row
+                        let rowIndex = row.indexPath!.row
                         while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
                             row.section?.remove(at: rowIndex + 1)
                         }
@@ -1182,7 +1185,7 @@ class ValidationsController: FormViewController {
                                     $0.title = validationMsg
                                     $0.cell.height = { 30 }
                                 }
-                                row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
+                                row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
                             }
                         }
                     }
@@ -1191,8 +1194,8 @@ class ValidationsController: FormViewController {
         
                     <<< EmailRow() {
                         $0.title = "Email Rule"
-                        $0.addRule(rule: RuleRequired())
-                        $0.addRule(rule: RuleEmail())
+                        $0.add(rule: RuleRequired())
+                        $0.add(rule: RuleEmail())
                         $0.validationOptions = .validatesOnChangeAfterBlurred
                     }
                     .cellUpdate { cell, row in
@@ -1201,7 +1204,7 @@ class ValidationsController: FormViewController {
                         }
                     }
                     .onRowValidationChanged { cell, row in
-                        let rowIndex = row.indexPath()!.row
+                        let rowIndex = row.indexPath!.row
                         while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
                             row.section?.remove(at: rowIndex + 1)
                         }
@@ -1211,7 +1214,7 @@ class ValidationsController: FormViewController {
                                     $0.title = validationMsg
                                     $0.cell.height = { 30 }
                                 }
-                                row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
+                                row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
                             }
                         }
                     }
@@ -1220,7 +1223,7 @@ class ValidationsController: FormViewController {
         
                     <<< URLRow() {
                             $0.title = "URL Rule"
-                            $0.addRule(rule: RuleURL())
+                            $0.add(rule: RuleURL())
                             $0.validationOptions = .validatesOnChange
                         }
                         .cellUpdate { cell, row in
@@ -1229,7 +1232,7 @@ class ValidationsController: FormViewController {
                             }
                     }
                     .onRowValidationChanged { cell, row in
-                        let rowIndex = row.indexPath()!.row
+                        let rowIndex = row.indexPath!.row
                         while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
                             row.section?.remove(at: rowIndex + 1)
                         }
@@ -1239,7 +1242,7 @@ class ValidationsController: FormViewController {
                                     $0.title = validationMsg
                                     $0.cell.height = { 30 }
                                 }
-                                row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
+                                row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
                             }
                         }
                     }
@@ -1247,8 +1250,8 @@ class ValidationsController: FormViewController {
             
                     <<< PasswordRow() {
                             $0.title = "Password"
-                            $0.addRule(rule: RuleMinLength(minLength: 8))
-                            $0.addRule(rule: RuleMaxLength(maxLength: 13))
+                            $0.add(rule: RuleMinLength(minLength: 8))
+                            $0.add(rule: RuleMaxLength(maxLength: 13))
                         }
                         .cellUpdate { cell, row in
                             if !row.isValid {
@@ -1256,7 +1259,7 @@ class ValidationsController: FormViewController {
                             }
                     }
                     .onRowValidationChanged { cell, row in
-                        let rowIndex = row.indexPath()!.row
+                        let rowIndex = row.indexPath!.row
                         while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
                             row.section?.remove(at: rowIndex + 1)
                         }
@@ -1266,7 +1269,7 @@ class ValidationsController: FormViewController {
                                     $0.title = validationMsg
                                     $0.cell.height = { 30 }
                                 }
-                                row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
+                                row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
                             }
                         }
                     }
@@ -1275,8 +1278,8 @@ class ValidationsController: FormViewController {
             
                     <<< IntRow() {
                             $0.title = "Range Rule"
-                            $0.addRule(rule: RuleGreaterThan(min: 2))
-                            $0.addRule(rule: RuleSmallerThan(max: 999))
+                            $0.add(rule: RuleGreaterThan(min: 2))
+                            $0.add(rule: RuleSmallerThan(max: 999))
                         }
                         .cellUpdate { cell, row in
                             if !row.isValid {
@@ -1284,7 +1287,7 @@ class ValidationsController: FormViewController {
                             }
                         }
                         .onRowValidationChanged { cell, row in
-                            let rowIndex = row.indexPath()!.row
+                            let rowIndex = row.indexPath!.row
                             while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
                                 row.section?.remove(at: rowIndex + 1)
                             }
@@ -1294,7 +1297,7 @@ class ValidationsController: FormViewController {
                                         $0.title = validationMsg
                                         $0.cell.height = { 30 }
                                     }
-                                    row.section?.insert(labelRow, at: row.indexPath()!.row + index + 1)
+                                    row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
                                 }
                             }
                         }

@@ -51,7 +51,7 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
         for subview in contentView.subviews {
             if let button = subview as? UIButton {
                 button.setImage(UIImage(named: "checkedDay"), for: .selected)
-                button.setImage(UIImage(named: "uncheckedDay"), for: UIControlState())
+                button.setImage(UIImage(named: "uncheckedDay"), for: .normal)
                 button.adjustsImageWhenHighlighted = false
                 imageTopTitleBottom(button)
             }
@@ -152,7 +152,7 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
     lazy public var floatLabelTextField: FloatLabelTextField = { [unowned self] in
         let floatTextField = FloatLabelTextField()
         floatTextField.translatesAutoresizingMaskIntoConstraints = false
-        floatTextField.font = .preferredFont(forTextStyle: UIFontTextStyle.body)
+        floatTextField.font = .preferredFont(forTextStyle: .body)
         floatTextField.titleFont = .boldSystemFont(ofSize: 11.0)
         floatTextField.clearButtonMode = .whileEditing
         return floatTextField
@@ -184,7 +184,7 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
         return !row.isDisabled && floatLabelTextField.canBecomeFirstResponder
     }
     
-    open override func cellBecomeFirstResponder(_ direction: Direction) -> Bool {
+    open override func cellBecomeFirstResponder(withDirection direction: Direction) -> Bool {
         return floatLabelTextField.becomeFirstResponder()
     }
     
@@ -245,7 +245,7 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
-            return textField.isFirstResponder ? formatter.editingString(for: v as AnyObject) : formatter.string(for: v as AnyObject)
+            return textField.isFirstResponder ? formatter.editingString(for: v) : formatter.string(for: v)
         }
         return String(describing: v)
     }
@@ -253,7 +253,7 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
     //MARK: TextFieldDelegate
     
     public func textFieldDidBeginEditing(_ textField: UITextField) {
-        formViewController()?.beginEditing(self)
+        formViewController()?.beginEditing(of: self)
         if let fieldRowConformance = row as? FormatterConformance, let _ = fieldRowConformance.formatter, fieldRowConformance.useFormatterOnDidBeginEditing ?? fieldRowConformance.useFormatterDuringInput {
             textField.text = displayValue(useFormatter: true)
         } else {
@@ -262,7 +262,7 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
-        formViewController()?.endEditing(self)
+        formViewController()?.endEditing(of: self)
         formViewController()?.textInputDidEndEditing(textField, cell: self)
         textFieldDidChange(textField)
         textField.text = displayValue(useFormatter: (row as? FormatterConformance)?.formatter != nil)
@@ -508,7 +508,7 @@ public final class EmailFloatLabelRow: FloatFieldRow<EmailFloatLabelCell>, RowTy
 public final class LocationRow : SelectorRow<PushSelectorCell<CLLocation>, MapViewController>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
-        presentationMode = .show(controllerProvider: ControllerProvider.callback { return MapViewController(){ _ in } }, completionCallback: { vc in _ = vc.navigationController?.popViewController(animated: true) })
+        presentationMode = .show(controllerProvider: ControllerProvider.callback { return MapViewController(){ _ in } }, onDismiss: { vc in _ = vc.navigationController?.popViewController(animated: true) })
         
         displayValueFor = {
             guard let location = $0 else { return "" }
@@ -525,11 +525,11 @@ public final class LocationRow : SelectorRow<PushSelectorCell<CLLocation>, MapVi
 public class MapViewController : UIViewController, TypedRowControllerType, MKMapViewDelegate {
     
     public var row: RowOf<CLLocation>!
-    public var completionCallback : ((UIViewController) -> ())?
+    public var onDismissCallback: ((UIViewController) -> ())?
     
     lazy var mapView : MKMapView = { [unowned self] in
         let v = MKMapView(frame: self.view.bounds)
-        v.autoresizingMask = UIViewAutoresizing.flexibleWidth.union(UIViewAutoresizing.flexibleHeight)
+        v.autoresizingMask = UIViewAutoresizing.flexibleWidth.union(.flexibleHeight)
         return v
         }()
     
@@ -581,7 +581,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
     
     convenience public init(_ callback: ((UIViewController) -> ())?){
         self.init(nibName: nil, bundle: nil)
-        completionCallback = callback
+        onDismissCallback = callback
     }
     
     public override func viewDidLoad() {
@@ -619,7 +619,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
     func tappedDone(_ sender: UIBarButtonItem){
         let target = mapView.convert(ellipsisLayer.position, toCoordinateFrom: mapView)
         row.value = CLLocation(latitude: target.latitude, longitude: target.longitude)
-        completionCallback?(self)
+        onDismissCallback?(self)
     }
     
     func updateTitle(){

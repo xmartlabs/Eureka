@@ -64,17 +64,17 @@ open class _CountDownRow: _DateFieldRow {
             if let formatter = self.dateFormatter {
                 return formatter.string(from: val)
             }
-            let components = Calendar.current.dateComponents([Calendar.Component.minute, Calendar.Component.hour], from: val as Date)
+            let components = Calendar.current.dateComponents([Calendar.Component.minute, Calendar.Component.hour], from: val)
             var hourString = "hour"
             if components.hour != 1{
                 hourString += "s"
             }
-            return  "\(components.hour) \(hourString) \(components.minute) min"
+            return  "\(components.hour!) \(hourString) \(components.minute!) min"
         }
     }
 }
 
-/// A row with an NSDate as value where the user can select a date from a picker view.
+/// A row with an Date as value where the user can select a date from a picker view.
 public final class DateRow: _DateRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -82,21 +82,21 @@ public final class DateRow: _DateRow, RowType {
 }
 
 
-/// A row with an NSDate as value where the user can select a time from a picker view.
+/// A row with an Date as value where the user can select a time from a picker view.
 public final class TimeRow: _TimeRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-/// A row with an NSDate as value where the user can select date and time from a picker view.
+/// A row with an Date as value where the user can select date and time from a picker view.
 public final class DateTimeRow: _DateTimeRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
-/// A row with an NSDate as value where the user can select hour and minute as a countdown timer in a picker view.
+/// A row with an Date as value where the user can select hour and minute as a countdown timer in a picker view.
 public final class CountDownRow: _CountDownRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)

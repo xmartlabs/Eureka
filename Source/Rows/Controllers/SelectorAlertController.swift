@@ -33,7 +33,7 @@ open class SelectorAlertController<T: Equatable> : UIAlertController, TypedRowCo
     public var cancelTitle = NSLocalizedString("Cancel", comment: "")
     
     /// A closure to be called when the controller disappears.
-    public var completionCallback : ((UIViewController) -> ())?
+    public var onDismissCallback : ((UIViewController) -> ())?
     
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -45,7 +45,7 @@ open class SelectorAlertController<T: Equatable> : UIAlertController, TypedRowCo
     
     convenience public init(_ callback: ((UIViewController) -> ())?){
         self.init()
-        completionCallback = callback
+        onDismissCallback = callback
     }
     
     open override func viewDidLoad() {
@@ -55,7 +55,7 @@ open class SelectorAlertController<T: Equatable> : UIAlertController, TypedRowCo
         for option in options {
             addAction(UIAlertAction(title: row.displayValueFor?(option), style: .default, handler: { [weak self] _ in
                 self?.row.value = option
-                self?.completionCallback?(self!)
+                self?.onDismissCallback?(self!)
                 }))
         }
     }

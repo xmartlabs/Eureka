@@ -72,7 +72,7 @@ open class BaseCell : UITableViewCell, BaseCellType {
      Called when the cell becomes first responder
      */
     @discardableResult
-    open func cellBecomeFirstResponder(_ direction: Direction = .down) -> Bool {
+    open func cellBecomeFirstResponder(withDirection: Direction = .down) -> Bool {
         return becomeFirstResponder()
     }
 
@@ -95,7 +95,7 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
 
     /// Returns the navigationAccessoryView if it is defined or calls super if not.
     override open var inputAccessoryView: UIView? {
-        if let v = formViewController()?.inputAccessoryViewForRow(row){
+        if let v = formViewController()?.inputAccessoryView(for: row){
             return v
         }
         return super.inputAccessoryView
@@ -133,15 +133,13 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
     open override func didSelect() {}
 
     override open var canBecomeFirstResponder: Bool {
-        get {
-            return false
-        }
+        get { return false }
     }
 
     open override func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
         if result {
-            formViewController()?.beginEditing(self)
+            formViewController()?.beginEditing(of: self)
         }
         return result
     }
@@ -149,7 +147,7 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
     open override func resignFirstResponder() -> Bool {
         let result = super.resignFirstResponder()
         if result {
-            formViewController()?.endEditing(self)
+            formViewController()?.endEditing(of: self)
         }
         return result
     }

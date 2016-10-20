@@ -51,7 +51,7 @@ open class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: Typed
         displayValueFor = { (rowValue: Set<T>?) in
             return rowValue?.map({ String(describing: $0) }).sorted().joined(separator: ", ")
         }
-        presentationMode = .show(controllerProvider: ControllerProvider.callback { return VCType() }, completionCallback: { vc in
+        presentationMode = .show(controllerProvider: ControllerProvider.callback { return VCType() }, onDismiss: { vc in
             let _ = vc.navigationController?.popViewController(animated: true) })
     }
     
@@ -61,25 +61,25 @@ open class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: Typed
     open override func customDidSelect() {
         super.customDidSelect()
         guard let presentationMode = presentationMode, !isDisabled else { return }
-        if let controller = presentationMode.createController(){
+        if let controller = presentationMode.makeController(){
             controller.row = self
             controller.title = selectorTitle ?? controller.title
             onPresentCallback?(cell.formViewController()!, controller)
-            presentationMode.presentViewController(controller, row: self, presentingViewController: self.cell.formViewController()!)
+            presentationMode.present(controller, row: self, presentingController: self.cell.formViewController()!)
         }
         else{
-            presentationMode.presentViewController(nil, row: self, presentingViewController: self.cell.formViewController()!)
+            presentationMode.present(nil, row: self, presentingController: self.cell.formViewController()!)
         }
     }
     
     /**
      Prepares the pushed row setting its title and completion callback.
      */
-    open override func prepareForSegue(_ segue: UIStoryboardSegue) {
-        super.prepareForSegue(segue)
+    open override func prepare(for segue: UIStoryboardSegue) {
+        super.prepare(for: segue)
         guard let rowVC = segue.destination as? VCType else { return }
         rowVC.title = selectorTitle ?? rowVC.title
-        rowVC.completionCallback = presentationMode?.completionHandler ?? rowVC.completionCallback
+        rowVC.onDismissCallback = presentationMode?.onDismissCallback ?? rowVC.onDismissCallback
         onPresentCallback?(cell.formViewController()!, rowVC)
         rowVC.row = self
     }

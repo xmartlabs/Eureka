@@ -26,7 +26,12 @@ import Foundation
 
 
 public struct ValidationError: Equatable {
-    public let msg: String?
+    
+    public let msg: String
+    
+    public init(msg: String) {
+        self.msg = msg
+    }
 }
 
 public func ==(lhs: ValidationError, rhs: ValidationError) -> Bool{
@@ -71,14 +76,16 @@ public struct RuleSet<T: Equatable> {
     
     internal var rules: [ValidationRuleHelper<T>] = []
     
-    public mutating func addRule<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType{
+    public init(){}
+    
+    public mutating func add<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType{
         let validFn: ((T?) -> ValidationError?) = { (val: T?) in
             return rule.isValid(value: val)
         }
         rules.append(ValidationRuleHelper(validateFn: validFn, rule: rule))
     }
     
-    public mutating func removeRuleWith(identifier: String) {
+    public mutating func remove(ruleWithIdentifier identifier: String) {
         if let index = rules.index(where: { (validationRuleHelper) -> Bool in
             return validationRuleHelper.rule.id == identifier
         }){

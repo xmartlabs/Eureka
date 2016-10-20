@@ -85,8 +85,8 @@ public protocol TypedRowType: BaseRowType {
     /// The typed value this row stores.
     var value : Cell.Value? { get set }
 
-    func addRule<Rule: RuleType>(rule: Rule) where Rule.RowValueType == Cell.Value
-//    func removeRule<Rule: RuleType where Rule.RowValueType == Cell.Value>(rule: Rule)
+    func add<Rule: RuleType>(rule: Rule) where Rule.RowValueType == Cell.Value
+    func remove(ruleWithIdentifier: String)
 }
 
 /**

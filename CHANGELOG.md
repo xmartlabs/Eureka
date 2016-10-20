@@ -1,11 +1,52 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-### master branch
+### [2.0.0-beta.1](https://github.com/xmartlabs/Eureka/releases/tag/2.0.0)
+
+Pull requests associated with this milestone can be found in this [filter](https://github.com/xmartlabs/Eureka/issues?utf8=%E2%9C%93&q=milestone%3A2.0.0%20).
+
+We have made tons of changes to the Eureka API to follow the new Swift API design guidelines.
+It's hard to enumerate all changes and most of them will be automatically suggested by Xcode.
+
+We have also added to Eureka a extensible build-in validations support.
+
+These are the most important changes...
+
+#### Deleted
+
+* `PostalAddressRow` was removed.
+* `ImageRow` was removed.
+
+You can find these both rows under [EurekaCommunity] github organization.
+
+* Row's `func highlightCell()`
+* Row's `func unhighlightCell()`
+* Cell's `func highlight()`
+* Cell's `func unhighlight()`
+* Cell's `func didSelect()`
+
+#### Added
+
+* Rows's `var isHighlighted: Bool`.
+* Rows's `var isValid: Bool`.
+* Row's `func onCellHighlightChanged(_ callback: @escaping (_ cell: Cell, _ row: Self)->()) -> Self `.
+* Row's `func onRowValidationChanged(_ callback: @escaping (_ cell: Cell, _ row: Self)->()) -> Self`.
+* Row's `func validate() -> [ValidationError]`
+* Form's `func validate() -> [ValidationError]`
+* Row's `func add<Rule: RuleType>(rule: Rule)`
+* Row's `func remove(ruleWithIdentifier: String)`
+* `RuleSet<T: Equatable>` type.
+* `ValidationOptions` Enum type.
+* `RuleType` protocol.
+* `ValidationError` type.
+
+##### Fixes
 
 * Fixed textlabel alignment for cells with custom constraints (FieldRow, SegmentedRow, TextAreaRow).
 * Set 'Require Only App-Extension-Safe API' to YES to enable code sharing in App Extensions.
 * Other bug fixes and minor improvements
+
+Take a look at [2.0.0 Migration guide]() for more information on how to solve breaking changes.
 
 ### [1.7.0](https://github.com/xmartlabs/Eureka/releases/tag/1.7.0)
 
@@ -132,3 +173,4 @@ Released on 2015-09-29. This is the initial version.
 [mikaoj]: https://github.com/mikaoj
 [estebansotoara]: https://github.com/estebansotoara
 [dernster]: https://github.com/dernster
+[EurekaCommunity]: https://github.com/EurekaCommunity

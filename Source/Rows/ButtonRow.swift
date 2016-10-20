@@ -72,11 +72,11 @@ open class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
         super.customDidSelect()
         if !isDisabled {
             if let presentationMode = presentationMode {
-                if let controller = presentationMode.createController(){
-                    presentationMode.presentViewController(controller, row: self, presentingViewController: self.cell.formViewController()!)
+                if let controller = presentationMode.makeController(){
+                    presentationMode.present(controller, row: self, presentingController: self.cell.formViewController()!)
                 }
                 else{
-                    presentationMode.presentViewController(nil, row: self, presentingViewController: self.cell.formViewController()!)
+                    presentationMode.present(nil, row: self, presentingController: self.cell.formViewController()!)
                 }
             }
         }
@@ -98,10 +98,10 @@ open class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
         }
     }
     
-    open override func prepareForSegue(_ segue: UIStoryboardSegue) {
-        super.prepareForSegue(segue)
+    open override func prepare(for segue: UIStoryboardSegue) {
+        super.prepare(for: segue)
         let rowVC = segue.destination as? RowControllerType
-        rowVC?.completionCallback = self.presentationMode?.completionHandler
+        rowVC?.onDismissCallback = presentationMode?.onDismissCallback
     }
 }
 

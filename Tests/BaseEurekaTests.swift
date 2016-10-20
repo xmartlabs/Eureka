@@ -43,14 +43,14 @@ class BaseEurekaTests: XCTestCase {
         
         // Create a Date section containing one date row of each type and some extra rows that use minimumDate, maximumDate and minuteInterval restrictions
         dateForm +++ Section("Date Section")
-            <<< DateRow("DateRow_d1"){ $0.title = "Date"; $0.value = NSDate() as Date }
-            <<< DateTimeRow("DateTimeRow_d1"){ $0.title = "DateTime"; $0.value = NSDate() as Date }
-            <<< TimeRow("TimeRow_d1"){ $0.title = "Time"; $0.value = NSDate() as Date }
-            <<< CountDownRow("CountDownRow_d1"){ $0.title = "CountDown"; $0.value = NSDate() as Date }
-            <<< DateRow("MinDateRow_d1"){ $0.title = "Date(min)"; $0.value = NSDate() as Date; $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24) }
-            <<< DateRow("MaxDateRow_d1"){ $0.title = "Date(max)"; $0.value = NSDate() as Date; $0.maximumDate = $0.value?.addingTimeInterval(60*60*24) }
-            <<< DateRow("MinMaxDateRow_d1"){ $0.title = "Date(min/max)"; $0.value = NSDate() as Date; $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24); $0.maximumDate = $0.value?.addingTimeInterval(60*60*24)  }
-            <<< DateRow("IntervalDateRow_d1"){ $0.title = "Date(interval)"; $0.value = NSDate() as Date; $0.minuteInterval = 15 }
+            <<< DateRow("DateRow_d1"){ $0.title = "Date"; $0.value = Date() }
+            <<< DateTimeRow("DateTimeRow_d1"){ $0.title = "DateTime"; $0.value = Date() }
+            <<< TimeRow("TimeRow_d1"){ $0.title = "Time"; $0.value = Date() }
+            <<< CountDownRow("CountDownRow_d1"){ $0.title = "CountDown"; $0.value = Date() }
+            <<< DateRow("MinDateRow_d1"){ $0.title = "Date(min)"; $0.value = Date(); $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24) }
+            <<< DateRow("MaxDateRow_d1"){ $0.title = "Date(max)"; $0.value = Date(); $0.maximumDate = $0.value?.addingTimeInterval(60*60*24) }
+            <<< DateRow("MinMaxDateRow_d1"){ $0.title = "Date(min/max)"; $0.value = Date(); $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24); $0.maximumDate = $0.value?.addingTimeInterval(60*60*24)  }
+            <<< DateRow("IntervalDateRow_d1"){ $0.title = "Date(interval)"; $0.value = Date(); $0.minuteInterval = 15 }
         
         shortForm +++ Section("short")
             <<< NameRow("NameRow_s1"){ $0.title = "Name" }
@@ -111,32 +111,32 @@ public class MyFormDelegate : FormDelegate {
     public var rowsReplacedOut = 0
     public var sectionsReplacedOut = 0
     
-    public func rowValueHasBeenChanged(_ row: BaseRow, oldValue: Any?, newValue: Any?){
+    public func valueHasBeenChanged(for: BaseRow, oldValue: Any?, newValue: Any?){
         valuesChanged += 1
     }
     
-    public func sectionsHaveBeenAdded(_ sections: [Section], atIndexes: IndexSet){
+    public func sectionsHaveBeenAdded(_ sections: [Section], at: IndexSet){
         sectionsAdded += sections.count
     }
     
-    public func sectionsHaveBeenRemoved(_ sections: [Section], atIndexes: IndexSet){
+    public func sectionsHaveBeenRemoved(_ sections: [Section], at: IndexSet){
         sectionsRemoved += sections.count
     }
     
-    public func sectionsHaveBeenReplaced(oldSections:[Section], newSections: [Section], atIndexes: IndexSet){
+    public func sectionsHaveBeenReplaced(oldSections:[Section], newSections: [Section], at: IndexSet){
         sectionsReplacedIn += newSections.count
         sectionsReplacedOut += oldSections.count
     }
     
-    public func rowsHaveBeenAdded(_ rows: [BaseRow], atIndexPaths:[IndexPath]){
+    public func rowsHaveBeenAdded(_ rows: [BaseRow], at:[IndexPath]){
         rowsAdded += rows.count
     }
     
-    public func rowsHaveBeenRemoved(_ rows: [BaseRow], atIndexPaths:[IndexPath]){
+    public func rowsHaveBeenRemoved(_ rows: [BaseRow], at:[IndexPath]){
         rowsRemoved += rows.count
     }
     
-    public func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], atIndexPaths: [IndexPath]){
+    public func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], at: [IndexPath]){
         rowsReplacedIn += newRows.count
         rowsReplacedOut += oldRows.count
     }
