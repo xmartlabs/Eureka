@@ -15,6 +15,13 @@ open class StepperCell : Cell<Double>, CellType {
     public typealias Value = Double
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        self.stepper = UIStepper()
+        self.stepper.translatesAutoresizingMaskIntoConstraints = false
+
+        self.valueLabel = UILabel()
+        self.valueLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.valueLabel.numberOfLines = 1
+
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         height = { BaseRow.estimatedRowHeight }
     }
@@ -23,18 +30,9 @@ open class StepperCell : Cell<Double>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    open lazy var stepper: UIStepper = {
-        let s = UIStepper()
-        s.translatesAutoresizingMaskIntoConstraints = false
-        return s
-    }()
+    public var stepper: UIStepper
     
-    open lazy var valueLabel: UILabel = {
-        let l = UILabel()
-        l.translatesAutoresizingMaskIntoConstraints = false
-        l.numberOfLines = 1
-        return l
-    }()
+    public var valueLabel: UILabel
     
     open override func setup() {
         super.setup()
