@@ -51,6 +51,9 @@ extension AreaCell {
 open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equatable, T: InputTypeInitiable {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        self.textView = UITextView()
+        self.textView.translatesAutoresizingMaskIntoConstraints = false
+
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
@@ -66,11 +69,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         return v
     }()
     
-    open lazy var textView : UITextView = {
-        let v = UITextView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
+    public var textView: UITextView
     
     open var dynamicConstraints = [NSLayoutConstraint]()
     
