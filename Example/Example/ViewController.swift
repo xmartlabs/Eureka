@@ -1156,6 +1156,21 @@ class ValidationsController: FormViewController {
                             cell.titleLabel?.textColor = .red
                         }
                     }
+            
+            +++ Section(header: "Match field values", footer: "Options: Validates on blurred")
+            
+                    <<< PasswordRow("password") {
+                        $0.title = "Password"
+                    }
+                    <<< PasswordRow() {
+                        $0.title = "Confirm Password"
+                        $0.add(rule: RuleEqualsToRow(form: form, tag: "password"))
+                    }
+                    .cellUpdate { cell, row in
+                        if !row.isValid {
+                            cell.titleLabel?.textColor = .red
+                        }
+                    }
 
         
             +++ Section(header: "More sophisticated validations UX using callbacks", footer: "")
@@ -1244,10 +1259,36 @@ class ValidationsController: FormViewController {
                     }
             
             
-                    <<< PasswordRow() {
+                    <<< PasswordRow("password2") {
                             $0.title = "Password"
                             $0.add(rule: RuleMinLength(minLength: 8))
                             $0.add(rule: RuleMaxLength(maxLength: 13))
+                        }
+                        .cellUpdate { cell, row in
+                            if !row.isValid {
+                                cell.titleLabel?.textColor = .red
+                            }
+                    }
+                    .onRowValidationChanged { cell, row in
+                        let rowIndex = row.indexPath!.row
+                        while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                            row.section?.remove(at: rowIndex + 1)
+                        }
+                        if !row.isValid {
+                            for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                                let labelRow = LabelRow() {
+                                    $0.title = validationMsg
+                                    $0.cell.height = { 30 }
+                                }
+                                row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                            }
+                        }
+                    }
+            
+            
+                    <<< PasswordRow() {
+                            $0.title = "Confirm Password"
+                            $0.add(rule: RuleEqualsToRow(form: form, tag: "password2"))
                         }
                         .cellUpdate { cell, row in
                             if !row.isValid {
