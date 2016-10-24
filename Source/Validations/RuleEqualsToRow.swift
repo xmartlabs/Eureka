@@ -26,14 +26,14 @@ import Foundation
 
 public struct RuleEqualsToRow<T: Equatable>: RuleType {
     
-    public init(msg: String = "Fields doenst match!", form: Form, tag: String){
+    public init(form: Form, tag: String, msg: String = "Fields doesn't match!"){
         self.validationError = ValidationError(msg: msg)
         self.form = form
         self.tag = tag
         self.row = nil;
     }
     
-    public init(msg: String = "Fields doenst match!", row: BaseRow?){
+    public init(row: RowOf<T>, msg: String = "Fields doesn't match!"){
         self.validationError = ValidationError(msg: msg)
         self.form = nil
         self.tag = nil
@@ -44,7 +44,7 @@ public struct RuleEqualsToRow<T: Equatable>: RuleType {
     public var validationError: ValidationError
     public var form: Form?
     public var tag: String?
-    public var row: BaseRow?
+    public var row: RowOf<T>?
     
     public func isValid(value: T?) -> ValidationError? {
         
@@ -54,7 +54,7 @@ public struct RuleEqualsToRow<T: Equatable>: RuleType {
             _row = form!.rowBy(tag: tag!);
         }
         
-        if (_row!.baseValue as? T == value){
+        if (_row?.value == value){
             return nil;
         }else{
             return validationError
