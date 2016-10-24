@@ -455,6 +455,10 @@ Eureka allows us to specify when validation rules should be evaluated. We can do
 
 If you want to validate the entire form (all the rows) you can manually invoke Form `validate()` method.
 
+#### How to get validation errors
+
+Each row has the `validationErrors` property that can be used to retrieve all validation errors. This property just holds the validation error list of the latest row validation execution, which means it doesn't evaluate the validation rules of the row. 
+
 ## Custom rows
 
 It is very common that you need a row that is different from those included in Eureka. If this is the case you will have to create your own row but this should not be difficult. You can read [this tutorial on how to create custom rows](https://blog.xmartlabs.com/2016/09/06/Eureka-custom-row-tutorial/) to get started. You might also want to have a look at [EurekaCommunity] which includes some extra rows ready to be added to Eureka.
@@ -784,7 +788,7 @@ Let us know about it, we would be glad to mention it here. :)
 
 #### CocoaPods
 
-[CocoaPods](https://cocoapods.org/) is a dependency manager for Cocoa projects. 
+[CocoaPods](https://cocoapods.org/) is a dependency manager for Cocoa projects.
 
 **Cocoapods 1.1.0.rc.3 or newer version must be used.**
 
