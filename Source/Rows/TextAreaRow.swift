@@ -51,6 +51,14 @@ extension AreaCell {
 open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equatable, T: InputTypeInitiable {
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        self.textView = UITextView()
+        self.textView.translatesAutoresizingMaskIntoConstraints = false
+
+        self.placeholderLabel = UILabel()
+        self.placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.placeholderLabel.numberOfLines = 0
+        self.placeholderLabel.textColor = UIColor(white: 0, alpha: 0.22)
+
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
@@ -58,19 +66,9 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         fatalError("init(coder:) has not been implemented")
     }
     
-    open lazy var placeholderLabel : UILabel = {
-        let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.numberOfLines = 0
-        v.textColor = UIColor(white: 0, alpha: 0.22)
-        return v
-    }()
+    public var placeholderLabel : UILabel
     
-    open lazy var textView : UITextView = {
-        let v = UITextView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
+    public var textView: UITextView
     
     open var dynamicConstraints = [NSLayoutConstraint]()
     

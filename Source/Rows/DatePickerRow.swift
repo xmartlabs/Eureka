@@ -26,18 +26,18 @@ import Foundation
 
 open class DatePickerCell : Cell<Date>, CellType {
     
-    open lazy var datePicker: UIDatePicker = { [unowned self] in
-        let picker = UIDatePicker()
-        picker.translatesAutoresizingMaskIntoConstraints = false
-        self.contentView.addSubview(picker)
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": picker]))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": picker]))
-        picker.addTarget(self, action: #selector(DatePickerCell.datePickerValueChanged(_:)), for: .valueChanged)
-        return picker
-        }()
+    public var datePicker: UIDatePicker
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?){
+        self.datePicker = UIDatePicker()
+        self.datePicker.translatesAutoresizingMaskIntoConstraints = false
+        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.contentView.addSubview(self.datePicker)
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": self.datePicker]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": self.datePicker]))
+        self.datePicker.addTarget(self, action: #selector(DatePickerCell.datePickerValueChanged(_:)), for: .valueChanged)
     }
     
     required public init?(coder aDecoder: NSCoder) {
