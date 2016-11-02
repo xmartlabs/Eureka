@@ -457,7 +457,7 @@ If you want to validate the entire form (all the rows) you can manually invoke F
 
 #### How to get validation errors
 
-Each row has the `validationErrors` property that can be used to retrieve all validation errors. This property just holds the validation error list of the latest row validation execution, which means it doesn't evaluate the validation rules of the row. 
+Each row has the `validationErrors` property that can be used to retrieve all validation errors. This property just holds the validation error list of the latest row validation execution, which means it doesn't evaluate the validation rules of the row.
 
 ## Custom rows
 
@@ -629,7 +629,7 @@ There are some things to consider when you do this:
         <td><center><b>Stepper Row</b><br>
         <img src="Example/Media/RowStatics/StepperRow.png"/>
         </center><br><br>
-        </td>        
+        </td>
     </tr>
     <tr>
         <td><center><b>Text Area Row</b><br>
@@ -1035,6 +1035,11 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [our blog post]: http://blog.xmartlabs.com/2015/09/29/Introducing-Eureka-iOS-form-library-written-in-pure-Swift/
 [twitter]: https://twitter.com/xmartlabs
 [EurekaCommunity]: https://github.com/EurekaCommunity
+
+# Donate to Eureka
+
+So we can make Eureka even better!<br><br>
+[<img src="donate.png"/>](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HRMAH7WZ4QQ8E)
 
 # Change Log
 
