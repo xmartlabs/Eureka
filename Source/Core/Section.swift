@@ -238,7 +238,13 @@ extension Section : RangeReplaceableCollection {
         kvoWrapper._allRows.append(formRow)
         formRow.wasAddedTo(section: self)
     }
-    
+  
+    public func insert(_ formRow: BaseRow, at: Int){
+        kvoWrapper.rows.insert(formRow, at: index)
+        kvoWrapper._allRows.append(formRow)
+        formRow.wasAddedTo(section: self)
+    }
+  
     public func append<S : Sequence>(contentsOf newElements: S) where S.Iterator.Element == BaseRow {
         kvoWrapper.rows.addObjects(from: newElements.map { $0 })
         kvoWrapper._allRows.append(contentsOf: newElements)
