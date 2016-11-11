@@ -498,7 +498,7 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
         }
 
         if let coordinator = transitionCoordinator {
-            coordinator.animateAlongsideTransition(in: parent?.view, animation: deselectionAnimation, completion: reselection)
+            coordinator.animate(alongsideTransition: deselectionAnimation, completion: reselection)
         }
         else {
             selectedIndexPaths.forEach {
