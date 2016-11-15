@@ -562,8 +562,8 @@ public final class CustomPushRow<T: Equatable>: SelectorRow<PushSelectorCell<T>,
         super.init(tag: tag)
         presentationMode = .show(controllerProvider: ControllerProvider.callback {
             return SelectorViewController<T>(){ _ in }
-            }, completionCallback: { vc in
-                vc.navigationController?.popViewController(animated: true)
+            }, onDismiss: { vc in
+                _ = vc.navigationController?.popViewController(animated: true)
         })
     }
 }
