@@ -207,7 +207,7 @@ class RowsExampleViewController: FormViewController {
                         $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
                         $0.value = 👦🏼
                     }.onChange { row in
-                        print(row.value)
+                        print(row.value ?? "No Value")
                     }
                     .onPresent{ _, to in
                         to.view.tintColor = .purple
