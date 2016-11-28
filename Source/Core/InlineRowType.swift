@@ -144,4 +144,7 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
     public var onExpandInlineRowCallback: ((Cell, Self, InlineRow)->())? {
         return callbackOnExpandInlineRow as! ((Cell, Self, InlineRow)->())?
     }
+    
+    public var isExpanded: Bool { return _inlineRow != nil }
+    public var isCollapsed: Bool { return !isExpanded }
 }
