@@ -54,7 +54,7 @@ public final class CheckCell : Cell<Bool>, CellType {
     
     open override func setup() {
         super.setup()
-        accessoryType =  .checkmark
+        accessoryType = .checkmark
         editingAccessoryType = accessoryType
     }
     
