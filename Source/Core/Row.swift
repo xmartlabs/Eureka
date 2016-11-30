@@ -57,6 +57,17 @@ open class RowOf<T: Equatable>: BaseRow {
             guard let _ = section?.form else { return }
             wasChanged = true
             if validationOptions.contains(.validatesOnChange) || (wasBlurred && validationOptions.contains(.validatesOnChangeAfterBlurred)) || !isValid   {
+
+                if let textInput = (baseCell as? TextInputCell)?.textInput {
+                    if let makredRange = textInput.markedTextRange {
+                        if let length = textInput.text(in: makredRange)?.lengthOfBytes(using: .utf8) {
+
+                            // typing chinese use `pingyin` input method. DO NOT update cell. After user confirm it then update. 
+                            if length > 0 { return }
+                        }
+                    }
+                }
+
                 validate()
                 updateCell()
             }
