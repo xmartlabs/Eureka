@@ -78,6 +78,7 @@
 		28EEC02F1C7E49BF00300699 /* SelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CE101C7E01EE0002982F /* SelectorViewController.swift */; };
 		28EEC0321C7E64A400300699 /* DatePickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDFC1C7DF9430002982F /* DatePickerRow.swift */; };
 		28EEC0331C7E64AB00300699 /* PopoverSelectorRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CE1D1C7E08300002982F /* PopoverSelectorRow.swift */; };
+		3973000A1DF0E2A000080E4D /* PickerInputRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397300091DF0E2A000080E4D /* PickerInputRow.swift */; };
 		49ADC7F91C8A83240073952B /* StepperRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADC7F81C8A83240073952B /* StepperRow.swift */; };
 		51729DF61B9A4F5E004A00EB /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51729DEB1B9A4F5E004A00EB /* Eureka.framework */; };
 		51729E671B9A5FA5004A00EB /* Eureka.h in Headers */ = {isa = PBXBuildFile; fileRef = 51729E661B9A5FA5004A00EB /* Eureka.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -167,6 +168,7 @@
 		28EEBFF71C7E241200300699 /* SelectableRowType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectableRowType.swift; sourceTree = "<group>"; };
 		28EEBFFA1C7E25C500300699 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		28EEBFFC1C7E25F100300699 /* Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Cell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		397300091DF0E2A000080E4D /* PickerInputRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerInputRow.swift; sourceTree = "<group>"; };
 		49ADC7F81C8A83240073952B /* StepperRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepperRow.swift; sourceTree = "<group>"; };
 		51729DEB1B9A4F5E004A00EB /* Eureka.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Eureka.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51729DF01B9A4F5E004A00EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Source/Info.plist; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				2859CDA01C7CF3A10002982F /* LabelRow.swift */,
 				2859CE1F1C7E092B0002982F /* MultipleSelectorRow.swift */,
 				2859CDB51C7D0EC60002982F /* PickerRow.swift */,
+				397300091DF0E2A000080E4D /* PickerInputRow.swift */,
 				2859CDB71C7D0FE70002982F /* PickerInlineRow.swift */,
 				2859CE1D1C7E08300002982F /* PopoverSelectorRow.swift */,
 				2859CDEC1C7DF0680002982F /* PushRow.swift */,
@@ -496,6 +499,7 @@
 				2859CDBE1C7D137D0002982F /* Form.swift in Sources */,
 				280FBE5F1D873CCE00900064 /* RuleClosure.swift in Sources */,
 				28EEC0001C7E36EB00300699 /* SwitchRow.swift in Sources */,
+				3973000A1DF0E2A000080E4D /* PickerInputRow.swift in Sources */,
 				287E7D901D7601850065F4DE /* RuleLength.swift in Sources */,
 				28EEC02A1C7E3B5A00300699 /* MultipleSelectorRow.swift in Sources */,
 				28EEC0231C7E3B1900300699 /* AlertRow.swift in Sources */,
