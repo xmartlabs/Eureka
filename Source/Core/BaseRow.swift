@@ -43,6 +43,7 @@ open class BaseRow : BaseRowType {
             guard validationErrors != oldValue else { return }
             RowDefaults.onRowValidationChanged["\(type(of: self))"]?(baseCell, self)
             callbackOnRowValidationChanged?()
+            updateCell()
         }
     }
     
@@ -125,7 +126,7 @@ open class BaseRow : BaseRowType {
     var hiddenCache = false
     var disabledCache = false {
         willSet {
-            if newValue == true && disabledCache == false  {
+            if newValue && !disabledCache {
                 baseCell.cellResignFirstResponder()
             }
         }

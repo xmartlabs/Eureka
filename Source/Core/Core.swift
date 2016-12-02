@@ -566,12 +566,12 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     public final func endEditing<T:Equatable>(of cell: Cell<T>) {
         cell.row.isHighlighted = false
         cell.row.wasBlurred = true
-        cell.row.updateCell()
         RowDefaults.onCellHighlightChanged["\(type(of: self))"]?(cell, cell.row)
         cell.row.callbackOnCellHighlightChanged?()
         if cell.row.validationOptions.contains(.validatesOnBlur) ||  cell.row.validationOptions.contains(.validatesOnChangeAfterBlurred) {
             cell.row.validate()
         }
+        cell.row.updateCell()
     }
     
     /**
