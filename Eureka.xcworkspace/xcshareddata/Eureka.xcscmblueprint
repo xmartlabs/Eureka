@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "83BADBC5501CE21C43EFAD0B4239602133296C18",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "7F29E45D4582AAAF89F1FD242F65C46B8C0A3793" : 9223372036854775807,
+    "83BADBC5501CE21C43EFAD0B4239602133296C18" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "3D1266B3-7CF3-4098-8845-30AB5BFA5DDA",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "7F29E45D4582AAAF89F1FD242F65C46B8C0A3793" : "",
+    "83BADBC5501CE21C43EFAD0B4239602133296C18" : "Eureka\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Eureka",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Eureka.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/SpencerC\/FowlerServiceRequest.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "7F29E45D4582AAAF89F1FD242F65C46B8C0A3793"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/SpencerC\/Eureka.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "83BADBC5501CE21C43EFAD0B4239602133296C18"
+    }
+  ]
+}
