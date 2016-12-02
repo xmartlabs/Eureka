@@ -36,7 +36,7 @@ open class PickerInputCell<T> : _FieldCell<T>, CellType, UIPickerViewDataSource,
     
     public var picker: UIPickerView
     
-    private var pickerInputRow : _PickerInputRow? { return row as? _PickerInputRow }
+    private var pickerInputRow : _PickerInputRow<T>? { return row as? _PickerInputRow<T> }
     
     private var textFieldStartColor: UIColor?
     
@@ -104,7 +104,9 @@ open class PickerInputCell<T> : _FieldCell<T>, CellType, UIPickerViewDataSource,
     open func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if let picker = pickerInputRow, !picker.options.isEmpty {
             picker.value = picker.options[row]
-            textField.text = picker.value
+            if picker.value != nil {
+                textField.text = "\(picker.value!)"
+            }
         }
     }
     
@@ -112,9 +114,9 @@ open class PickerInputCell<T> : _FieldCell<T>, CellType, UIPickerViewDataSource,
 
 //MARK: PickerInputRow
 
-open class _PickerInputRow : FieldRow<PickerInputCell<String>> {
+open class _PickerInputRow<T> : FieldRow<PickerInputCell<T>> where T: Equatable, T: InputTypeInitiable {
     
-    open var options = [String]()
+    open var options = [T]()
     
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -122,7 +124,7 @@ open class _PickerInputRow : FieldRow<PickerInputCell<String>> {
 }
 
 /// A generic row where the user can pick an option from a picker view displayed in the keyboard area
-public final class PickerInputRow: _PickerInputRow, RowType {
+public final class PickerInputRow<T>: _PickerInputRow<T>, RowType where T: Equatable, T: InputTypeInitiable {
     
     required public init(tag: String?) {
         super.init(tag: tag)
