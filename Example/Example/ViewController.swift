@@ -467,7 +467,7 @@ class NavigationAccessoryController : FormViewController {
                     $0.title = "Navigation accessory view"
                     $0.value = self.navigationOptions != .Disabled
                 }.onChange { [weak self] in
-                    if $0.value == true {
+                    if $0.value ?? false {
                         self?.navigationOptions = self?.navigationOptionsBackup
                         self?.form.rowBy(tag: "set_disabled")?.baseValue = self?.navigationOptions?.contains(.StopDisabledRow)
                         self?.form.rowBy(tag: "set_skip")?.baseValue = self?.navigationOptions?.contains(.SkipCanNotBecomeFirstResponderRow)

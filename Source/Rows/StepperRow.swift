@@ -58,14 +58,15 @@ open class StepperCell : Cell<Double>, CellType {
         super.update()
         stepper.isEnabled = !row.isDisabled
         stepper.value = row.value ?? 0
-        valueLabel.text = "\(row.value ?? 0)"
         stepper.alpha = row.isDisabled ? 0.3 : 1.0
         valueLabel.alpha = row.isDisabled ? 0.3 : 1.0
+        valueLabel.text = row.displayValueFor?(row.value)
+        detailTextLabel?.text = nil
     }
     
     func valueChanged() {
-        valueLabel.text = "\(stepper.value)"
         row.value = stepper.value
+        update()
     }
 }
 
@@ -74,7 +75,9 @@ open class StepperCell : Cell<Double>, CellType {
 open class _StepperRow: Row<StepperCell> {
     required public init(tag: String?) {
         super.init(tag: tag)
-        displayValueFor = nil
+        displayValueFor = { value in
+                                guard let value = value else { return nil }
+                                return DecimalFormatter().string(from: NSNumber(value: value)) }
     }
 }
 
