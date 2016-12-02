@@ -38,6 +38,8 @@ open class PickerInputCell<T> : _FieldCell<T>, CellType, UIPickerViewDataSource,
     
     private var pickerInputRow : _PickerInputRow? { return row as? _PickerInputRow }
     
+    private var textFieldStartColor: UIColor?
+    
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?){
         self.picker = UIPickerView()
         self.picker.translatesAutoresizingMaskIntoConstraints = false
@@ -68,13 +70,23 @@ open class PickerInputCell<T> : _FieldCell<T>, CellType, UIPickerViewDataSource,
     
     open override func update(){
         super.update()
+        
         textField.clearButtonMode = .never
+        if row.isHighlighted {
+            textFieldStartColor = textField.textColor
+            textField.textColor = textField.tintColor
+        } else if textFieldStartColor != nil {
+            textField.textColor = textFieldStartColor
+        }
+        
         textLabel?.text = nil
         detailTextLabel?.text = nil
+        
         picker.reloadAllComponents()
         if let selectedValue = pickerInputRow?.value, let index = pickerInputRow?.options.index(of: selectedValue){
             picker.selectRow(index, inComponent: 0, animated: true)
         }
+        
     }
     
     open func numberOfComponents(in pickerView: UIPickerView) -> Int {
