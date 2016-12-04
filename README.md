@@ -1016,6 +1016,7 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [Requirements]: #requirements
 
 [How to create a Form]: #how-to-create-a-form
+[Getting row values]: #getting-row-values
 [How to get the form values]: #how-to-get-the-form-values
 [Examples]: #examples
 [Usage]: #usage
