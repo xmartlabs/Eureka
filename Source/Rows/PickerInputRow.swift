@@ -24,15 +24,9 @@
 
 import Foundation
 
-class PickerInputTextField: UITextField {
-    override func caretRect(for position: UITextPosition) -> CGRect {
-        return CGRect.zero
-    }
-}
-
 //MARK: PickerInputCell
 
-open class PickerInputCell<T> : _FieldCell<T>, CellType, UIPickerViewDataSource, UIPickerViewDelegate where T: InputTypeInitiable, T: Equatable {
+open class PickerInputCell<T: Equatable> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerViewDelegate where T: Equatable, T: InputTypeInitiable {
     
     public var picker: UIPickerView
     
@@ -40,15 +34,13 @@ open class PickerInputCell<T> : _FieldCell<T>, CellType, UIPickerViewDataSource,
     
     private var textFieldStartColor: UIColor?
     
+    private var targetLabel: UILabel?
+    
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?){
         self.picker = UIPickerView()
         self.picker.translatesAutoresizingMaskIntoConstraints = false
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        textField = PickerInputTextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        self.textField.inputView = picker
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -69,24 +61,46 @@ open class PickerInputCell<T> : _FieldCell<T>, CellType, UIPickerViewDataSource,
     }
     
     open override func update(){
-        super.update()
-        
-        textField.clearButtonMode = .never
-        if row.isHighlighted {
-            textFieldStartColor = textField.textColor
-            textField.textColor = textField.tintColor
-        } else if textFieldStartColor != nil {
-            textField.textColor = textFieldStartColor
+        if row.title != nil && row.title != "" {
+            // Due to the super function's operations on the labels, we should only call it if there is a title
+            super.update()
+            targetLabel = detailTextLabel!
+        } else {
+            targetLabel = textLabel!
         }
         
-        textLabel?.text = nil
-        detailTextLabel?.text = nil
+        selectionStyle = .none
+        
+        targetLabel?.text = row.value != nil ? "\(row.value!)" : ""
+        if row.isHighlighted {
+            textFieldStartColor = targetLabel?.textColor
+            targetLabel?.textColor = tintColor
+        } else if textFieldStartColor != nil {
+            targetLabel?.textColor = textFieldStartColor
+            if targetLabel == textLabel {
+                detailTextLabel?.text = nil
+            }
+        }
         
         picker.reloadAllComponents()
         if let selectedValue = pickerInputRow?.value, let index = pickerInputRow?.options.index(of: selectedValue){
             picker.selectRow(index, inComponent: 0, animated: true)
         }
         
+    }
+    
+    open override var inputView: UIView? {
+        return picker
+    }
+    
+    open override func cellCanBecomeFirstResponder() -> Bool {
+        return canBecomeFirstResponder
+    }
+    
+    override open var canBecomeFirstResponder: Bool {
+        get {
+            return !row.isDisabled
+        }
     }
     
     open func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -101,11 +115,12 @@ open class PickerInputCell<T> : _FieldCell<T>, CellType, UIPickerViewDataSource,
         return pickerInputRow?.displayValueFor?(pickerInputRow?.options[row])
     }
     
-    open func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    open func pickerView(_ pickerView: UIPickerView, didSelectRow rowNumber: Int, inComponent component: Int) {
         if let picker = pickerInputRow, !picker.options.isEmpty {
-            picker.value = picker.options[row]
+            picker.value = picker.options[rowNumber]
             if picker.value != nil {
-                textField.text = "\(picker.value!)"
+                row.value = picker.value
+                targetLabel?.text = "\(picker.value!)"
             }
         }
     }
@@ -114,12 +129,14 @@ open class PickerInputCell<T> : _FieldCell<T>, CellType, UIPickerViewDataSource,
 
 //MARK: PickerInputRow
 
-open class _PickerInputRow<T> : FieldRow<PickerInputCell<T>> where T: Equatable, T: InputTypeInitiable {
+open class _PickerInputRow<T> : Row<PickerInputCell<T>>, NoValueDisplayTextConformance where T: Equatable, T: InputTypeInitiable {
+    open var noValueDisplayText: String? = nil
     
     open var options = [T]()
     
     required public init(tag: String?) {
         super.init(tag: tag)
+        
     }
 }
 
