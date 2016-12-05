@@ -64,7 +64,7 @@ open class _PickerInlineRow<T> : Row<PickerInlineCell<T>>, NoValueDisplayTextCon
     }
 }
 
-/// A generic inline row where the user can pick an option from a picker view
+/// A generic inline row where the user can pick an option from a picker view which shows and hides itself automatically
 public final class PickerInlineRow<T> : _PickerInlineRow<T>, RowType, InlineRowType where T: Equatable {
     
     required public init(tag: String?) {
