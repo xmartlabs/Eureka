@@ -435,7 +435,7 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     open var rowKeyboardSpacing: CGFloat = 0
     
     /// Enables animated scrolling on row navigation
-    open var animateScroll: Bool = false
+    open var animateScroll = false
     
     /// Accessory view that is responsible for the navigation between rows
     open var navigationAccessoryView : NavigationAccessoryView!

@@ -32,10 +32,6 @@ open class PickerInputCell<T: Equatable> : Cell<T>, CellType, UIPickerViewDataSo
     
     private var pickerInputRow : _PickerInputRow<T>? { return row as? _PickerInputRow<T> }
     
-    private var textFieldStartColor: UIColor?
-    
-    private var targetLabel: UILabel?
-    
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?){
         self.picker = UIPickerView()
         self.picker.translatesAutoresizingMaskIntoConstraints = false
@@ -61,25 +57,20 @@ open class PickerInputCell<T: Equatable> : Cell<T>, CellType, UIPickerViewDataSo
     }
     
     open override func update(){
-        if row.title != nil && row.title != "" {
-            // Due to the super function's operations on the labels, we should only call it if there is a title
-            super.update()
-            targetLabel = detailTextLabel!
-        } else {
-            targetLabel = textLabel!
+        super.update()
+        selectionStyle = row.isDisabled ? .none : .default
+        
+        if row.title?.isEmpty == false {
+            detailTextLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
+        }
+        else {
+            textLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
+            detailTextLabel?.text = nil
         }
         
-        selectionStyle = .none
-        
-        targetLabel?.text = row.value != nil ? "\(row.value!)" : ""
+        textLabel?.textColor = row.isDisabled ? .gray : .black
         if row.isHighlighted {
-            textFieldStartColor = targetLabel?.textColor
-            targetLabel?.textColor = tintColor
-        } else if textFieldStartColor != nil {
-            targetLabel?.textColor = textFieldStartColor
-            if targetLabel == textLabel {
-                detailTextLabel?.text = nil
-            }
+            textLabel?.textColor = tintColor
         }
         
         picker.reloadAllComponents()
@@ -87,6 +78,11 @@ open class PickerInputCell<T: Equatable> : Cell<T>, CellType, UIPickerViewDataSo
             picker.selectRow(index, inComponent: 0, animated: true)
         }
         
+    }
+    
+    open override func didSelect() {
+        super.didSelect()
+        row.deselect()
     }
     
     open override var inputView: UIView? {
@@ -98,9 +94,7 @@ open class PickerInputCell<T: Equatable> : Cell<T>, CellType, UIPickerViewDataSo
     }
     
     override open var canBecomeFirstResponder: Bool {
-        get {
-            return !row.isDisabled
-        }
+        return !row.isDisabled
     }
     
     open func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -116,12 +110,9 @@ open class PickerInputCell<T: Equatable> : Cell<T>, CellType, UIPickerViewDataSo
     }
     
     open func pickerView(_ pickerView: UIPickerView, didSelectRow rowNumber: Int, inComponent component: Int) {
-        if let picker = pickerInputRow, !picker.options.isEmpty {
+        if let picker = pickerInputRow, picker.options.count > rowNumber {
             picker.value = picker.options[rowNumber]
-            if picker.value != nil {
-                row.value = picker.value
-                targetLabel?.text = "\(picker.value!)"
-            }
+            update()
         }
     }
     
