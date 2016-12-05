@@ -17,11 +17,11 @@ open class StepperCell : Cell<Double>, CellType {
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         self.stepper = UIStepper()
         self.stepper.translatesAutoresizingMaskIntoConstraints = false
-
+        
         self.valueLabel = UILabel()
         self.valueLabel.translatesAutoresizingMaskIntoConstraints = false
         self.valueLabel.numberOfLines = 1
-
+        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         height = { BaseRow.estimatedRowHeight }
     }
@@ -48,6 +48,16 @@ open class StepperCell : Cell<Double>, CellType {
         stepper.addTarget(self, action: #selector(StepperCell.valueChanged), for: .valueChanged)
         
         valueLabel.textColor = stepper.tintColor
+        
+        if(stepperRow.maximumValue != nil){
+            stepper.maximumValue = stepperRow.maximumValue!
+        }
+        if(stepperRow.minimumValue != nil){
+            stepper.minimumValue = stepperRow.minimumValue!
+        }
+        if(stepperRow.stepValue != nil){
+            stepper.stepValue = stepperRow.stepValue!
+        }
     }
     
     deinit {
@@ -58,6 +68,7 @@ open class StepperCell : Cell<Double>, CellType {
         super.update()
         stepper.isEnabled = !row.isDisabled
         stepper.value = row.value ?? 0
+
         stepper.alpha = row.isDisabled ? 0.3 : 1.0
         valueLabel.alpha = row.isDisabled ? 0.3 : 1.0
         valueLabel.text = row.displayValueFor?(row.value)
@@ -68,22 +79,32 @@ open class StepperCell : Cell<Double>, CellType {
         row.value = stepper.value
         update()
     }
+    
+    private var stepperRow: StepperRow {
+        return row as! StepperRow
+    }
 }
 
 // MARK: StepperRow
 
 open class _StepperRow: Row<StepperCell> {
+    
+    public var minimumValue: Double? = nil
+    public var maximumValue: Double? = nil
+    public var stepValue: Double? = nil
+    
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = { value in
-                                guard let value = value else { return nil }
-                                return DecimalFormatter().string(from: NSNumber(value: value)) }
+            guard let value = value else { return nil }
+            return DecimalFormatter().string(from: NSNumber(value: value)) }
     }
 }
 
 
 /// Double row that has a UIStepper as accessoryType
 public final class StepperRow: _StepperRow, RowType {
+       
     required public init(tag: String?) {
         super.init(tag: tag)
     }
