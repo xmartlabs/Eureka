@@ -300,6 +300,9 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
             if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
                 row.value = value.pointee as? T
             }
+            else{
+                row.value = textValue.isEmpty ? nil : (T.init(string: textValue) ?? row.value)
+            }
         }
     }
     
