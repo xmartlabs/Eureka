@@ -459,7 +459,6 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
-        view.tintColor = .orange
         navigationAccessoryView = NavigationAccessoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
         navigationAccessoryView.tintColor = view.tintColor
         navigationAccessoryView.autoresizingMask = .flexibleWidth
