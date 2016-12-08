@@ -77,7 +77,7 @@ class MyFormViewController: FormViewController {
         +++ Section("Section2")
             <<< DateRow(){
                 $0.title = "Date Row"
-                $0.value = NSDate(timeIntervalSinceReferenceDate: 0)
+                $0.value = Date(timeIntervalSinceReferenceDate: 0)
             }
     }
 }
@@ -713,7 +713,7 @@ Additionally, `FieldRow` subtypes have a `useFormatterOnDidBeginEditing` propert
 
 ### Date Rows
 
-Date Rows hold a NSDate and allow us to set up a new value through UIDatePicker control. The mode of the UIDatePicker and the way how the date picker view is shown is what changes between them.
+Date Rows hold a Date and allow us to set up a new value through UIDatePicker control. The mode of the UIDatePicker and the way how the date picker view is shown is what changes between them.
 <table>
 <tr>
 <td>
@@ -904,7 +904,7 @@ For instance:
 let dateRow : DateRow? = form.rowBy(tag: "dateRowTag")
 let labelRow: LabelRow? = form.rowBy(tag: "labelRowTag")
 
-let dateRow2: Row<NSDate>? = form.rowBy(tag: "dateRowTag")
+let dateRow2: Row<Date>? = form.rowBy(tag: "dateRowTag")
 
 let labelRow2: BaseRow? = form.rowBy(tag: "labelRowTag")
 ```
