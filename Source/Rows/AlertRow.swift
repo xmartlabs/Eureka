@@ -26,7 +26,7 @@ import Foundation
 
 open class _AlertRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
     
-    open var onPresentCallback : ((FormViewController, SelectorAlertController<Cell.Value>)->())?
+    open var onPresentCallback : ((UIViewController, SelectorAlertController<Cell.Value>)->())?
     lazy open var presentationMode: PresentationMode<SelectorAlertController<Cell.Value>>? = {
         return .presentModally(controllerProvider: ControllerProvider.callback { [weak self] in
             let vc = SelectorAlertController<Cell.Value>(title: self?.selectorTitle, message: nil, preferredStyle: .alert)
@@ -34,7 +34,7 @@ open class _AlertRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where C
             return vc
             }, onDismiss: { [weak self] in
                 $0.dismiss(animated: true)
-                self?.cell?.formViewController()?.tableView?.reloadData()
+                self?.cell?.parentTableView()?.reloadData()
             }
         )
     }()
@@ -48,11 +48,11 @@ open class _AlertRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where C
         if let presentationMode = presentationMode, !isDisabled  {
             if let controller = presentationMode.makeController(){
                 controller.row = self
-                onPresentCallback?(cell.formViewController()!, controller)
-                presentationMode.present(controller, row: self, presentingController: cell.formViewController()!)
+                onPresentCallback?(cell.viewController()!, controller)
+                presentationMode.present(controller, row: self, presentingController: cell.viewController()!)
             }
             else{
-                presentationMode.present(nil, row: self, presentingController: cell.formViewController()!)
+                presentationMode.present(nil, row: self, presentingController: cell.viewController()!)
             }
         }
     }

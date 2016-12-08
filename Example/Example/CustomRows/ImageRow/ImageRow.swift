@@ -91,12 +91,12 @@ open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> w
             if let controller = presentationMode.makeController(){
                 controller.row = self
                 controller.sourceType = sourceType
-                onPresentCallback?(cell.formViewController()!, controller)
-                presentationMode.present(controller, row: self, presentingController: cell.formViewController()!)
+                onPresentCallback?(cell.viewController()!, controller)
+                presentationMode.present(controller, row: self, presentingController: cell.viewController()!)
             }
             else{
                 _sourceType = sourceType
-                presentationMode.present(nil, row: self, presentingController: cell.formViewController()!)
+                presentationMode.present(nil, row: self, presentingController: cell.viewController()!)
             }
         }
     }
@@ -128,7 +128,7 @@ open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> w
         
         // now that we know the number of actions aren't empty
         let sourceActionSheet = UIAlertController(title: nil, message: selectorTitle, preferredStyle: .actionSheet)
-        guard let tableView = cell.formViewController()?.tableView  else { fatalError() }
+        guard let tableView = cell.parentTableView()  else { fatalError() }
         if let popView = sourceActionSheet.popoverPresentationController {
             popView.sourceView = tableView
             popView.sourceRect = tableView.convert(cell.accessoryView?.frame ?? cell.contentView.frame, from: cell)
@@ -151,7 +151,7 @@ open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> w
             let cancelOption = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler:nil)
             sourceActionSheet.addAction(cancelOption)
             
-            if let presentingViewController = cell.formViewController() {
+            if let presentingViewController = cell.viewController() {
                 presentingViewController.present(sourceActionSheet, animated: true)
             }
         }

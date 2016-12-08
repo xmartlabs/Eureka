@@ -63,11 +63,12 @@ public protocol BaseCellType : class {
      Method called when the cell resigns first responder
      */
     func cellResignFirstResponder() -> Bool
-    
+
     /**
      A reference to the controller in which the cell is displayed.
      */
-    func formViewController () -> FormViewController?
+    var formViewDelegate: FormViewControllerProtocol? { get set }
+
 }
 
 

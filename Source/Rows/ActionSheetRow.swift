@@ -50,12 +50,12 @@ open class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
 
 public class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
     
-    public var onPresentCallback : ((FormViewController, SelectorAlertController<Cell.Value>)->())?
+    public var onPresentCallback : ((UIViewController, SelectorAlertController<Cell.Value>)->())?
     lazy public var presentationMode: PresentationMode<SelectorAlertController<Cell.Value>>? = {
         return .presentModally(controllerProvider: ControllerProvider.callback { [weak self] in
             let vc = SelectorAlertController<Cell.Value>(title: self?.selectorTitle, message: nil, preferredStyle: .actionSheet)
             if let popView = vc.popoverPresentationController {
-                guard let cell = self?.cell, let tableView = cell.formViewController()?.tableView else { fatalError() }
+                guard let cell = self?.cell, let tableView = cell.parentTableView() else { fatalError() }
                 popView.sourceView = tableView
                 popView.sourceRect = tableView.convert(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.contentView.frame, from: cell)
             }
@@ -64,7 +64,7 @@ public class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType
             },
             onDismiss: { [weak self] in
                 $0.dismiss(animated: true)
-                self?.cell?.formViewController()?.tableView?.reloadData()
+                self?.cell?.parentTableView()?.reloadData()
             })
     }()
     
@@ -75,13 +75,14 @@ public class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType
     public override func customDidSelect() {
         super.customDidSelect()
         if let presentationMode = presentationMode, !isDisabled {
+            guard let viewController = cell.viewController() else { return }
             if let controller = presentationMode.makeController(){
                 controller.row = self
-                onPresentCallback?(cell.formViewController()!, controller)
-                presentationMode.present(controller, row: self, presentingController: cell.formViewController()!)
+                onPresentCallback?(viewController, controller)
+                presentationMode.present(controller, row: self, presentingController: viewController)
             }
             else{
-                presentationMode.present(nil, row: self, presentingController: cell.formViewController()!)
+                presentationMode.present(nil, row: self, presentingController: viewController)
             }
         }
     }

@@ -48,7 +48,12 @@ class HomeViewController : FormViewController {
                         $0.title = $0.tag
                         $0.presentationMode = .segueName(segueName: "RowsExampleViewControllerSegue", onDismiss: nil)
                     }
-            
+
+            <<< ButtonRow("PD TEST") {
+                $0.title = $0.tag
+                $0.presentationMode = .segueName(segueName: "PDTESTExampleViewControllerSegue", onDismiss: nil)
+            }
+
                 <<< ButtonRow("Native iOS Event Form") { row in
                         row.title = row.tag
                         row.presentationMode = .segueName(segueName: "NativeEventsFormNavigationControllerSegue", onDismiss:{  vc in vc.dismiss(animated: true) })
@@ -119,6 +124,53 @@ class HomeViewController : FormViewController {
 
 typealias Emoji = String
 let 👦🏼 = "👦🏼", 🍐 = "🍐", 💁🏻 = "💁🏻", 🐗 = "🐗", 🐼 = "🐼", 🐻 = "🐻", 🐖 = "🐖", 🐡 = "🐡"
+
+
+class PDTESTViewModel: PDFormViewModel {
+
+    override init() {
+        super.init()
+
+        // setup sections and rows using eureka
+
+        let section = Section()
+
+        section
+
+            <<< LabelRow().cellUpdate { cell, row in
+                cell.textLabel?.text = "Hello World"
+                }.onCellSelection() { row in
+                    print("I'm working")
+                }
+            <<< ActionSheetRow<String>() {
+                $0.title = "ActionSheetRow"
+                $0.selectorTitle = "Your favourite player?"
+                $0.options = ["Diego Forlán", "Edinson Cavani", "Diego Lugano", "Luis Suarez"]
+                $0.value = "Luis Suarez"
+            }
+
+        tableContent.append(section)
+    }
+
+}
+
+class PDTESTExampleViewController: UIViewController {
+
+    var formViewController: PDFormViewController?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        let topOffset       : CGFloat = 64
+        let bottomOffset    : CGFloat = 0
+        let contentInset    = UIEdgeInsetsMake(topOffset, 0.0, bottomOffset, 0.0)
+        formViewController = configureFormViewController(insets: contentInset)
+        formViewController!.viewModel = PDTESTViewModel()
+
+        formViewController!.tableView?.reloadData()
+    }
+
+}
 
 //Mark: RowsExampleViewController
 

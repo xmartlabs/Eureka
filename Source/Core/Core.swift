@@ -180,7 +180,7 @@ public enum PresentationMode<VCType: UIViewController> {
      - parameter row:                      associated row
      - parameter presentingViewController: form view controller
      */
-    public func present(_ viewController: VCType!, row: BaseRow, presentingController: FormViewController){
+    public func present(_ viewController: VCType!, row: BaseRow, presentingController: UIViewController){
         switch self {
             case .show(_, _):
                 presentingController.show(viewController, sender: row)
@@ -193,13 +193,15 @@ public enum PresentationMode<VCType: UIViewController> {
                 presentingController.prepare(for: segue, sender: row)
                 segue.perform()
             case .popover(_, _):
-                guard let porpoverController = viewController.popoverPresentationController else {
+                guard let formViewController = presentingController as? FormViewController else {
+                    fatalError("not supported for custom ViewController")
+                }
+                guard let popoverController = viewController.popoverPresentationController else {
                     fatalError()
                 }
-                porpoverController.sourceView = porpoverController.sourceView ?? presentingController.tableView
+                popoverController.sourceView = popoverController.sourceView ?? formViewController.tableView
                 presentingController.present(viewController, animated: true)
             }
-        
     }
     
     /**
@@ -332,13 +334,23 @@ public protocol FormViewControllerProtocol {
     
     func beginEditing<T:Equatable>(of: Cell<T>)
     func endEditing<T:Equatable>(of: Cell<T>)
-    
+
     func insertAnimation(forRows rows: [BaseRow]) -> UITableViewRowAnimation
     func deleteAnimation(forRows rows: [BaseRow]) -> UITableViewRowAnimation
     func reloadAnimation(oldRows: [BaseRow], newRows: [BaseRow]) -> UITableViewRowAnimation
     func insertAnimation(forSections sections : [Section]) -> UITableViewRowAnimation
     func deleteAnimation(forSections sections : [Section]) -> UITableViewRowAnimation
     func reloadAnimation(oldSections: [Section], newSections:[Section]) -> UITableViewRowAnimation
+
+    // UITestField delegate methods
+    func inputAccessoryView(for row: BaseRow) -> UIView?
+    func textInputShouldBeginEditing<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool
+    func textInputDidBeginEditing<T>(_ textInput: UITextInput, cell: Cell<T>)
+    func textInputShouldEndEditing<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool
+    func textInputDidEndEditing<T>(_ textInput: UITextInput, cell: Cell<T>)
+    func textInput<T>(_ textInput: UITextInput, shouldChangeCharactersInRange range: NSRange, replacementString string: String, cell: Cell<T>) -> Bool
+    func textInputShouldClear<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool
+    func textInputShouldReturn<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool
 }
 
 /**
@@ -754,6 +766,7 @@ extension FormViewController : UITableViewDataSource {
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        form[indexPath].baseCell.formViewDelegate = self
     	form[indexPath].updateCell()
         return form[indexPath].baseCell
     }

@@ -149,8 +149,8 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     
     
     open func textViewDidBeginEditing(_ textView: UITextView) {
-        formViewController()?.beginEditing(of: self)
-        formViewController()?.textInputDidBeginEditing(textView, cell: self)
+        formViewDelegate?.beginEditing(of: self)
+        formViewDelegate?.textInputDidBeginEditing(textView, cell: self)
         if let textAreaConformance = (row as? TextAreaConformance), let _ = textAreaConformance.formatter, textAreaConformance.useFormatterOnDidBeginEditing ?? textAreaConformance.useFormatterDuringInput {
             textView.text = self.displayValue(useFormatter: true)
         }
@@ -160,15 +160,15 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     }
     
     open func textViewDidEndEditing(_ textView: UITextView) {
-        formViewController()?.endEditing(of: self)
-        formViewController()?.textInputDidEndEditing(textView, cell: self)
+        formViewDelegate?.endEditing(of: self)
+        formViewDelegate?.textInputDidEndEditing(textView, cell: self)
         textViewDidChange(textView)
         textView.text = displayValue(useFormatter: (row as? FormatterConformance)?.formatter != nil)
     }
     
     open func textViewDidChange(_ textView: UITextView) {
         
-        if let textAreaConformance = row as? TextAreaConformance, case .dynamic = textAreaConformance.textAreaHeight, let tableView = formViewController()?.tableView {
+        if let textAreaConformance = row as? TextAreaConformance, case .dynamic = textAreaConformance.textAreaHeight, let tableView = parentTableView() {
             let currentOffset = tableView.contentOffset
             UIView.setAnimationsEnabled(false)
             tableView.beginUpdates()
@@ -208,15 +208,15 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     }
     
     open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        return formViewController()?.textInput(textView, shouldChangeCharactersInRange: range, replacementString: text, cell: self) ?? true
+        return formViewDelegate?.textInput(textView, shouldChangeCharactersInRange: range, replacementString: text, cell: self) ?? true
     }
     
     open func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        return formViewController()?.textInputShouldBeginEditing(textView, cell: self) ?? true
+        return formViewDelegate?.textInputShouldBeginEditing(textView, cell: self) ?? true
     }
     
     open func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
-        return formViewController()?.textInputShouldEndEditing(textView, cell: self) ?? true
+        return formViewDelegate?.textInputShouldEndEditing(textView, cell: self) ?? true
     }
     
     open override func updateConstraints(){

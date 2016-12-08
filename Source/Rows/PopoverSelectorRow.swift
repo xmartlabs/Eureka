@@ -29,7 +29,7 @@ open class _PopoverSelectorRow<Cell: CellType> : SelectorRow<Cell, SelectorViewC
     public required init(tag: String?) {
         super.init(tag: tag)
         onPresentCallback = { [weak self] (_, viewController) -> Void in
-            guard let porpoverController = viewController.popoverPresentationController, let tableView = self?.baseCell.formViewController()?.tableView, let cell = self?.cell else {
+            guard let porpoverController = viewController.popoverPresentationController, let tableView = self?.baseCell.parentTableView(), let cell = self?.cell else {
                 fatalError()
             }
             porpoverController.sourceView = tableView

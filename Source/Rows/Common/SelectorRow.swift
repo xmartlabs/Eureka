@@ -49,7 +49,7 @@ open class SelectorRow<Cell: CellType, VCType: TypedRowControllerType>: OptionsR
     open var presentationMode: PresentationMode<VCType>?
     
     /// Will be called before the presentation occurs.
-    open var onPresentCallback : ((FormViewController, VCType)->())?
+    open var onPresentCallback : ((UIViewController, VCType)->())?
     
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -64,11 +64,11 @@ open class SelectorRow<Cell: CellType, VCType: TypedRowControllerType>: OptionsR
         if let controller = presentationMode.makeController(){
             controller.row = self
             controller.title = selectorTitle ?? controller.title
-            onPresentCallback?(cell.formViewController()!, controller)
-            presentationMode.present(controller, row: self, presentingController: self.cell.formViewController()!)
+            onPresentCallback?(cell.viewController()!, controller)
+            presentationMode.present(controller, row: self, presentingController: self.cell.viewController()!)
         }
         else{
-            presentationMode.present(nil, row: self, presentingController: self.cell.formViewController()!)
+            presentationMode.present(nil, row: self, presentingController: self.cell.viewController()!)
         }
     }
     
@@ -80,7 +80,7 @@ open class SelectorRow<Cell: CellType, VCType: TypedRowControllerType>: OptionsR
         guard let rowVC = segue.destination as? VCType else { return }
         rowVC.title = selectorTitle ?? rowVC.title
         rowVC.onDismissCallback = presentationMode?.onDismissCallback ?? rowVC.onDismissCallback
-        onPresentCallback?(cell.formViewController()!, rowVC)
+        onPresentCallback?(cell.viewController()!, rowVC)
         rowVC.row = self
     }
 }

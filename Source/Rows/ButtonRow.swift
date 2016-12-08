@@ -73,10 +73,10 @@ open class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
         if !isDisabled {
             if let presentationMode = presentationMode {
                 if let controller = presentationMode.makeController(){
-                    presentationMode.present(controller, row: self, presentingController: self.cell.formViewController()!)
+                    presentationMode.present(controller, row: self, presentingController: self.cell.viewController()!)
                 }
                 else{
-                    presentationMode.present(nil, row: self, presentingController: self.cell.formViewController()!)
+                    presentationMode.present(nil, row: self, presentingController: self.cell.viewController()!)
                 }
             }
         }

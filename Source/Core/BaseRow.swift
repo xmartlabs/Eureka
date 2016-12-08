@@ -243,23 +243,22 @@ extension BaseRow {
 
 extension BaseRow: Equatable, Hidable, Disableable {}
 
-
 extension BaseRow {
     
     public func reload(with rowAnimation: UITableViewRowAnimation = .none) {
-        guard let tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView, let indexPath = indexPath else { return }
+        guard let tableView = baseCell?.parentTableView(), let indexPath = indexPath else { return }
         tableView.reloadRows(at: [indexPath], with: rowAnimation)
     }
     
     public func deselect(animated: Bool = true) {
         guard let indexPath = indexPath,
-            let tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView  else { return }
+            let tableView = baseCell?.parentTableView()  else { return }
         tableView.deselectRow(at: indexPath, animated: animated)
     }
     
     public func select(animated: Bool = false) {
         guard let indexPath = indexPath,
-            let tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView  else { return }
+            let tableView = baseCell?.parentTableView()  else { return }
         tableView.selectRow(at: indexPath, animated: animated, scrollPosition: .none)
     }
 }
