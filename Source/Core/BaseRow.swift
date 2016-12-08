@@ -243,6 +243,7 @@ extension BaseRow {
 
 extension BaseRow: Equatable, Hidable, Disableable {}
 
+
 extension BaseRow {
     
     public func reload(with rowAnimation: UITableViewRowAnimation = .none) {
@@ -251,15 +252,13 @@ extension BaseRow {
     }
     
     public func deselect(animated: Bool = true) {
-        guard let indexPath = indexPath,
-            let tableView = baseCell?.parentTableView()  else { return }
+        guard let indexPath = indexPath, let tableView = baseCell?.parentTableView() else { return }
         tableView.deselectRow(at: indexPath, animated: animated)
     }
     
-    public func select(animated: Bool = false) {
-        guard let indexPath = indexPath,
-            let tableView = baseCell?.parentTableView()  else { return }
-        tableView.selectRow(at: indexPath, animated: animated, scrollPosition: .none)
+    public func select(animated: Bool = false, scrollPosition: UITableViewScrollPosition = .none) {
+        guard let indexPath = indexPath, let tableView = baseCell?.parentTableView() else { return }
+        tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
     }
 }
 

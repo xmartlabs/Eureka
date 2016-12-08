@@ -471,6 +471,10 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
+        navigationAccessoryView = NavigationAccessoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
+        navigationAccessoryView.tintColor = view.tintColor
+        navigationAccessoryView.autoresizingMask = .flexibleWidth
+        
         if tableView == nil {
             tableView = UITableView(frame: view.bounds, style: tableViewStyle)
             tableView?.autoresizingMask = UIViewAutoresizing.flexibleWidth.union(.flexibleHeight)
@@ -492,8 +496,6 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationAccessoryView = NavigationAccessoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
-        navigationAccessoryView.tintColor = view.tintColor
 
         let selectedIndexPaths = tableView?.indexPathsForSelectedRows ?? []
         tableView?.reloadRows(at: selectedIndexPaths, with: .none)
