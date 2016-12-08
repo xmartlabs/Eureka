@@ -342,7 +342,7 @@ public protocol FormViewControllerProtocol {
     func deleteAnimation(forSections sections : [Section]) -> UITableViewRowAnimation
     func reloadAnimation(oldSections: [Section], newSections:[Section]) -> UITableViewRowAnimation
 
-    // UITestField delegate methods
+    // UITextField delegate methods
     func inputAccessoryView(for row: BaseRow) -> UIView?
     func textInputShouldBeginEditing<T>(_ textInput: UITextInput, cell: Cell<T>) -> Bool
     func textInputDidBeginEditing<T>(_ textInput: UITextInput, cell: Cell<T>)
