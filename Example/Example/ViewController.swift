@@ -51,8 +51,11 @@ class HomeViewController : FormViewController {
 
             <<< ButtonRow("PD TEST") {
                 $0.title = $0.tag
-                $0.presentationMode = .segueName(segueName: "PDTESTExampleViewControllerSegue", onDismiss: nil)
-            }
+                }.onCellSelection { [unowned self] _ in
+                    let viewController = PDTESTExampleViewController()
+                    viewController.view.backgroundColor = UIColor.yellow
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                }
 
                 <<< ButtonRow("Native iOS Event Form") { row in
                         row.title = row.tag
@@ -136,7 +139,13 @@ class PDTESTViewModel: PDFormViewModel {
         let section = Section()
 
         section
-
+            <<< ButtonRow("Push ViewController") {
+                $0.title = $0.tag
+            }.onCellSelection({ _ in
+                let viewController = UIViewController()
+                viewController.view.backgroundColor = UIColor.cyan
+                self.linkedViewController?.navigationController?.pushViewController(viewController, animated: true)
+            })
             <<< LabelRow().cellUpdate { cell, row in
                 cell.textLabel?.text = "Hello World"
                 }.onCellSelection() { row in

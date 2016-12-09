@@ -170,7 +170,6 @@
                         <segue destination="42E-0V-OKN" kind="push" identifier="InlineRowsControllerSegue" id="sMp-yV-Evw"/>
                         <segue destination="3b9-rf-NW3" kind="push" identifier="ListSectionsControllerSegue" id="s7W-Vn-beG"/>
                         <segue destination="1By-iT-GXN" kind="push" identifier="ValidationsControllerSegue" id="e8a-Jy-4iL"/>
-                        <segue destination="Lu6-zz-7Df" kind="push" identifier="PDTESTExampleViewControllerSegue" id="oDN-GZ-NXF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Eoz-Jq-Zy9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -466,25 +465,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L7e-b8-eJH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="859" y="1833"/>
-        </scene>
-        <!--PDTEST-->
-        <scene sceneID="xPe-0x-MI0">
-            <objects>
-                <viewController storyboardIdentifier="PDTESTExampleViewController" title="Eureka! Rows Example" id="Lu6-zz-7Df" userLabel="PDTEST" customClass="PDTESTExampleViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="9My-R3-lFU"/>
-                        <viewControllerLayoutGuide type="bottom" id="RlP-Yy-Ihv"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Bv0-09-kZj">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="XjZ-pl-tg6"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="auT-X3-uae" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1756" y="-567"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
