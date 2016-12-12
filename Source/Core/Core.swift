@@ -247,11 +247,11 @@ public protocol FormatterProtocol {
 //MARK: Predicate Machine
 
 enum ConditionType {
-    case hidden, disabled
+    case hidden, disabled, moveable
 }
 
 /**
- Enumeration that are used to specify the disbaled and hidden conditions of rows
+ Enumeration that are used to specify the disbaled, hidden or moveable conditions of rows
  
  - Function:  A function that calculates the result
  - Predicate: A predicate that returns the result
@@ -741,6 +741,12 @@ extension FormViewController : UITableViewDelegate {
         }
         return view.bounds.height
     }
+	
+	open func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+		guard tableView == self.tableView else { return false }
+		let row = form[indexPath.section][indexPath.row]
+		return row.isMoveable
+	}
 }
 
 extension FormViewController : UITableViewDataSource {

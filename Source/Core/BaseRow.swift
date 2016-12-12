@@ -86,15 +86,24 @@ open class BaseRow : BaseRowType {
     
     /// Condition that determines if the row should be hidden or not.
     public var hidden : Condition? {
-        willSet { removeFromHiddenRowObservers() }
-        didSet  { addToHiddenRowObservers() }
+		willSet { removeFromHiddenRowObservers() }
+		didSet  { addToHiddenRowObservers() }
     }
-    
+	
+	/// Condition that determines if the row should be moveable or not.
+	public var moveable : Condition? {
+		willSet { removeFromMoveableRowObservers() }
+		didSet  { addToMoveableRowObservers() }
+	}
+	
     /// Returns if this row is currently disabled or not
     public var isDisabled : Bool { return disabledCache }
     
     /// Returns if this row is currently hidden or not
     public var isHidden : Bool { return hiddenCache }
+	
+	/// Returns if this row is currently moveable or not
+	public var isMoveable: Bool { return moveableCache }
     
     /// The section to which this row belongs.
     public weak var section: Section?
@@ -131,6 +140,7 @@ open class BaseRow : BaseRowType {
             }
         }
     }
+	var moveableCache = false
 }
 
 extension BaseRow {
@@ -167,7 +177,21 @@ extension BaseRow {
         }
         updateCell()
     }
-    
+	
+	/**
+	Evaluates if the row should be moveable or not and updates it accordingly
+	*/
+	public final func evaluateMoveable() {
+		guard let m = moveable, let form = section?.form else { return }
+		switch m {
+		case .function(_ , let callback):
+			moveableCache = callback(form)
+		case .predicate(let predicate):
+			moveableCache = predicate.evaluate(with: self, substitutionVariables: form.dictionaryValuesToEvaluatePredicate())
+		}
+		updateCell()
+	}
+	
     final func wasAddedTo(section: Section) {
         self.section = section
         if let t = tag {
@@ -178,6 +202,7 @@ extension BaseRow {
         addToRowObservers()
         evaluateHidden()
         evaluateDisabled()
+		evaluateMoveable()
     }
     
     final func addToHiddenRowObservers() {
@@ -199,10 +224,21 @@ extension BaseRow {
             section?.form?.addRowObservers(to: self, rowTags: predicate.predicateVars, type: .disabled)
         }
     }
-    
+	
+	final func addToMoveableRowObservers() {
+		guard let m = moveable else { return }
+		switch m {
+		case .function(let tags, _):
+			section?.form?.addRowObservers(to: self, rowTags: tags, type: .moveable)
+		case .predicate(let predicate):
+			section?.form?.addRowObservers(to: self, rowTags: predicate.predicateVars, type: .moveable)
+		}
+	}
+	
     final func addToRowObservers(){
         addToHiddenRowObservers()
         addToDisabledRowObservers()
+		addToMoveableRowObservers()
     }
     
     final func willBeRemovedFromForm(){
@@ -234,14 +270,25 @@ extension BaseRow {
             section?.form?.removeRowObservers(from: self, rowTags: predicate.predicateVars, type: .disabled)
         }
     }
-    
+	
+	final func removeFromMoveableRowObservers() {
+		guard let m = moveable else { return }
+		switch m {
+		case .function(let tags, _):
+			section?.form?.removeRowObservers(from: self, rowTags: tags, type: .moveable)
+		case .predicate(let predicate):
+			section?.form?.removeRowObservers(from: self, rowTags: predicate.predicateVars, type: .moveable)
+		}
+	}
+	
     final func removeFromRowObservers(){
         removeFromHiddenRowObservers()
         removeFromDisabledRowObservers()
+		removeFromMoveableRowObservers()
     }
 }
 
-extension BaseRow: Equatable, Hidable, Disableable {}
+extension BaseRow: Equatable, Hidable, Disableable, Moveable {}
 
 
 extension BaseRow {

@@ -45,6 +45,12 @@ public protocol Taggable : AnyObject {
     var tag: String? { get set }
 }
 
+public protocol Moveable: Taggable{
+	func evaluateMoveable()
+	var moveable : Condition? { get set }
+	var isMoveable : Bool { get }
+}
+
 public protocol BaseRowType: Taggable {
 
     /// The cell associated to this row.
