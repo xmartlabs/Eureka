@@ -148,7 +148,17 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationDidBecomeActive, object: nil, queue: nil){ [weak self] notification in
             self?.titleLabel?.addObserver(self!, forKeyPath: "text", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
         }
-        
+
+
+        NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationWillResignActive, object: nil, queue: nil){ [weak self] notification in
+            guard let me = self else { return }
+            me.titleLabel?.removeObserver(me, forKeyPath: "attributedText")
+        }
+        NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationDidBecomeActive, object: nil, queue: nil){ [weak self] notification in
+            self?.titleLabel?.addObserver(self!, forKeyPath: "attributedText", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
+        }
+
+
         NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil){ [weak self] notification in
             self?.setNeedsUpdateConstraints()
         }
@@ -162,6 +172,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         textField.delegate = nil
         textField.removeTarget(self, action: nil, for: .allEvents)
         titleLabel?.removeObserver(self, forKeyPath: "text")
+        titleLabel?.removeObserver(self, forKeyPath: "attributedText")
         imageView?.removeObserver(self, forKeyPath: "image")
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIApplicationWillResignActive, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
@@ -175,9 +186,9 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         contentView.addSubview(textField)
         
         titleLabel?.addObserver(self, forKeyPath: "text", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
+        titleLabel?.addObserver(self, forKeyPath: "attributedText", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
         imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
         textField.addTarget(self, action: #selector(_FieldCell.textFieldDidChange(_:)), for: .editingChanged)
-        
     }
     
     open override func update() {
@@ -186,6 +197,10 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         if let title = row.title {
             textField.textAlignment = title.isEmpty ? .left : .right
             textField.clearButtonMode = title.isEmpty ? .whileEditing : .never
+        }
+        else if let title = row.attributedTitle {
+            textField.textAlignment = title.string.isEmpty ? .left : .right
+            textField.clearButtonMode = title.string.isEmpty ? .whileEditing : .never
         }
         else{
             textField.textAlignment =  .left
@@ -224,7 +239,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         let obj = object as AnyObject?
         
-        if let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], ((obj === titleLabel && keyPathValue == "text") || (obj === imageView && keyPathValue == "image")) && (changeType as? NSNumber)?.uintValue == NSKeyValueChange.setting.rawValue {
+        if let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey], ((obj === titleLabel && keyPathValue == "text") || (obj === titleLabel && keyPathValue == "attributedText") || (obj === imageView && keyPathValue == "image")) && (changeType as? NSNumber)?.uintValue == NSKeyValueChange.setting.rawValue {
             setNeedsUpdateConstraints()
             updateConstraintsIfNeeded()
         }

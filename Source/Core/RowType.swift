@@ -59,6 +59,9 @@ public protocol BaseRowType: Taggable {
     /// The title will be displayed in the textLabel of the row.
     var title: String? { get set }
 
+    /// The title will be displayed in the textLabel of the row.
+    var attributedTitle: NSAttributedString? { get set }
+
     /**
      Method that should re-display the cell
      */
