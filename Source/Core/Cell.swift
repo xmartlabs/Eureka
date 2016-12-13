@@ -147,9 +147,12 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
      */
     open override func update(){
         super.update()
-        if row.attributedTitle != nil { textLabel?.attributedText = row.attributedTitle
-        } else if row.title != nil { textLabel?.text = row.title }
-        textLabel?.textColor = row.isDisabled ? .gray : .black
+        if row.attributedTitle != nil {
+            textLabel?.attributedText = row.attributedTitle
+        } else if row.title != nil {
+            textLabel?.text = row.title
+            textLabel?.textColor = row.isDisabled ? .gray : .black
+        }
         detailTextLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
     }
 
