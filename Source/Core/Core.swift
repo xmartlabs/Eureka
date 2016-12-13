@@ -735,8 +735,8 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
 			
 			guard sourceIndexPath != destinationIndexPath else{ return }
 			tableView.dataSource?.tableView?(tableView, moveRowAt: sourceIndexPath, to: destinationIndexPath)
-			
-		default:
+		
+		case .ended:
 			guard let row = form.allRows.first(where: { $0.moving }), let cell = row.baseCell else{ return }
 			row.moving = false
 			
@@ -756,6 +756,10 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
 				
 				row.section?.reload(with: .none)
 			})
+        default:
+            // While this should never occur, note that entering an exception state isn't a bad idea
+            print("Warning! Cell entered unexpected state!")
+            break
 		}
 	}
 }
