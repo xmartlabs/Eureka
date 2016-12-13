@@ -104,6 +104,9 @@ open class BaseRow : BaseRowType {
 	
 	/// Returns if this row is moveable or not
 	public var isMoveable: Bool { return moveableCache }
+	
+	/// Returns if this row is currently moving or not
+	public var moving: Bool = false
     
     /// The section to which this row belongs.
     public weak var section: Section?
