@@ -124,6 +124,7 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
         super.update()
         textLabel?.text = row.title
         textLabel?.textColor = row.isDisabled ? .gray : .black
+		showsReorderControl = row.isMoveable
         detailTextLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
     }
 

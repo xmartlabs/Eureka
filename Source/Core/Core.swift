@@ -743,9 +743,39 @@ extension FormViewController : UITableViewDelegate {
     }
 	
 	open func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-		guard tableView == self.tableView else { return false }
-		let row = form[indexPath.section][indexPath.row]
-		return row.isMoveable
+		return form[indexPath].isMoveable
+	}
+	
+	open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+		return form[indexPath].isMoveable
+	}
+	
+	open func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+		guard sourceIndexPath.section == proposedDestinationIndexPath.section else{
+			return sourceIndexPath
+		}
+
+		if form[proposedDestinationIndexPath].isMoveable{
+			return proposedDestinationIndexPath
+		}
+		let numberOfRowsInDestination = tableView.numberOfRows(inSection: proposedDestinationIndexPath.section)
+		
+		if sourceIndexPath.row < proposedDestinationIndexPath.row && (proposedDestinationIndexPath.row + 2) < numberOfRowsInDestination {
+			return tableView.delegate?.tableView?(tableView, targetIndexPathForMoveFromRowAt: sourceIndexPath, toProposedIndexPath: IndexPath(row: proposedDestinationIndexPath.row + 2, section: proposedDestinationIndexPath.section)) ?? sourceIndexPath
+			
+		} else if sourceIndexPath.row > proposedDestinationIndexPath.row && (proposedDestinationIndexPath.row - 2) >= 0 {
+			return tableView.delegate?.tableView?(tableView, targetIndexPathForMoveFromRowAt: sourceIndexPath, toProposedIndexPath: IndexPath(row: proposedDestinationIndexPath.row - 2, section: proposedDestinationIndexPath.section)) ?? sourceIndexPath
+		}
+		
+		return sourceIndexPath
+	}
+	
+	open func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+		return .none
+	}
+	
+	open func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+		return false
 	}
 }
 
@@ -773,11 +803,14 @@ extension FormViewController : UITableViewDataSource {
     open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return form[section].footer?.title
     }
+	
+	open func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+		form[destinationIndexPath.section].insert(form[sourceIndexPath.section].remove(at: sourceIndexPath.row), at: destinationIndexPath.row)
+	}
 }
 
 extension FormViewController: FormDelegate {
-    
-    
+
     //MARK: FormDelegate
     
     open func sectionsHaveBeenAdded(_ sections: [Section], at indexes: IndexSet){

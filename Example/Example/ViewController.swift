@@ -894,6 +894,8 @@ class MoveableRowsExample : FormViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(toggleEditing))
+		
 		form = Section()
 			
 			<<< TextRow(){
@@ -901,7 +903,7 @@ class MoveableRowsExample : FormViewController {
 				$0.moveable = true
 			}
 			
-			<<< TextRow(){
+			<<< SwitchRow(){
 				$0.title = "2. Tap & Hold to move..."
 				$0.moveable = true
 			}
@@ -911,17 +913,28 @@ class MoveableRowsExample : FormViewController {
 				$0.moveable = true
 			}
 			
-			+++ Section()
-			
-			<<< TextRow() {
+			<<< CheckRow() {
 				$0.title = "4. Tap & Hold to move..."
+				$0.value = true
 				$0.moveable = true
 			}
+			
+			+++ Section()
 			
 			<<< TextRow() {
 				$0.title = "5. Tap & Hold to move..."
 				$0.moveable = true
+			}
+			
+			<<< TextRow() {
+				$0.title = "6. Tap & Hold to move..."
+				$0.moveable = true
 		}
+	}
+	
+	func toggleEditing(){
+		let isEditing = self.tableView?.isEditing ?? true
+		self.tableView?.setEditing(!isEditing, animated: true)
 	}
 }
 
