@@ -155,4 +155,32 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
 
     /// The untyped row associated to this cell.
     public override var baseRow : BaseRow! { return row }
+	
+	
+	open override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		let tag = 260688
+		
+		guard self.isEditing, let control: UIView = subviews.first(where: { $0.classForCoder.description() == "UITableViewCellReorderControl" }) else{ return }
+		control.subviews.forEach{
+			guard $0 is UIImageView else{ return }
+			$0.removeFromSuperview()
+		}
+		let view = viewWithTag(tag) ?? UIView(frame: CGRect(x:0,y:0,width:control.frame.maxX,height:control.frame.maxY))
+		
+		if self == control.superview{
+			control.removeFromSuperview()
+			view.addSubview(control)
+		}
+		
+		if nil == view.superview{
+			contentView.addSubview(view)
+		}
+		let diff = CGSize(width: view.frame.size.width - control.frame.size.width, height: view.frame.size.height - control.frame.size.height)
+		let ratio = CGSize(width: view.frame.size.width / control.frame.size.width, height: view.frame.size.height / control.frame.size.height)
+		
+		view.transform = CGAffineTransform.identity
+			.scaledBy(x: ratio.width, y: ratio.height)
+			.translatedBy(x: -diff.width / 2.0, y: -diff.height / 2.0)
+	}
 }

@@ -935,6 +935,7 @@ class MoveableRowsExample : FormViewController {
 	func toggleEditing(){
 		let isEditing = self.tableView?.isEditing ?? true
 		self.tableView?.setEditing(!isEditing, animated: true)
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: (isEditing ? .edit : .done), target: self, action: #selector(toggleEditing))
 	}
 }
 

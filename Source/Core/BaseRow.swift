@@ -102,7 +102,7 @@ open class BaseRow : BaseRowType {
     /// Returns if this row is currently hidden or not
     public var isHidden : Bool { return hiddenCache }
 	
-	/// Returns if this row is currently moveable or not
+	/// Returns if this row is moveable or not
 	public var isMoveable: Bool { return moveableCache }
     
     /// The section to which this row belongs.

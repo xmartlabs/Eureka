@@ -678,6 +678,7 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     var oldBottomInset : CGFloat?
 }
 
+
 extension FormViewController : UITableViewDelegate {
     
     //MARK: UITableViewDelegate
@@ -752,7 +753,10 @@ extension FormViewController : UITableViewDelegate {
 	
 	open func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
 		guard sourceIndexPath.section == proposedDestinationIndexPath.section else{
-			return sourceIndexPath
+			if sourceIndexPath.section > proposedDestinationIndexPath.section{
+				return IndexPath(row: 0, section: sourceIndexPath.section)
+			}
+			return IndexPath(row: tableView.numberOfRows(inSection: sourceIndexPath.section) - 1, section: sourceIndexPath.section)
 		}
 
 		if form[proposedDestinationIndexPath].isMoveable{
@@ -806,6 +810,7 @@ extension FormViewController : UITableViewDataSource {
 	
 	open func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
 		form[destinationIndexPath.section].insert(form[sourceIndexPath.section].remove(at: sourceIndexPath.row), at: destinationIndexPath.row)
+		form[destinationIndexPath.section].reload(with: .none)
 	}
 }
 
