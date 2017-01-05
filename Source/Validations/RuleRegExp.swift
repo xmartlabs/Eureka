@@ -41,6 +41,7 @@ public class RuleRegExp: RuleType {
     
     public init(regExpr: String, allowsEmpty: Bool = true){
         self.regExpr = regExpr
+        self.allowsEmpty = allowsEmpty
     }
     
     public func isValid(value: String?) -> ValidationError? {
