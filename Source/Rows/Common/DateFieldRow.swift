@@ -33,9 +33,10 @@ public protocol DatePickerRowProtocol: class {
 
 open class DateCell : Cell<Date>, CellType {
     
-    lazy open var datePicker = UIDatePicker()
+    public var datePicker: UIDatePicker
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        datePicker = UIDatePicker()
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     

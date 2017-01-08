@@ -28,19 +28,19 @@ import Foundation
 
 open class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerViewDelegate where T: Equatable{
     
-    open lazy var picker: UIPickerView = { [unowned self] in
-        let picker = UIPickerView()
-        picker.translatesAutoresizingMaskIntoConstraints = false
-        self.contentView.addSubview(picker)
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": picker]))
-        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": picker]))
-        return picker
-        }()
+    public var picker: UIPickerView
     
     private var pickerRow : _PickerRow<T>? { return row as? _PickerRow<T> }
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?){
+        self.picker = UIPickerView()
+        self.picker.translatesAutoresizingMaskIntoConstraints = false
+        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.contentView.addSubview(self.picker)
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": self.picker]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": self.picker]))
     }
     
     required public init?(coder aDecoder: NSCoder) {

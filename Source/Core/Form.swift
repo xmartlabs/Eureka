@@ -348,13 +348,12 @@ extension Form {
 extension Form {
     
     @discardableResult
-    public func validate() -> [ValidationError] {
-        var result = [ValidationError]()
-        result = allRows.reduce(result) { res, row in
+    public func validate(includeHidden: Bool = false) -> [ValidationError] {
+        let rowsToValidate = includeHidden ? allRows : rows
+        return rowsToValidate.reduce([ValidationError]()) { res, row in
             var res = res
             res.append(contentsOf: row.validate())
             return res
         }
-        return result
     }
 }

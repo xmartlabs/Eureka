@@ -207,7 +207,7 @@ class RowsExampleViewController: FormViewController {
                         $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
                         $0.value = 👦🏼
                     }.onChange { row in
-                        print(row.value)
+                        print(row.value ?? "No Value")
                     }
                     .onPresent{ _, to in
                         to.view.tintColor = .purple
@@ -261,7 +261,15 @@ class RowsExampleViewController: FormViewController {
                     for i in 1...10{
                         row.options.append("option \(i)")
                     }
-                
+                }
+            
+                <<< PickerInputRow<String>("Picker Input Row"){
+                    $0.title = "Options"
+                    $0.options = []
+                    for i in 1...10{
+                        $0.options.append("option \(i)")
+                    }
+                    $0.value = $0.options.first
                 }
             
                 <<< PickerInputRow<String>("Picker Input Row"){
@@ -476,7 +484,7 @@ class NavigationAccessoryController : FormViewController {
                     $0.title = "Navigation accessory view"
                     $0.value = self.navigationOptions != .Disabled
                 }.onChange { [weak self] in
-                    if $0.value == true {
+                    if $0.value ?? false {
                         self?.navigationOptions = self?.navigationOptionsBackup
                         self?.form.rowBy(tag: "set_disabled")?.baseValue = self?.navigationOptions?.contains(.StopDisabledRow)
                         self?.form.rowBy(tag: "set_skip")?.baseValue = self?.navigationOptions?.contains(.SkipCanNotBecomeFirstResponderRow)
@@ -1165,6 +1173,21 @@ class ValidationsController: FormViewController {
                             cell.titleLabel?.textColor = .red
                         }
                     }
+            
+            +++ Section(header: "Match field values", footer: "Options: Validates on blurred")
+            
+                    <<< PasswordRow("password") {
+                        $0.title = "Password"
+                    }
+                    <<< PasswordRow() {
+                        $0.title = "Confirm Password"
+                        $0.add(rule: RuleEqualsToRow(form: form, tag: "password"))
+                    }
+                    .cellUpdate { cell, row in
+                        if !row.isValid {
+                            cell.titleLabel?.textColor = .red
+                        }
+                    }
 
         
             +++ Section(header: "More sophisticated validations UX using callbacks", footer: "")
@@ -1253,10 +1276,36 @@ class ValidationsController: FormViewController {
                     }
             
             
-                    <<< PasswordRow() {
+                    <<< PasswordRow("password2") {
                             $0.title = "Password"
                             $0.add(rule: RuleMinLength(minLength: 8))
                             $0.add(rule: RuleMaxLength(maxLength: 13))
+                        }
+                        .cellUpdate { cell, row in
+                            if !row.isValid {
+                                cell.titleLabel?.textColor = .red
+                            }
+                    }
+                    .onRowValidationChanged { cell, row in
+                        let rowIndex = row.indexPath!.row
+                        while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                            row.section?.remove(at: rowIndex + 1)
+                        }
+                        if !row.isValid {
+                            for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                                let labelRow = LabelRow() {
+                                    $0.title = validationMsg
+                                    $0.cell.height = { 30 }
+                                }
+                                row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                            }
+                        }
+                    }
+            
+            
+                    <<< PasswordRow() {
+                            $0.title = "Confirm Password"
+                            $0.add(rule: RuleEqualsToRow(form: form, tag: "password2"))
                         }
                         .cellUpdate { cell, row in
                             if !row.isValid {

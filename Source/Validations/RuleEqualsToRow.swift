@@ -1,4 +1,4 @@
-//  RuleLength.swift
+//  RuleRequire.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -24,41 +24,30 @@
 
 import Foundation
 
-
-public struct RuleMinLength: RuleType {
+public struct RuleEqualsToRow<T: Equatable>: RuleType {
     
-    let min: UInt
+    public init(form: Form, tag: String, msg: String = "Fields don't match!"){
+        self.validationError = ValidationError(msg: msg)
+        self.form = form
+        self.tag = tag
+        self.row = nil;
+    }
+    
+    public init(row: RowOf<T>, msg: String = "Fields don't match!"){
+        self.validationError = ValidationError(msg: msg)
+        self.form = nil
+        self.tag = nil
+        self.row = row
+    }
     
     public var id: String?
     public var validationError: ValidationError
+    public var form: Form?
+    public var tag: String?
+    public var row: RowOf<T>?
     
-    public init(minLength: UInt, msg: String? = nil){
-        let ruleMsg = msg ?? "Field value must have at least \(minLength) characters"
-        min = minLength
-        validationError = ValidationError(msg: ruleMsg)
-    }
-    
-    public func isValid(value: String?) -> ValidationError? {
-        guard let value = value else { return nil }
-        return value.characters.count < Int(min) ? validationError : nil
-    }
-}
-
-public struct RuleMaxLength: RuleType {
-    
-    let max: UInt
-    
-    public var id: String?
-    public var validationError: ValidationError
-    
-    public init(maxLength: UInt, msg: String? = nil){
-        let ruleMsg = msg ?? "Field value must have less than \(maxLength) characters"
-        max = maxLength
-        validationError = ValidationError(msg: ruleMsg)
-    }
-    
-    public func isValid(value: String?) -> ValidationError? {
-        guard let value = value else { return nil }
-        return value.characters.count > Int(max) ? validationError : nil
+    public func isValid(value: T?) -> ValidationError? {
+        let rowAux: RowOf<T> = row ?? form!.rowBy(tag: tag!)!
+        return rowAux.value == value ? nil : validationError
     }
 }

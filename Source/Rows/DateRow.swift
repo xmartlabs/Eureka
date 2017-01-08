@@ -69,7 +69,7 @@ open class _CountDownRow: _DateFieldRow {
             if components.hour != 1{
                 hourString += "s"
             }
-            return  "\(components.hour) \(hourString) \(components.minute) min"
+            return  "\(components.hour!) \(hourString) \(components.minute!) min"
         }
     }
 }

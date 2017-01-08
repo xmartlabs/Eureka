@@ -23,6 +23,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
 * [Requirements]
 * [Usage]
   + [How to create a Form]
+  + [Getting row values]
   + [Operators]
   + [Using the callbacks]
   + [Section Header and Footer]
@@ -76,7 +77,7 @@ class MyFormViewController: FormViewController {
         +++ Section("Section2")
             <<< DateRow(){
                 $0.title = "Date Row"
-                $0.value = NSDate(timeIntervalSinceReferenceDate: 0)
+                $0.value = Date(timeIntervalSinceReferenceDate: 0)
             }
     }
 }
@@ -90,6 +91,41 @@ In the example we create two sections with standard rows, the result is this:
 
 You could create a form by just setting up the `form` property by yourself without extending from `FormViewController` but this method is typically more convenient.
 
+#### Configuring the keyboard navigation accesory
+
+To change the behaviour of this you should set the navigation options of your controller. The `FormViewController` has a `navigationOptions` variable which is an enum and can have one or more of the following values:
+
+- **disabled**: no view at all
+- **enabled**: enable view at the bottom
+- **stopDisabledRow**: if the navigation should stop when the next row is disabled
+- **skipCanNotBecomeFirstResponderRow**: if the navigation should skip the rows that return false to `canBecomeFirstResponder()`
+
+The default value is `enabled & skipCanNotBecomeFirstResponderRow`
+
+To enable smooth scrolling to off-screen rows, enable it via the `animateScroll` property. By default, the `FormViewController` jumps immediately between rows when the user hits the next or previous buttons in the keyboard navigation accesory, including when the next row is off screen. 
+
+To set the amount of space between the keyboard and the highlighted row following a navigation event, set the `rowKeyboardSpacing` property. By default, when the form scrolls to an offscreen view no space will be left between the top of the keyboard and the bottom of the row.
+
+```swift
+class MyFormViewController: FormViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        form = ...
+	
+	// Enables the navigation accessory and stops navigation when a disabled row is encountered
+	navigationOptions = RowNavigationOptions.Enabled.union(.StopDisabledRow)
+	// Enables smooth scrolling on navigation to off-screen rows
+	animateScroll = true
+	// Leaves 20pt of space between the keyboard and the highlighted row after scrolling to an off screen row
+	rowKeyboardSpacing = 20
+    }
+}
+```
+
+If you want to change the whole navigation accessory view, you will have to override the `navigationAccessoryView` variable in your subclass of `FormViewController`.
+
+
 ### Getting row values
 
 The `Row` object holds a  ***value*** of a specific type.
@@ -97,7 +133,7 @@ For example, a `SwitchRow` holds a `Bool` value, while a `TextRow` holds a `Stri
 
 ```swift
 // Get the value of a single row
-let row: TextRow? = form.rowByTag("MyRowTag")
+let row: TextRow? = form.rowBy(tag: "MyRowTag")
 let value = row.value
 
 // Get the value of all rows which have a Tag assigned
@@ -289,7 +325,7 @@ form +++ Section()
             <<< LabelRow(){
 
                 $0.hidden = Condition.function(["switchRowTag"], { form in
-                    return !((form.rowByTag("switchRowTag") as? SwitchRow)?.value ?? false)
+                    return !((form.rowBy(tag: "switchRowTag") as? SwitchRow)?.value ?? false)
                 })
                 $0.title = "Switch is on!"
         }
@@ -343,10 +379,10 @@ Note that if you want to disable a row permanently you can also set `disabled` v
 ### List Sections
 
 To display a list of options, Eureka includes a special section called `SelectableSection`.
-When creating one you need to pass the type of row to use in the options and the `selectionStyle`. The `selectionStyle` is an enum which can be either `MultipleSelection` or `SingleSelection(enableDeselection: Bool)` where the `enableDeselection` parameter determines if the selected rows can be deselected or not.
+When creating one you need to pass the type of row to use in the options and the `selectionStyle`. The `selectionStyle` is an enum which can be either `multipleSelection` or `singleSelection(enableDeselection: Bool)` where the `enableDeselection` parameter determines if the selected rows can be deselected or not.
 
 ```swift
-form +++ SelectableSection<ListCheckRow<String>, String>("Where do you live", selectionType: .SingleSelection(enableDeselection: true))
+form +++ SelectableSection<ListCheckRow<String>>("Where do you live", selectionType: .singleSelection(enableDeselection: true))
 
 let continents = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
 for option in continents {
@@ -435,8 +471,8 @@ Sometimes the collection of rules we want to use on a row is the same we want to
 
 ```swift
 var rules = RuleSet<String>()
-ruleSet.add(rule: RuleRequired())
-ruleSet.add(rule: RuleEmail())
+rules.add(rule: RuleRequired())
+rules.add(rule: RuleEmail())
 
 let row = TextRow() {
             $0.title = "Email Rule"
@@ -454,6 +490,10 @@ Eureka allows us to specify when validation rules should be evaluated. We can do
 * `.validatesOnDemand` - We should manually validate the row or form by invoking `validate()` method.
 
 If you want to validate the entire form (all the rows) you can manually invoke Form `validate()` method.
+
+#### How to get validation errors
+
+Each row has the `validationErrors` property that can be used to retrieve all validation errors. This property just holds the validation error list of the latest row validation execution, which means it doesn't evaluate the validation rules of the row.
 
 ## Custom rows
 
@@ -558,8 +598,8 @@ public final class CustomPushRow<T: Equatable>: SelectorRow<PushSelectorCell<T>,
         super.init(tag: tag)
         presentationMode = .show(controllerProvider: ControllerProvider.callback {
             return SelectorViewController<T>(){ _ in }
-            }, completionCallback: { vc in
-                vc.navigationController?.popViewController(animated: true)
+            }, onDismiss: { vc in
+                _ = vc.navigationController?.popViewController(animated: true)
         })
     }
 }
@@ -570,12 +610,24 @@ You can place your own UIViewController instead of `SelectorViewController<T>` a
 ### Subclassing cells using the same row
 
 Sometimes we want to change the UI look of one of our rows but without changing the row type and all the logic associated to one row.
-There is currently one way to do this if you are using cells that are instantiated from nib files.
+There is currently one way to do this **if you are using cells that are instantiated from nib files**. Currently, none of Eureka's core rows are instantiated from nib files but some of the custom rows in [EurekaCommunity] are, in particular the [PostalAddressRow](https://github.com/EurekaCommunity/PostalAddressRow) which was moved there.
 
-What you have to do is define a subclass and a nibfile with a cell of that subclass type. This will create a row with that cell.
+What you have to do is:
+* Create a nib file containing the cell you want to create.
+* Then set the class of the cell to be the existing cell you want to modify (if you want to change something more apart from pure UI then you should subclass that cell). Make sure the module of that class is correctly set
+* Connect the outlets to your class
+* Tell your row to use the new nib file. This is done by setting the `cellProvider` variable to use this nib. You should do this in the initialiser, either in each concrete instantiation or using the `defaultRowInitializer`. For example:
+
+```swift
+<<< PostalAddressRow() {
+     $0.cellProvider = CellProvider<PostalAddressCell>(nibName: "CustomNib", bundle: Bundle.main)
+}
+```
+
+You could also create a new row for this. In that case try to inherit from the same superclass as the row you want to change to inherit its logic.
 
 There are some things to consider when you do this:
-* Your subclass has to implement the init methods of its subclass, specially `init?(coder aDecoder: NSCoder)`.
+* If you want to see an example have a look at the [PostalAddressRow](https://github.com/EurekaCommunity/PostalAddressRow) or the [CreditCardRow](https://github.com/EurekaCommunity/CreditCardRow) which have use a custom nib file in their examples.
 * If you get an error saying `Unknown class <YOUR_CLASS_NAME> in Interface Builder file`, it might be that you have to instantiate that new type somewhere in your code to load it in the runtime. Calling `let t = YourClass.self` helped in my case.
 
 
@@ -613,7 +665,7 @@ There are some things to consider when you do this:
         <td><center><b>Stepper Row</b><br>
         <img src="Example/Media/RowStatics/StepperRow.png"/>
         </center><br><br>
-        </td>        
+        </td>
     </tr>
     <tr>
         <td><center><b>Text Area Row</b><br>
@@ -661,7 +713,7 @@ Additionally, `FieldRow` subtypes have a `useFormatterOnDidBeginEditing` propert
 
 ### Date Rows
 
-Date Rows hold a NSDate and allow us to set up a new value through UIDatePicker control. The mode of the UIDatePicker and the way how the date picker view is shown is what changes between them.
+Date Rows hold a Date and allow us to set up a new value through UIDatePicker control. The mode of the UIDatePicker and the way how the date picker view is shown is what changes between them.
 <table>
 <tr>
 <td>
@@ -774,6 +826,8 @@ Let us know about it, we would be glad to mention it here. :)
 
 [CocoaPods](https://cocoapods.org/) is a dependency manager for Cocoa projects.
 
+**Cocoapods 1.1.0.rc.3 or newer version must be used.**
+
 Specify Eureka into your project's `Podfile`:
 
 ```ruby
@@ -781,7 +835,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Eureka', '~> 2.0'
+pod 'Eureka', '~> 2.0.0-beta.1'
 ```
 
 Then run the following command:
@@ -797,7 +851,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 2.0
+github "xmartlabs/Eureka" ~> 2.0.0
 ```
 
 #### Manually as Embedded Framework
@@ -834,23 +888,6 @@ If you use **Eureka** in your app We would love to hear about it! Drop us a line
 
 ## FAQ
 
-#### How to get the value of a row?
-
-The value of a row can be obtained with `row.value`. The type of this value is the type of the row (i.e. the value of a `PickerRow<String>` is of type `String`).
-
-#### How to change the bottom navigation accessory view?
-
-To change the behaviour of this you should set the navigation options of your controller. The `FormViewController` has a `navigationOptions` variable which is an enum and can have one or more of the following values:
-
-- **disabled**: no view at all
-- **enabled**: enable view at the bottom
-- **stopDisabledRow**: if the navigation should stop when the next row is disabled
-- **skipCanNotBecomeFirstResponderRow**: if the navigation should skip the rows that return false to `canBecomeFirstResponder()`
-
-The default value is `enabled & skipCanNotBecomeFirstResponderRow`
-
-If you want to change the whole view of the bottom you will have to override the `navigationAccessoryView` variable in your subclass of `FormViewController`.
-
 #### How to get a Row using its tag value
 
 We can get a particular row by invoking any of the following functions exposed by the `Form` class:
@@ -867,7 +904,7 @@ For instance:
 let dateRow : DateRow? = form.rowBy(tag: "dateRowTag")
 let labelRow: LabelRow? = form.rowBy(tag: "labelRowTag")
 
-let dateRow2: Row<NSDate>? = form.rowBy(tag: "dateRowTag")
+let dateRow2: Row<Date>? = form.rowBy(tag: "dateRowTag")
 
 let labelRow2: BaseRow? = form.rowBy(tag: "labelRowTag")
 ```
@@ -979,6 +1016,7 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [Requirements]: #requirements
 
 [How to create a Form]: #how-to-create-a-form
+[Getting row values]: #getting-row-values
 [How to get the form values]: #how-to-get-the-form-values
 [Examples]: #examples
 [Usage]: #usage
@@ -1017,6 +1055,11 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [our blog post]: http://blog.xmartlabs.com/2015/09/29/Introducing-Eureka-iOS-form-library-written-in-pure-Swift/
 [twitter]: https://twitter.com/xmartlabs
 [EurekaCommunity]: https://github.com/EurekaCommunity
+
+# Donate to Eureka
+
+So we can make Eureka even better!<br><br>
+[<img src="donate.png"/>](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HRMAH7WZ4QQ8E)
 
 # Change Log
 

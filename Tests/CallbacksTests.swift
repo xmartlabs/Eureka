@@ -113,7 +113,21 @@ class CallbacksTests: XCTestCase {
        defaultInitializerTest(row: StepperRow())
     }
     
-    private func onChangeTest<Row, Value>(row:Row, value:Value) where Row: BaseRow, Row: RowType, Row: TypedRowType, Value == Row.Cell.Value {
+    func testOnRowValidationChenged(){
+        onRowValidationTests(row: TextRow(), value: "Eureka!")
+        onRowValidationTests(row: IntRow(), value: 33)
+        onRowValidationTests(row: DecimalRow(), value: 35.7)
+        onRowValidationTests(row: URLRow(), value: URL(string: "http://xmartlabs.com")!)
+        onRowValidationTests(row: DateRow(), value: Date().addingTimeInterval(100))
+        onRowValidationTests(row: DateInlineRow(), value: Date().addingTimeInterval(100))
+        onRowValidationTests(row: PopoverSelectorRow<String>(), value: "text")
+        onRowValidationTests(row: SliderRow(), value: 5.0)
+        onRowValidationTests(row: StepperRow(), value: 2.5)
+        onRowValidationTests(row: TimeInlineRow(), value: Date())
+        
+    }
+    
+    private func onChangeTest<Row, Value>(row:Row, value:Value) where Row: BaseRow, Row: RowType, Value == Row.Cell.Value {
         var invoked = false
         row.onChange { row in
             invoked = true
@@ -123,7 +137,7 @@ class CallbacksTests: XCTestCase {
         XCTAssertTrue(invoked)
     }
     
-    private func cellSetupTest<Row, Value>(row:Row) where  Row: BaseRow, Row : RowType, Row: TypedRowType, Value == Row.Cell.Value {
+    private func cellSetupTest<Row, Value>(row:Row) where  Row: BaseRow, Row : RowType, Value == Row.Cell.Value {
         var invoked = false
         row.cellSetup { cell, row in
             invoked = true
@@ -133,7 +147,7 @@ class CallbacksTests: XCTestCase {
         XCTAssertTrue(invoked)
     }
     
-    private func cellUpdateTest<Row, Value>(row:Row) where  Row: BaseRow, Row : RowType, Row: TypedRowType, Value == Row.Cell.Value {
+    private func cellUpdateTest<Row, Value>(row:Row) where  Row: BaseRow, Row : RowType, Value == Row.Cell.Value {
         var invoked = false
         row.cellUpdate { cell, row in
             invoked = true
@@ -143,7 +157,20 @@ class CallbacksTests: XCTestCase {
         XCTAssertTrue(invoked)
     }
     
-    private func defaultInitializerTest<Row>(row:Row) where Row: BaseRow, Row : RowType,  Row: TypedRowType {
+    func onRowValidationTests<Row, Value>(row:Row, value:Value) where Row: BaseRow, Row: RowType, Value == Row.Cell.Value {
+        var invoked = false
+        row.validationOptions = ValidationOptions.validatesOnChange
+        row.add(rule: RuleClosure() { _ in return ValidationError(msg: "Validation Error") })
+        row.onRowValidationChanged { row in
+            invoked = true
+        }
+        formVC.form +++ Section() <<< row
+        row.value = value
+
+        XCTAssertTrue(invoked)
+    }
+    
+    private func defaultInitializerTest<Row>(row:Row) where Row: BaseRow, Row : RowType {
         var invoked = false
         Row.defaultRowInitializer = { row in
             invoked = true
@@ -152,7 +179,7 @@ class CallbacksTests: XCTestCase {
         XCTAssertTrue(invoked)
     }
     
-    private func defaultCellSetupTest<Row>(row:Row) where Row: BaseRow, Row: RowType,  Row: TypedRowType {
+    private func defaultCellSetupTest<Row>(row:Row) where Row: BaseRow, Row: RowType {
         var invoked = false
         Row.defaultCellSetup = { cell, row in
             invoked = true
@@ -162,7 +189,7 @@ class CallbacksTests: XCTestCase {
         XCTAssertTrue(invoked)
     }
 
-    private func defaultCellUpdateTest<Row>(row:Row) where Row: BaseRow, Row : RowType, Row: TypedRowType {
+    private func defaultCellUpdateTest<Row>(row:Row) where Row: BaseRow, Row : RowType {
         var invoked = false
         Row.defaultCellUpdate = { cell, row in
             invoked = true

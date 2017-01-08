@@ -78,11 +78,12 @@
 		28EEC02F1C7E49BF00300699 /* SelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CE101C7E01EE0002982F /* SelectorViewController.swift */; };
 		28EEC0321C7E64A400300699 /* DatePickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDFC1C7DF9430002982F /* DatePickerRow.swift */; };
 		28EEC0331C7E64AB00300699 /* PopoverSelectorRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CE1D1C7E08300002982F /* PopoverSelectorRow.swift */; };
-		2F4622821E1F46A50093CD7F /* PickerInputRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4622811E1F46A50093CD7F /* PickerInputRow.swift */; };
+		3973000A1DF0E2A000080E4D /* PickerInputRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397300091DF0E2A000080E4D /* PickerInputRow.swift */; };
 		49ADC7F91C8A83240073952B /* StepperRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49ADC7F81C8A83240073952B /* StepperRow.swift */; };
 		51729DF61B9A4F5E004A00EB /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51729DEB1B9A4F5E004A00EB /* Eureka.framework */; };
 		51729E671B9A5FA5004A00EB /* Eureka.h in Headers */ = {isa = PBXBuildFile; fileRef = 51729E661B9A5FA5004A00EB /* Eureka.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8690E4BE1CFDE062004CDB1C /* Eureka.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8690E4BD1CFDE062004CDB1C /* Eureka.bundle */; };
+		FA56B6AF1DBAD38900407C94 /* RuleEqualsToRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56B6AE1DBAD38900407C94 /* RuleEqualsToRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,7 +168,7 @@
 		28EEBFF71C7E241200300699 /* SelectableRowType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectableRowType.swift; sourceTree = "<group>"; };
 		28EEBFFA1C7E25C500300699 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		28EEBFFC1C7E25F100300699 /* Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Cell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		2F4622811E1F46A50093CD7F /* PickerInputRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerInputRow.swift; sourceTree = "<group>"; };
+		397300091DF0E2A000080E4D /* PickerInputRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerInputRow.swift; sourceTree = "<group>"; };
 		49ADC7F81C8A83240073952B /* StepperRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepperRow.swift; sourceTree = "<group>"; };
 		51729DEB1B9A4F5E004A00EB /* Eureka.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Eureka.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51729DF01B9A4F5E004A00EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Source/Info.plist; sourceTree = "<group>"; };
@@ -175,6 +176,7 @@
 		51729DFC1B9A4F5E004A00EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Tests/Info.plist; sourceTree = "<group>"; };
 		51729E661B9A5FA5004A00EB /* Eureka.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Eureka.h; path = Source/Eureka.h; sourceTree = SOURCE_ROOT; };
 		8690E4BD1CFDE062004CDB1C /* Eureka.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Eureka.bundle; sourceTree = "<group>"; };
+		FA56B6AE1DBAD38900407C94 /* RuleEqualsToRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RuleEqualsToRow.swift; path = Source/Validations/RuleEqualsToRow.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,7 +243,7 @@
 				2859CDA01C7CF3A10002982F /* LabelRow.swift */,
 				2859CE1F1C7E092B0002982F /* MultipleSelectorRow.swift */,
 				2859CDB51C7D0EC60002982F /* PickerRow.swift */,
-				2F4622811E1F46A50093CD7F /* PickerInputRow.swift */,
+				397300091DF0E2A000080E4D /* PickerInputRow.swift */,
 				2859CDB71C7D0FE70002982F /* PickerInlineRow.swift */,
 				2859CE1D1C7E08300002982F /* PopoverSelectorRow.swift */,
 				2859CDEC1C7DF0680002982F /* PushRow.swift */,
@@ -298,6 +300,7 @@
 				280FBE5C1D87360900900064 /* RuleRange.swift */,
 				287E7D8F1D7601850065F4DE /* RuleLength.swift */,
 				280FBE5E1D873CCE00900064 /* RuleClosure.swift */,
+				FA56B6AE1DBAD38900407C94 /* RuleEqualsToRow.swift */,
 			);
 			name = Validations;
 			sourceTree = "<group>";
@@ -423,13 +426,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = Xmartlabs;
 				TargetAttributes = {
 					51729DEA1B9A4F5E004A00EB = {
 						CreatedOnToolsVersion = 7.0;
 						LastSwiftMigration = 0800;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					51729DF41B9A4F5E004A00EB = {
 						CreatedOnToolsVersion = 7.0;
@@ -497,6 +500,7 @@
 				2F4622821E1F46A50093CD7F /* PickerInputRow.swift in Sources */,
 				280FBE5F1D873CCE00900064 /* RuleClosure.swift in Sources */,
 				28EEC0001C7E36EB00300699 /* SwitchRow.swift in Sources */,
+				3973000A1DF0E2A000080E4D /* PickerInputRow.swift in Sources */,
 				287E7D901D7601850065F4DE /* RuleLength.swift in Sources */,
 				28EEC02A1C7E3B5A00300699 /* MultipleSelectorRow.swift in Sources */,
 				28EEC0231C7E3B1900300699 /* AlertRow.swift in Sources */,
@@ -505,6 +509,7 @@
 				28EEC0211C7E3AD700300699 /* TextAreaRow.swift in Sources */,
 				28EEBFFD1C7E25F100300699 /* Cell.swift in Sources */,
 				28EEC0321C7E64A400300699 /* DatePickerRow.swift in Sources */,
+				FA56B6AF1DBAD38900407C94 /* RuleEqualsToRow.swift in Sources */,
 				28EEBFE81C7E1D7E00300699 /* CellType.swift in Sources */,
 				28EEC0241C7E3B1D00300699 /* PickerRow.swift in Sources */,
 				28EEC0281C7E3B4B00300699 /* FieldsRow.swift in Sources */,
@@ -585,8 +590,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -633,8 +640,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -666,6 +675,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -688,6 +698,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;

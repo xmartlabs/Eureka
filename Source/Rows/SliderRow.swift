@@ -84,7 +84,9 @@ open class SliderCell: Cell<Float>, CellType {
         super.update()
         if !shouldShowTitle() {
             textLabel?.text = nil
-            detailTextLabel?.text = nil
+            valueLabel.text = nil
+        } else if valueLabel.text == nil {
+            valueLabel.text = " "
         }
         slider.value = row.value ?? 0.0
     }
@@ -117,9 +119,7 @@ open class SliderCell: Cell<Float>, CellType {
             roundedValue = slider.value
         }
         row.value = roundedValue
-        if shouldShowTitle() {
-            valueLabel.text = row.displayValueFor?(row.value)
-        }
+        update()
     }
     
     private func shouldShowTitle() -> Bool {

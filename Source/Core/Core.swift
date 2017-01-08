@@ -420,6 +420,7 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     public var form : Form {
         get { return _form }
         set {
+            guard form !== newValue else { return }
             _form.delegate = nil
             tableView?.endEditing(false)
             _form = newValue
@@ -429,6 +430,12 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
             }
         }
     }
+    
+    /// Extra space to leave between between the row in focus and the keyboard
+    open var rowKeyboardSpacing: CGFloat = 0
+    
+    /// Enables animated scrolling on row navigation
+    open var animateScroll = false
     
     /// Accessory view that is responsible for the navigation between rows
     open var navigationAccessoryView : NavigationAccessoryView!
@@ -452,6 +459,10 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
+        navigationAccessoryView = NavigationAccessoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
+        navigationAccessoryView.tintColor = view.tintColor
+        navigationAccessoryView.autoresizingMask = .flexibleWidth
+        
         if tableView == nil {
             tableView = UITableView(frame: view.bounds, style: tableViewStyle)
             tableView?.autoresizingMask = UIViewAutoresizing.flexibleWidth.union(.flexibleHeight)
@@ -473,8 +484,6 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationAccessoryView = NavigationAccessoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
-        navigationAccessoryView.tintColor = view.tintColor
 
         let selectedIndexPaths = tableView?.indexPathsForSelectedRows ?? []
         tableView?.reloadRows(at: selectedIndexPaths, with: .none)
@@ -497,7 +506,7 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
         }
 
         if let coordinator = transitionCoordinator {
-            coordinator.animateAlongsideTransition(in: parent?.view, animation: deselectionAnimation, completion: reselection)
+            coordinator.animate(alongsideTransition: deselectionAnimation, completion: reselection)
         }
         else {
             selectedIndexPaths.forEach {
@@ -547,7 +556,7 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     public final func beginEditing<T:Equatable>(of cell: Cell<T>) {
         cell.row.isHighlighted = true
         cell.row.updateCell()
-        RowDefaults.onCellHighlightChanged["\(type(of: self))"]?(cell, cell.row)
+        RowDefaults.onCellHighlightChanged["\(type(of: cell.row!))"]?(cell, cell.row)
         cell.row.callbackOnCellHighlightChanged?()
         guard let _ = tableView, (form.inlineRowHideOptions ?? Form.defaultInlineRowHideOptions).contains(.FirstResponderChanges) else { return }
         let row = cell.baseRow
@@ -565,12 +574,12 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
     public final func endEditing<T:Equatable>(of cell: Cell<T>) {
         cell.row.isHighlighted = false
         cell.row.wasBlurred = true
-        cell.row.updateCell()
         RowDefaults.onCellHighlightChanged["\(type(of: self))"]?(cell, cell.row)
         cell.row.callbackOnCellHighlightChanged?()
         if cell.row.validationOptions.contains(.validatesOnBlur) ||  cell.row.validationOptions.contains(.validatesOnChangeAfterBlurred) {
             cell.row.validate()
         }
+        cell.row.updateCell()
     }
     
     /**
@@ -818,15 +827,15 @@ extension FormViewController {
     //MARK: KeyBoard Notifications
     
     /**
-    Called when the keyboard will appear. Adjusts insets of the tableView and scrolls it if necessary.
-    */
+     Called when the keyboard will appear. Adjusts insets of the tableView and scrolls it if necessary.
+     */
     open func keyboardWillShow(_ notification: Notification){
         guard let table = tableView, let cell = table.findFirstResponder()?.formCell() else { return }
         let keyBoardInfo = notification.userInfo!
         let endFrame = keyBoardInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue
         
         let keyBoardFrame = table.window!.convert(endFrame.cgRectValue, to: table.superview)
-        let newBottomInset = table.frame.origin.y + table.frame.size.height - keyBoardFrame.origin.y
+        let newBottomInset = table.frame.origin.y + table.frame.size.height - keyBoardFrame.origin.y + rowKeyboardSpacing
         var tableInsets = table.contentInset
         var scrollIndicatorInsets = table.scrollIndicatorInsets
         oldBottomInset = oldBottomInset ?? tableInsets.bottom
@@ -839,7 +848,7 @@ extension FormViewController {
             table.contentInset = tableInsets
             table.scrollIndicatorInsets = scrollIndicatorInsets
             if let selectedRow = table.indexPath(for: cell) {
-                table.scrollToRow(at: selectedRow, at: .none, animated: false)
+                table.scrollToRow(at: selectedRow, at: .none, animated: animateScroll)
             }
             UIView.commitAnimations()
         }
@@ -884,7 +893,7 @@ extension FormViewController {
         guard let currentIndexPath = tableView?.indexPath(for: currentCell) else { assertionFailure(); return }
         guard let nextRow = nextRow(for: form[currentIndexPath], withDirection: direction) else { return }
         if nextRow.baseCell.cellCanBecomeFirstResponder(){
-            tableView?.scrollToRow(at: nextRow.indexPath!, at: .none, animated: false)
+            tableView?.scrollToRow(at: nextRow.indexPath!, at: .none, animated: animateScroll)
             nextRow.baseCell.cellBecomeFirstResponder(withDirection: direction)
         }
     }
