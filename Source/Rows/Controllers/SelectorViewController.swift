@@ -32,24 +32,39 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
     public var dismissOnSelection = true
     public var dismissOnChange = true
     
+    public var selectableRowCellUpdate: ((_ cell: Row.Cell, _ row: Row) -> ())?
+    public var selectableRowCellSetup: ((_ cell: Row.Cell, _ row: Row) -> ())?
+    
     /// A closure to be called when the controller disappears.
     public var onDismissCallback : ((UIViewController) -> ())?
-    
-    public var selectableRowCellUpdate: ((_ cell: Row.Cell, _ row: Row) -> ())?
-    
+
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
+    convenience public init(_ callback: ((UIViewController) -> ())?){
+        self.init(nibName: nil, bundle: nil)
+        onDismissCallback = callback
+    }
+
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
     open override func viewDidLoad() {
         super.viewDidLoad()
+        setupForm()
+    }
+    
+    open func setupForm() {
         guard let options = row.dataProvider?.arrayData else { return }
-        
-        form +++ SelectableSection<Row>(row.title ?? "", selectionType: .singleSelection(enableDeselection: enableDeselection)) { [weak self] section in
+        form +++ section(with: options, header: row.title, footer: nil)
+    }
+    
+    func section(with options: [Row.Cell.Value], header: String?, footer: String?) -> SelectableSection<Row> {
+        let header = header ?? ""
+        let footer = footer ?? ""
+        let section = SelectableSection<Row>(header: header, footer: footer, selectionType: .singleSelection(enableDeselection: enableDeselection)) { [weak self] section in
             if let sec = section as? SelectableSection<Row> {
                 sec.onSelectSelectableRow = { _, row in
                     let changed = self?.row.value != row.value
@@ -61,32 +76,60 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
             }
         }
         for option in options {
-            form.first! <<< Row.init(String(describing: option)){ lrow in
-                    lrow.title = self.row.displayValueFor?(option)
-                    lrow.selectableValue = option
-                    lrow.value = self.row.value == option ? option : nil
+            section <<< Row.init(String(describing: option)){ lrow in
+                lrow.title = self.row.displayValueFor?(option)
+                lrow.selectableValue = option
+                lrow.value = self.row.value == option ? option : nil
+                }.cellSetup { [weak self] cell, row in
+                    self?.selectableRowCellSetup?(cell, row)
                 }.cellUpdate { [weak self] cell, row in
                     self?.selectableRowCellUpdate?(cell, row)
-                }
+            }
         }
+        return section
     }
+    
 }
 
-/// Selector Controller (used to select one option among a list)
-open class SelectorViewController<T:Equatable> : _SelectorViewController<ListCheckRow<T>>  {
+open class _SectionedSelectorViewController<K: Hashable & Comparable, Row: SelectableRowType>: _SelectorViewController<Row> where Row: BaseRow, Row: TypedRowType {
     
-    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
+    public var sectionKeyFor: ((Row.Cell.Value) -> (K))?
+    public var sectionHeaderTitleFor: ((K) -> String?)? = { String(describing: $0) }
+    public var sectionFooterTitleFor: ((K) -> String?)?
     
-    convenience public init(_ callback: ((UIViewController) -> ())?){
-        self.init(nibName: nil, bundle: nil)
-        onDismissCallback = callback
+    open override func setupForm() {
+        if let optionsBySections = self.optionsBySections() {
+            for (sectionKey, options) in optionsBySections {
+                form +++ section(with: options, header: sectionHeaderTitleFor?(sectionKey), footer: sectionFooterTitleFor?(sectionKey))
+            }
+        } else {
+            super.setupForm()
+        }
     }
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
 
+    open func optionsBySections() -> [(K, [Row.Cell.Value])]? {
+        guard let options = row.dataProvider?.arrayData, let sectionKeyFor = sectionKeyFor else { return nil }
+        
+        let sections = options.reduce([:]) { (reduced, option) -> [K: [Row.Cell.Value]] in
+            var reduced = reduced
+            let key = sectionKeyFor(option)
+            reduced[key] = (reduced[key] ?? []) + [option]
+            return reduced
+        }
+        
+        return sections.sorted(by: { (lhs, rhs) in lhs.0 < rhs.0 })
+    }
+    
+}
+
+/// Selector Controller (used to select one option among a list)
+open class SelectorViewController<T:Equatable> : _SelectorViewController<ListCheckRow<T>>  {
+}
+
+/// Selector Controller (used to select one option among a list)
+open class SectionedSelectorViewController<K: Hashable & Comparable, T:Equatable> : _SectionedSelectorViewController<K, ListCheckRow<T>>  {
 }
