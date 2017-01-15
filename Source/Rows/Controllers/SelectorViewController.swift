@@ -40,7 +40,7 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
     }
     
     public required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     open override func viewDidLoad() {
@@ -80,7 +80,7 @@ open class SelectorViewController<T:Equatable> : _SelectorViewController<ListChe
     }
     
     public required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
 
