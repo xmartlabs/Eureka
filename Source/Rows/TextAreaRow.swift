@@ -57,7 +57,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         self.placeholderLabel = UILabel()
         self.placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         self.placeholderLabel.numberOfLines = 0
-        self.placeholderLabel.textColor = UIColor(white: 0, alpha: 0.22)
+        self.placeholderLabel.textColor = UIColor(white: 1, alpha: 0.42)
 
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
