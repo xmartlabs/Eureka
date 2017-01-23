@@ -66,7 +66,7 @@ open class StepperCell : Cell<Double>, CellType {
     
     func valueChanged() {
         row.value = stepper.value
-        update()
+        row.updateCell()
     }
 }
 
