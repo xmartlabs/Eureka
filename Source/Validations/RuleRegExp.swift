@@ -32,7 +32,7 @@ public enum RegExprPattern: String {
     case ContainsLowercase = "^.*?[a-z].*?$"
 }
 
-public class RuleRegExp: RuleType {
+open class RuleRegExp: RuleType {
 
     public var regExpr: String = ""
     public var id: String?
