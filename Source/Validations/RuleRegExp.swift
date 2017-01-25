@@ -36,10 +36,11 @@ open class RuleRegExp: RuleType {
 
     public var regExpr: String = ""
     public var id: String?
-    public var validationError = ValidationError(msg: "Invalid field value!")
+    public var validationError: ValidationError
     public var allowsEmpty = true
     
-    public init(regExpr: String, allowsEmpty: Bool = true){
+    public init(regExpr: String, allowsEmpty: Bool = true, msg: String = "Invalid field value!"){
+        self.validationError = ValidationError(msg: msg)
         self.regExpr = regExpr
         self.allowsEmpty = allowsEmpty
     }
