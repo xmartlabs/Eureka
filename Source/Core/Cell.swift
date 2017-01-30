@@ -48,12 +48,8 @@ open class BaseCell : UITableViewCell, BaseCellType {
     public func formViewController() -> FormViewController? {
         var responder : AnyObject? = self
         while responder != nil {
-            if let childsVC = (responder as? UIViewController)?.childViewControllers where childsVC.count > 0 {
-                for childVC in childsVC {
-                    if let formVC = childVC as? FormViewController { return formVC }
-                }
-            } else {
-                if let formVC = responder as? FormViewController { return formVC }
+            if let formVC = responder as? FormViewController {
+              return formVC
             }
             responder = responder?.next
         }
