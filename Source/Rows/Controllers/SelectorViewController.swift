@@ -29,6 +29,8 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
     /// The row that pushed or presented this controller
     public var row: RowOf<Row.Cell.Value>!
     public var enableDeselection = true
+    public var dismissOnSelection = true
+    public var dismissOnChange = true
     
     /// A closure to be called when the controller disappears.
     public var onDismissCallback : ((UIViewController) -> ())?
@@ -50,8 +52,11 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
         form +++ SelectableSection<Row>(row.title ?? "", selectionType: .singleSelection(enableDeselection: enableDeselection)) { [weak self] section in
             if let sec = section as? SelectableSection<Row> {
                 sec.onSelectSelectableRow = { _, row in
+                    let changed = self?.row.value != row.value
                     self?.row.value = row.value
-                    self?.onDismissCallback?(self!)
+                    if self?.dismissOnSelection == true || (changed && self?.dismissOnChange == true) {
+                        self?.onDismissCallback?(self!)
+                    }
                 }
             }
         }

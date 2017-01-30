@@ -91,21 +91,20 @@ extension SelectableSectionType where Self: Section, Self.Iterator == IndexingIt
                     switch s.selectionType {
                     case .multipleSelection:
                         row.value = row.value == nil ? row.selectableValue : nil
-                        row.updateCell()
-                        s.onSelectSelectableRow?(cell, row)
-                    case .singleSelection(let enableDeselection):
+                    case let .singleSelection(enableDeselection):
                         s.filter { $0.baseValue != nil && $0 != row }.forEach {
                             $0.baseValue = nil
                             $0.updateCell()
                         }
                         // Check if row is not already selected
-                        if enableDeselection || row.value == nil {
-                            row.value = row.value == nil ? row.selectableValue : nil
-                            row.updateCell()
-                            s.onSelectSelectableRow?(cell, row)
+                        if row.value == nil {
+                            row.value = row.selectableValue
+                        } else if enableDeselection {
+                            row.value = nil
                         }
                     }
-                    
+                    row.updateCell()
+                    s.onSelectSelectableRow?(cell, row)
                 }
             }
         }

@@ -665,6 +665,7 @@ class NativeEventFormViewController : FormViewController {
                     $0.value = .Never
                 }.onPresent({ (_, vc) in
                     vc.enableDeselection = false
+                    vc.dismissOnSelection = false
                 })
         
         form +++
