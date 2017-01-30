@@ -44,17 +44,24 @@ open class BaseCell : UITableViewCell, BaseCellType {
 
     /**
      Function that returns the FormViewController this cell belongs to.
+     Will be set by the controller instantiating the cell.
      */
-    public func formViewController() -> FormViewController? {
+    public var formViewDelegate: FormViewControllerProtocol?
+
+    /**
+     Function that returns the ViewController this cell belongs to.
+     */
+    public func viewController() -> UIViewController? {
         var responder : AnyObject? = self
         while responder != nil {
-            if responder! is FormViewController {
-                return responder as? FormViewController
+            if responder! is UIViewController {
+                return responder as? UIViewController
             }
             responder = responder?.next
         }
         return nil
     }
+
 
     open func setup(){}
     open func update() {}
@@ -85,6 +92,24 @@ open class BaseCell : UITableViewCell, BaseCellType {
     }
 }
 
+extension BaseCell {
+
+    /**
+     Will iterate through the superviews to find the tableView the cell belongs to.
+     */
+    public func parentTableView() -> UITableView? {
+        var view: UIView? = self
+        while (view != nil) {
+            if view?.isKind(of: UITableView.self) ?? false {
+                return view as? UITableView
+            }
+            view = view?.superview ?? nil
+        }
+        return nil
+    }
+
+}
+
 /// Generic class that represents the Eureka cells.
 open class Cell<T: Equatable> : BaseCell, TypedCellType {
 
@@ -95,7 +120,7 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
 
     /// Returns the navigationAccessoryView if it is defined or calls super if not.
     override open var inputAccessoryView: UIView? {
-        if let v = formViewController()?.inputAccessoryView(for: row){
+        if let v = formViewDelegate?.inputAccessoryView(for: row){
             return v
         }
         return super.inputAccessoryView
@@ -122,8 +147,12 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
      */
     open override func update(){
         super.update()
-        textLabel?.text = row.title
-        textLabel?.textColor = row.isDisabled ? .gray : .black
+        if row.attributedTitle != nil {
+            textLabel?.attributedText = row.attributedTitle
+        } else if row.title != nil {
+            textLabel?.text = row.title
+            textLabel?.textColor = row.isDisabled ? .gray : .black
+        }
         detailTextLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
     }
 
@@ -139,7 +168,7 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
     open override func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
         if result {
-            formViewController()?.beginEditing(of: self)
+            formViewDelegate?.beginEditing(of: self)
         }
         return result
     }
@@ -147,7 +176,7 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
     open override func resignFirstResponder() -> Bool {
         let result = super.resignFirstResponder()
         if result {
-            formViewController()?.endEditing(of: self)
+            formViewDelegate?.endEditing(of: self)
         }
         return result
     }

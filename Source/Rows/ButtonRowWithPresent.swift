@@ -27,7 +27,7 @@ import Foundation
 open class _ButtonRowWithPresent<VCType: TypedRowControllerType>: Row<ButtonCellOf<VCType.RowValue>>, PresenterRowType where VCType: UIViewController {
     
     open var presentationMode: PresentationMode<VCType>?
-    open var onPresentCallback : ((FormViewController, VCType)->())?
+    open var onPresentCallback : ((UIViewController, VCType)->())?
     
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -56,11 +56,11 @@ open class _ButtonRowWithPresent<VCType: TypedRowControllerType>: Row<ButtonCell
         if let presentationMode = presentationMode, !isDisabled {
             if let controller = presentationMode.makeController(){
                 controller.row = self
-                onPresentCallback?(cell.formViewController()!, controller)
-                presentationMode.present(controller, row: self, presentingController: cell.formViewController()!)
+                onPresentCallback?(cell.viewController()!, controller)
+                presentationMode.present(controller, row: self, presentingController: cell.viewController()!)
             }
             else{
-                presentationMode.present(nil, row: self, presentingController: cell.formViewController()!)
+                presentationMode.present(nil, row: self, presentingController: cell.viewController()!)
             }
         }
     }
@@ -74,7 +74,7 @@ open class _ButtonRowWithPresent<VCType: TypedRowControllerType>: Row<ButtonCell
             rowVC.onDismissCallback = callback
         }
         rowVC.row = self
-        onPresentCallback?(cell.formViewController()!, rowVC)
+        onPresentCallback?(cell.viewController()!, rowVC)
     }
     
 }

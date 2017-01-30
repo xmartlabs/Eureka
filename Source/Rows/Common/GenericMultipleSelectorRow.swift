@@ -33,7 +33,7 @@ open class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: Typed
     open var presentationMode: PresentationMode<VCType>?
     
     /// Will be called before the presentation occurs.
-    open var onPresentCallback : ((FormViewController, VCType)->())?
+    open var onPresentCallback : ((UIViewController, VCType)->())?
     
     /// Title to be displayed for the options
     open var selectorTitle: String?
@@ -64,11 +64,11 @@ open class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: Typed
         if let controller = presentationMode.makeController(){
             controller.row = self
             controller.title = selectorTitle ?? controller.title
-            onPresentCallback?(cell.formViewController()!, controller)
-            presentationMode.present(controller, row: self, presentingController: self.cell.formViewController()!)
+            onPresentCallback?(cell.viewController()!, controller)
+            presentationMode.present(controller, row: self, presentingController: self.cell.viewController()!)
         }
         else{
-            presentationMode.present(nil, row: self, presentingController: self.cell.formViewController()!)
+            presentationMode.present(nil, row: self, presentingController: self.cell.viewController()!)
         }
     }
     
@@ -80,7 +80,7 @@ open class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: Typed
         guard let rowVC = segue.destination as? VCType else { return }
         rowVC.title = selectorTitle ?? rowVC.title
         rowVC.onDismissCallback = presentationMode?.onDismissCallback ?? rowVC.onDismissCallback
-        onPresentCallback?(cell.formViewController()!, rowVC)
+        onPresentCallback?(cell.viewController()!, rowVC)
         rowVC.row = self
     }
 }

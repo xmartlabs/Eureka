@@ -37,7 +37,7 @@ public protocol PresenterRowType: TypedRowType {
     var presentationMode: PresentationMode<ProviderType>? { get set }
     
     /// Will be called before the presentation occurs.
-    var onPresentCallback: ((FormViewController, ProviderType)->())? { get set }
+    var onPresentCallback: ((UIViewController, ProviderType)->())? { get set }
 }
 
 extension PresenterRowType {
@@ -49,7 +49,7 @@ extension PresenterRowType {
      
      - returns: this row
      */
-    public func onPresent(_ callback: ((FormViewController, ProviderType)->())?) -> Self {
+    public func onPresent(_ callback: ((UIViewController, ProviderType)->())?) -> Self {
         onPresentCallback = callback
         return self
     }

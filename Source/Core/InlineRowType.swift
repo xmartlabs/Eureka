@@ -87,7 +87,7 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
             if let indexPath = indexPath {
                 section.insert(inline, at: indexPath.row + 1)
                 _inlineRow = inline
-                cell.formViewController()?.makeRowVisible(inline)
+                cell.formViewDelegate?.makeRowVisible(inline)
             }
         }
     }
