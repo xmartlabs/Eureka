@@ -425,7 +425,7 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
             tableView?.endEditing(false)
             _form = newValue
             _form.delegate = self
-            if isViewLoaded && tableView?.window != nil {
+            if isViewLoaded {
                 tableView?.reloadData()
             }
         }
