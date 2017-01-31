@@ -576,7 +576,7 @@ open class FormViewController : UIViewController, FormViewControllerProtocol {
         cell.row.wasBlurred = true
         RowDefaults.onCellHighlightChanged["\(type(of: self))"]?(cell, cell.row)
         cell.row.callbackOnCellHighlightChanged?()
-        if cell.row.validationOptions.contains(.validatesOnBlur) ||  cell.row.validationOptions.contains(.validatesOnChangeAfterBlurred) {
+        if cell.row.validationOptions.contains(.validatesOnBlur) || (cell.row.wasChanged && cell.row.validationOptions.contains(.validatesOnChangeAfterBlurred)) {
             cell.row.validate()
         }
         cell.row.updateCell()
