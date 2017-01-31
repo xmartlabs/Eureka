@@ -411,6 +411,17 @@ Eureka includes the `ListCheckRow` which is used for example. In the custom rows
 
 To easily get the selected row/s of a `SelectableSection` there are two methods: `selectedRow()` and `selectedRows()` which can be called to get the selected row in case it is a `SingleSelection` section or all the selected rows if it is a `MultipleSelection` section.
 
+##### Grouping options in sections
+
+Additionally you can setup list of options to be grouped by sections using following properties of `SelectorViewController`:
+
+- `sectionKeyForValue` - a closure that should return key for particular row value. This key is later used to break options by sections.
+
+- `sectionHeaderTitleForKey` - a closure that returns header title for a section for particular key. By default returns the key itself.
+    
+- `sectionFooterTitleForKey` - a closure that returns footer title for a section for particular key.
+
+
 ### Validations
 
 Eureka 2.0.0 introduces the very requested build-in validations feature.

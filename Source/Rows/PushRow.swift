@@ -39,20 +39,3 @@ public final class PushRow<T: Equatable> : _PushRow<PushSelectorCell<T>>, RowTyp
         super.init(tag: tag)
     }
 }
-
-open class _SectionedPushRow<K: Hashable & Comparable, Cell: CellType> : SelectorRow<Cell, SectionedSelectorViewController<K, Cell.Value>> where Cell: BaseCell {
-    
-    public required init(tag: String?) {
-        super.init(tag: tag)
-        presentationMode = .show(controllerProvider: ControllerProvider.callback { return SectionedSelectorViewController<K, Cell.Value>(){ _ in } }, onDismiss: { vc in
-            let _ = vc.navigationController?.popViewController(animated: true) })
-    }
-}
-
-/// A selector row where the user can pick an option from a pushed view controller
-public final class SectionedPushRow<K: Hashable & Comparable, T: Equatable> : _SectionedPushRow<K, PushSelectorCell<T>>, RowType {
-    public required init(tag: String?) {
-        super.init(tag: tag)
-    }
-}
-

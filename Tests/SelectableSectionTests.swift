@@ -122,5 +122,63 @@ class SelectableSectionTests: XCTestCase {
         XCTAssertEqual(value1 as? String, "Indian")
         
     }
+    
+    func testSectionedSections() {
+        let selectorViewController = SelectorViewController<String>(nibName: nil, bundle: nil)
+        selectorViewController.row = PushRow<String>() { row in
+            row.options = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
+        }
+        enum Hemisphere: Int {
+            case west, east, none
+        }
+        
+        selectorViewController.sectionKeyForValue = { option in
+            switch option {
+            case "Africa", "Asia", "Australia", "Europe":
+                return String(Hemisphere.west.rawValue)
+            case "North America", "South America":
+                return String(Hemisphere.east.rawValue)
+            default:
+                return String(Hemisphere.none.rawValue)
+            }
+        }
+        selectorViewController.sectionHeaderTitleForKey = { key in
+            switch Hemisphere(rawValue: Int(key)!)! {
+            case .west: return "West hemisphere"
+            case .east: return "East hemisphere"
+            case .none: return ""
+            }
+        }
+        selectorViewController.sectionFooterTitleForKey = { key in
+            switch Hemisphere(rawValue: Int(key)!)! {
+            case .west: return "West hemisphere"
+            case .east: return "East hemisphere"
+            case .none: return ""
+            }
+        }
+        
+        selectorViewController.view.frame = CGRect(x: 0, y: 0, width: 375, height: 3000)
+        selectorViewController.tableView?.frame = selectorViewController.view.frame
+        
+        let form = selectorViewController.form
+        
+        XCTAssertEqual(form.count, 3)
+        XCTAssertEqual(form[0].count, 4)
+        XCTAssertEqual(form[1].count, 2)
+        XCTAssertEqual(form[2].count, 1)
+        
+        XCTAssertEqual(form[0].header?.title, "West hemisphere")
+        XCTAssertEqual(form[1].header?.title, "East hemisphere")
+        XCTAssertEqual(form[2].header?.title, "")
+
+        XCTAssertEqual(form[0].footer?.title, "West hemisphere")
+        XCTAssertEqual(form[1].footer?.title, "East hemisphere")
+        XCTAssertEqual(form[2].footer?.title, "")
+
+        XCTAssertEqual(form[0].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Africa", "Asia", "Australia", "Europe"])
+        XCTAssertEqual(form[1].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["North America", "South America"])
+        XCTAssertEqual(form[2].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Antarctica"])
+    }
+    
 }
 

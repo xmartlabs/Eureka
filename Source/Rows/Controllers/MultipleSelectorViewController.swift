@@ -37,6 +37,17 @@ open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> 
     /// A closure to be called when the controller disappears.
     public var onDismissCallback : ((UIViewController) -> ())?
     
+    /// A closure that should return key for particular row value.
+    /// This key is later used to break options by sections.
+    public var sectionKeyForValue: ((Row.Cell.Value) -> (String))?
+    
+    /// A closure that returns header title for a section for particular key.
+    /// By default returns the key itself.
+    public var sectionHeaderTitleForKey: ((String) -> String?)? = { $0 }
+    
+    /// A closure that returns footer title for a section for particular key.
+    public var sectionFooterTitleForKey: ((String) -> String?)?
+    
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -57,13 +68,31 @@ open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> 
     
     open func setupForm() {
         guard let options = row.dataProvider?.arrayData else { return }
-        form +++ section(with: options, header: row.title, footer: nil)
+
+        if let optionsBySections = self.optionsBySections() {
+            for (sectionKey, options) in optionsBySections {
+                form +++ section(with: options, header: sectionHeaderTitleForKey?(sectionKey), footer: sectionFooterTitleForKey?(sectionKey))
+            }
+        } else {
+            form +++ section(with: options, header: row.title, footer: nil)
+        }
+    }
+
+    open func optionsBySections() -> [(String, [Set<Row.Cell.Value>])]? {
+        guard let options = row.dataProvider?.arrayData, let sectionKeyForValue = sectionKeyForValue else { return nil }
+        
+        let sections = options.reduce([:]) { (reduced, option) -> [String: [Set<Row.Cell.Value>]] in
+            var reduced = reduced
+            let key = sectionKeyForValue(option.first!)
+            reduced[key] = (reduced[key] ?? []) + [option]
+            return reduced
+        }
+        
+        return sections.sorted(by: { (lhs, rhs) in lhs.0 < rhs.0 })
     }
     
     func section(with options: [Set<T>], header: String?, footer: String?) -> SelectableSection<Row> {
-        let header = header ?? ""
-        let footer = footer ?? ""
-        let section = SelectableSection<Row>(header: header, footer: footer, selectionType: .multipleSelection) { [weak self] section in
+        let section = SelectableSection<Row>(header: header ?? "", footer: footer ?? "", selectionType: .multipleSelection) { [weak self] section in
             if let sec = section as? SelectableSection<Row> {
                 sec.onSelectSelectableRow = { _, selectableRow in
                     var newValue: Set<T> = self?.row.value ?? []
@@ -92,39 +121,5 @@ open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> 
     }
 }
 
-open class _SectionedMultipleSelectorViewController<K: Hashable & Comparable, T: Hashable, Row: SelectableRowType>: _MultipleSelectorViewController<T, Row> where Row: BaseRow, Row: TypedRowType, Row.Cell.Value == T {
-    
-    public var sectionKeyFor: ((Row.Cell.Value) -> (K))?
-    public var sectionHeaderTitleFor: ((K) -> String?)? = { String(describing: $0) }
-    public var sectionFooterTitleFor: ((K) -> String?)?
-    
-    open override func setupForm() {
-        if let optionsBySections = self.optionsBySections() {
-            for (sectionKey, options) in optionsBySections {
-                form +++ section(with: options, header: sectionHeaderTitleFor?(sectionKey), footer: sectionFooterTitleFor?(sectionKey))
-            }
-        } else {
-            super.setupForm()
-        }
-    }
-    
-    open func optionsBySections() -> [(K, [Set<Row.Cell.Value>])]? {
-        guard let options = row.dataProvider?.arrayData, let sectionKeyFor = sectionKeyFor else { return nil }
-        
-        let sections = options.reduce([:]) { (reduced, option) -> [K: [Set<Row.Cell.Value>]] in
-            var reduced = reduced
-            let key = sectionKeyFor(option.first!)
-            reduced[key] = (reduced[key] ?? []) + [option]
-            return reduced
-        }
-        
-        return sections.sorted(by: { (lhs, rhs) in lhs.0 < rhs.0 })
-    }
-    
-}
-
 open class MultipleSelectorViewController<T:Hashable> : _MultipleSelectorViewController<T, ListCheckRow<T>> {
-}
-
-open class SectionedMultipleSelectorViewController<K: Hashable & Comparable, T:Hashable> : _SectionedMultipleSelectorViewController<K, T, ListCheckRow<T>> {
 }

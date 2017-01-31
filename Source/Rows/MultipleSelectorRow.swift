@@ -36,16 +36,3 @@ public final class MultipleSelectorRow<T: Hashable> : _MultipleSelectorRow<T, Pu
         super.init(tag: tag)
     }
 }
-
-open class _SectionedMultipleSelectorRow<K: Hashable & Comparable, T: Hashable, Cell: CellType>: GenericMultipleSelectorRow<T, Cell, SectionedMultipleSelectorViewController<K, T>> where Cell: BaseCell, Cell: TypedCellType, Cell.Value == Set<T> {
-    public required init(tag: String?) {
-        super.init(tag: tag)
-    }
-}
-
-/// A selector row where the user can pick several options from a pushed view controller
-public final class SectionedMultipleSelectorRow<K: Hashable & Comparable, T: Hashable> : _SectionedMultipleSelectorRow<K, T, PushSelectorCell<Set<T>>>, RowType {
-    public required init(tag: String?) {
-        super.init(tag: tag)
-    }
-}

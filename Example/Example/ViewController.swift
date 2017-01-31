@@ -220,13 +220,13 @@ class RowsExampleViewController: FormViewController {
                         $0.selectorTitle = "Choose an Emoji!"
                     }
 
-                <<< SectionedPushRow<String, Emoji>() {
+                <<< PushRow<Emoji>() {
                     $0.title = "SectionedPushRow"
                     $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
                     $0.value = 👦🏼
                     $0.selectorTitle = "Choose an Emoji!"
                     }.onPresent { from, to in
-                        to.sectionKeyFor = { option in
+                        to.sectionKeyForValue = { option in
                             switch option {
                             case 💁🏻, 👦🏼: return "People"
                             case 🐗, 🐼, 🐻: return "Animals"
@@ -269,13 +269,13 @@ class RowsExampleViewController: FormViewController {
                         to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
                     }
         
-                <<< SectionedMultipleSelectorRow<String, Emoji>() {
+                <<< MultipleSelectorRow<Emoji>() {
                     $0.title = "SectionedMultipleSelectorRow"
                     $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
                     $0.value = [👦🏼, 🍐, 🐗]
                     }
                     .onPresent { from, to in
-                        to.sectionKeyFor = { option in
+                        to.sectionKeyForValue = { option in
                             switch option {
                             case 💁🏻, 👦🏼: return "People"
                             case 🐗, 🐼, 🐻: return "Animals"
@@ -404,9 +404,6 @@ class CustomCellsController : FormViewController {
                
                 <<< TextFloatLabelRow() {
                     $0.title = "Float Label Row, type something to see.."
-                    $0.cellUpdate({ (cell, row) in
-                      cell.floatLabelTextField.hintYPadding = 6
-                    })
                 }
         
                 <<< IntFloatLabelRow() {

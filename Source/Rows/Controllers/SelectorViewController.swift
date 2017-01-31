@@ -37,12 +37,23 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
     
     /// A closure to be called when the controller disappears.
     public var onDismissCallback : ((UIViewController) -> ())?
+    
+    /// A closure that should return key for particular row value.
+    /// This key is later used to break options by sections.
+    public var sectionKeyForValue: ((Row.Cell.Value) -> (String))?
+    
+    /// A closure that returns header title for a section for particular key.
+    /// By default returns the key itself.
+    public var sectionHeaderTitleForKey: ((String) -> String?)? = { $0 }
+    
+    /// A closure that returns footer title for a section for particular key.
+    public var sectionFooterTitleForKey: ((String) -> String?)?
 
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
-    convenience public init(_ callback: ((UIViewController) -> ())?){
+    convenience public init(_ callback: ((UIViewController) -> ())?) {
         self.init(nibName: nil, bundle: nil)
         onDismissCallback = callback
     }
@@ -58,7 +69,27 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
     
     open func setupForm() {
         guard let options = row.dataProvider?.arrayData else { return }
-        form +++ section(with: options, header: row.title, footer: nil)
+        
+        if let optionsBySections = self.optionsBySections() {
+            for (sectionKey, options) in optionsBySections {
+                form +++ section(with: options, header: sectionHeaderTitleForKey?(sectionKey), footer: sectionFooterTitleForKey?(sectionKey))
+            }
+        } else {
+            form +++ section(with: options, header: row.title, footer: nil)
+        }
+    }
+    
+    func optionsBySections() -> [(String, [Row.Cell.Value])]? {
+        guard let options = row.dataProvider?.arrayData, let sectionKeyForValue = sectionKeyForValue else { return nil }
+        
+        let sections = options.reduce([:]) { (reduced, option) -> [String: [Row.Cell.Value]] in
+            var reduced = reduced
+            let key = sectionKeyForValue(option)
+            reduced[key] = (reduced[key] ?? []) + [option]
+            return reduced
+        }
+        
+        return sections.sorted(by: { (lhs, rhs) in lhs.0 < rhs.0 })
     }
     
     func section(with options: [Row.Cell.Value], header: String?, footer: String?) -> SelectableSection<Row> {
@@ -91,45 +122,6 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
     
 }
 
-open class _SectionedSelectorViewController<K: Hashable & Comparable, Row: SelectableRowType>: _SelectorViewController<Row> where Row: BaseRow, Row: TypedRowType {
-    
-    public var sectionKeyFor: ((Row.Cell.Value) -> (K))?
-    public var sectionHeaderTitleFor: ((K) -> String?)? = { String(describing: $0) }
-    public var sectionFooterTitleFor: ((K) -> String?)?
-    
-    open override func setupForm() {
-        if let optionsBySections = self.optionsBySections() {
-            for (sectionKey, options) in optionsBySections {
-                form +++ section(with: options, header: sectionHeaderTitleFor?(sectionKey), footer: sectionFooterTitleFor?(sectionKey))
-            }
-        } else {
-            super.setupForm()
-        }
-    }
-    
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
-    open func optionsBySections() -> [(K, [Row.Cell.Value])]? {
-        guard let options = row.dataProvider?.arrayData, let sectionKeyFor = sectionKeyFor else { return nil }
-        
-        let sections = options.reduce([:]) { (reduced, option) -> [K: [Row.Cell.Value]] in
-            var reduced = reduced
-            let key = sectionKeyFor(option)
-            reduced[key] = (reduced[key] ?? []) + [option]
-            return reduced
-        }
-        
-        return sections.sorted(by: { (lhs, rhs) in lhs.0 < rhs.0 })
-    }
-    
-}
-
 /// Selector Controller (used to select one option among a list)
 open class SelectorViewController<T:Equatable> : _SelectorViewController<ListCheckRow<T>>  {
-}
-
-/// Selector Controller (used to select one option among a list)
-open class SectionedSelectorViewController<K: Hashable & Comparable, T:Equatable> : _SectionedSelectorViewController<K, ListCheckRow<T>>  {
 }
