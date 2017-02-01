@@ -119,7 +119,10 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     }
     
     open override func cellBecomeFirstResponder(withDirection: Direction) -> Bool {
-        return textView.becomeFirstResponder()
+        // workaround to solve https://github.com/xmartlabs/Eureka/issues/887 UIKit issue
+        textView.perform(#selector(UITextView.becomeFirstResponder), with: nil, afterDelay: 0.0)
+        return true
+        
     }
     
     open override func cellResignFirstResponder() -> Bool {
