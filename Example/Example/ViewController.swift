@@ -132,7 +132,7 @@ class RowsExampleViewController: FormViewController {
         CheckRow.defaultCellSetup = { cell, row in cell.tintColor = .orange }
         DateRow.defaultRowInitializer = { row in row.minimumDate = Date() }
 
-        form =
+        form +++
             
             Section()
             

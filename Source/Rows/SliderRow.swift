@@ -118,7 +118,7 @@ open class SliderCell: Cell<Float>, CellType {
             roundedValue = slider.value
         }
         row.value = roundedValue
-        update()
+        row.updateCell()
     }
     
     private func shouldShowTitle() -> Bool {
