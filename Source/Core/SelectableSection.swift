@@ -131,7 +131,12 @@ open class SelectableSection<Row: SelectableRowType> : Section, SelectableSectio
         self.selectionType = selectionType
         super.init(header, initializer)
     }
-    
+
+    public init(header: String, footer: String, selectionType: SelectionType, _ initializer: (Section) -> () = { _ in }) {
+        self.selectionType = selectionType
+        super.init(header: header, footer: footer, initializer)
+    }
+
     public required init() {
         fatalError("init() has not been implemented")
     }

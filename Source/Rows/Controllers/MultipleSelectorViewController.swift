@@ -26,7 +26,7 @@ import Foundation
 
 
 /// Selector Controller that enables multiple selection
-open class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType> : FormViewController, TypedRowControllerType where Row: BaseRow, Row: TypedRowType, Row.Cell.Value == T {
+open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> : FormViewController, TypedRowControllerType where Row: BaseRow, Row: TypedRowType, Row.Cell.Value == T {
     
     /// The row that pushed or presented this controller
     public var row: RowOf<Set<T>>!
@@ -36,6 +36,17 @@ open class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType> :
 
     /// A closure to be called when the controller disappears.
     public var onDismissCallback : ((UIViewController) -> ())?
+    
+    /// A closure that should return key for particular row value.
+    /// This key is later used to break options by sections.
+    public var sectionKeyForValue: ((Row.Cell.Value) -> (String))?
+    
+    /// A closure that returns header title for a section for particular key.
+    /// By default returns the key itself.
+    public var sectionHeaderTitleForKey: ((String) -> String?)? = { $0 }
+    
+    /// A closure that returns footer title for a section for particular key.
+    public var sectionFooterTitleForKey: ((String) -> String?)?
     
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -52,8 +63,36 @@ open class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType> :
     
     open override func viewDidLoad() {
         super.viewDidLoad()
+        setupForm()
+    }
+    
+    open func setupForm() {
         guard let options = row.dataProvider?.arrayData else { return }
-        let _ =  form +++ SelectableSection<Row>(row.title ?? "", selectionType: .multipleSelection) { [weak self] section in
+
+        if let optionsBySections = self.optionsBySections() {
+            for (sectionKey, options) in optionsBySections {
+                form +++ section(with: options, header: sectionHeaderTitleForKey?(sectionKey), footer: sectionFooterTitleForKey?(sectionKey))
+            }
+        } else {
+            form +++ section(with: options, header: row.title, footer: nil)
+        }
+    }
+
+    open func optionsBySections() -> [(String, [Set<Row.Cell.Value>])]? {
+        guard let options = row.dataProvider?.arrayData, let sectionKeyForValue = sectionKeyForValue else { return nil }
+        
+        let sections = options.reduce([:]) { (reduced, option) -> [String: [Set<Row.Cell.Value>]] in
+            var reduced = reduced
+            let key = sectionKeyForValue(option.first!)
+            reduced[key] = (reduced[key] ?? []) + [option]
+            return reduced
+        }
+        
+        return sections.sorted(by: { (lhs, rhs) in lhs.0 < rhs.0 })
+    }
+    
+    func section(with options: [Set<T>], header: String?, footer: String?) -> SelectableSection<Row> {
+        let section = SelectableSection<Row>(header: header ?? "", footer: footer ?? "", selectionType: .multipleSelection) { [weak self] section in
             if let sec = section as? SelectableSection<Row> {
                 sec.onSelectSelectableRow = { _, selectableRow in
                     var newValue: Set<T> = self?.row.value ?? []
@@ -67,25 +106,20 @@ open class _MultipleSelectorViewController<T:Hashable, Row: SelectableRowType> :
                 }
             }
         }
-        for o in options {
-            form.first! <<< Row.init() { [weak self] in
-                $0.title = String(describing: o.first!)
-                    $0.selectableValue = o.first!
-                    $0.value = self?.row.value?.contains(o.first!) ?? false ? o.first! : nil
+        for option in options {
+            section <<< Row.init() { lrow in
+                lrow.title = String(describing: option.first!)
+                lrow.selectableValue = option.first!
+                lrow.value = self.row.value?.contains(option.first!) ?? false ? option.first! : nil
                 }.cellSetup { [weak self] cell, row in
                     self?.selectableRowCellSetup?(cell, row)
                 }.cellUpdate { [weak self] cell, row in
                     self?.selectableRowCellUpdate?(cell, row)
-                }
-        
+            }
         }
-        form.first?.header = HeaderFooterView<UITableViewHeaderFooterView>(title: row.title)
+        return section
     }
-    
 }
-
 
 open class MultipleSelectorViewController<T:Hashable> : _MultipleSelectorViewController<T, ListCheckRow<T>> {
 }
-
-

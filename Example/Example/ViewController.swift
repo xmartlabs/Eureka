@@ -219,7 +219,23 @@ class RowsExampleViewController: FormViewController {
                         $0.value = 👦🏼
                         $0.selectorTitle = "Choose an Emoji!"
                     }
-            
+
+                <<< PushRow<Emoji>() {
+                    $0.title = "SectionedPushRow"
+                    $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
+                    $0.value = 👦🏼
+                    $0.selectorTitle = "Choose an Emoji!"
+                    }.onPresent { from, to in
+                        to.sectionKeyForValue = { option in
+                            switch option {
+                            case 💁🏻, 👦🏼: return "People"
+                            case 🐗, 🐼, 🐻: return "Animals"
+                            case 🍐: return "Food"
+                            default: return ""
+                            }
+                        }
+        }
+
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             let section = form.last!
@@ -252,7 +268,24 @@ class RowsExampleViewController: FormViewController {
                     .onPresent { from, to in
                         to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
                     }
-            
+        
+                <<< MultipleSelectorRow<Emoji>() {
+                    $0.title = "SectionedMultipleSelectorRow"
+                    $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
+                    $0.value = [👦🏼, 🍐, 🐗]
+                    }
+                    .onPresent { from, to in
+                        to.sectionKeyForValue = { option in
+                            switch option {
+                            case 💁🏻, 👦🏼: return "People"
+                            case 🐗, 🐼, 🐻: return "Animals"
+                            case 🍐: return "Food"
+                            default: return ""
+                            }
+                        }
+                        to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
+        }
+        
         form +++ Section("Generic picker")
             
                 <<< PickerRow<String>("Picker Row") { (row : PickerRow<String>) -> Void in
