@@ -450,6 +450,15 @@ override func viewDidLoad() {
             <<< TextRow() {
                 $0.title = "Required Rule"
                 $0.add(rule: RuleRequired())
+		
+		// This could also have been achieved using a closure that returns nil if valid, or a ValidationError otherwise. 
+		/*
+		let ruleRequiredViaClosure = RuleClosure<String> { rowValue in
+		return (rowValue == nil || rowValue!.isEmpty) ? ValidationError(msg: "Field required!") : nil
+		}
+		$0.add(rule: ruleRequiredViaClosure)
+		*/
+		
                 $0.validationOptions = .validatesOnChange
             }
             .cellUpdate { cell, row in
