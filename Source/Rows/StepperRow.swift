@@ -12,31 +12,20 @@ import UIKit
 
 open class StepperCell : Cell<Double>, CellType {
     
-    public typealias Value = Double
+    @IBOutlet public weak var stepper: UIStepper!
+    @IBOutlet public weak var valueLabel: UILabel?
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        self.stepper = UIStepper()
+        let stepper = UIStepper()
+        self.stepper = stepper
         self.stepper.translatesAutoresizingMaskIntoConstraints = false
-
-        self.valueLabel = UILabel()
-        self.valueLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.valueLabel.numberOfLines = 1
-
+        
+        let valueLabel = UILabel()
+        self.valueLabel = valueLabel
+        self.valueLabel?.translatesAutoresizingMaskIntoConstraints = false
+        self.valueLabel?.numberOfLines = 1
+        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        height = { BaseRow.estimatedRowHeight }
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    public var stepper: UIStepper
-    
-    public var valueLabel: UILabel
-    
-    open override func setup() {
-        super.setup()
-        selectionStyle = .none
         
         addSubview(stepper)
         addSubview(valueLabel)
@@ -45,9 +34,19 @@ open class StepperCell : Cell<Double>, CellType {
         addConstraint(NSLayoutConstraint(item: stepper, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1.0, constant: 0))
         addConstraint(NSLayoutConstraint(item: valueLabel, attribute: .centerY, relatedBy: .equal, toItem: stepper, attribute: .centerY, multiplier: 1.0, constant: 0))
         
-        stepper.addTarget(self, action: #selector(StepperCell.valueChanged), for: .valueChanged)
+        height = { BaseRow.estimatedRowHeight }
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    open override func setup() {
+        super.setup()
+        selectionStyle = .none
         
-        valueLabel.textColor = stepper.tintColor
+        stepper.addTarget(self, action: #selector(StepperCell.valueChanged), for: .valueChanged)
+        valueLabel?.textColor = stepper.tintColor
     }
     
     deinit {
@@ -59,8 +58,8 @@ open class StepperCell : Cell<Double>, CellType {
         stepper.isEnabled = !row.isDisabled
         stepper.value = row.value ?? 0
         stepper.alpha = row.isDisabled ? 0.3 : 1.0
-        valueLabel.alpha = row.isDisabled ? 0.3 : 1.0
-        valueLabel.text = row.displayValueFor?(row.value)
+        valueLabel?.alpha = row.isDisabled ? 0.3 : 1.0
+        valueLabel?.text = row.displayValueFor?(row.value)
         detailTextLabel?.text = nil
     }
     

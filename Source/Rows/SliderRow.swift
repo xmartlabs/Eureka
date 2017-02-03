@@ -27,11 +27,21 @@ import UIKit
 /// The cell of the SliderRow
 open class SliderCell: Cell<Float>, CellType {
     
+    private var awakeFromNibCalled = false
+    
+    @IBOutlet open weak var titleLabel: UILabel!
+    @IBOutlet open weak var valueLabel: UILabel!
+    @IBOutlet open weak var slider: UISlider!
+    
+    open var formatter: NumberFormatter?
+    
+    
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
+        
         NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil){ [weak self] notification in
             guard let me = self else { return }
-            if me.shouldShowTitle() {
+            if me.shouldShowTitle  {
                 me.contentView.addSubview(me.titleLabel)
                 me.contentView.addSubview(me.valueLabel!)
                 me.addConstraints()
@@ -40,62 +50,64 @@ open class SliderCell: Cell<Float>, CellType {
     }
     
     deinit {
+        guard !awakeFromNibCalled else { return }
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIContentSizeCategoryDidChange, object: nil)
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
+        awakeFromNibCalled = true
     }
-    
-    open var titleLabel: UILabel! {
-        textLabel?.translatesAutoresizingMaskIntoConstraints = false
-        textLabel?.setContentHuggingPriority(500, for: .horizontal)
-        return textLabel
-    }
-    open var valueLabel: UILabel! {
-        detailTextLabel?.translatesAutoresizingMaskIntoConstraints = false
-        detailTextLabel?.setContentHuggingPriority(500, for: .horizontal)
-        return detailTextLabel
-    }
-    lazy open var slider: UISlider = {
-        let result = UISlider()
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.setContentHuggingPriority(500, for: .horizontal)
-        return result
-    }()
-    open var formatter: NumberFormatter?
     
     open override func setup() {
         super.setup()
+        if !awakeFromNibCalled {
+            // title
+            let title = textLabel
+            textLabel?.translatesAutoresizingMaskIntoConstraints = false
+            textLabel?.setContentHuggingPriority(500, for: .horizontal)
+            self.titleLabel = title
+            
+            
+            let value = detailTextLabel
+            value?.translatesAutoresizingMaskIntoConstraints = false
+            value?.setContentHuggingPriority(500, for: .horizontal)
+            self.valueLabel = value
+            
+            let slider = UISlider()
+            slider.translatesAutoresizingMaskIntoConstraints = false
+            slider.setContentHuggingPriority(500, for: .horizontal)
+            self.slider = slider
+            
+            
+            if shouldShowTitle  {
+                contentView.addSubview(titleLabel)
+                contentView.addSubview(valueLabel!)
+            }
+            contentView.addSubview(slider)
+            addConstraints()
+        }
         selectionStyle = .none
         slider.minimumValue = sliderRow.minimumValue
         slider.maximumValue = sliderRow.maximumValue
         slider.addTarget(self, action: #selector(SliderCell.valueChanged), for: .valueChanged)
-        
-        if shouldShowTitle() {
-            contentView.addSubview(titleLabel)
-            contentView.addSubview(valueLabel!)
-        }
-        contentView.addSubview(slider)
-        addConstraints()
     }
     
     open override func update() {
         super.update()
-        if !shouldShowTitle() {
-            textLabel?.text = nil
-            valueLabel.text = nil
-        } else if valueLabel.text == nil {
-            valueLabel.text = " "
-        }
+        titleLabel.text = row.title
+        valueLabel.text = row.displayValueFor?(row.value)
+        valueLabel.isHidden = !shouldShowTitle && !awakeFromNibCalled
+        titleLabel.isHidden = valueLabel.isHidden 
         slider.value = row.value ?? 0.0
     }
     
     func addConstraints() {
+        guard !awakeFromNibCalled else { return }
         let views: [String : Any] = ["titleLabel" : titleLabel, "valueLabel" : valueLabel, "slider" : slider]
         //TODO: in Iphone 6 Plus hPadding should be 20
         let metrics = ["hPadding" : 15.0, "vPadding" : 12.0, "spacing" : 12.0]
-        if shouldShowTitle() {
+        if shouldShowTitle  {
             contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-hPadding-[titleLabel]-[valueLabel]-hPadding-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
             contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[titleLabel]-spacing-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
             
@@ -121,8 +133,8 @@ open class SliderCell: Cell<Float>, CellType {
         row.updateCell()
     }
     
-    private func shouldShowTitle() -> Bool {
-        return row.title?.isEmpty == false
+    var shouldShowTitle: Bool {
+        return row?.title?.isEmpty == false
     }
     
     private var sliderRow: SliderRow {

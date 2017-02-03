@@ -26,10 +26,11 @@ import Foundation
 
 open class DatePickerCell : Cell<Date>, CellType {
     
-    public var datePicker: UIDatePicker
+    @IBOutlet weak public var datePicker: UIDatePicker!
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?){
-        self.datePicker = UIDatePicker()
+        let datePicker = UIDatePicker()
+        self.datePicker = datePicker
         self.datePicker.translatesAutoresizingMaskIntoConstraints = false
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -37,22 +38,23 @@ open class DatePickerCell : Cell<Date>, CellType {
         self.contentView.addSubview(self.datePicker)
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": self.datePicker]))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": self.datePicker]))
-        self.datePicker.addTarget(self, action: #selector(DatePickerCell.datePickerValueChanged(_:)), for: .valueChanged)
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     open override func setup() {
         super.setup()
+        selectionStyle = .none
         accessoryType = .none
         editingAccessoryType =  .none
         datePicker.datePickerMode = datePickerMode()
+        datePicker.addTarget(self, action: #selector(DatePickerCell.datePickerValueChanged(_:)), for: .valueChanged)
     }
     
     deinit {
-        datePicker.removeTarget(self, action: nil, for: .allEvents)
+        datePicker?.removeTarget(self, action: nil, for: .allEvents)
     }
     
     open override func update() {
@@ -87,6 +89,7 @@ open class DatePickerCell : Cell<Date>, CellType {
             return .date
         }
     }
+
 }
 
 open class _DatePickerRow : Row<DatePickerCell>, DatePickerRowProtocol {
