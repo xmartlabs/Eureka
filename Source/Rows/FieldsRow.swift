@@ -25,14 +25,15 @@
 import Foundation
 
 open class TextCell : _FieldCell<String>, CellType {
-    
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
+    
     
     open override func setup() {
         super.setup()
@@ -50,7 +51,7 @@ open class IntCell : _FieldCell<Int>, CellType {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     open override func setup() {
@@ -68,7 +69,7 @@ open class PhoneCell : _FieldCell<String>, CellType {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     open override func setup() {
@@ -84,7 +85,7 @@ open class NameCell : _FieldCell<String>, CellType {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     open override func setup() {
@@ -102,7 +103,7 @@ open class EmailCell : _FieldCell<String>, CellType {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     open override func setup() {
@@ -120,7 +121,7 @@ open class PasswordCell : _FieldCell<String>, CellType {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     open override func setup() {
@@ -139,7 +140,7 @@ open class DecimalCell : _FieldCell<Double>, CellType {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     open override func setup() {
@@ -156,7 +157,7 @@ open class URLCell : _FieldCell<URL>, CellType {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     open override func setup() {
@@ -174,7 +175,7 @@ open class TwitterCell : _FieldCell<String>, CellType {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     open override func setup() {
@@ -192,7 +193,7 @@ open class AccountCell : _FieldCell<String>, CellType {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     open override func setup() {
@@ -210,7 +211,7 @@ open class ZipCodeCell : _FieldCell<String>, CellType {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     open override func update() {

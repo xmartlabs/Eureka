@@ -28,26 +28,24 @@ import Foundation
 
 open class SwitchCell : Cell<Bool>, CellType {
     
-    public typealias Value = Bool
+    @IBOutlet public weak var switchControl: UISwitch!
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        let switchC = UISwitch()
+        switchControl = switchC
+        accessoryView = switchControl
+        editingAccessoryView = accessoryView
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    open var switchControl: UISwitch? {
-        return accessoryView as? UISwitch
-    }
-    
     open override func setup() {
         super.setup()
         selectionStyle = .none
-        accessoryView = UISwitch()
-        editingAccessoryView = accessoryView
-        switchControl?.addTarget(self, action: #selector(SwitchCell.valueChanged), for: .valueChanged)
+        switchControl.addTarget(self, action: #selector(SwitchCell.valueChanged), for: .valueChanged)
     }
     
     deinit {
@@ -56,8 +54,8 @@ open class SwitchCell : Cell<Bool>, CellType {
     
     open override func update() {
         super.update()
-        switchControl?.isOn = row.value ?? false
-        switchControl?.isEnabled = !row.isDisabled
+        switchControl.isOn = row.value ?? false
+        switchControl.isEnabled = !row.isDisabled
     }
     
     func valueChanged() {

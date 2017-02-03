@@ -846,8 +846,6 @@ Let us know about it, we would be glad to mention it here. :)
 
 [CocoaPods](https://cocoapods.org/) is a dependency manager for Cocoa projects.
 
-**Cocoapods 1.1.0.rc.3 or newer version must be used.**
-
 Specify Eureka into your project's `Podfile`:
 
 ```ruby
@@ -855,7 +853,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Eureka', '~> 2.0'
+pod 'Eureka', '~> 3.0'
 ```
 
 Then run the following command:
@@ -871,7 +869,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 2.0
+github "xmartlabs/Eureka" ~> 3.0
 ```
 
 #### Manually as Embedded Framework

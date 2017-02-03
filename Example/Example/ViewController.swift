@@ -38,7 +38,7 @@ class HomeViewController : FormViewController {
            cell.accessoryView?.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
         }
         
-        form =
+        form +++
             
             Section() {
                 $0.header = HeaderFooterView<EurekaLogoView>(.class)
@@ -96,6 +96,12 @@ class HomeViewController : FormViewController {
                     row.title = row.tag
                     row.presentationMode = .segueName(segueName: "ValidationsControllerSegue", onDismiss: nil)
                 }
+            
+                <<< ButtonRow("Custom Design") { (row: ButtonRow) -> Void in
+                    row.title = row.tag
+                    row.presentationMode = .segueName(segueName: "CustomDesignControllerSegue", onDismiss: nil)
+                }
+            
         +++ Section()
                 <<< ButtonRow() { (row: ButtonRow) -> Void in
                    row.title = "About"
@@ -200,7 +206,10 @@ class RowsExampleViewController: FormViewController {
                         $0.options = ["Diego Forlán", "Edinson Cavani", "Diego Lugano", "Luis Suarez"]
                         $0.value = "Luis Suarez"
                     }
-                
+                    .onPresent { from, to in
+                        to.popoverPresentationController?.permittedArrowDirections = .up
+                    }
+            
                 <<< AlertRow<Emoji>() {
                         $0.title = "AlertRow"
                         $0.selectorTitle = "Who is there?"
@@ -221,10 +230,10 @@ class RowsExampleViewController: FormViewController {
                     }
 
                 <<< PushRow<Emoji>() {
-                    $0.title = "SectionedPushRow"
-                    $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
-                    $0.value = 👦🏼
-                    $0.selectorTitle = "Choose an Emoji!"
+                        $0.title = "SectionedPushRow"
+                        $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
+                        $0.value = 👦🏼
+                        $0.selectorTitle = "Choose an Emoji!"
                     }.onPresent { from, to in
                         to.sectionKeyForValue = { option in
                             switch option {
@@ -594,7 +603,7 @@ class NativeEventFormViewController : FormViewController {
     
     private func initializeForm() {
         
-        form =
+        form +++
             
                 TextRow("Title").cellSetup { cell, row in
                     cell.textField.placeholder = row.tag
@@ -1393,6 +1402,38 @@ class ValidationsController: FormViewController {
     
     }
 }
+
+
+class CustomDesignController: FormViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        form +++
+            Section()
+            <<< SwitchRow() {
+                $0.cellProvider = CellProvider<SwitchCell>(nibName: "SwitchCell", bundle: Bundle.main)
+                $0.cell.height = { 67 }
+            }
+        
+            <<< DatePickerRow() {
+                $0.cellProvider = CellProvider<DatePickerCell>(nibName: "DatePickerCell", bundle: Bundle.main)
+                $0.cell.height = { 345 }
+            }
+        
+            <<< TextRow() {
+                $0.cellProvider = CellProvider<TextCell>(nibName: "TextCell", bundle: Bundle.main)
+                $0.cell.height = { 199 }
+            }
+            .onChange { row in
+                if let textView = row.cell.viewWithTag(99) as? UITextView {
+                    textView.text = row.cell.textField.text
+                }
+            }
+    }
+}
+
+
+
 
 class EurekaLogoViewNib: UIView {
 
