@@ -50,6 +50,15 @@ public protocol RuleType: BaseRuleType {
     func isValid(value: RowValueType?) -> ValidationError?
 }
 
+public extension RuleType {
+    public var validationErrorMessage: String {
+        get { return validationError.msg }
+        set {
+            self.validationError = ValidationError(msg: newValue)
+        }
+    }
+}
+
 public struct ValidationOptions : OptionSet {
 
     public let rawValue: Int
