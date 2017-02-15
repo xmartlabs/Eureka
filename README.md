@@ -102,7 +102,7 @@ To change the behaviour of this you should set the navigation options of your co
 
 The default value is `enabled & skipCanNotBecomeFirstResponderRow`
 
-To enable smooth scrolling to off-screen rows, enable it via the `animateScroll` property. By default, the `FormViewController` jumps immediately between rows when the user hits the next or previous buttons in the keyboard navigation accesory, including when the next row is off screen. 
+To enable smooth scrolling to off-screen rows, enable it via the `animateScroll` property. By default, the `FormViewController` jumps immediately between rows when the user hits the next or previous buttons in the keyboard navigation accesory, including when the next row is off screen.
 
 To set the amount of space between the keyboard and the highlighted row following a navigation event, set the `rowKeyboardSpacing` property. By default, when the form scrolls to an offscreen view no space will be left between the top of the keyboard and the bottom of the row.
 
@@ -112,7 +112,7 @@ class MyFormViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         form = ...
-	
+
 	// Enables the navigation accessory and stops navigation when a disabled row is encountered
 	navigationOptions = RowNavigationOptions.Enabled.union(.StopDisabledRow)
 	// Enables smooth scrolling on navigation to off-screen rows
@@ -418,7 +418,7 @@ Additionally you can setup list of options to be grouped by sections using follo
 - `sectionKeyForValue` - a closure that should return key for particular row value. This key is later used to break options by sections.
 
 - `sectionHeaderTitleForKey` - a closure that returns header title for a section for particular key. By default returns the key itself.
-    
+
 - `sectionFooterTitleForKey` - a closure that returns footer title for a section for particular key.
 
 
@@ -450,15 +450,15 @@ override func viewDidLoad() {
             <<< TextRow() {
                 $0.title = "Required Rule"
                 $0.add(rule: RuleRequired())
-		
-		// This could also have been achieved using a closure that returns nil if valid, or a ValidationError otherwise. 
+
+		// This could also have been achieved using a closure that returns nil if valid, or a ValidationError otherwise.
 		/*
 		let ruleRequiredViaClosure = RuleClosure<String> { rowValue in
 		return (rowValue == nil || rowValue!.isEmpty) ? ValidationError(msg: "Field required!") : nil
 		}
 		$0.add(rule: ruleRequiredViaClosure)
 		*/
-		
+
                 $0.validationOptions = .validatesOnChange
             }
             .cellUpdate { cell, row in
@@ -855,7 +855,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Eureka', '~> 2.0.0-beta.1'
+pod 'Eureka', '~> 2.0'
 ```
 
 Then run the following command:
@@ -871,7 +871,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 2.0.0
+github "xmartlabs/Eureka" ~> 2.0
 ```
 
 #### Manually as Embedded Framework
