@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+
+### [2.0.1](https://github.com/xmartlabs/Eureka/releases/tag/2.0.1)
+
+* Bug fixes and stability improvements.
+
 ### [2.0.0-beta.1](https://github.com/xmartlabs/Eureka/releases/tag/2.0.0)
 
 Pull requests associated with this milestone can be found in this [filter](https://github.com/xmartlabs/Eureka/issues?utf8=%E2%9C%93&q=milestone%3A2.0.0%20).
