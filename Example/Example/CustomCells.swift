@@ -139,7 +139,7 @@ public final class WeekDayRow: Row<WeekDayCell>, RowType {
 
 public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell where T: Equatable, T: InputTypeInitiable {
         
-    public var textField : UITextField { return floatLabelTextField }
+    public var textField: UITextField! { return floatLabelTextField }
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -245,7 +245,7 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
         if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
-            return textField.isFirstResponder ? formatter.editingString(for: v) : formatter.string(for: v)
+            return textField?.isFirstResponder == true ? formatter.editingString(for: v) : formatter.string(for: v)
         }
         return String(describing: v)
     }
@@ -281,9 +281,9 @@ public class TextFloatLabelCell : _FloatLabelCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .default
-        textField.autocapitalizationType = .sentences
-        textField.keyboardType = .default
+        textField?.autocorrectionType = .default
+        textField?.autocapitalizationType = .sentences
+        textField?.keyboardType = .default
     }
 }
 
@@ -300,9 +300,9 @@ public class IntFloatLabelCell : _FloatLabelCell<Int>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .default
-        textField.autocapitalizationType = .none
-        textField.keyboardType = .numberPad
+        textField?.autocorrectionType = .default
+        textField?.autocapitalizationType = .none
+        textField?.keyboardType = .numberPad
     }
 }
 
@@ -318,7 +318,7 @@ public class PhoneFloatLabelCell : _FloatLabelCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.keyboardType = .phonePad
+        textField?.keyboardType = .phonePad
     }
 }
 
@@ -334,9 +334,9 @@ public class NameFloatLabelCell : _FloatLabelCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .no
-        textField.autocapitalizationType = .words
-        textField.keyboardType = .namePhonePad
+        textField?.autocorrectionType = .no
+        textField?.autocapitalizationType = .words
+        textField?.keyboardType = .namePhonePad
     }
 }
 
@@ -352,9 +352,9 @@ public class EmailFloatLabelCell : _FloatLabelCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .no
-        textField.autocapitalizationType = .none
-        textField.keyboardType = .emailAddress
+        textField?.autocorrectionType = .no
+        textField?.autocapitalizationType = .none
+        textField?.keyboardType = .emailAddress
     }
 }
 
@@ -370,10 +370,10 @@ public class PasswordFloatLabelCell : _FloatLabelCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .no
-        textField.autocapitalizationType = .none
-        textField.keyboardType = .asciiCapable
-        textField.isSecureTextEntry = true
+        textField?.autocorrectionType = .no
+        textField?.autocapitalizationType = .none
+        textField?.keyboardType = .asciiCapable
+        textField?.isSecureTextEntry = true
     }
 }
 
@@ -389,7 +389,7 @@ public class DecimalFloatLabelCell : _FloatLabelCell<Float>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.keyboardType = .decimalPad
+        textField?.keyboardType = .decimalPad
     }
 }
 
@@ -405,7 +405,7 @@ public class URLFloatLabelCell : _FloatLabelCell<URL>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.keyboardType = .URL
+        textField?.keyboardType = .URL
     }
 }
 
@@ -421,9 +421,9 @@ public class TwitterFloatLabelCell : _FloatLabelCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .no
-        textField.autocapitalizationType = .none
-        textField.keyboardType = .twitter
+        textField?.autocorrectionType = .no
+        textField?.autocapitalizationType = .none
+        textField?.keyboardType = .twitter
     }
 }
 
@@ -439,9 +439,9 @@ public class AccountFloatLabelCell : _FloatLabelCell<String>, CellType {
     
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .no
-        textField.autocapitalizationType = .none
-        textField.keyboardType = .asciiCapable
+        textField?.autocorrectionType = .no
+        textField?.autocapitalizationType = .none
+        textField?.keyboardType = .asciiCapable
     }
 }
 

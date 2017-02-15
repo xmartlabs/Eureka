@@ -138,7 +138,7 @@ open class SelectableSection<Row: SelectableRowType> : Section, SelectableSectio
     }
 
     public required init() {
-        fatalError("init() has not been implemented")
+        super.init()
     }
     
     open override func rowsHaveBeenAdded(_ rows: [BaseRow], at: IndexSet) {
