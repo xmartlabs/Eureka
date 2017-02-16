@@ -336,7 +336,7 @@ public class NameFloatLabelCell : _FloatLabelCell<String>, CellType {
         super.setup()
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .words
-        textField.keyboardType = .namePhonePad
+        textField.keyboardType = .asciiCapable
     }
 }
 
