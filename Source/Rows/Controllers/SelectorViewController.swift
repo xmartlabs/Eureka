@@ -96,13 +96,11 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
         let header = header ?? ""
         let footer = footer ?? ""
         let section = SelectableSection<Row>(header: header, footer: footer, selectionType: .singleSelection(enableDeselection: enableDeselection)) { [weak self] section in
-            if let sec = section as? SelectableSection<Row> {
-                sec.onSelectSelectableRow = { _, row in
-                    let changed = self?.row.value != row.value
-                    self?.row.value = row.value
-                    if self?.dismissOnSelection == true || (changed && self?.dismissOnChange == true) {
-                        self?.onDismissCallback?(self!)
-                    }
+            section.onSelectSelectableRow = { _, row in
+                let changed = self?.row.value != row.value
+                self?.row.value = row.value
+                if self?.dismissOnSelection == true || (changed && self?.dismissOnChange == true) {
+                    self?.onDismissCallback?(self!)
                 }
             }
         }

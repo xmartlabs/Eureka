@@ -123,18 +123,18 @@ open class SelectableSection<Row: SelectableRowType> : Section, SelectableSectio
     /// A closure called when a row of this section is selected.
     public var onSelectSelectableRow: ((Row.Cell, Row) -> Void)?
     
-    public required init(_ initializer: (Section) -> ()) {
-        super.init(initializer)
+    public override init(_ initializer: (SelectableSection<Row>) -> ()) {
+        super.init({ section in initializer(section as! SelectableSection<Row>) })
     }
     
-    public init(_ header: String, selectionType: SelectionType, _ initializer: (Section) -> () = { _ in }) {
+    public init(_ header: String, selectionType: SelectionType, _ initializer: (SelectableSection<Row>) -> () = { _ in }) {
         self.selectionType = selectionType
-        super.init(header, initializer)
+        super.init(header, { section in initializer(section as! SelectableSection<Row>) })
     }
 
-    public init(header: String, footer: String, selectionType: SelectionType, _ initializer: (Section) -> () = { _ in }) {
+    public init(header: String, footer: String, selectionType: SelectionType, _ initializer: (SelectableSection<Row>) -> () = { _ in }) {
         self.selectionType = selectionType
-        super.init(header: header, footer: footer, initializer)
+        super.init(header: header, footer: footer, { section in initializer(section as! SelectableSection<Row>) })
     }
 
     public required init() {

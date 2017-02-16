@@ -158,7 +158,7 @@ open class Section {
     
     public required init(){}
     
-    public required init(_ initializer: (Section) -> ()){
+    public init(_ initializer: (Section) -> ()){
         initializer(self)
     }
     
@@ -371,6 +371,74 @@ extension Section /* Condition */{
             formIndex = kvoWrapper.rows.index(of: previous)
         }
         kvoWrapper.rows.insert(row, at: formIndex == NSNotFound ? 0 : formIndex + 1)
+    }
+}
+
+
+/**
+ *  Navigation options for a form view controller.
+ */
+public struct MultivaluedOptions: OptionSet {
+    
+    private enum Options : Int {
+        case none = 0, insert = 1, delete = 2, reorder = 4
+    }
+    public let rawValue: Int
+    public  init(rawValue: Int){ self.rawValue = rawValue}
+    private init(_ options: Options){ self.rawValue = options.rawValue }
+    
+    /// No multivalued.
+    public static let None = MultivaluedOptions(.none)
+    
+    /// Allows user to insert rows.
+    public static let Insert = MultivaluedOptions(.insert)
+    
+    /// Allows user to delete rows.
+    public static let Delete = MultivaluedOptions(.delete)
+    
+    /// Allows user to reorder rows
+    public static let Reorder = MultivaluedOptions(.reorder)
+}
+
+open class MultivaluedSection: Section {
+    
+    public var multivaluedOptions: MultivaluedOptions
+    public var showInsertIconInAddButton = true
+    public var addButtonProvider: ((MultivaluedSection) -> ButtonRow) = { _ in
+         return ButtonRow() {
+                    $0.title = "Add"
+                    $0.cellStyle = .value1
+                }.cellUpdate { cell, row in
+                    cell.textLabel?.textAlignment = .left
+                }
+    }
+    
+    public var multivaluedRowToInsertAt:((Int) -> BaseRow)?
+      
+    public required init(multivaluedOptions: MultivaluedOptions = MultivaluedOptions.Insert.union(.Delete),
+                header: String = "",
+                footer: String = "",
+                _ initializer: (MultivaluedSection) -> () = { _ in }){
+        self.multivaluedOptions = multivaluedOptions
+        super.init(header: header, footer: footer, {section in initializer(section as! MultivaluedSection) })
+        guard multivaluedOptions.contains(.Insert) else { return }
+        let addRow = addButtonProvider(self)
+        addRow.onCellSelection { cell, row in
+            guard let tableView = cell.formViewController()?.tableView, let indexPath = row.indexPath else { return }
+            cell.formViewController()?.tableView(tableView, commit: .insert, forRowAt: indexPath)
+        }
+        self <<< addRow
+    }
+    
+    public required init() {
+        self.multivaluedOptions = MultivaluedOptions.Insert.union(.Delete)
+        super.init()
+        let addRow = addButtonProvider(self)
+        addRow.onCellSelection { cell, row in
+            guard let tableView = cell.formViewController()?.tableView, let indexPath = row.indexPath else { return }
+            cell.formViewController()?.tableView(tableView, commit: .insert, forRowAt: indexPath)
+        }
+        self <<< addRow
     }
 }
 
