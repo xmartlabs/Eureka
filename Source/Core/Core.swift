@@ -740,6 +740,23 @@ extension FormViewController : UITableViewDelegate {
         }
         return view.bounds.height
     }
+    
+    @objc(tableView:canEditRowAtIndexPath:) public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        guard tableView == self.tableView else { return false }
+        let row = form[indexPath]
+        return (row.actions != nil)
+    }
+    
+    open func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let defaultActions : [UITableViewRowAction] = []
+        guard tableView == self.tableView else { return defaultActions }
+        let row = form[indexPath]
+        if let actions = row.actions {
+            return actions
+        } else {
+            return defaultActions
+        }
+    }
 }
 
 extension FormViewController : UITableViewDataSource {
