@@ -386,9 +386,18 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
 		super.layoutSubviews()
 		guard let row = (row as? FieldRowConformance) else { return }
 		guard let titleLabelPercentage = row.titleLabelPercentage else { return	}
+		var targetTitleWidth = bounds.size.width * titleLabelPercentage
+		if let imageView = imageView, let _ = imageView.image, let titleLabel = titleLabel {
+			var extraWidthToSubtract = titleLabel.frame.minX - imageView.frame.minX // Left-to-right interface layout
+			if #available(iOS 9.0, *) {
+				if UIView.userInterfaceLayoutDirection(for: self.semanticContentAttribute) == .rightToLeft {
+					extraWidthToSubtract = imageView.frame.maxX - titleLabel.frame.maxX
+				}
+			}
+			targetTitleWidth -= extraWidthToSubtract
+		}
 		let cachedTitleLablePercentage = titleLabelPercentage
-		let fullTitleLabelWidth = bounds.size.width * titleLabelPercentage
-		row.titleLabelPercentage = fullTitleLabelWidth / contentView.bounds.size.width
+		row.titleLabelPercentage = targetTitleWidth / contentView.bounds.size.width
 		setNeedsUpdateConstraints()
 		updateConstraintsIfNeeded()
 		row.titleLabelPercentage = cachedTitleLablePercentage
