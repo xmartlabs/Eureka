@@ -89,6 +89,7 @@ open class SliderCell: Cell<Float>, CellType {
             valueLabel.text = " "
         }
         slider.value = row.value ?? 0.0
+        slider.isEnabled = !row.isDisabled
     }
     
     func addConstraints() {
