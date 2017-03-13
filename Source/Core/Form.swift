@@ -173,6 +173,15 @@ extension Form: MutableCollection {
     
     // MARK: MutableCollectionType
     
+    public subscript(bounds: Range<Int>) -> RangeReplaceableSlice<Form> {
+        get {
+            fatalError("Not implemented")
+        }
+        set(newValue) {
+            fatalError("Not implemented")
+        }
+    }
+    
     public subscript (_ position: Int) -> Section {
         get { return kvoWrapper.sections[position] as! Section }
         set { kvoWrapper.sections[position] = newValue }
