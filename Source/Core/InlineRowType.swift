@@ -85,8 +85,8 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
                 onExpandInlineRowCallback(cell, self, inline)
             }
             if let indexPath = indexPath {
-                section.insert(inline, at: indexPath.row + 1)
                 _inlineRow = inline
+                section.insert(inline, at: indexPath.row + 1)
                 cell.formViewController()?.makeRowVisible(inline)
             }
         }
@@ -100,8 +100,8 @@ extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell
             if let onCollapseInlineRowCallback = onCollapseInlineRowCallback {
                 onCollapseInlineRowCallback(cell, self, inlineRow as! InlineRow)
             }
-            section?.remove(at: selectedRowPath.row + 1)
             _inlineRow = nil
+            section?.remove(at: selectedRowPath.row + 1)
         }
     }
     

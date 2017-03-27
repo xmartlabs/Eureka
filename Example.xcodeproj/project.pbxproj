@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2837E2A01BA3A5A800A1952C /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2837E29E1BA3A5A800A1952C /* FloatLabelTextField.swift */; };
+		284D28B61E49121E00BB38E7 /* DatePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284D28B51E49121E00BB38E7 /* DatePickerCell.xib */; };
+		284D28B81E4917A000BB38E7 /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284D28B71E4917A000BB38E7 /* SwitchCell.xib */; };
+		284D28BA1E491FEF00BB38E7 /* TextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284D28B91E491FEF00BB38E7 /* TextCell.xib */; };
 		285F2B441BB79B86005991BA /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 285F2B431BB79B86005991BA /* MapKit.framework */; };
 		287A143F1D99A96100FFE6EB /* ImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A143D1D99A96100FFE6EB /* ImagePickerController.swift */; };
 		287A14401D99A96100FFE6EB /* ImageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A143E1D99A96100FFE6EB /* ImageRow.swift */; };
@@ -78,6 +81,9 @@
 
 /* Begin PBXFileReference section */
 		2837E29E1BA3A5A800A1952C /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FloatLabelTextField.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		284D28B51E49121E00BB38E7 /* DatePickerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DatePickerCell.xib; path = Example/CustomDesign/DatePickerCell.xib; sourceTree = "<group>"; };
+		284D28B71E4917A000BB38E7 /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SwitchCell.xib; path = Example/CustomDesign/SwitchCell.xib; sourceTree = "<group>"; };
+		284D28B91E491FEF00BB38E7 /* TextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TextCell.xib; path = Example/CustomDesign/TextCell.xib; sourceTree = "<group>"; };
 		285F2B431BB79B86005991BA /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		287A143D1D99A96100FFE6EB /* ImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImagePickerController.swift; path = Example/CustomRows/ImageRow/ImagePickerController.swift; sourceTree = "<group>"; };
 		287A143E1D99A96100FFE6EB /* ImageRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageRow.swift; path = Example/CustomRows/ImageRow/ImageRow.swift; sourceTree = "<group>"; };
@@ -124,6 +130,16 @@
 			);
 			name = Helpers;
 			path = Example/Helpers;
+			sourceTree = "<group>";
+		};
+		284D28AE1E48C27300BB38E7 /* Custom Design */ = {
+			isa = PBXGroup;
+			children = (
+				284D28B71E4917A000BB38E7 /* SwitchCell.xib */,
+				284D28B51E49121E00BB38E7 /* DatePickerCell.xib */,
+				284D28B91E491FEF00BB38E7 /* TextCell.xib */,
+			);
+			name = "Custom Design";
 			sourceTree = "<group>";
 		};
 		285F2B451BB79BB7005991BA /* Supporting Files */ = {
@@ -174,6 +190,7 @@
 		51729E1C1B9A54F1004A00EB /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				284D28AE1E48C27300BB38E7 /* Custom Design */,
 				28CD97BE1BB32EC800AFDA67 /* Custom Section Header */,
 				51729E6A1B9A657E004A00EB /* Custom Row and Cell */,
 				51729E1D1B9A54F1004A00EB /* AppDelegate.swift */,
@@ -326,8 +343,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				51729E281B9A54F1004A00EB /* LaunchScreen.storyboard in Resources */,
+				284D28B81E4917A000BB38E7 /* SwitchCell.xib in Resources */,
+				284D28BA1E491FEF00BB38E7 /* TextCell.xib in Resources */,
 				51729E251B9A54F1004A00EB /* Assets.xcassets in Resources */,
 				51729E711B9A660A004A00EB /* WeekDaysCell.xib in Resources */,
+				284D28B61E49121E00BB38E7 /* DatePickerCell.xib in Resources */,
 				28CD97C21BB32F0E00AFDA67 /* EurekaSectionHeader.xib in Resources */,
 				51729E231B9A54F1004A00EB /* Main.storyboard in Resources */,
 			);

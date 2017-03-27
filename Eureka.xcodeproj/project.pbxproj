@@ -16,6 +16,7 @@
 		2859CDC41C7D19C50002982F /* HeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDC31C7D19C50002982F /* HeaderFooterView.swift */; };
 		2859CDC61C7D1A2E0002982F /* NavigationAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDC51C7D1A2E0002982F /* NavigationAccessoryView.swift */; };
 		2859CDE91C7DD78E0002982F /* BaseRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859CDE81C7DD78E0002982F /* BaseRow.swift */; };
+		285BA44A1E8187480034EE92 /* MultivaluedSectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285BA4481E81864E0034EE92 /* MultivaluedSectionTests.swift */; };
 		287A142B1D89DF1E00FFE6EB /* ValidationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A142A1D89DF1E00FFE6EB /* ValidationsTests.swift */; };
 		287A14331D8A07ED00FFE6EB /* SelectableSectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A142D1D8A07B700FFE6EB /* SelectableSectionTests.swift */; };
 		287E7D7E1D625A260065F4DE /* RuleRequired.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E7D7D1D625A260065F4DE /* RuleRequired.swift */; };
@@ -137,6 +138,7 @@
 		2859CE1F1C7E092B0002982F /* MultipleSelectorRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleSelectorRow.swift; sourceTree = "<group>"; };
 		2859CE211C7E13470002982F /* GenericMultipleSelectorRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GenericMultipleSelectorRow.swift; path = Common/GenericMultipleSelectorRow.swift; sourceTree = "<group>"; };
 		2859CE231C7E141B0002982F /* SelectableSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectableSection.swift; sourceTree = "<group>"; };
+		285BA4481E81864E0034EE92 /* MultivaluedSectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultivaluedSectionTests.swift; path = Tests/MultivaluedSectionTests.swift; sourceTree = SOURCE_ROOT; };
 		287A142A1D89DF1E00FFE6EB /* ValidationsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ValidationsTests.swift; path = Tests/ValidationsTests.swift; sourceTree = SOURCE_ROOT; };
 		287A142D1D8A07B700FFE6EB /* SelectableSectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SelectableSectionTests.swift; path = Tests/SelectableSectionTests.swift; sourceTree = SOURCE_ROOT; };
 		287E7D7D1D625A260065F4DE /* RuleRequired.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RuleRequired.swift; path = Source/Validations/RuleRequired.swift; sourceTree = SOURCE_ROOT; };
@@ -354,6 +356,7 @@
 				28B1D77A1C7F90C900605EB3 /* RowCallbackTests.swift */,
 				28B1D77B1C7F90C900605EB3 /* SetValuesTests.swift */,
 				287A142A1D89DF1E00FFE6EB /* ValidationsTests.swift */,
+				285BA4481E81864E0034EE92 /* MultivaluedSectionTests.swift */,
 				51729DFC1B9A4F5E004A00EB /* Info.plist */,
 			);
 			name = Tests;
@@ -555,6 +558,7 @@
 				28B1D78B1C7F911900605EB3 /* FormValuesTests.swift in Sources */,
 				28B1D7871C7F911900605EB3 /* BaseEurekaTests.swift in Sources */,
 				28B1D7911C7F911900605EB3 /* SetValuesTests.swift in Sources */,
+				285BA44A1E8187480034EE92 /* MultivaluedSectionTests.swift in Sources */,
 				28B1D7901C7F911900605EB3 /* RowCallbackTests.swift in Sources */,
 				28B1D78E1C7F911900605EB3 /* OperatorsTest.swift in Sources */,
 				28B1D78D1C7F911900605EB3 /* HiddenRowsTests.swift in Sources */,
