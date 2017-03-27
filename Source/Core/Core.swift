@@ -778,7 +778,7 @@ extension FormViewController : UITableViewDelegate {
                 tableView.endEditing(true)
             }
             section.remove(at: indexPath.row)
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
+            DispatchQueue.main.async {
                 tableView.isEditing = !tableView.isEditing
                 tableView.isEditing = !tableView.isEditing
             }
@@ -790,7 +790,7 @@ extension FormViewController : UITableViewDelegate {
             }
             let newRow = multivaluedRowToInsertAt(max(0, section.count - 1))
             section.insert(newRow, at: section.count - 1)
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
+            DispatchQueue.main.async {
                 tableView.isEditing = !tableView.isEditing
                 tableView.isEditing = !tableView.isEditing
             }

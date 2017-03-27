@@ -1,18 +1,16 @@
 language: objective-c
-osx_image: xcode8
+osx_image: xcode8.2
 env:
-  - DESTINATION="OS=10.0,name=iPhone 7" SCHEME="Eureka" SDK=iphonesimulator10.0
+  - DESTINATION="OS=10.2,name=iPhone 7" SCHEME="Eureka" SDK=iphonesimulator
 before_install:
+  - xcrun simctl delete 22FA2149-1241-469C-BF6D-462D3837DB72
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
   - brew update
   - brew outdated carthage || brew upgrade carthage
 script:
   - set -o pipefail
   - xcodebuild -version
-  - xcodebuild -project Eureka.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION"
-    -configuration Debug ONLY_ACTIVE_ARCH=NO test | xcpretty -c
-  - xcodebuild -project Example.xcodeproj -scheme "Example" -sdk "$SDK" -destination "$DESTINATION"
-    -configuration Debug ONLY_ACTIVE_ARCH=NO test | xcpretty -c
+  - xcodebuild -project Eureka.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO test | xcpretty -c
 before_deploy:
   - carthage build --no-skip-current
   - carthage archive Eureka

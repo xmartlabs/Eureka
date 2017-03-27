@@ -400,6 +400,9 @@ public struct MultivaluedOptions: OptionSet {
     public static let Reorder = MultivaluedOptions(.reorder)
 }
 
+/**
+ *  Multivalued sections allows us to easily create insertable, deletable and reorderable sections. By using a multivalued section we can add multiple values for a certain field, such as telephone numbers in a contact.
+ */
 open class MultivaluedSection: Section {
     
     public var multivaluedOptions: MultivaluedOptions

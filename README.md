@@ -448,7 +448,7 @@ Eureka supports multiple values for a certain field (such as telephone numbers i
 
 #### How to create a multivalued section
 
-In order to create a multivalued section we have to use `MultivaluedSection` type instead of the regular `Section` type. `MultivaluedSection` extends `Section` type and has some additional properties to configure multivalued section behavior.
+In order to create a multivalued section we have to use `MultivaluedSection` type instead of the regular `Section` type. `MultivaluedSection` extends `Section` and has some additional properties to configure multivalued section behavior.
 
 let's dive into a code example...
 
