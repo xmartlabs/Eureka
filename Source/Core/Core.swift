@@ -697,6 +697,10 @@ extension FormViewController : UITableViewDelegate {
     
     //MARK: UITableViewDelegate
     
+    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // empty implementation to allow overriding; refer to the discussion here: http://stackoverflow.com/questions/39999716/implementing-a-protocol-method-inside-of-a-subclass
+    }
+    
     open func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         return indexPath
     }
