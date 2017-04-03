@@ -31,34 +31,34 @@ class RowCallbackTests: BaseEurekaTests {
         super.setUp()
         formVC.form = Form()
             +++ Section("something")
-            <<< CheckRow("row1").cellSetup { cell, row in
+            <<< CheckRow("row1").cellSetup { cell, _ in
                 cell.textLabel?.text = "checkrow + Setup"
                 cell.backgroundColor = .red
             }
-            <<< IntRow("row2").cellUpdate({ cell, row in
+            <<< IntRow("row2").cellUpdate({ cell, _ in
                 cell.textLabel?.text = "introw"
                 cell.textLabel?.font = UIFont(name: "Baskerville-Italic", size: 20)
             })
-            <<< TextRow("row3").cellSetup({ cell, row in
+            <<< TextRow("row3").cellSetup({ cell, _ in
                 cell.textLabel?.text = "aftersetup"
-            }).cellUpdate({ cell, row in
+            }).cellUpdate({ cell, _ in
                 cell.textLabel?.text = "afterupdate"
                 cell.textLabel?.font = UIFont(name: "Baskerville-Italic", size: 20)
             })
     }
-    
+
     func testTableViewNotNil() {
         XCTAssertNotNil(formVC.tableView)
     }
-    
+
     func testOnChange() {
         // Test onChange callback
-        let chk = CheckRow("row1"){ $0.title = "check"; $0.value = false }
-        
+        let chk = CheckRow("row1") { $0.title = "check"; $0.value = false }
+
         formVC.form = Form()
                         +++ Section("something")
                             <<< chk
-                            <<< IntRow("row2"){ $0.title = "int"; $0.value = 1 }
+                            <<< IntRow("row2") { $0.title = "int"; $0.value = 1 }
                                 .onChange { [weak chk] row in
                                     chk?.value = ((row.value! % 2) == 0)
                                 }
@@ -71,39 +71,38 @@ class RowCallbackTests: BaseEurekaTests {
 
     func testCellSetupAndUpdate() {
 
-        let chkRow : CheckRow! = formVC.form.rowBy(tag: "row1")
-        let intRow : IntRow! = formVC.form.rowBy(tag: "row2")
-        let textRow : TextRow! = formVC.form.rowBy(tag: "row3")
-        
+        let chkRow: CheckRow! = formVC.form.rowBy(tag: "row1")
+        let intRow: IntRow! = formVC.form.rowBy(tag: "row2")
+        let textRow: TextRow! = formVC.form.rowBy(tag: "row3")
+
         // check that they all have indexPath
         XCTAssertNotNil(chkRow.indexPath)
         XCTAssertNotNil(intRow.indexPath)
         XCTAssertNotNil(textRow.indexPath)
-        
+
         // make sure cellSetup is called for each cell
-        
+
         let _ = formVC.tableView(formVC.tableView!, cellForRowAt: intRow.indexPath!)
-        
-        
+
         XCTAssertEqual(chkRow.cell.textLabel?.text, "checkrow + Setup")
         XCTAssertEqual(textRow.cell.textLabel?.text, "aftersetup")
         let _ = formVC.tableView(formVC.tableView!, cellForRowAt: textRow.indexPath!)
         XCTAssertEqual(textRow.cell.textLabel?.text, "afterupdate")
-        
+
         let _ = formVC.tableView(formVC.tableView!, cellForRowAt: chkRow.indexPath!)
-        
+
         //make sure cell update is called for each cell
         let _ = formVC.tableView(formVC.tableView!, cellForRowAt: chkRow.indexPath!)
         let _ = formVC.tableView(formVC.tableView!, cellForRowAt: intRow.indexPath!)
         let _ = formVC.tableView(formVC.tableView!, cellForRowAt: textRow.indexPath!)
-        
+
         XCTAssertEqual(chkRow?.cell.textLabel?.text, chkRow?.title)
         XCTAssertEqual(intRow?.cell.textLabel?.text, "introw")
         XCTAssertEqual(textRow?.cell.textLabel?.text, "afterupdate")
-        
+
         XCTAssertEqual(chkRow?.cell.backgroundColor, .red)
         XCTAssertEqual(intRow?.cell.textLabel?.font, UIFont(name: "Baskerville-Italic", size: 20))
         XCTAssertEqual(textRow?.cell.textLabel?.font, UIFont(name: "Baskerville-Italic", size: 20))
-        
+
     }
 }

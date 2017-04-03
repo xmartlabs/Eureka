@@ -1125,7 +1125,7 @@ class ListSectionsController: FormViewController {
     
     override func valueHasBeenChanged(for row: BaseRow, oldValue: Any?, newValue: Any?) {
         if row.section === form[0] {
-            print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRow()?.baseValue)")
+            print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRow()?.baseValue ?? "No row selected")")
         }
         else if row.section === form[1] {
             print("Mutiple Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRows().map({$0.baseValue}))")

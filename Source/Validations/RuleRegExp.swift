@@ -38,22 +38,21 @@ open class RuleRegExp: RuleType {
     public var id: String?
     public var validationError: ValidationError
     public var allowsEmpty = true
-    
-    public init(regExpr: String, allowsEmpty: Bool = true, msg: String = "Invalid field value!"){
+
+    public init(regExpr: String, allowsEmpty: Bool = true, msg: String = "Invalid field value!") {
         self.validationError = ValidationError(msg: msg)
         self.regExpr = regExpr
         self.allowsEmpty = allowsEmpty
     }
-    
+
     public func isValid(value: String?) -> ValidationError? {
-        if let value = value, !value.isEmpty{
+        if let value = value, !value.isEmpty {
             let predicate = NSPredicate(format: "SELF MATCHES %@", regExpr)
             guard predicate.evaluate(with: value) else {
                 return validationError
             }
             return nil
-        }
-        else if !allowsEmpty {
+        } else if !allowsEmpty {
             return validationError
         }
         return nil

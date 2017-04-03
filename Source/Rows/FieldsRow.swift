@@ -24,17 +24,16 @@
 
 import Foundation
 
-open class TextCell : _FieldCell<String>, CellType {
+open class TextCell: _FieldCell<String>, CellType {
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
-    
+
     open override func setup() {
         super.setup()
         textField.autocorrectionType = .default
@@ -43,17 +42,16 @@ open class TextCell : _FieldCell<String>, CellType {
     }
 }
 
+open class IntCell: _FieldCell<Int>, CellType {
 
-open class IntCell : _FieldCell<Int>, CellType {
-    
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     open override func setup() {
         super.setup()
         textField.autocorrectionType = .default
@@ -62,32 +60,32 @@ open class IntCell : _FieldCell<Int>, CellType {
     }
 }
 
-open class PhoneCell : _FieldCell<String>, CellType {
-    
+open class PhoneCell: _FieldCell<String>, CellType {
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     open override func setup() {
         super.setup()
         textField.keyboardType = .phonePad
     }
 }
 
-open class NameCell : _FieldCell<String>, CellType {
-    
+open class NameCell: _FieldCell<String>, CellType {
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
@@ -96,16 +94,16 @@ open class NameCell : _FieldCell<String>, CellType {
     }
 }
 
-open class EmailCell : _FieldCell<String>, CellType {
-    
+open class EmailCell: _FieldCell<String>, CellType {
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
@@ -114,16 +112,16 @@ open class EmailCell : _FieldCell<String>, CellType {
     }
 }
 
-open class PasswordCell : _FieldCell<String>, CellType {
-    
+open class PasswordCell: _FieldCell<String>, CellType {
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
@@ -133,16 +131,16 @@ open class PasswordCell : _FieldCell<String>, CellType {
     }
 }
 
-open class DecimalCell : _FieldCell<Double>, CellType {
-    
+open class DecimalCell: _FieldCell<Double>, CellType {
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
@@ -150,16 +148,16 @@ open class DecimalCell : _FieldCell<Double>, CellType {
     }
 }
 
-open class URLCell : _FieldCell<URL>, CellType {
-    
+open class URLCell: _FieldCell<URL>, CellType {
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
@@ -168,16 +166,16 @@ open class URLCell : _FieldCell<URL>, CellType {
     }
 }
 
-open class TwitterCell : _FieldCell<String>, CellType {
-    
+open class TwitterCell: _FieldCell<String>, CellType {
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
@@ -186,16 +184,16 @@ open class TwitterCell : _FieldCell<String>, CellType {
     }
 }
 
-open class AccountCell : _FieldCell<String>, CellType {
-    
+open class AccountCell: _FieldCell<String>, CellType {
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     open override func setup() {
         super.setup()
         textField.autocorrectionType = .no
@@ -204,16 +202,16 @@ open class AccountCell : _FieldCell<String>, CellType {
     }
 }
 
-open class ZipCodeCell : _FieldCell<String>, CellType {
-    
+open class ZipCodeCell: _FieldCell<String>, CellType {
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     open override func update() {
         super.update()
         textField.autocorrectionType = .no
@@ -263,7 +261,6 @@ open class _PasswordRow: FieldRow<PasswordCell> {
     }
 }
 
-
 open class _DecimalRow: FieldRow<DecimalCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -298,7 +295,6 @@ open class _ZipCodeRow: FieldRow<ZipCodeCell> {
         super.init(tag: tag)
     }
 }
-
 
 /// A String valued row where the user can enter arbitrary text.
 public final class TextRow: _TextRow, RowType {
