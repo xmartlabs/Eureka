@@ -26,28 +26,28 @@ import Foundation
 
 /// Selector UIAlertController
 open class SelectorAlertController<T: Equatable> : UIAlertController, TypedRowControllerType {
-    
+
     /// The row that pushed or presented this controller
     public var row: RowOf<T>!
-    
+
     public var cancelTitle = NSLocalizedString("Cancel", comment: "")
-    
+
     /// A closure to be called when the controller disappears.
-    public var onDismissCallback : ((UIViewController) -> ())?
-    
+    public var onDismissCallback: ((UIViewController) -> Void)?
+
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
-    convenience public init(_ callback: ((UIViewController) -> ())?){
+
+    convenience public init(_ callback: ((UIViewController) -> Void)?) {
         self.init()
         onDismissCallback = callback
     }
-    
+
     open override func viewDidLoad() {
         super.viewDidLoad()
         guard let options = row.dataProvider?.arrayData else { return }
@@ -59,5 +59,5 @@ open class SelectorAlertController<T: Equatable> : UIAlertController, TypedRowCo
                 }))
         }
     }
-    
+
 }

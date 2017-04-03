@@ -26,64 +26,62 @@ import XCTest
 @testable import Eureka
 
 class SetValuesTests: XCTestCase {
-    
+
     var form: Form!
-    
+
     override func setUp() {
         super.setUp()
-        
+
         form = Form()
         let section = Section()
-        
+
         form +++ section
-        
+
         section <<< IntRow("IntRow")
         section <<< TextRow("TextRow")
         section <<< ActionSheetRow<String>("ActionSheetRow")
         section <<< AlertRow<Int>("AlertRow")
         section <<< PushRow<Float>("PushRow")
-        
+
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
     func testSetValues() {
         let intRowValue: Int = 4
         let intRowNilValue: Int? = nil
         let textRowValue = "textRow value!!!"
         let actionSheetRowValue = "ActionSheetRow value!!!"
-        let alertRowValue : Int = 33
+        let alertRowValue: Int = 33
         let pushRowValue: Float = 0.7
-        
-        
+
         form.setValues(["IntRow": intRowValue, "TextRow": textRowValue, "ActionSheetRow": actionSheetRowValue, "AlertRow": alertRowValue, "PushRow": pushRowValue, "No existing tag": 2.0])
-        
+
         let intRow: IntRow? = form.rowBy(tag: "IntRow")
         XCTAssertEqual(intRow?.value, intRowValue)
-        
+
         let textRow: TextRow? = form.rowBy(tag: "TextRow")
         XCTAssertEqual(textRow?.value, textRowValue)
 
         let actionSheetRow: ActionSheetRow<String>? = form.rowBy(tag: "ActionSheetRow")
         XCTAssertEqual(actionSheetRow?.value, actionSheetRowValue)
-        
+
         let alertRow: AlertRow<Int>? = form.rowBy(tag: "AlertRow")
         XCTAssertNotNil(alertRow)
         XCTAssertEqual(alertRow!.value, alertRowValue)
-        
+
         var pushRow: PushRow<Float>? = form.rowBy(tag: "PushRow")
         XCTAssertNotNil(pushRow)
         XCTAssertEqual(pushRow!.value, pushRowValue)
-        
-        
+
         form.setValues(["PushRow": Float(1.0), "No existing tag": 2.0])
         pushRow = form.rowBy(tag: "PushRow")
         XCTAssertNotNil(pushRow)
         XCTAssertEqual(pushRow!.value, Float(1.0))
-        
+
         form.setValues(["IntRow": intRowNilValue])
         XCTAssertNil(intRow?.value)
     }

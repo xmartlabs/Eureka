@@ -29,7 +29,7 @@ class OperatorsTest: BaseEurekaTests {
 
     func testOperators() {
         // test the operators
-        
+
         var form = Form()
         form +++ TextRow("textrow1_ctx")
             <<< TextRow("textrow2_ctx")
@@ -39,17 +39,17 @@ class OperatorsTest: BaseEurekaTests {
             <<< TextRow("textrow6_ctx"))
             + (TextRow("textrow7_ctx")
                 +++ TextRow("textrow8_ctx"))
-        
+
         XCTAssertEqual(form.count, 5)
         XCTAssertEqual(form[0].count, 2)
         XCTAssertEqual(form[1].count, 2)
         XCTAssertEqual(form[2].count, 2)
-        
+
         form +++ IntRow("introw1_ctx")
         form +++ IntRow("introw2_ctx")
             <<< IntRow("introw3_ctx")
             <<< IntRow("introw4_ctx")
-        
+
         //      form:
         //          text1
         //          text2
@@ -69,7 +69,7 @@ class OperatorsTest: BaseEurekaTests {
         //          int2
         //          int3
         //          int4
-        
+
         XCTAssertEqual(form.count, 7)
         XCTAssertEqual(form[0].count, 2)
         XCTAssertEqual(form[1].count, 2)
@@ -79,5 +79,5 @@ class OperatorsTest: BaseEurekaTests {
         XCTAssertEqual(form[5].count, 1)
         XCTAssertEqual(form[6].count, 3)
     }
-    
+
 }

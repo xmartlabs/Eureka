@@ -24,82 +24,80 @@
 
 import Foundation
 
-
 extension DatePickerRowProtocol {
-    
-    func configureInlineRow(_ inlineRow: DatePickerRowProtocol){
+
+    func configureInlineRow(_ inlineRow: DatePickerRowProtocol) {
         inlineRow.minimumDate = minimumDate
         inlineRow.maximumDate = maximumDate
         inlineRow.minuteInterval = minuteInterval
     }
-    
+
 }
 
-
 open class _DateInlineRow: _DateInlineFieldRow {
-    
+
     public typealias InlineRow = DatePickerRow
-    
+
     public required init(tag: String?) {
         super.init(tag: tag)
         dateFormatter?.timeStyle = .none
         dateFormatter?.dateStyle = .medium
     }
-    
+
     open func setupInlineRow(_ inlineRow: DatePickerRow) {
         configureInlineRow(inlineRow)
     }
 }
 
 open class _TimeInlineRow: _DateInlineFieldRow {
-    
+
     public typealias InlineRow = TimePickerRow
-    
+
     public required init(tag: String?) {
         super.init(tag: tag)
         dateFormatter?.timeStyle = .short
         dateFormatter?.dateStyle = .none
     }
-    
+
     open func setupInlineRow(_ inlineRow: TimePickerRow) {
         configureInlineRow(inlineRow)
     }
 }
 
 open class _DateTimeInlineRow: _DateInlineFieldRow {
-    
+
     public typealias InlineRow = DateTimePickerRow
-    
+
     public required init(tag: String?) {
         super.init(tag: tag)
         dateFormatter?.timeStyle = .short
         dateFormatter?.dateStyle = .short
     }
-    
+
     open func setupInlineRow(_ inlineRow: DateTimePickerRow) {
         configureInlineRow(inlineRow)
     }
 }
 
 open class _CountDownInlineRow: _DateInlineFieldRow {
-    
+
     public typealias InlineRow = CountDownPickerRow
-    
+
     public required init(tag: String?) {
         super.init(tag: tag)
-        displayValueFor =  {
+        displayValueFor = {
             guard let date = $0 else {
                 return nil
             }
             let hour = Calendar.current.component(.hour, from: date)
             let min = Calendar.current.component(.minute, from: date)
-            if hour == 1{
+            if hour == 1 {
                 return "\(hour) hour \(min) min"
             }
             return "\(hour) hours \(min) min"
         }
     }
-    
+
     public func setupInlineRow(_ inlineRow: CountDownPickerRow) {
         configureInlineRow(inlineRow)
     }
@@ -117,7 +115,7 @@ public final class DateInlineRow_<T>: _DateInlineRow, RowType, InlineRowType {
             cell.detailTextLabel?.textColor = cell.tintColor
         }
     }
-    
+
     public override func customDidSelect() {
         super.customDidSelect()
         if !isDisabled {
@@ -127,7 +125,6 @@ public final class DateInlineRow_<T>: _DateInlineRow, RowType, InlineRowType {
 }
 
 public typealias DateInlineRow = DateInlineRow_<Date>
-
 
 /// A row with an Date as value where the user can select date and time from an inline picker view.
 public final class DateTimeInlineRow_<T>: _DateTimeInlineRow, RowType, InlineRowType {
@@ -141,7 +138,7 @@ public final class DateTimeInlineRow_<T>: _DateTimeInlineRow, RowType, InlineRow
             cell.detailTextLabel?.textColor = cell.tintColor
         }
     }
-    
+
     public override func customDidSelect() {
         super.customDidSelect()
         if !isDisabled {
@@ -150,9 +147,7 @@ public final class DateTimeInlineRow_<T>: _DateTimeInlineRow, RowType, InlineRow
     }
 }
 
-
 public typealias DateTimeInlineRow = DateTimeInlineRow_<Date>
-
 
 /// A row with an Date as value where the user can select a time from an inline picker view.
 public final class TimeInlineRow_<T>: _TimeInlineRow, RowType, InlineRowType {
@@ -166,7 +161,7 @@ public final class TimeInlineRow_<T>: _TimeInlineRow, RowType, InlineRowType {
             cell.detailTextLabel?.textColor = cell.tintColor
         }
     }
-    
+
     public override func customDidSelect() {
         super.customDidSelect()
         if !isDisabled {
@@ -189,7 +184,7 @@ public final class CountDownInlineRow_<T>: _CountDownInlineRow, RowType, InlineR
             cell.detailTextLabel?.textColor = cell.tintColor
         }
     }
-    
+
     public override func customDidSelect() {
         super.customDidSelect()
         if !isDisabled {
@@ -199,5 +194,3 @@ public final class CountDownInlineRow_<T>: _CountDownInlineRow, RowType, InlineR
 }
 
 public typealias CountDownInlineRow = CountDownInlineRow_<Date>
-
-

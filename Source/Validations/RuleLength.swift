@@ -24,20 +24,19 @@
 
 import Foundation
 
-
 public struct RuleMinLength: RuleType {
-    
+
     let min: UInt
-    
+
     public var id: String?
     public var validationError: ValidationError
-    
-    public init(minLength: UInt, msg: String? = nil){
+
+    public init(minLength: UInt, msg: String? = nil) {
         let ruleMsg = msg ?? "Field value must have at least \(minLength) characters"
         min = minLength
         validationError = ValidationError(msg: ruleMsg)
     }
-    
+
     public func isValid(value: String?) -> ValidationError? {
         guard let value = value else { return nil }
         return value.characters.count < Int(min) ? validationError : nil
@@ -45,18 +44,18 @@ public struct RuleMinLength: RuleType {
 }
 
 public struct RuleMaxLength: RuleType {
-    
+
     let max: UInt
-    
+
     public var id: String?
     public var validationError: ValidationError
-    
-    public init(maxLength: UInt, msg: String? = nil){
+
+    public init(maxLength: UInt, msg: String? = nil) {
         let ruleMsg = msg ?? "Field value must have less than \(maxLength) characters"
         max = maxLength
         validationError = ValidationError(msg: ruleMsg)
     }
-    
+
     public func isValid(value: String?) -> ValidationError? {
         guard let value = value else { return nil }
         return value.characters.count > Int(max) ? validationError : nil
