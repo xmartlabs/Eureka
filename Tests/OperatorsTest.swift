@@ -49,6 +49,8 @@ class OperatorsTest: BaseEurekaTests {
         form +++ IntRow("introw2_ctx")
             <<< IntRow("introw3_ctx")
             <<< IntRow("introw4_ctx")
+        form +++ Section()
+            <<< ["A", "B", "C", "D"].map { TextRow($0) }
 
         //      form:
         //          text1
@@ -70,7 +72,7 @@ class OperatorsTest: BaseEurekaTests {
         //          int3
         //          int4
 
-        XCTAssertEqual(form.count, 7)
+        XCTAssertEqual(form.count, 8)
         XCTAssertEqual(form[0].count, 2)
         XCTAssertEqual(form[1].count, 2)
         XCTAssertEqual(form[2].count, 2)
@@ -78,6 +80,7 @@ class OperatorsTest: BaseEurekaTests {
         XCTAssertEqual(form[4].count, 1)
         XCTAssertEqual(form[5].count, 1)
         XCTAssertEqual(form[6].count, 3)
+        XCTAssertEqual(form[7].count, 4)
     }
 
 }
