@@ -22,26 +22,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import Foundation
 
 open class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
-    
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     open override func update() {
         super.update()
         accessoryType = .none
         editingAccessoryType = accessoryType
         selectionStyle = row.isDisabled ? .none : .default
     }
-    
+
     open override func didSelect() {
         super.didSelect()
         row.deselect()
@@ -49,8 +48,8 @@ open class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
 }
 
 public class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
-    
-    public var onPresentCallback : ((FormViewController, SelectorAlertController<Cell.Value>)->())?
+
+    public var onPresentCallback: ((FormViewController, SelectorAlertController<Cell.Value>) -> Void)?
     lazy public var presentationMode: PresentationMode<SelectorAlertController<Cell.Value>>? = {
         return .presentModally(controllerProvider: ControllerProvider.callback { [weak self] in
             let vc = SelectorAlertController<Cell.Value>(title: self?.selectorTitle, message: nil, preferredStyle: .actionSheet)
@@ -61,26 +60,25 @@ public class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType
             }
             vc.row = self
             return vc
-            },
-            onDismiss: { [weak self] in
-                $0.dismiss(animated: true)
-                self?.cell?.formViewController()?.tableView?.reloadData()
-            })
+        },
+        onDismiss: { [weak self] in
+            $0.dismiss(animated: true)
+            self?.cell?.formViewController()?.tableView?.reloadData()
+        })
     }()
-    
+
     public required init(tag: String?) {
         super.init(tag: tag)
     }
-    
+
     public override func customDidSelect() {
         super.customDidSelect()
         if let presentationMode = presentationMode, !isDisabled {
-            if let controller = presentationMode.makeController(){
+            if let controller = presentationMode.makeController() {
                 controller.row = self
                 onPresentCallback?(cell.formViewController()!, controller)
                 presentationMode.present(controller, row: self, presentingController: cell.formViewController()!)
-            }
-            else{
+            } else {
                 presentationMode.present(nil, row: self, presentingController: cell.formViewController()!)
             }
         }
@@ -93,4 +91,3 @@ public final class ActionSheetRow<T: Equatable>: _ActionSheetRow<AlertSelectorCe
         super.init(tag: tag)
     }
 }
-

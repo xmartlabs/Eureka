@@ -24,51 +24,49 @@
 
 import Foundation
 
+open class DateInlineCell: Cell<Date>, CellType {
 
-open class DateInlineCell : Cell<Date>, CellType {
-    
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     open override func setup() {
         super.setup()
         accessoryType = .none
         editingAccessoryType =  .none
     }
-    
+
     open override func update() {
         super.update()
         selectionStyle = row.isDisabled ? .none : .default
     }
-    
+
     open override func didSelect() {
         super.didSelect()
         row.deselect()
     }
 }
 
-
 open class _DateInlineFieldRow: Row<DateInlineCell>, DatePickerRowProtocol, NoValueDisplayTextConformance {
-    
+
     /// The minimum value for this row's UIDatePicker
-    open var minimumDate : Date?
-    
+    open var minimumDate: Date?
+
     /// The maximum value for this row's UIDatePicker
-    open var maximumDate : Date?
-    
+    open var maximumDate: Date?
+
     /// The interval between options for this row's UIDatePicker
-    open var minuteInterval : Int?
-    
+    open var minuteInterval: Int?
+
     /// The formatter for the date picked by the user
     open var dateFormatter: DateFormatter?
-    
+
     open var noValueDisplayText: String?
-    
+
     required public init(tag: String?) {
         super.init(tag: tag)
         dateFormatter = DateFormatter()

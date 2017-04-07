@@ -26,40 +26,38 @@ import Foundation
 
 // MARK: SwitchCell
 
-open class SwitchCell : Cell<Bool>, CellType {
-    
-    public typealias Value = Bool
-    
+open class SwitchCell: Cell<Bool>, CellType {
+
+    @IBOutlet public weak var switchControl: UISwitch!
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        let switchC = UISwitch()
+        switchControl = switchC
+        accessoryView = switchControl
+        editingAccessoryView = accessoryView
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
-    open var switchControl: UISwitch? {
-        return accessoryView as? UISwitch
-    }
-    
+
     open override func setup() {
         super.setup()
         selectionStyle = .none
-        accessoryView = UISwitch()
-        editingAccessoryView = accessoryView
-        switchControl?.addTarget(self, action: #selector(SwitchCell.valueChanged), for: .valueChanged)
+        switchControl.addTarget(self, action: #selector(SwitchCell.valueChanged), for: .valueChanged)
     }
-    
+
     deinit {
         switchControl?.removeTarget(self, action: nil, for: .allEvents)
     }
-    
+
     open override func update() {
         super.update()
-        switchControl?.isOn = row.value ?? false
-        switchControl?.isEnabled = !row.isDisabled
+        switchControl.isOn = row.value ?? false
+        switchControl.isEnabled = !row.isDisabled
     }
-    
+
     func valueChanged() {
         row.value = switchControl?.isOn ?? false
     }
@@ -73,7 +71,6 @@ open class _SwitchRow: Row<SwitchCell> {
         displayValueFor = nil
     }
 }
-
 
 /// Boolean row that has a UISwitch as accessoryType
 public final class SwitchRow: _SwitchRow, RowType {

@@ -25,15 +25,15 @@
 import Foundation
 
 open class ListCheckCell<T: Equatable> : Cell<T>, CellType {
-    
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     open override func update() {
         super.update()
         accessoryType = row.value != nil ? .checkmark : .none
@@ -44,25 +44,23 @@ open class ListCheckCell<T: Equatable> : Cell<T>, CellType {
         if row.isDisabled {
             tintColor = UIColor(red: red, green: green, blue: blue, alpha: 0.3)
             selectionStyle = .none
-        }
-        else {
+        } else {
             tintColor = UIColor(red: red, green: green, blue: blue, alpha: 1)
         }
     }
-    
+
     open override func setup() {
         super.setup()
         accessoryType =  .checkmark
         editingAccessoryType = accessoryType
     }
-    
+
     open override func didSelect() {
         row.deselect()
         row.updateCell()
     }
-    
-}
 
+}
 
 public final class ListCheckRow<T: Equatable>: Row<ListCheckCell<T>>, SelectableRowType, RowType {
     public var selectableValue: T?

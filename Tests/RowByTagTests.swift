@@ -28,43 +28,43 @@ import XCTest
 class RowByTagTests: XCTestCase {
 
     var form: Form!
-    
+
     override func setUp() {
         super.setUp()
-        
+
         form = Form()
         let section = Section()
-        
+
         form +++ section
-        
+
         section <<< LabelRow("LabelRow")
         section <<< ButtonRow("ButtonRow")
         section <<< ActionSheetRow<String>("ActionSheetRow")
         section <<< AlertRow<Int>("AlertRow")
         section <<< PushRow<URL>("PushRow")
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
     func testRowByTag() {
-        
+
         let labelRow: LabelRow? = form.rowBy(tag: "LabelRow")
         XCTAssertNotNil(labelRow)
-        
+
         let buttonRow: ButtonRow? = form.rowBy(tag: "ButtonRow")
         XCTAssertNotNil(buttonRow)
-        
+
         let actionSheetRow: ActionSheetRow<String>? = form.rowBy(tag: "ActionSheetRow")
         XCTAssertNotNil(actionSheetRow)
-        
+
         let alertRow: AlertRow<Int>? = form.rowBy(tag: "AlertRow")
         XCTAssertNotNil(alertRow)
 
         let pushRow: PushRow<URL>? = form.rowBy(tag: "PushRow")
         XCTAssertNotNil(pushRow)
     }
-    
+
 }

@@ -31,44 +31,42 @@ class BaseEurekaTests: XCTestCase {
     var shortForm = Form()
     var manySectionsForm = Form()
     var formVC = FormViewController()
-    
-    
+
     override func setUp() {
         super.setUp()
-        
+
         // load the view to test the cells
         formVC.view.frame = CGRect(x: 0, y: 0, width: 375, height: 3000)
         formVC.tableView?.frame = formVC.view.frame
 
-        
         // Create a Date section containing one date row of each type and some extra rows that use minimumDate, maximumDate and minuteInterval restrictions
         dateForm +++ Section("Date Section")
-            <<< DateRow("DateRow_d1"){ $0.title = "Date"; $0.value = Date() }
-            <<< DateTimeRow("DateTimeRow_d1"){ $0.title = "DateTime"; $0.value = Date() }
-            <<< TimeRow("TimeRow_d1"){ $0.title = "Time"; $0.value = Date() }
-            <<< CountDownRow("CountDownRow_d1"){ $0.title = "CountDown"; $0.value = Date() }
-            <<< DateRow("MinDateRow_d1"){ $0.title = "Date(min)"; $0.value = Date(); $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24) }
-            <<< DateRow("MaxDateRow_d1"){ $0.title = "Date(max)"; $0.value = Date(); $0.maximumDate = $0.value?.addingTimeInterval(60*60*24) }
-            <<< DateRow("MinMaxDateRow_d1"){ $0.title = "Date(min/max)"; $0.value = Date(); $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24); $0.maximumDate = $0.value?.addingTimeInterval(60*60*24)  }
-            <<< DateRow("IntervalDateRow_d1"){ $0.title = "Date(interval)"; $0.value = Date(); $0.minuteInterval = 15 }
-        
+            <<< DateRow("DateRow_d1") { $0.title = "Date"; $0.value = Date() }
+            <<< DateTimeRow("DateTimeRow_d1") { $0.title = "DateTime"; $0.value = Date() }
+            <<< TimeRow("TimeRow_d1") { $0.title = "Time"; $0.value = Date() }
+            <<< CountDownRow("CountDownRow_d1") { $0.title = "CountDown"; $0.value = Date() }
+            <<< DateRow("MinDateRow_d1") { $0.title = "Date(min)"; $0.value = Date(); $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24) }
+            <<< DateRow("MaxDateRow_d1") { $0.title = "Date(max)"; $0.value = Date(); $0.maximumDate = $0.value?.addingTimeInterval(60*60*24) }
+            <<< DateRow("MinMaxDateRow_d1") { $0.title = "Date(min/max)"; $0.value = Date(); $0.minimumDate = $0.value?.addingTimeInterval(-60*60*24); $0.maximumDate = $0.value?.addingTimeInterval(60*60*24)  }
+            <<< DateRow("IntervalDateRow_d1") { $0.title = "Date(interval)"; $0.value = Date(); $0.minuteInterval = 15 }
+
         shortForm +++ Section("short")
-            <<< NameRow("NameRow_s1"){ $0.title = "Name" }
-            <<< IntRow("IntRow_s1"){ $0.title = "Age" }
-        
+            <<< NameRow("NameRow_s1") { $0.title = "Name" }
+            <<< IntRow("IntRow_s1") { $0.title = "Age" }
+
         fieldForm +++ Section("Field Section")
-            <<< TextRow("TextRow_f1"){ $0.title = "Text" }
-            <<< NameRow("NameRow_f1"){ $0.title = "Name" }
-            <<< EmailRow("EmailRow_f1"){ $0.title = "Email" }
-            <<< PhoneRow("PhoneRow_f1"){ $0.title = "Phone" }
-            <<< PasswordRow("PasswordRow_f1"){ $0.title = "Password" }
-            <<< URLRow("UrlRow_f1"){ $0.title = "Url" }
-            <<< IntRow("IntRow_f1"){ $0.title = "Int" }
-            <<< DecimalRow("DecimalRow_f1"){ $0.title = "Decimal" }
-            <<< TwitterRow("TwitterRow_f1"){ $0.title = "Twitter" }
-            <<< AccountRow("AccountRow_f1"){ $0.title = "Account" }
-            <<< ZipCodeRow("ZipCodeRow_f1"){ $0.title = "Zip Code" }
-				
+            <<< TextRow("TextRow_f1") { $0.title = "Text" }
+            <<< NameRow("NameRow_f1") { $0.title = "Name" }
+            <<< EmailRow("EmailRow_f1") { $0.title = "Email" }
+            <<< PhoneRow("PhoneRow_f1") { $0.title = "Phone" }
+            <<< PasswordRow("PasswordRow_f1") { $0.title = "Password" }
+            <<< URLRow("UrlRow_f1") { $0.title = "Url" }
+            <<< IntRow("IntRow_f1") { $0.title = "Int" }
+            <<< DecimalRow("DecimalRow_f1") { $0.title = "Decimal" }
+            <<< TwitterRow("TwitterRow_f1") { $0.title = "Twitter" }
+            <<< AccountRow("AccountRow_f1") { $0.title = "Account" }
+            <<< ZipCodeRow("ZipCodeRow_f1") { $0.title = "Zip Code" }
+
         manySectionsForm =  Section("Section A")
                         +++ Section("Section B")
                         +++ Section("Section C")
@@ -76,7 +74,7 @@ class BaseEurekaTests: XCTestCase {
                         +++ Section("Section E")
                         +++ Section("Section F")
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
@@ -86,7 +84,7 @@ class BaseEurekaTests: XCTestCase {
         manySectionsForm = Form()
         formVC = FormViewController()
     }
-    
+
     func testTearUp() {
         XCTAssertEqual(dateForm.count, 1)
         XCTAssertEqual(dateForm[0].count, 8)
@@ -98,9 +96,7 @@ class BaseEurekaTests: XCTestCase {
     }
 }
 
-
-
-public class MyFormDelegate : FormDelegate {
+public class MyFormDelegate: FormDelegate {
     public var valuesChanged = 0
     public var rowsAdded = 0
     public var sectionsAdded = 0
@@ -110,35 +106,35 @@ public class MyFormDelegate : FormDelegate {
     public var sectionsReplacedIn = 0
     public var rowsReplacedOut = 0
     public var sectionsReplacedOut = 0
-    
-    public func valueHasBeenChanged(for: BaseRow, oldValue: Any?, newValue: Any?){
+
+    public func valueHasBeenChanged(for: BaseRow, oldValue: Any?, newValue: Any?) {
         valuesChanged += 1
     }
-    
-    public func sectionsHaveBeenAdded(_ sections: [Section], at: IndexSet){
+
+    public func sectionsHaveBeenAdded(_ sections: [Section], at: IndexSet) {
         sectionsAdded += sections.count
     }
-    
-    public func sectionsHaveBeenRemoved(_ sections: [Section], at: IndexSet){
+
+    public func sectionsHaveBeenRemoved(_ sections: [Section], at: IndexSet) {
         sectionsRemoved += sections.count
     }
-    
-    public func sectionsHaveBeenReplaced(oldSections:[Section], newSections: [Section], at: IndexSet){
+
+    public func sectionsHaveBeenReplaced(oldSections: [Section], newSections: [Section], at: IndexSet) {
         sectionsReplacedIn += newSections.count
         sectionsReplacedOut += oldSections.count
     }
-    
-    public func rowsHaveBeenAdded(_ rows: [BaseRow], at:[IndexPath]){
+
+    public func rowsHaveBeenAdded(_ rows: [BaseRow], at: [IndexPath]) {
         rowsAdded += rows.count
     }
-    
-    public func rowsHaveBeenRemoved(_ rows: [BaseRow], at:[IndexPath]){
+
+    public func rowsHaveBeenRemoved(_ rows: [BaseRow], at: [IndexPath]) {
         rowsRemoved += rows.count
     }
-    
-    public func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], at: [IndexPath]){
+
+    public func rowsHaveBeenReplaced(oldRows: [BaseRow], newRows: [BaseRow], at: [IndexPath]) {
         rowsReplacedIn += newRows.count
         rowsReplacedOut += oldRows.count
     }
-    
+
 }

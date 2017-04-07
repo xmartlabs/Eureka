@@ -25,10 +25,10 @@
 import Foundation
 
 open class _PushRow<Cell: CellType> : SelectorRow<Cell, SelectorViewController<Cell.Value>> where Cell: BaseCell {
-    
+
     public required init(tag: String?) {
         super.init(tag: tag)
-        presentationMode = .show(controllerProvider: ControllerProvider.callback { return SelectorViewController<Cell.Value>(){ _ in } }, onDismiss: { vc in
+        presentationMode = .show(controllerProvider: ControllerProvider.callback { return SelectorViewController<Cell.Value> { _ in } }, onDismiss: { vc in
             let _ = vc.navigationController?.popViewController(animated: true) })
     }
 }
