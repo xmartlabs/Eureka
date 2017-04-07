@@ -723,12 +723,10 @@ There are some things to consider when you do this:
         <img src="Example/Media/RowStatics/LabelRow.png"/>
         </center><br><br>
         </td>
-
         <td><center><b>Button Row</b><br>
         <img src="Example/Media/RowStatics/ButtonRow.png"/>
         </center><br><br>
         </td>
-
         <td><center><b>Check Row</b><br>
         <img src="Example/Media/RowStatics/CheckRow.png"/>
         </center><br><br>
@@ -739,12 +737,10 @@ There are some things to consider when you do this:
         <img src="Example/Media/RowStatics/SwitchRow.png"/>
         </center><br><br>
         </td>
-
         <td><center><b>Slider Row</b><br>
         <img src="Example/Media/RowStatics/SliderRow.png"/>
         </center><br><br>
         </td>
-
         <td><center><b>Stepper Row</b><br>
         <img src="Example/Media/RowStatics/StepperRow.png"/>
         </center><br><br>
@@ -881,16 +877,14 @@ Like PushRow but allows the selection of multiple options.
         <img src="Example/Media/RowStatics/SegmentedRow.png"/>
         </center>
         </td>
-
         <td><center><b>Segmented Row (w/Title)</b><br>
         <img src="Example/Media/RowStatics/SegmentedRowWithTitle.png"/>
         </center>
         </td>
-
         <td><center><b>Picker Row</b><br>
         <img src="Example/Media/RowStatics/PickerRow.png"/>
         <br>Presents options of a generic type through a picker view
-        <br><b>(There is also Picker Inline Row)
+	<br><b>(There is also Picker Inline Row)</b>
         </center>
         </td>
     </tr>
