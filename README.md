@@ -884,7 +884,7 @@ Like PushRow but allows the selection of multiple options.
         <td><center><b>Picker Row</b><br>
         <img src="Example/Media/RowStatics/PickerRow.png"/>
         <br>Presents options of a generic type through a picker view
-	<br><b>(There is also Picker Inline Row)</b>
+        <br><b>(There is also Picker Inline Row)</b>
         </center>
         </td>
     </tr>
