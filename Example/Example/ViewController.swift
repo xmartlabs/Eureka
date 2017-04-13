@@ -519,9 +519,9 @@ class NavigationAccessoryController : FormViewController {
         
         form = Section(header: "Settings", footer: "These settings change how the navigation accessory view behaves")
             
-             <<< SwitchRow("set_none") {
+             <<< SwitchRow("set_none") { [weak self] in
                     $0.title = "Navigation accessory view"
-                    $0.value = self.navigationOptions != .Disabled
+                    $0.value = self?.navigationOptions != .Disabled
                 }.onChange { [weak self] in
                     if $0.value ?? false {
                         self?.navigationOptions = self?.navigationOptionsBackup
@@ -536,9 +536,9 @@ class NavigationAccessoryController : FormViewController {
                     }
                 }
 
-            <<< CheckRow("set_disabled") {
+            <<< CheckRow("set_disabled") { [weak self] in
                     $0.title = "Stop at disabled row"
-                    $0.value = self.navigationOptions?.contains(.StopDisabledRow)
+                    $0.value = self?.navigationOptions?.contains(.StopDisabledRow)
                     $0.hidden = "$set_none == false" // .Predicate(NSPredicate(format: "$set_none == false"))
                 }.onChange { [weak self] row in
                     if row.value ?? false {
@@ -549,9 +549,9 @@ class NavigationAccessoryController : FormViewController {
                     }
                 }
 
-            <<< CheckRow("set_skip") {
+            <<< CheckRow("set_skip") { [weak self] in
                     $0.title = "Skip non first responder view"
-                    $0.value = self.navigationOptions?.contains(.SkipCanNotBecomeFirstResponderRow)
+                    $0.value = self?.navigationOptions?.contains(.SkipCanNotBecomeFirstResponderRow)
                     $0.hidden = "$set_none  == false"
                 }.onChange { [weak self] row in
                     if row.value ?? false {
@@ -603,8 +603,8 @@ class NativeEventFormViewController : FormViewController {
         
         initializeForm()
         
-        self.navigationItem.leftBarButtonItem?.target = self
-        self.navigationItem.leftBarButtonItem?.action = #selector(NativeEventFormViewController.cancelTapped(_:))
+        navigationItem.leftBarButtonItem?.target = self
+        navigationItem.leftBarButtonItem?.action = #selector(NativeEventFormViewController.cancelTapped(_:))
     }
     
     private func initializeForm() {
@@ -657,8 +657,8 @@ class NativeEventFormViewController : FormViewController {
                         endRow.updateCell()
                     }
                 }
-                .onExpandInlineRow { cell, row, inlineRow in
-                    inlineRow.cellUpdate { [weak self] cell, dateRow in
+                .onExpandInlineRow { [weak self] cell, row, inlineRow in
+                    inlineRow.cellUpdate() { cell, row in
                         let allRow: SwitchRow! = self?.form.rowBy(tag: "All-day")
                         if allRow.value ?? false {
                             cell.datePicker.datePickerMode = .date
@@ -688,8 +688,8 @@ class NativeEventFormViewController : FormViewController {
                     }
                     row.updateCell()
                 }
-                .onExpandInlineRow { cell, row, inlineRow in
-                    inlineRow.cellUpdate { [weak self] cell, dateRow in
+                .onExpandInlineRow { [weak self] cell, row, inlineRow in
+                    inlineRow.cellUpdate { cell, dateRow in
                         let allRow: SwitchRow! = self?.form.rowBy(tag: "All-day")
                         if allRow.value ?? false {
                             cell.datePicker.datePickerMode = .date
@@ -1663,7 +1663,7 @@ class MultivaluedOnlyDeleteController: FormViewController {
         
         editButton.title = tableView.isEditing ? "Done" : "Edit"
         editButton.target = self
-        editButton.action = #selector(self.editPressed(sender:))
+        editButton.action = #selector(editPressed(sender:))
         
         form    +++
             
@@ -1699,7 +1699,7 @@ class EurekaLogoView: UIView {
         imageView.autoresizingMask = .flexibleWidth
         self.frame = CGRect(x: 0, y: 0, width: 320, height: 130)
         imageView.contentMode = .scaleAspectFit
-        self.addSubview(imageView)
+        addSubview(imageView)
     }
 
     required init?(coder aDecoder: NSCoder) {
