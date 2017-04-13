@@ -53,13 +53,13 @@ extension Section {
 
     internal class KVOWrapper: NSObject {
 
-        dynamic var _rows = NSMutableArray()
+        dynamic private var _rows = NSMutableArray()
         var rows: NSMutableArray {
             return mutableArrayValue(forKey: "_rows")
         }
         var _allRows = [BaseRow]()
 
-        weak var section: Section?
+        private weak var section: Section?
 
         init(section: Section) {
             self.section = section
@@ -69,6 +69,8 @@ extension Section {
 
         deinit {
             removeObserver(self, forKeyPath: "_rows")
+            _rows.removeAllObjects()
+            _allRows.removeAll()
         }
 
         public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {

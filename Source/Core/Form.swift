@@ -246,10 +246,10 @@ extension Form {
     // MARK: Private Helpers
 
     class KVOWrapper: NSObject {
-        dynamic var _sections = NSMutableArray()
+        dynamic private var _sections = NSMutableArray()
         var sections: NSMutableArray { return mutableArrayValue(forKey: "_sections") }
         var _allSections = [Section]()
-        weak var form: Form?
+        private weak var form: Form?
 
         init(form: Form) {
             self.form = form
@@ -257,7 +257,11 @@ extension Form {
             addObserver(self, forKeyPath: "_sections", options: NSKeyValueObservingOptions.new.union(.old), context:nil)
         }
 
-        deinit { removeObserver(self, forKeyPath: "_sections") }
+        deinit {
+            removeObserver(self, forKeyPath: "_sections")
+            _sections.removeAllObjects()
+            _allSections.removeAll()
+        }
 
         public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
 

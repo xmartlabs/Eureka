@@ -43,9 +43,7 @@ open class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
         editingAccessoryType = accessoryType
         textLabel?.textAlignment = .center
         textLabel?.textColor = tintColor
-        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
-        tintColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        textLabel?.textColor  = UIColor(red: red, green: green, blue: blue, alpha: row.isDisabled ? 0.3 : 1.0)
+        textLabel?.textColor  = tintColor.withAlphaComponent(row.isDisabled ? 0.3 : 1.0)
     }
 
     open override func didSelect() {
@@ -86,19 +84,12 @@ open class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
         cell.textLabel?.textAlignment = leftAligmnment ? .left : .center
         cell.accessoryType = !leftAligmnment || isDisabled ? .none : .disclosureIndicator
         cell.editingAccessoryType = cell.accessoryType
-        if !leftAligmnment {
-            var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
-            cell.tintColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-            cell.textLabel?.textColor  = UIColor(red: red, green: green, blue: blue, alpha:isDisabled ? 0.3 : 1.0)
-        } else {
-            cell.textLabel?.textColor = nil
-        }
+        cell.textLabel?.textColor = !leftAligmnment ? cell.tintColor.withAlphaComponent(isDisabled ? 0.3 : 1.0) : nil
     }
 
     open override func prepare(for segue: UIStoryboardSegue) {
         super.prepare(for: segue)
-        let rowVC = segue.destination as? RowControllerType
-        rowVC?.onDismissCallback = presentationMode?.onDismissCallback
+        (segue.destination as? RowControllerType)?.onDismissCallback = presentationMode?.onDismissCallback
     }
 }
 
