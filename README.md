@@ -1116,10 +1116,6 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [Multivalued sections]: #multivalued-sections
 [Validations]: #validations
 
-* [Installation]
-* [FAQ]
-
-
 <!--- In Project -->
 [CustomCellsController]: Example/Example/ViewController.swift
 [FormViewController]: Example/Source/Controllers.swift

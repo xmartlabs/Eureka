@@ -3,7 +3,6 @@ osx_image: xcode8.2
 env:
   - DESTINATION="OS=10.2,name=iPhone 7" SCHEME="Eureka" SDK=iphonesimulator
 before_install:
-  - xcrun simctl delete 22FA2149-1241-469C-BF6D-462D3837DB72
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
   - brew update
   - brew outdated carthage || brew upgrade carthage
