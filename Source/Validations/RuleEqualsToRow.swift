@@ -42,9 +42,9 @@ public struct RuleEqualsToRow<T: Equatable>: RuleType {
 
     public var id: String?
     public var validationError: ValidationError
-    public var form: Form?
+    public weak var form: Form?
     public var tag: String?
-    public var row: RowOf<T>?
+    public weak var row: RowOf<T>?
 
     public func isValid(value: T?) -> ValidationError? {
         let rowAux: RowOf<T> = row ?? form!.rowBy(tag: tag!)!
