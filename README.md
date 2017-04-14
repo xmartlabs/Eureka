@@ -910,7 +910,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Eureka', '~> 3.0'
+pod 'Eureka', :tag => 'master', :git => 'https://github.com/xmartlabs/Eureka.git'
 ```
 
 Then run the following command:
