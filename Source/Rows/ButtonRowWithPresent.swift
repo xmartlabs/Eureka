@@ -25,62 +25,59 @@
 import Foundation
 
 open class _ButtonRowWithPresent<VCType: TypedRowControllerType>: Row<ButtonCellOf<VCType.RowValue>>, PresenterRowType where VCType: UIViewController {
-    
+
     open var presentationMode: PresentationMode<VCType>?
-    open var onPresentCallback : ((FormViewController, VCType)->())?
-    
+    open var onPresentCallback: ((FormViewController, VCType) -> Void)?
+
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = nil
         cellStyle = .default
     }
-    
+
     open override func customUpdateCell() {
         super.customUpdateCell()
         let leftAligmnment = presentationMode != nil
         cell.textLabel?.textAlignment = leftAligmnment ? .left : .center
         cell.accessoryType = !leftAligmnment || isDisabled ? .none : .disclosureIndicator
         cell.editingAccessoryType = cell.accessoryType
-        if (!leftAligmnment){
+        if !leftAligmnment {
             var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
             cell.tintColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
             cell.textLabel?.textColor  = UIColor(red: red, green: green, blue: blue, alpha:isDisabled ? 0.3 : 1.0)
-        }
-        else{
+        } else {
             cell.textLabel?.textColor = nil
         }
     }
-    
+
     open override func customDidSelect() {
         super.customDidSelect()
         if let presentationMode = presentationMode, !isDisabled {
-            if let controller = presentationMode.makeController(){
+            if let controller = presentationMode.makeController() {
                 controller.row = self
                 onPresentCallback?(cell.formViewController()!, controller)
                 presentationMode.present(controller, row: self, presentingController: cell.formViewController()!)
-            }
-            else{
+            } else {
                 presentationMode.present(nil, row: self, presentingController: cell.formViewController()!)
             }
         }
     }
-    
+
     open override func prepare(for segue: UIStoryboardSegue) {
         super.prepare(for: segue)
         guard let rowVC = segue.destination as? VCType else {
             return
         }
-        if let callback = presentationMode?.onDismissCallback{
+        if let callback = presentationMode?.onDismissCallback {
             rowVC.onDismissCallback = callback
         }
         rowVC.row = self
         onPresentCallback?(cell.formViewController()!, rowVC)
     }
-    
+
 }
 
-
-//MARK: Rows
+// MARK: Rows
 
 /// A generic row with a button that presents a view controller when tapped
 public final class ButtonRowWithPresent<VCType: TypedRowControllerType> : _ButtonRowWithPresent<VCType>, RowType where VCType: UIViewController {
@@ -88,6 +85,3 @@ public final class ButtonRowWithPresent<VCType: TypedRowControllerType> : _Butto
         super.init(tag: tag)
     }
 }
-
-
-

@@ -22,54 +22,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import Foundation
-
 
 /// The delegate of the Eureka form.
 public protocol FormDelegate : class {
     func sectionsHaveBeenAdded(_ sections: [Section], at: IndexSet)
     func sectionsHaveBeenRemoved(_ sections: [Section], at: IndexSet)
-    func sectionsHaveBeenReplaced(oldSections:[Section], newSections: [Section], at: IndexSet)
-    func rowsHaveBeenAdded(_ rows: [BaseRow], at:[IndexPath])
-    func rowsHaveBeenRemoved(_ rows: [BaseRow], at:[IndexPath])
-    func rowsHaveBeenReplaced(oldRows:[BaseRow], newRows: [BaseRow], at: [IndexPath])
+    func sectionsHaveBeenReplaced(oldSections: [Section], newSections: [Section], at: IndexSet)
+    func rowsHaveBeenAdded(_ rows: [BaseRow], at: [IndexPath])
+    func rowsHaveBeenRemoved(_ rows: [BaseRow], at: [IndexPath])
+    func rowsHaveBeenReplaced(oldRows: [BaseRow], newRows: [BaseRow], at: [IndexPath])
     func valueHasBeenChanged(for: BaseRow, oldValue: Any?, newValue: Any?)
 }
 
-
-//MARK: Form
+// MARK: Form
 
 /// The class representing the Eureka form.
 public final class Form {
-    
+
     /// Defines the default options of the navigation accessory view.
     public static var defaultNavigationOptions = RowNavigationOptions.Enabled.union(.SkipCanNotBecomeFirstResponderRow)
-    
+
     /// The default options that define when an inline row will be hidden. Applies only when `inlineRowHideOptions` is nil.
     public static var defaultInlineRowHideOptions = InlineRowHideOptions.FirstResponderChanges.union(.AnotherInlineRowIsShown)
-    
+
     /// The options that define when an inline row will be hidden. If nil then `defaultInlineRowHideOptions` are used
-    public var inlineRowHideOptions : InlineRowHideOptions?
-    
+    public var inlineRowHideOptions: InlineRowHideOptions?
+
     /// Which `UIReturnKeyType` should be used by default. Applies only when `keyboardReturnType` is nil.
     public static var defaultKeyboardReturnType = KeyboardReturnTypeConfiguration()
-    
+
     /// Which `UIReturnKeyType` should be used in this form. If nil then `defaultKeyboardReturnType` is used
-    public var keyboardReturnType : KeyboardReturnTypeConfiguration?
-    
+    public var keyboardReturnType: KeyboardReturnTypeConfiguration?
+
     /// This form's delegate
     public weak var delegate: FormDelegate?
-    
-    public init(){}
-    
+
+    public init() {}
+
     /**
      Returns the row at the given indexPath
      */
     public subscript(indexPath: IndexPath) -> BaseRow {
         return self[indexPath.section][indexPath.row]
     }
-    
+
     /**
      Returns the row whose tag is passed as parameter. Uses a dictionary to get the row faster
      */
@@ -77,7 +74,7 @@ public final class Form {
         let row: BaseRow? = rowBy(tag: tag)
         return row as? RowOf<T>
     }
-    
+
     /**
      Returns the row whose tag is passed as parameter. Uses a dictionary to get the row faster
      */
@@ -85,21 +82,21 @@ public final class Form {
         let row: BaseRow? = rowBy(tag: tag)
         return row as? Row
     }
-    
+
     /**
      Returns the row whose tag is passed as parameter. Uses a dictionary to get the row faster
      */
     public func rowBy(tag: String) -> BaseRow? {
         return rowsByTag[tag]
     }
-    
+
     /**
      Returns the section whose tag is passed as parameter.
      */
     public func sectionBy(tag: String) -> Section? {
-        return kvoWrapper._allSections.filter( { $0.tag == tag }).first
+        return kvoWrapper._allSections.filter({ $0.tag == tag }).first
     }
-    
+
     /**
      Method used to get all the values of all the rows of the form. Only rows with tag are included.
      
@@ -107,44 +104,44 @@ public final class Form {
      
      - returns: A dictionary mapping the rows tag to its value. [tag: value]
      */
-    public func values(includeHidden: Bool = false) -> [String: Any?]{
+    public func values(includeHidden: Bool = false) -> [String: Any?] {
         if includeHidden {
             return allRows.filter({ $0.tag != nil })
                 .reduce([String: Any?]()) {
                     var result = $0
                     result[$1.tag!] = $1.baseValue
                     return result
-            }
+                }
         }
         return rows.filter({ $0.tag != nil })
             .reduce([String: Any?]()) {
                 var result = $0
                 result[$1.tag!] = $1.baseValue
                 return result
-        }
+            }
     }
-    
+
     /**
      Set values to the rows of this form
      
      - parameter values: A dictionary mapping tag to value of the rows to be set. [tag: value]
      */
-    public func setValues(_ values: [String: Any?]){
-        for (key, value) in values{
+    public func setValues(_ values: [String: Any?]) {
+        for (key, value) in values {
             let row: BaseRow? = rowBy(tag: key)
             row?.baseValue = value
         }
     }
-    
+
     /// The visible rows of this form
     public var rows: [BaseRow] { return flatMap { $0 } }
-    
+
     /// All the rows of this form. Includes the hidden rows.
     public var allRows: [BaseRow] { return kvoWrapper._allSections.map({ $0.kvoWrapper._allRows }).flatMap { $0 } }
-    
+
     /// All the sections of this form. Includes hidden sections.
     public var allSections: [Section] { return kvoWrapper._allSections }
-    
+
     /**
      * Hides all the inline rows of this form.
      */
@@ -155,13 +152,13 @@ public final class Form {
             }
         }
     }
-    
-    //MARK: Private
-    
+
+    // MARK: Private
+
     var rowObservers = [String: [ConditionType: [Taggable]]]()
     var rowsByTag = [String: BaseRow]()
     var tagToValues = [String: Any]()
-    lazy var kvoWrapper : KVOWrapper = { [unowned self] in return KVOWrapper(form: self) }()
+    lazy var kvoWrapper: KVOWrapper = { [unowned self] in return KVOWrapper(form: self) }()
 }
 
 extension Form: Collection {
@@ -170,9 +167,9 @@ extension Form: Collection {
 }
 
 extension Form: MutableCollection {
-    
+
     // MARK: MutableCollectionType
-    
+
     public subscript (_ position: Int) -> Section {
         get { return kvoWrapper.sections[position] as! Section }
         set { kvoWrapper.sections[position] = newValue }
@@ -186,84 +183,88 @@ extension Form: MutableCollection {
     public var last: Section? {
         return reversed().first
     }
-    
-    
+
 }
 
 extension Form : RangeReplaceableCollection {
-    
+
     // MARK: RangeReplaceableCollectionType
-    
-    public func append(_ formSection: Section){
+
+    public func append(_ formSection: Section) {
         kvoWrapper.sections.insert(formSection, at: kvoWrapper.sections.count)
         kvoWrapper._allSections.append(formSection)
         formSection.wasAddedTo(form: self)
     }
-    
-    public func append<S : Sequence>(contentsOf newElements: S) where S.Iterator.Element == Section {
+
+    public func append<S: Sequence>(contentsOf newElements: S) where S.Iterator.Element == Section {
         kvoWrapper.sections.addObjects(from: newElements.map { $0 })
         kvoWrapper._allSections.append(contentsOf: newElements)
-        for section in newElements{
+        for section in newElements {
             section.wasAddedTo(form: self)
         }
     }
-    
-    public func replaceSubrange<C : Collection>(_ subRange: Range<Int>, with newElements: C) where C.Iterator.Element == Section {
+
+    public func replaceSubrange<C: Collection>(_ subRange: Range<Int>, with newElements: C) where C.Iterator.Element == Section {
         for i in subRange.lowerBound..<subRange.upperBound {
             if let section = kvoWrapper.sections.object(at: i) as? Section {
                 section.willBeRemovedFromForm()
                 kvoWrapper._allSections.remove(at: kvoWrapper._allSections.index(of: section)!)
             }
         }
-        kvoWrapper.sections.replaceObjects(in: NSMakeRange(subRange.lowerBound, subRange.upperBound - subRange.lowerBound), withObjectsFrom: newElements.map { $0 })
+        kvoWrapper.sections.replaceObjects(in: NSRange(location: subRange.lowerBound, length: subRange.upperBound - subRange.lowerBound),
+                                           withObjectsFrom: newElements.map { $0 })
         kvoWrapper._allSections.insert(contentsOf: newElements, at: indexForInsertion(at: subRange.lowerBound))
-        
-        for section in newElements{
+
+        for section in newElements {
             section.wasAddedTo(form: self)
         }
     }
-    
+
     public func removeAll(keepingCapacity keepCapacity: Bool = false) {
         // not doing anything with capacity
-        for section in kvoWrapper._allSections{
+        for section in kvoWrapper._allSections {
             section.willBeRemovedFromForm()
         }
         kvoWrapper.sections.removeAllObjects()
         kvoWrapper._allSections.removeAll()
     }
-    
+
     private func indexForInsertion(at index: Int) -> Int {
         guard index != 0 else { return 0 }
-        
+
         let row = kvoWrapper.sections[index-1]
-        if let i = kvoWrapper._allSections.index(of: row as! Section){
+        if let i = kvoWrapper._allSections.index(of: row as! Section) {
             return i + 1
         }
         return kvoWrapper._allSections.count
     }
-    
+
 }
 
 extension Form {
-    
+
     // MARK: Private Helpers
-    
-    class KVOWrapper : NSObject {
-        dynamic var _sections = NSMutableArray()
-        var sections : NSMutableArray { return mutableArrayValue(forKey: "_sections") }
+
+    class KVOWrapper: NSObject {
+        dynamic private var _sections = NSMutableArray()
+        var sections: NSMutableArray { return mutableArrayValue(forKey: "_sections") }
         var _allSections = [Section]()
-        weak var form: Form?
-        
-        init(form: Form){
+        private weak var form: Form?
+
+        init(form: Form) {
             self.form = form
             super.init()
             addObserver(self, forKeyPath: "_sections", options: NSKeyValueObservingOptions.new.union(.old), context:nil)
         }
-        
-        deinit { removeObserver(self, forKeyPath: "_sections") }
-        
+
+        deinit {
+            removeObserver(self, forKeyPath: "_sections")
+            _sections.removeAllObjects()
+            _allSections.removeAll()
+        }
+
         public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-            
+
             let newSections = change?[NSKeyValueChangeKey.newKey] as? [Section] ?? []
             let oldSections = change?[NSKeyValueChangeKey.oldKey] as? [Section] ?? []
             guard let delegateValue = form?.delegate, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey] else { return }
@@ -286,57 +287,56 @@ extension Form {
             }
         }
     }
-    
+
     func dictionaryValuesToEvaluatePredicate() -> [String: Any] {
         return tagToValues
     }
-    
+
     func addRowObservers(to taggable: Taggable, rowTags: [String], type: ConditionType) {
-        for rowTag in rowTags{
+        for rowTag in rowTags {
             if rowObservers[rowTag] == nil {
                 rowObservers[rowTag] = Dictionary()
             }
-            if let _ = rowObservers[rowTag]?[type]{
-                if !rowObservers[rowTag]![type]!.contains(where: { $0 === taggable }){
+            if let _ = rowObservers[rowTag]?[type] {
+                if !rowObservers[rowTag]![type]!.contains(where: { $0 === taggable }) {
                     rowObservers[rowTag]?[type]!.append(taggable)
                 }
-            }
-            else{
+            } else {
                 rowObservers[rowTag]?[type] = [taggable]
             }
         }
     }
-    
+
     func removeRowObservers(from taggable: Taggable, rowTags: [String], type: ConditionType) {
-        for rowTag in rowTags{
+        for rowTag in rowTags {
             guard var arr = rowObservers[rowTag]?[type], let index = arr.index(where: { $0 === taggable }) else { continue }
             arr.remove(at: index)
         }
     }
-    
+
     func nextRow(for row: BaseRow) -> BaseRow? {
         let allRows = rows
         guard let index = allRows.index(of: row) else { return nil }
         guard index < allRows.count - 1 else { return nil }
         return allRows[index + 1]
     }
-    
+
     func previousRow(for row: BaseRow) -> BaseRow? {
         let allRows = rows
         guard let index = allRows.index(of: row) else { return nil }
         guard index > 0 else { return nil }
         return allRows[index - 1]
     }
-    
-    func hideSection(_ section: Section){
+
+    func hideSection(_ section: Section) {
         kvoWrapper.sections.remove(section)
     }
-    
-    func showSection(_ section: Section){
+
+    func showSection(_ section: Section) {
         guard !kvoWrapper.sections.contains(section) else { return }
         guard var index = kvoWrapper._allSections.index(of: section) else { return }
         var formIndex = NSNotFound
-        while (formIndex == NSNotFound && index > 0){
+        while formIndex == NSNotFound && index > 0 {
             index = index - 1
             let previous = kvoWrapper._allSections[index]
             formIndex = kvoWrapper.sections.index(of: previous)
@@ -346,7 +346,7 @@ extension Form {
 }
 
 extension Form {
-    
+
     @discardableResult
     public func validate(includeHidden: Bool = false) -> [ValidationError] {
         let rowsToValidate = includeHidden ? allRows : rows

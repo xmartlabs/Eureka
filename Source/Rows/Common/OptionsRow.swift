@@ -25,14 +25,14 @@
 import Foundation
 
 open class OptionsRow<Cell: CellType> : Row<Cell>, NoValueDisplayTextConformance where Cell: BaseCell {
-    
+
     open var options: [Cell.Value] {
         get { return dataProvider?.arrayData ?? [] }
         set { dataProvider = DataProvider(arrayData: newValue) }
     }
     open var selectorTitle: String?
     open var noValueDisplayText: String?
-    
+
     required public init(tag: String?) {
         super.init(tag: tag)
     }
