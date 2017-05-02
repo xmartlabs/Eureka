@@ -288,7 +288,7 @@ extension Section : RangeReplaceableCollection {
         kvoWrapper._allRows.removeAll()
     }
 
-    fileprivate func indexForInsertion(at index: Int) -> Int {
+    private func indexForInsertion(at index: Int) -> Int {
         guard index != 0 else { return 0 }
 
         let row = kvoWrapper.rows[index-1]

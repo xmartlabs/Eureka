@@ -178,10 +178,11 @@ extension Form: MutableCollection {
             }
 
             if position < kvoWrapper._allSections.count {
-                // Remove an existing section from the form
-                let positionForInsertion = indexForInsertion(at: position)
-                kvoWrapper._allSections[positionForInsertion].willBeRemovedFromForm()
-                kvoWrapper._allSections[positionForInsertion] = newValue
+                let oldSection = kvoWrapper.sections[position]
+                let oldSectionIndex = kvoWrapper._allSections.index(of: oldSection as! Section)!
+                // Remove the previous section from the form
+                kvoWrapper._allSections[oldSectionIndex].willBeRemovedFromForm()
+                kvoWrapper._allSections[oldSectionIndex] = newValue
             } else {
                 kvoWrapper._allSections.append(newValue)
             }
