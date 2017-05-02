@@ -173,14 +173,20 @@ extension Form: MutableCollection {
     public subscript (_ position: Int) -> Section {
         get { return kvoWrapper.sections[position] as! Section }
         set {
-            kvoWrapper.sections[position] = newValue
+            if position > kvoWrapper.sections.count {
+                assertionFailure("Form: Index out of bounds")
+            }
+
             if position < kvoWrapper._allSections.count {
                 // Remove an existing section from the form
-                kvoWrapper._allSections[position].willBeRemovedFromForm()
-                kvoWrapper._allSections[position] = newValue
+                let positionForInsertion = indexForInsertion(at: position)
+                kvoWrapper._allSections[positionForInsertion].willBeRemovedFromForm()
+                kvoWrapper._allSections[positionForInsertion] = newValue
             } else {
                 kvoWrapper._allSections.append(newValue)
             }
+
+            kvoWrapper.sections[position] = newValue
             newValue.wasAddedTo(form: self)
         }
     }
