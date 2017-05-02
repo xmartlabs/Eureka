@@ -177,7 +177,7 @@ extension Form: MutableCollection {
                 assertionFailure("Form: Index out of bounds")
             }
 
-            if position < kvoWrapper._allSections.count {
+            if position < kvoWrapper.sections.count {
                 let oldSection = kvoWrapper.sections[position]
                 let oldSectionIndex = kvoWrapper._allSections.index(of: oldSection as! Section)!
                 // Remove the previous section from the form
