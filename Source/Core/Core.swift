@@ -516,8 +516,8 @@ open class FormViewController: UIViewController, FormViewControllerProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
     }
 
-    open override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillHide, object: nil)
     }
