@@ -1,0 +1,18 @@
+GooglePlacesDemos contains a demo application showcasing various features of
+the Google Places API for iOS.
+
+Before starting, please note that these demos are directed towards a technical
+audience. You'll also need Xcode 7.3 or later, with the iOS SDK 9.3 or later.
+
+If you're new to the API, please read the Introduction section of the Google
+Places API for iOS documentation-
+  https://developers.google.com/places/ios-api/
+
+Once you've read the Introduction page, follow the first couple of steps on the
+"Getting Started" page. Specifically;
+
+  * Obtain an API key for the demo application, and specify the bundle ID of
+    this demo application as an an 'allowed iOS app'. By default, the bundle ID
+    is "com.example.GooglePlacesDemos".
+
+  * Open the project in Xcode, and update `SDKDemoAPIKey.h` with this key.

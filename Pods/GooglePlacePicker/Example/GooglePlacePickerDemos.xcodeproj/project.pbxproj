@@ -1,0 +1,436 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0D6B3F1F618616A1996097D6 /* PlaceNameHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1991B7FDB189EB74B25938F1 /* PlaceNameHeader.swift */; };
+		15C31A5A9CD97F3F7F4A0372 /* SplitPaneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6040B234CA30AF1FEB5AC76 /* SplitPaneViewController.swift */; };
+		20C65EAFEC9FA4BA246EB8E0 /* InsetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA09DA713847E0A039F17264 /* InsetViewController.swift */; };
+		29E5953DD17B8AFD0FA00A49 /* PickAPlaceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D71A3886B92484E31061FE2E /* PickAPlaceViewController.xib */; };
+		2A7447638B22569980DDAF5F /* ShadowLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2836DC45ED6FF12A8045D24D /* ShadowLineView.swift */; };
+		2B2A8CF73A6C066122802F79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF48282F0284AC80B150415 /* AppDelegate.swift */; };
+		32FD6CF35907E26E1A619A7A /* PickAPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0B0E2CDF0E968CD1E79E19 /* PickAPlaceViewController.swift */; };
+		38FC54D803D779C5D0C5B881 /* PlaceAttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 902EE76ACAF122B481EC2327 /* PlaceAttributeCell.xib */; };
+		3FA2445646E180671F57C44A /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374F27B8350AA9CD3D97A6D7 /* ShadowView.swift */; };
+		5146E98AD75F3AD5152822A3 /* PlacePickerDemoAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD5392FBE909C543313456E8 /* PlacePickerDemoAssets.xcassets */; };
+		52CB776CFF951849852EE717 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CF142401F965BEB559B621 /* RoundedButton.swift */; };
+		64198D06033BD1DAE2F74294 /* PlaceNameHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 597394CBA9D90E1EA4A5A00A /* PlaceNameHeader.xib */; };
+		76122A5F41469C1C903531A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39CFAAA1B5A0FAA751BF9B3E /* LaunchScreen.storyboard */; };
+		7B4CB1823BBC63FAC6060071 /* BaseContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC884951D8FE75116785399 /* BaseContainerViewController.swift */; };
+		B06B81A95FF8A22F3A279B60 /* PlaceDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A9B140A7162D6AF6C6BA18A /* PlaceDetailViewController.xib */; };
+		B1E178999F680415D9FD4BBA /* BackgroundMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED9FE8CBBC495FA4A9B87F7 /* BackgroundMapViewController.swift */; };
+		C47908BFD6CF13F01D891856 /* PlaceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C5B75788C7BC8344EEF2FC7 /* PlaceDetailViewController.swift */; };
+		C8963CAD839E17E5644B89CF /* CGRect+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9201B24989251AB2AC75FF /* CGRect+Extensions.swift */; };
+		D5DA438651C662C254396522 /* SDKDemoAPIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE95997DFB327FC675FDB90 /* SDKDemoAPIKey.swift */; };
+		D6F5A7D00B2846B512C5DD71 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 755A20A0114418AD8398FB59 /* Localizable.strings */; };
+		D7582708599410FEFDF53E75 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AE6F1EB7F463645CC2E62E /* Styles.swift */; };
+		DF0041C4FA445D0D3ACEACA9 /* PlaceAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39898850CF055DC94490206F /* PlaceAttributeCell.swift */; };
+		E71AF40604AB4E74A9F8E210 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 949EBB6EB538C05BD9F67F54 /* UIKit.framework */; };
+		EEA61309D2F22B56C5AFB003 /* NotificationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAAEC1899F5BAFF817EC73F /* NotificationObserver.swift */; };
+		F32631FA10536780187DC754 /* PlaceDetailTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904D7FB86C333B1AC8DAC707 /* PlaceDetailTableViewDataSource.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		046867B7F68CA24EA02DE0DF /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0C0C2D9E0439D77024E9482E /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0EE95997DFB327FC675FDB90 /* SDKDemoAPIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKDemoAPIKey.swift; sourceTree = "<group>"; };
+		15F4E2FD8F16AB5D209106A9 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		185077504FBA490089DC3EFC /* zh_HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_HK; path = zh_HK.lproj/Localizable.strings; sourceTree = "<group>"; };
+		18A971D65331CE90F2AF67DC /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1991B7FDB189EB74B25938F1 /* PlaceNameHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceNameHeader.swift; sourceTree = "<group>"; };
+		1A83E06D7571BC26CF7A771F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1A99FA33F6FFC5D29D3093A6 /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1C5B75788C7BC8344EEF2FC7 /* PlaceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailViewController.swift; sourceTree = "<group>"; };
+		1DA815A1A137DEB8F09C34C7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		2836DC45ED6FF12A8045D24D /* ShadowLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowLineView.swift; sourceTree = "<group>"; };
+		2C4B5BD046C22F2B06C483BA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2D44C0DF2ED13D1D5A17B924 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3522A2BCD2247D01619B6DA2 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		362500129AA17DDB5BE6CDFC /* en_AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en_AU; path = en_AU.lproj/Localizable.strings; sourceTree = "<group>"; };
+		374F27B8350AA9CD3D97A6D7 /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
+		39898850CF055DC94490206F /* PlaceAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceAttributeCell.swift; sourceTree = "<group>"; };
+		42D8E5B1789789DB504101E3 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		48ED9BF9613998B42A4D0F2D /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4A9B140A7162D6AF6C6BA18A /* PlaceDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceDetailViewController.xib; sourceTree = "<group>"; };
+		4BCFCCCA25F8683DF1EC1F57 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4E9201B24989251AB2AC75FF /* CGRect+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Extensions.swift"; sourceTree = "<group>"; };
+		5412B357B8142083BBA719C4 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Localizable.strings; sourceTree = "<group>"; };
+		597394CBA9D90E1EA4A5A00A /* PlaceNameHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceNameHeader.xib; sourceTree = "<group>"; };
+		5CF784A348C765D7BF55DD36 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
+		62E3973DC3A84613332D7812 /* fr_CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr_CA; path = fr_CA.lproj/Localizable.strings; sourceTree = "<group>"; };
+		63ED8882A5788952D9B2939A /* pt_PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_PT; path = pt_PT.lproj/Localizable.strings; sourceTree = "<group>"; };
+		65B6E3EEC62C99BEADB6EAB8 /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_TW; path = zh_TW.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6F2053A655AC96020FDFA0E8 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7C0B1FD895D21F0675200435 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7ED9FE8CBBC495FA4A9B87F7 /* BackgroundMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundMapViewController.swift; sourceTree = "<group>"; };
+		80A44CEC31A05FB7D5EA0314 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		81CF142401F965BEB559B621 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		82F415C951B9DA261139E901 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		902EE76ACAF122B481EC2327 /* PlaceAttributeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceAttributeCell.xib; sourceTree = "<group>"; };
+		904D7FB86C333B1AC8DAC707 /* PlaceDetailTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailTableViewDataSource.swift; sourceTree = "<group>"; };
+		921F3FB6B31067D36E2D8D7E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		945CB9823F750167F33D569F /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
+		949EBB6EB538C05BD9F67F54 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		99124309FD33C398395F31A2 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9B5CF9E6401E3A78736C2763 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9BFD0E3250CCACE53EDBDA8C /* es_MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es_MX; path = es_MX.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A13A917B66F5513FDF0FB31C /* GooglePlacePickerDemos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GooglePlacePickerDemos.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9AE6F1EB7F463645CC2E62E /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
+		ABF48282F0284AC80B150415 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		AC1FECBF4B283E25595029A3 /* en_IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en_IN; path = en_IN.lproj/Localizable.strings; sourceTree = "<group>"; };
+		AE0B0E2CDF0E968CD1E79E19 /* PickAPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickAPlaceViewController.swift; sourceTree = "<group>"; };
+		B6040B234CA30AF1FEB5AC76 /* SplitPaneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitPaneViewController.swift; sourceTree = "<group>"; };
+		BB0849F77301D04BAA0FBEBE /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CAD22369EE26C07FA4544F22 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD06CE4A6ABA5780649E45F6 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CE48346B8F280FF3797DA725 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D06889C191D3C0B731869800 /* en_GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en_GB; path = en_GB.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D220421780E113B810E87AE6 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D71A3886B92484E31061FE2E /* PickAPlaceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickAPlaceViewController.xib; sourceTree = "<group>"; };
+		DB9F2466438BB5B0676FBD78 /* es_419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es_419; path = es_419.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DD5392FBE909C543313456E8 /* PlacePickerDemoAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PlacePickerDemoAssets.xcassets; sourceTree = "<group>"; };
+		E39186DCA321FA7E6B3358E0 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E8C1A642E101AB92D25E7E74 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		EA09DA713847E0A039F17264 /* InsetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetViewController.swift; sourceTree = "<group>"; };
+		EBC884951D8FE75116785399 /* BaseContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseContainerViewController.swift; sourceTree = "<group>"; };
+		EF5A9F2AAB5A6B5B08395C96 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FB5384E2C9B587E26F1AAD9E /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FB6C760FF34B2F0FF4DF356E /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FF171560576DB4C191F56CE5 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FFAAEC1899F5BAFF817EC73F /* NotificationObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationObserver.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6FA79BEEA663ED6E161F08CE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E71AF40604AB4E74A9F8E210 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		193C37CCC90EA3A335B08841 /* GooglePlacePickerDemos */ = {
+			isa = PBXGroup;
+			children = (
+				FDE74A748C9AA3981EB91E2D /* Resources */,
+				4D8F44D0B6495D541AC18472 /* Support */,
+				9372D5C51E3CCA74762CAED7 /* ViewControllers */,
+				ABF48282F0284AC80B150415 /* AppDelegate.swift */,
+				81CF142401F965BEB559B621 /* RoundedButton.swift */,
+				0EE95997DFB327FC675FDB90 /* SDKDemoAPIKey.swift */,
+				2836DC45ED6FF12A8045D24D /* ShadowLineView.swift */,
+				374F27B8350AA9CD3D97A6D7 /* ShadowView.swift */,
+				A9AE6F1EB7F463645CC2E62E /* Styles.swift */,
+			);
+			path = GooglePlacePickerDemos;
+			sourceTree = "<group>";
+		};
+		42770B4AEB358294DDF70748 /* PlaceDetail */ = {
+			isa = PBXGroup;
+			children = (
+				39898850CF055DC94490206F /* PlaceAttributeCell.swift */,
+				902EE76ACAF122B481EC2327 /* PlaceAttributeCell.xib */,
+				904D7FB86C333B1AC8DAC707 /* PlaceDetailTableViewDataSource.swift */,
+				1C5B75788C7BC8344EEF2FC7 /* PlaceDetailViewController.swift */,
+				4A9B140A7162D6AF6C6BA18A /* PlaceDetailViewController.xib */,
+				1991B7FDB189EB74B25938F1 /* PlaceNameHeader.swift */,
+				597394CBA9D90E1EA4A5A00A /* PlaceNameHeader.xib */,
+			);
+			path = PlaceDetail;
+			sourceTree = "<group>";
+		};
+		4D8F44D0B6495D541AC18472 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				4E9201B24989251AB2AC75FF /* CGRect+Extensions.swift */,
+				FFAAEC1899F5BAFF817EC73F /* NotificationObserver.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		6F85D8BB7D3DDB7CCC49F660 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A13A917B66F5513FDF0FB31C /* GooglePlacePickerDemos.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9372D5C51E3CCA74762CAED7 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				BABFAC3D9605568ED09973B1 /* Containers */,
+				B9BFC45CDF7BF8C0B4E6BC94 /* PickAPlace */,
+				42770B4AEB358294DDF70748 /* PlaceDetail */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		B40D4294C2D6A5CF1A68F4E4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				949EBB6EB538C05BD9F67F54 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B62271BCEAE2153946B0AD8C = {
+			isa = PBXGroup;
+			children = (
+				D50176A6963190422233C501 /* Source */,
+				B40D4294C2D6A5CF1A68F4E4 /* Frameworks */,
+				6F85D8BB7D3DDB7CCC49F660 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B9BFC45CDF7BF8C0B4E6BC94 /* PickAPlace */ = {
+			isa = PBXGroup;
+			children = (
+				AE0B0E2CDF0E968CD1E79E19 /* PickAPlaceViewController.swift */,
+				D71A3886B92484E31061FE2E /* PickAPlaceViewController.xib */,
+			);
+			path = PickAPlace;
+			sourceTree = "<group>";
+		};
+		BABFAC3D9605568ED09973B1 /* Containers */ = {
+			isa = PBXGroup;
+			children = (
+				7ED9FE8CBBC495FA4A9B87F7 /* BackgroundMapViewController.swift */,
+				EBC884951D8FE75116785399 /* BaseContainerViewController.swift */,
+				EA09DA713847E0A039F17264 /* InsetViewController.swift */,
+				B6040B234CA30AF1FEB5AC76 /* SplitPaneViewController.swift */,
+			);
+			path = Containers;
+			sourceTree = "<group>";
+		};
+		D50176A6963190422233C501 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				193C37CCC90EA3A335B08841 /* GooglePlacePickerDemos */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		FDE74A748C9AA3981EB91E2D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				39CFAAA1B5A0FAA751BF9B3E /* LaunchScreen.storyboard */,
+				755A20A0114418AD8398FB59 /* Localizable.strings */,
+				DD5392FBE909C543313456E8 /* PlacePickerDemoAssets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		525D6A3076CF0C7088A5B17F /* GooglePlacePickerDemos */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0181798447144E4629BB14E0 /* Build configuration list for PBXNativeTarget "GooglePlacePickerDemos" */;
+			buildPhases = (
+				0939FD8B14D5C9708A2F5105 /* Resources */,
+				3CB001A9B76FED35F4304364 /* Sources */,
+				6FA79BEEA663ED6E161F08CE /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GooglePlacePickerDemos;
+			productName = GooglePlacePickerDemos;
+			productReference = A13A917B66F5513FDF0FB31C /* GooglePlacePickerDemos.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		174AAE95412B0F78C1F406D0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 0800;
+				LastUpgradeCheck = 0820;
+			};
+			buildConfigurationList = 8414C09EE75491FC466E0F17 /* Build configuration list for PBXProject "GooglePlacePickerDemos" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B62271BCEAE2153946B0AD8C;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				525D6A3076CF0C7088A5B17F /* GooglePlacePickerDemos */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0939FD8B14D5C9708A2F5105 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29E5953DD17B8AFD0FA00A49 /* PickAPlaceViewController.xib in Resources */,
+				38FC54D803D779C5D0C5B881 /* PlaceAttributeCell.xib in Resources */,
+				B06B81A95FF8A22F3A279B60 /* PlaceDetailViewController.xib in Resources */,
+				64198D06033BD1DAE2F74294 /* PlaceNameHeader.xib in Resources */,
+				76122A5F41469C1C903531A3 /* LaunchScreen.storyboard in Resources */,
+				D6F5A7D00B2846B512C5DD71 /* Localizable.strings in Resources */,
+				5146E98AD75F3AD5152822A3 /* PlacePickerDemoAssets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3CB001A9B76FED35F4304364 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B2A8CF73A6C066122802F79 /* AppDelegate.swift in Sources */,
+				52CB776CFF951849852EE717 /* RoundedButton.swift in Sources */,
+				D5DA438651C662C254396522 /* SDKDemoAPIKey.swift in Sources */,
+				2A7447638B22569980DDAF5F /* ShadowLineView.swift in Sources */,
+				3FA2445646E180671F57C44A /* ShadowView.swift in Sources */,
+				D7582708599410FEFDF53E75 /* Styles.swift in Sources */,
+				C8963CAD839E17E5644B89CF /* CGRect+Extensions.swift in Sources */,
+				EEA61309D2F22B56C5AFB003 /* NotificationObserver.swift in Sources */,
+				B1E178999F680415D9FD4BBA /* BackgroundMapViewController.swift in Sources */,
+				7B4CB1823BBC63FAC6060071 /* BaseContainerViewController.swift in Sources */,
+				20C65EAFEC9FA4BA246EB8E0 /* InsetViewController.swift in Sources */,
+				15C31A5A9CD97F3F7F4A0372 /* SplitPaneViewController.swift in Sources */,
+				32FD6CF35907E26E1A619A7A /* PickAPlaceViewController.swift in Sources */,
+				DF0041C4FA445D0D3ACEACA9 /* PlaceAttributeCell.swift in Sources */,
+				F32631FA10536780187DC754 /* PlaceDetailTableViewDataSource.swift in Sources */,
+				C47908BFD6CF13F01D891856 /* PlaceDetailViewController.swift in Sources */,
+				0D6B3F1F618616A1996097D6 /* PlaceNameHeader.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		39CFAAA1B5A0FAA751BF9B3E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1DA815A1A137DEB8F09C34C7 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		755A20A0114418AD8398FB59 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EF5A9F2AAB5A6B5B08395C96 /* ar */,
+				5412B357B8142083BBA719C4 /* ca */,
+				4BCFCCCA25F8683DF1EC1F57 /* cs */,
+				D220421780E113B810E87AE6 /* da */,
+				2C4B5BD046C22F2B06C483BA /* de */,
+				99124309FD33C398395F31A2 /* el */,
+				1A83E06D7571BC26CF7A771F /* en */,
+				362500129AA17DDB5BE6CDFC /* en_AU */,
+				D06889C191D3C0B731869800 /* en_GB */,
+				AC1FECBF4B283E25595029A3 /* en_IN */,
+				921F3FB6B31067D36E2D8D7E /* es */,
+				DB9F2466438BB5B0676FBD78 /* es_419 */,
+				9BFD0E3250CCACE53EDBDA8C /* es_MX */,
+				2D44C0DF2ED13D1D5A17B924 /* fi */,
+				82F415C951B9DA261139E901 /* fr */,
+				62E3973DC3A84613332D7812 /* fr_CA */,
+				FB5384E2C9B587E26F1AAD9E /* he */,
+				48ED9BF9613998B42A4D0F2D /* hi */,
+				BB0849F77301D04BAA0FBEBE /* hr */,
+				FF171560576DB4C191F56CE5 /* hu */,
+				6F2053A655AC96020FDFA0E8 /* id */,
+				9B5CF9E6401E3A78736C2763 /* it */,
+				E39186DCA321FA7E6B3358E0 /* ja */,
+				CAD22369EE26C07FA4544F22 /* ko */,
+				CE48346B8F280FF3797DA725 /* ms */,
+				7C0B1FD895D21F0675200435 /* nb */,
+				FB6C760FF34B2F0FF4DF356E /* nl */,
+				15F4E2FD8F16AB5D209106A9 /* pl */,
+				42D8E5B1789789DB504101E3 /* pt */,
+				1A99FA33F6FFC5D29D3093A6 /* pt_BR */,
+				63ED8882A5788952D9B2939A /* pt_PT */,
+				5CF784A348C765D7BF55DD36 /* ro */,
+				E8C1A642E101AB92D25E7E74 /* ru */,
+				3522A2BCD2247D01619B6DA2 /* sk */,
+				18A971D65331CE90F2AF67DC /* sv */,
+				CD06CE4A6ABA5780649E45F6 /* th */,
+				046867B7F68CA24EA02DE0DF /* tr */,
+				80A44CEC31A05FB7D5EA0314 /* uk */,
+				0C0C2D9E0439D77024E9482E /* vi */,
+				945CB9823F750167F33D569F /* zh_CN */,
+				185077504FBA490089DC3EFC /* zh_HK */,
+				65B6E3EEC62C99BEADB6EAB8 /* zh_TW */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0115569311D7727FCCB903AC /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = iphoneos;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+			};
+			name = Default;
+		};
+		595FEA2A2598B758017E2662 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = ./GooglePlacePickerDemos/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					.,
+					"$(SDKROOT)/System/Library/Frameworks",
+				);
+				PRODUCT_NAME = GooglePlacePickerDemos;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)";
+				USE_HEADERMAP = NO;
+				WRAPPER_PREFIX = "";
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0181798447144E4629BB14E0 /* Build configuration list for PBXNativeTarget "GooglePlacePickerDemos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				595FEA2A2598B758017E2662 /* Default */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Default;
+		};
+		8414C09EE75491FC466E0F17 /* Build configuration list for PBXProject "GooglePlacePickerDemos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0115569311D7727FCCB903AC /* Default */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 174AAE95412B0F78C1F406D0 /* Project object */;
+}

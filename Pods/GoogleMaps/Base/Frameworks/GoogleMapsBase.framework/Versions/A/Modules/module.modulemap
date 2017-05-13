@@ -1,0 +1,4 @@
+framework module GoogleMapsBase { umbrella header "GoogleMapsBase.h"
+header "GMSCompatabilityMacros.h"
+header "GMSCoordinateBounds.h"
+export * module * { export * } }

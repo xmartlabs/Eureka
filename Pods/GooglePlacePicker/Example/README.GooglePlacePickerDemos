@@ -1,0 +1,18 @@
+GooglePlacePickerDemos contains a demo application showcasing the Place Picker
+from the Google Places API for iOS.
+
+Before starting, please note that this demo is directed towards a technical
+audience. You'll also need Xcode 8.0 or later, with the iOS SDK 10.0 or later.
+
+If you're new to the API, please read the Introduction section of the Google
+Places API for iOS documentation-
+  https://developers.google.com/places/ios-api/
+
+Once you've read the Introduction page, follow the first couple of steps on the
+"Getting Started" page. Specifically;
+
+  * Obtain an API key for the demo application, and specify the bundle ID of
+    this demo application as an an 'allowed iOS app'. By default, the bundle ID
+    is "com.example.GooglePlacePickerDemos".
+
+  * Open the project in Xcode, and update `SDKDemoAPIKey.swift` with this key.

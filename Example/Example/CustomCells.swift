@@ -27,6 +27,10 @@ import UIKit
 import MapKit
 import Eureka
 
+import GoogleMaps
+import GooglePlaces
+import GooglePlacePicker
+
 //MARK: WeeklyDayCell
 
 public enum WeekDay {
@@ -689,4 +693,92 @@ public class ImageCheckCell<T: Equatable> : Cell<T>, CellType {
         row.deselect()
     }
 
+}
+
+
+// PlacePickerRow
+
+public class PlaceModel : Equatable{
+    public static func ==(lhs: PlaceModel, rhs: PlaceModel) -> Bool {
+        return lhs.location.latitude == rhs.location.latitude &&
+            lhs.location.longitude == rhs.location.longitude &&
+            lhs.placeName == rhs.placeName
+    }
+    
+    var placeName: String?
+    var location: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+}
+
+public class PlacePickerCell<T: Equatable> : Cell<T>, CellType {
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+    }
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    public override func setup() {
+        super.setup()
+        
+    }
+    public override func update() {
+        super.update()
+    }
+    public override func didSelect() {
+        super.didSelect()
+        row.deselect()
+    }
+}
+
+
+public class _PlacePickerRow : Row<PlacePickerCell<PlaceModel>>, NoValueDisplayTextConformance {
+    public var noValueDisplayText: String?
+    
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        noValueDisplayText = "Not Picked Yet"
+        displayValueFor = {
+            return $0?.placeName // display placeName from PlaceModel if a place is picked
+        }
+    }
+    
+}
+
+public final class PlacePickerRow<T> : _PlacePickerRow, RowType where T: Equatable {
+    
+    var center = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+    
+    required public init(tag: String?) {
+        super.init(tag: tag)
+    }
+    
+    // when custom row is selected promt Google Place Picker
+    public override func customDidSelect() {
+        super.customDidSelect()
+        if !isDisabled {
+            let northEast = CLLocationCoordinate2D(latitude: center.latitude + 0.001, longitude: center.longitude + 0.001)
+            let southWest = CLLocationCoordinate2D(latitude: center.latitude - 0.001, longitude: center.longitude - 0.001)
+            let viewport = GMSCoordinateBounds(coordinate: northEast, coordinate: southWest)
+            let config = GMSPlacePickerConfig(viewport: viewport)
+            let placePicker = GMSPlacePicker(config: config)
+            
+            placePicker.pickPlace(callback: {(place, error) -> Void in
+                if let error = error {
+                    print("Pick Place error: \(error.localizedDescription)")
+                    return
+                }
+                
+                if let place = place, let value = self.value {
+                    
+                    value.placeName = place.name
+                    value.location = place.coordinate
+                    self.center = place.coordinate
+                    
+                    self.updateCell()
+                } else {
+                    // handle the error
+                }
+            })
+        }
+    }
 }

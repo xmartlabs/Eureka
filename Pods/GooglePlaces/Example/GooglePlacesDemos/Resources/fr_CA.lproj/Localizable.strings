@@ -1,0 +1,47 @@
+// NOTE: This is the english localization and has been copied to all languages. The reason for doing
+// this is it signals to iOS that the app "supports" all of these languages. This is helpful for a
+// demo as it allows you to try out the localization features of the Places API. In a shipping app
+// you should never do this, it is for demonstration purposes only.
+
+
+// The name of the app to display in a navigation bar along with a placeholder for the SDK version number.
+"App.NameAndVersion"="Places Demos: %1$@";
+
+// Title of the full-screen autocomplete demo for display in a list or nav header
+"Demo.Title.Autocomplete.FullScreen"="Full-Screen Autocomplete";
+// Title of the pushed autocomplete demo for display in a list or nav header
+"Demo.Title.Autocomplete.Push"="Push Autocomplete";
+// Title of the UISearchController autocomplete demo for display in a list or nav header
+"Demo.Title.Autocomplete.UISearchController"="UISearchController";
+// Title of the UISearchDisplayController autocomplete demo for display in a list or nav header
+"Demo.Title.Autocomplete.UISearchDisplayController"="UISearchDisplayController";
+// Title of the UITextField autocomplete demo for display in a list or nav header
+"Demo.Title.Autocomplete.UITextField"="UITextField";
+// Title of the Styling autocomplete demo for display in a list or nav header
+"Demo.Title.Autocomplete.Styling"="Custom Autocomplete Styling";
+// Title of the photos demo for display in a list or nav header
+"Demo.Title.Photos"="Photos";
+// Title of the autocomplete demo section
+"Demo.Section.Title.Autocomplete"="Autocomplete";
+// Title of the 'Programmatic' demo section
+"Demo.Section.Title.Programmatic"="Programmatic APIs";
+
+// Button title for 'show autocomplete widget'
+"Demo.Content.Autocomplete.ShowWidgetButton"="Show Autocomplete Widget";
+// Prompt to enter text for autocomplete demo
+"Demo.Content.Autocomplete.EnterTextPrompt"="Enter Autocomplete Text Here";
+// Format string for 'autocomplete failed with error' message
+"Demo.Content.Autocomplete.FailedErrorMessage"="Autocomplete failed with error: %1$@";
+// String for 'autocomplete canceled message'
+"Demo.Content.Autocomplete.WasCanceledMessage"="Autocomplete was canceled";
+// Error message to display when a demo is not available on the current version of iOS
+"Demo.Content.iOSVersionNotSupported"="UISearchController not supported on this version of iOS";
+// Button title for the 'Yellow and Brown' styled autocomplete widget.
+"Demo.Content.Autocomplete.Styling.Colors.YellowAndBrown"="Yellow and Brown";
+// Button title for the 'White on Black' styled autocomplete widget.
+"Demo.Content.Autocomplete.Styling.Colors.WhiteOnBlack"="White on Black";
+// Button title for the 'Blue Colors' styled autocomplete widget.
+"Demo.Content.Autocomplete.Styling.Colors.BlueColors"="Blue Colors";
+// Button title for the 'Hot Dog Stand' styled autocomplete widget.
+"Demo.Content.Autocomplete.Styling.Colors.HotDogStand"="Hot Dog Stand";
+

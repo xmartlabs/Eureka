@@ -424,6 +424,13 @@ class CustomCellsController : FormViewController {
                 <<< IntFloatLabelRow() {
                     $0.title = "Float Label Row, type something to see.."
                 }
+        
+                <<< PlacePickerRow<PlaceModel>("PlacePickerRow") { (row : PlacePickerRow<PlaceModel>) -> Void in
+                    row.title = "Pick a Place"
+                    row.value = PlaceModel()
+                    row.center.latitude = 37.788204
+                    row.center.longitude = -122.411937
+                }
     }
 }
 
