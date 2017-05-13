@@ -909,7 +909,18 @@ pod 'GooglePlaces'
 pod 'GooglePlacePicker'
 ```
 
-After installing the necessary libraries. I wanted to create a model. Which is for storing location and the place name.
+After installing the necessary libraries. You need to set API keys in AppDelegate file:
+
+```swift
+import GoogleMaps
+import GooglePlaces
+
+let apiKey = "AIzaSyBTFypi6rTHlqqqnaHILPaNDlhdej4D7ms"
+GMSServices.provideAPIKey(apiKey)
+GMSPlacesClient.provideAPIKey(apiKey)
+```
+
+I wanted to create a model. Which is for storing location and the place name inside the row.
 
 ```swift
 public class PlaceModel : Equatable{
@@ -990,6 +1001,7 @@ public final class PlacePickerRow<T> : _PlacePickerRow, RowType where T: Equatab
                     
                     value.placeName = place.name
                     value.location = place.coordinate
+		    self.center = place.coordinate
                     
                     self.updateCell()
                 } else {
@@ -1000,6 +1012,18 @@ public final class PlacePickerRow<T> : _PlacePickerRow, RowType where T: Equatab
     }
 }
 ```
+And you can add it to your form this way:
+
+```swift
++++ Section("Where")
+    <<< PlacePickerRow<PlaceModel>("PlacePickerRow") { (row : PlacePickerRow<PlaceModel>) -> Void in
+	row.title = "Pick a Place"
+	row.value = PlaceModel()
+	row.center.latitude = 37.788204
+	row.center.longitude = -122.411937
+    }
+```
+
 That's it! 
 
 * **LocationRow** (Included as custom row in the example project)
