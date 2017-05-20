@@ -88,6 +88,9 @@ open class SliderCell: Cell<Float>, CellType {
         slider.minimumValue = sliderRow.minimumValue
         slider.maximumValue = sliderRow.maximumValue
         slider.addTarget(self, action: #selector(SliderCell.valueChanged), for: .valueChanged)
+        
+        isAccessibilityElement = true
+        accessibilityTraits = slider.accessibilityTraits
     }
 
     open override func update() {
@@ -135,6 +138,20 @@ open class SliderCell: Cell<Float>, CellType {
 
     private var sliderRow: SliderRow {
         return row as! SliderRow
+    }
+    
+    open override func accessibilityIncrement() {
+        slider.accessibilityIncrement()
+        if let value = row.displayValueFor?(row.value) {
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, value)
+        }
+    }
+    
+    open override func accessibilityDecrement() {
+        slider.accessibilityDecrement()
+        if let value = row.displayValueFor?(row.value) {
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, value)
+        }
     }
 }
 
