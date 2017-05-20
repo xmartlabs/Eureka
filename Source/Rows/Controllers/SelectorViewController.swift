@@ -24,6 +24,23 @@
 
 import Foundation
 
+/// Provider of selectable options.
+public enum OptionsProvider<T: Equatable> {
+    /// Synchronous provider that provides array of options it was initialized with
+    case array([T]?)
+    /// Provider that uses closure it was initialized with to provide options. Can be synchronous or asynchronous.
+    case lazy((FormViewController, @escaping ([T]?) -> Void) -> Void)
+    
+    func getOptions(for selectorViewController: FormViewController, completion: @escaping ([T]?) -> Void) {
+        switch self {
+        case let .array(array):
+            completion(array)
+        case let .lazy(fetch):
+            fetch(selectorViewController, completion)
+        }
+    }
+}
+
 open class _SelectorViewController<Row: SelectableRowType>: FormViewController, TypedRowControllerType where Row: BaseRow, Row: TypedRowType {
 
     /// The row that pushed or presented this controller
@@ -48,6 +65,10 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
 
     /// A closure that returns footer title for a section for particular key.
     public var sectionFooterTitleForKey: ((String) -> String?)?
+    
+    /// Options provider to use to get available options. 
+    /// If not set will use synchronous data provider built with `row.dataProvider.arrayData`.
+    public var optionsProvider: OptionsProvider<Row.Cell.Value>?
 
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -68,17 +89,32 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
     }
 
     open func setupForm() {
-        guard let options = row.dataProvider?.arrayData else { return }
-
-        if let optionsBySections = self.optionsBySections() {
+        let optionsProvider: OptionsProvider<Row.Cell.Value>?
+        if let options = row.dataProvider?.arrayData {
+            optionsProvider = .array(options)
+        } else {
+            optionsProvider = self.optionsProvider
+        }
+        
+        optionsProvider?.getOptions(for: self) { [weak self] (options: [Row.Cell.Value]?) in
+            guard let strongSelf = self, let options = options else { return }
+            strongSelf.row.dataProvider = DataProvider(arrayData: options)
+            strongSelf.setupForm(with: options)
+        }
+    }
+    
+    open func setupForm(with options: [Row.Cell.Value]) {
+        if let optionsBySections = optionsBySections() {
             for (sectionKey, options) in optionsBySections {
-                form +++ section(with: options, header: sectionHeaderTitleForKey?(sectionKey), footer: sectionFooterTitleForKey?(sectionKey))
+                form +++ section(with: options,
+                                 header: sectionHeaderTitleForKey?(sectionKey),
+                                 footer: sectionFooterTitleForKey?(sectionKey))
             }
         } else {
             form +++ section(with: options, header: row.title, footer: nil)
         }
     }
-
+    
     func optionsBySections() -> [(String, [Row.Cell.Value])]? {
         guard let options = row.dataProvider?.arrayData, let sectionKeyForValue = sectionKeyForValue else { return nil }
 
