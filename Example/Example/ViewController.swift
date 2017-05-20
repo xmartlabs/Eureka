@@ -255,6 +255,22 @@ class RowsExampleViewController: FormViewController {
                             default: return ""
                             }
                         }
+                    }
+            <<< PushRow<Emoji>() {
+                $0.title = "LazySectionedPushRow"
+                $0.value = 👦🏼
+                $0.selectorTitle = "Choose a lazy Emoji!"
+                }.onPresent { from, to in
+                    to.row.dataProvider = nil
+                    to.optionsProvider = .lazy({ (form, completion) in
+                        let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                        form.tableView.backgroundView = activityView
+                        activityView.startAnimating()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                            form.tableView.backgroundView = nil
+                            completion([💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻])
+                        })
+                    })
         }
 
         
