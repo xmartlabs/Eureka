@@ -1125,6 +1125,7 @@ class ListSectionsController: FormViewController {
             }.cellSetup { cell, _ in
                 cell.trueImage = UIImage(named: "selectedRectangle")!
                 cell.falseImage = UIImage(named: "unselectedRectangle")!
+                cell.accessoryType = .checkmark
             }
         }
     }
