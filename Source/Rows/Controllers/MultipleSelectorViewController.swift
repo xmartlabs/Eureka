@@ -47,6 +47,10 @@ open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> 
     /// A closure that returns footer title for a section for particular key.
     public var sectionFooterTitleForKey: ((String) -> String?)?
 
+    /// Options provider to use to get available options.
+    /// If not set will use synchronous data provider built with `row.dataProvider.arrayData`.
+    public var optionsProvider: OptionsProvider<T>?
+
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -66,17 +70,33 @@ open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> 
     }
 
     open func setupForm() {
-        guard let options = row.dataProvider?.arrayData else { return }
-
-        if let optionsBySections = self.optionsBySections() {
+        let optionsProvider: OptionsProvider<T>?
+        if let options = row.dataProvider?.arrayData {
+            optionsProvider = .array(options.flatMap({ $0.first }))
+        } else {
+            optionsProvider = self.optionsProvider
+        }
+        
+        optionsProvider?.getOptions(for: self) { [weak self] (options: [T]?) in
+            guard let strongSelf = self, let options = options else { return }
+            let arrayData = options.map({ Set<T>(arrayLiteral: $0) })
+            strongSelf.row.dataProvider = DataProvider(arrayData: arrayData)
+            strongSelf.setupForm(with: arrayData)
+        }
+    }
+    
+    open func setupForm(with options: [Set<T>]) {
+        if let optionsBySections = optionsBySections() {
             for (sectionKey, options) in optionsBySections {
-                form +++ section(with: options, header: sectionHeaderTitleForKey?(sectionKey), footer: sectionFooterTitleForKey?(sectionKey))
+                form +++ section(with: options,
+                                 header: sectionHeaderTitleForKey?(sectionKey),
+                                 footer: sectionFooterTitleForKey?(sectionKey))
             }
         } else {
             form +++ section(with: options, header: row.title, footer: nil)
         }
     }
-
+    
     open func optionsBySections() -> [(String, [Set<Row.Cell.Value>])]? {
         guard let options = row.dataProvider?.arrayData, let sectionKeyForValue = sectionKeyForValue else { return nil }
 
