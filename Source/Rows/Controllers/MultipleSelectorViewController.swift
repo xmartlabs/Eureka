@@ -47,6 +47,9 @@ open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> 
     /// A closure that returns footer title for a section for particular key.
     public var sectionFooterTitleForKey: ((String) -> String?)?
 
+    public var sectionHeader: ((String) -> HeaderFooterViewRepresentable?)?
+    public var sectionFooter: ((String) -> HeaderFooterViewRepresentable?)?
+
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -70,10 +73,28 @@ open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> 
 
         if let optionsBySections = self.optionsBySections() {
             for (sectionKey, options) in optionsBySections {
-                form +++ section(with: options, header: sectionHeaderTitleForKey?(sectionKey), footer: sectionFooterTitleForKey?(sectionKey))
+                let header: HeaderFooterViewRepresentable?
+                if let sectionHeader = sectionHeader {
+                    header = sectionHeader(sectionKey)
+                } else {
+                    header = HeaderFooterView(stringLiteral: sectionHeaderTitleForKey?(sectionKey) ?? "")
+                }
+                let footer: HeaderFooterViewRepresentable?
+                if let sectionFooter = sectionFooter {
+                    footer = sectionFooter(sectionKey)
+                } else {
+                    footer = HeaderFooterView(stringLiteral: sectionFooterTitleForKey?(sectionKey) ?? "")
+                }
+                form +++ section(with: options,  header: header, footer: footer)
             }
         } else {
-            form +++ section(with: options, header: row.title, footer: nil)
+            let header: HeaderFooterViewRepresentable?
+            if let sectionHeader = sectionHeader {
+                header = row.title.flatMap(sectionHeader)
+            } else {
+                header = row.title.map(HeaderFooterView.init(stringLiteral:))
+            }
+            form +++ section(with: options, header: header, footer: nil)
         }
     }
 
@@ -90,8 +111,10 @@ open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> 
         return sections.sorted(by: { (lhs, rhs) in lhs.0 < rhs.0 })
     }
 
-    func section(with options: [Set<T>], header: String?, footer: String?) -> SelectableSection<Row> {
-        let section = SelectableSection<Row>(header: header ?? "", footer: footer ?? "", selectionType: .multipleSelection) { [weak self] section in
+    func section(with options: [Set<T>], header: HeaderFooterViewRepresentable?, footer: HeaderFooterViewRepresentable?) -> SelectableSection<Row> {
+        let header = header ?? HeaderFooterView(stringLiteral: "")
+        let footer = footer ?? HeaderFooterView(stringLiteral: "")
+        let section = SelectableSection<Row>(header: header, footer: footer, selectionType: .multipleSelection) { [weak self] section in
             section.onSelectSelectableRow = { _, selectableRow in
                 var newValue: Set<T> = self?.row.value ?? []
                 if let selectableValue = selectableRow.value {
