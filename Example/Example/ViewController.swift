@@ -321,6 +321,23 @@ class RowsExampleViewController: FormViewController {
                             }
                         }
                         to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
+                    }
+            <<< MultipleSelectorRow<Emoji>() {
+                $0.title = "LazyMultipleSelectorRow"
+                $0.value = [👦🏼, 🍐, 🐗]
+                }.onPresent { from, to in
+                    to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
+
+                    to.row.dataProvider = nil
+                    to.optionsProvider = .lazy({ (form, completion) in
+                        let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                        form.tableView.backgroundView = activityView
+                        activityView.startAnimating()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                            form.tableView.backgroundView = nil
+                            completion([💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻])
+                        })
+                    })
         }
         
         form +++ Section("Generic picker")
