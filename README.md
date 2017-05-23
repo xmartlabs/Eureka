@@ -14,9 +14,19 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
 
 ## Overview
 
-<img src="Example/Media/EurekaExample1.gif" width="220"/>
-<img src="Example/Media/EurekaExample2.gif" width="220"/>
-<img src="Example/Media/EurekaExample3.gif" width="220"/>
+<table>
+  <tr>
+    <th>
+      <img src="Example/Media/EurekaExample1.gif" width="220"/>
+    </th>
+    <th>
+      <img src="Example/Media/EurekaExample2.gif" width="220"/>
+    </th>
+    <th>
+    <img src="Example/Media/EurekaExample3.gif" width="220"/>
+    </th>
+  </tr>
+</table>
 
 ## Contents
 
@@ -29,6 +39,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
   + [Section Header and Footer]
   + [Dynamically hide and show rows (or sections)]
   + [List sections]
+  + [Multivalued sections]
   + [Validations]
 * [Custom rows]
   + [Basic custom rows]
@@ -50,8 +61,16 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
 
 You can clone and run the Example project to see examples of most of Eureka's features.
 
-<img src="Example/Media/EurekaNavigation.gif" width="200"/>
-<img src="Example/Media/EurekaRows.gif" width="200"/>
+<table>
+  <tr>
+    <th>
+      <img src="Example/Media/EurekaNavigation.gif" width="200"/>
+    </th>
+    <th>
+      <img src="Example/Media/EurekaRows.gif" width="200"/>
+    </th>
+  </tr>
+</table>
 
 ## Usage
 
@@ -86,7 +105,7 @@ class MyFormViewController: FormViewController {
 In the example we create two sections with standard rows, the result is this:
 
 <center>
-<img src="Example/Media/EurekaHowTo.gif" width="300" alt="Screenshot of Custom Cells"/>
+<img src="Example/Media/EurekaHowTo.gif" width="200" alt="Screenshot of Custom Cells"/>
 </center>
 
 You could create a form by just setting up the `form` property by yourself without extending from `FormViewController` but this method is typically more convenient.
@@ -421,6 +440,50 @@ Additionally you can setup list of options to be grouped by sections using follo
 
 - `sectionFooterTitleForKey` - a closure that returns footer title for a section for particular key.
 
+### Multivalued Sections
+
+Eureka supports multiple values for a certain field (such as telephone numbers in a contact) by using Multivalued sections. It allows us to easily create insertable, deletable and reorderable sections.
+
+<img src="Example/Media/EurekaMultivalued.gif" width="300" alt="Screenshot of Multivalued Section" />
+
+#### How to create a multivalued section
+
+In order to create a multivalued section we have to use `MultivaluedSection` type instead of the regular `Section` type. `MultivaluedSection` extends `Section` and has some additional properties to configure multivalued section behavior.
+
+let's dive into a code example...
+
+```swift
+form +++
+    MultivaluedSection(multivaluedOptions: [.Reorder, .Insert, .Delete],
+                       header: "Multivalued TextField",
+                       footer: ".Insert adds a 'Add Item' (Add New Tag) button row as last cell.") {
+        $0.addButtonProvider = { section in
+            return ButtonRow(){
+                $0.title = "Add New Tag"
+            }
+        }
+        $0.multivaluedRowToInsertAt = { index in
+            return NameRow() {
+                $0.placeholder = "Tag Name"
+            }
+        }
+        $0 <<< NameRow() {
+            $0.placeholder = "Tag Name"
+        }
+    }
+```
+
+Previous code snippet shows how to create a multivalued section. In this case we want to insert, delete and reorder rows as multivaluedOptions argument indicates.
+
+`addButtonProvider` allows us to customize the button row which inserts a new row when tapped and `multivaluedOptions` contains .Insert` value.
+
+`multivaluedRowToInsertAt` closure property is called by Eureka each time a new row needs to be inserted. In order to provide the row to add into multivalued section we should set this property. Eureka passes the index as closure parameter. Notice that we can return any kind of row, even custom rows, even though in most cases multivalued section rows are of the same type.
+
+Eureka automatically adds a button row when we create a insertable multivalued section. We can customize how the this button row looks like as we explained before. `showInsertIconInAddButton` property indicates if plus button (insert style) should appear in the left of the button, true by default.
+
+There are some considerations we need to have in mind when creating insertable sections. Any row added to the insertable multivalued section should be placed above the row that Eureka automatically adds to insert new rows. This can be easily achieved by adding these additional rows to the section from inside section's initializer closure (last parameter of section initializer) so then Eureka adds the adds insert button at the end of the section.
+
+For more information on how to use multivalued sections please take a look at Eureka example project which contains several usage examples.
 
 ### Validations
 
@@ -660,12 +723,10 @@ There are some things to consider when you do this:
         <img src="Example/Media/RowStatics/LabelRow.png"/>
         </center><br><br>
         </td>
-
         <td><center><b>Button Row</b><br>
         <img src="Example/Media/RowStatics/ButtonRow.png"/>
         </center><br><br>
         </td>
-
         <td><center><b>Check Row</b><br>
         <img src="Example/Media/RowStatics/CheckRow.png"/>
         </center><br><br>
@@ -676,12 +737,10 @@ There are some things to consider when you do this:
         <img src="Example/Media/RowStatics/SwitchRow.png"/>
         </center><br><br>
         </td>
-
         <td><center><b>Slider Row</b><br>
         <img src="Example/Media/RowStatics/SliderRow.png"/>
         </center><br><br>
         </td>
-
         <td><center><b>Stepper Row</b><br>
         <img src="Example/Media/RowStatics/StepperRow.png"/>
         </center><br><br>
@@ -818,16 +877,14 @@ Like PushRow but allows the selection of multiple options.
         <img src="Example/Media/RowStatics/SegmentedRow.png"/>
         </center>
         </td>
-
         <td><center><b>Segmented Row (w/Title)</b><br>
         <img src="Example/Media/RowStatics/SegmentedRowWithTitle.png"/>
         </center>
         </td>
-
         <td><center><b>Picker Row</b><br>
         <img src="Example/Media/RowStatics/PickerRow.png"/>
         <br>Presents options of a generic type through a picker view
-        <br><b>(There is also Picker Inline Row)
+        <br><b>(There is also Picker Inline Row)</b>
         </center>
         </td>
     </tr>
@@ -846,8 +903,6 @@ Let us know about it, we would be glad to mention it here. :)
 
 [CocoaPods](https://cocoapods.org/) is a dependency manager for Cocoa projects.
 
-**Cocoapods 1.1.0.rc.3 or newer version must be used.**
-
 Specify Eureka into your project's `Podfile`:
 
 ```ruby
@@ -855,7 +910,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Eureka', '~> 2.0'
+pod 'Eureka'
 ```
 
 Then run the following command:
@@ -871,7 +926,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 2.0
+github "xmartlabs/Eureka" ~> 3.0
 ```
 
 #### Manually as Embedded Framework
@@ -966,8 +1021,6 @@ Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
 * Set up a new header/footer data ....
 
 ```swift
-section.header = "Header Title" // use string literal as a header/footer data. HeaderFooterView conforms to ExpressibleByStringLiteral.
-//or
 section.header = HeaderFooterView(title: "Header title \(variable)") // use String interpolation
 //or
 var header = HeaderFooterView<UIView>(.class) // most flexible way to set up a header using any view type
@@ -1058,11 +1111,8 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [FAQ]: #faq
 
 [List sections]: #list-sections
+[Multivalued sections]: #multivalued-sections
 [Validations]: #validations
-
-* [Installation]
-* [FAQ]
-
 
 <!--- In Project -->
 [CustomCellsController]: Example/Example/ViewController.swift
