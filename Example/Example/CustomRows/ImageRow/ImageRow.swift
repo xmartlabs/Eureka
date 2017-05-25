@@ -101,12 +101,17 @@ open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> w
         }
     }
     
+    /// Selecting the Image Row cell will open a popup to choose where to source the photo from,
+    /// based on the `sourceTypes` configured and the available sources.
     open override func customDidSelect() {
         guard !isDisabled else {
             super.customDidSelect()
             return
         }
+        // Ensure cell is deselected
         deselect()
+        
+        // Check for sources and determine if there are any
         var availableSources: ImageRowSourceTypes = []
             
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
@@ -126,7 +131,8 @@ open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> w
             return
         }
         
-        // now that we know the number of actions aren't empty
+        // Now that we know the number of sources aren't empty,
+        // create a UIAlertController for the user to choose the options
         let sourceActionSheet = UIAlertController(title: nil, message: selectorTitle, preferredStyle: .actionSheet)
         guard let tableView = cell.formViewController()?.tableView  else { fatalError() }
         if let popView = sourceActionSheet.popoverPresentationController {
@@ -142,15 +148,16 @@ open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> w
                 })
             sourceActionSheet.addAction(clearPhotoOption)
         }
-        // check if we have only one source type given
+        // Check if we have only one source type given, skip the alert and go directly to source
         if sourceActionSheet.actions.count == 1 {
             if let imagePickerSourceType = UIImagePickerControllerSourceType(rawValue: sourceTypes.imagePickerControllerSourceTypeRawValue) {
                 displayImagePickerController(imagePickerSourceType)
             }
         } else {
+            // When there are more options, allow the user to cancel
             let cancelOption = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler:nil)
             sourceActionSheet.addAction(cancelOption)
-            
+            // Present the alert
             if let presentingViewController = cell.formViewController() {
                 presentingViewController.present(sourceActionSheet, animated: true)
             }
