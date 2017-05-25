@@ -113,7 +113,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     }
 
     func valueChanged() {
-        row.value =  (row as! SegmentedRow<T>).options[segmentedControl.selectedSegmentIndex]
+        row.value = (row as! OptionsRow<SegmentedCell<T>>).options[segmentedControl.selectedSegmentIndex]
     }
 
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -135,7 +135,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         guard !awakeFromNibCalled else { return }
         contentView.removeConstraints(dynamicConstraints)
         dynamicConstraints = []
-        var views: [String: AnyObject] =  ["segmentedControl": segmentedControl]
+        var views: [String: AnyObject] = ["segmentedControl": segmentedControl]
 
         var hasImageView = false
         var hasTitleLabel = false
@@ -168,7 +168,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
 
     func items() -> [String] {// or create protocol for options
         var result = [String]()
-        for object in (row as! SegmentedRow<T>).options {
+        for object in (row as! OptionsRow<SegmentedCell<T>>).options {
             result.append(row.displayValueFor?(object) ?? "")
         }
         return result
@@ -176,7 +176,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
 
     func selectedIndex() -> Int? {
         guard let value = row.value else { return nil }
-        return (row as! SegmentedRow<T>).options.index(of: value)
+        return (row as! OptionsRow<SegmentedCell<T>>).options.index(of: value)
     }
 }
 
