@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="lR7-Bh-Hkv" customClass="PlaceNameHeader" customModule="PlacePickerDemo" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="435" height="79"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyK-pG-itw">
+                    <rect key="frame" x="8" y="29" width="419" height="41"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="0.0" blue="0.041046944600000003" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="pyK-pG-itw" secondAttribute="bottom" priority="999" constant="9" id="UOw-JD-Rao"/>
+                <constraint firstItem="pyK-pG-itw" firstAttribute="leading" secondItem="lR7-Bh-Hkv" secondAttribute="leadingMargin" id="aY6-ag-hBD"/>
+                <constraint firstItem="pyK-pG-itw" firstAttribute="top" secondItem="lR7-Bh-Hkv" secondAttribute="top" priority="999" constant="29" id="fgM-YU-afs"/>
+                <constraint firstAttribute="trailingMargin" secondItem="pyK-pG-itw" secondAttribute="trailing" priority="999" id="hWY-v8-Nuw"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="leadingConstraint" destination="aY6-ag-hBD" id="Jf7-9G-vup"/>
+                <outlet property="placeNameLabel" destination="pyK-pG-itw" id="EQs-iK-hH3"/>
+                <outlet property="topConstraint" destination="fgM-YU-afs" id="tLl-nH-C01"/>
+            </connections>
+            <point key="canvasLocation" x="542.5" y="-83.5"/>
+        </view>
+    </objects>
+</document>

@@ -1,0 +1,4 @@
+framework module GooglePlacePicker { umbrella header "GooglePlacePicker.h"
+header "GMSPlacePicker.h"
+header "GMSPlacePickerConfig.h"
+export * module * { export * } }

@@ -23,6 +23,8 @@
 // THE SOFTWARE.
 
 import UIKit
+import GoogleMaps
+import GooglePlaces
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -31,6 +33,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         // Take a look at Main.storyboard
+        
+        let apiKey = "AIzaSyBTFypi6rTHlqqqnaHILPaNDlhdej4D7ms"
+        GMSServices.provideAPIKey(apiKey)
+        GMSPlacesClient.provideAPIKey(apiKey)
+        
         return true
     }
 }

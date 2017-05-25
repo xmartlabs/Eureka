@@ -1,0 +1,51 @@
+// NOTE: This is the english localization and has been copied to all languages. The reason for doing
+// this is it signals to iOS that the app "supports" all of these languages. This is helpful for a
+// demo as it allows you to try out the localization features of the Place Picker widget. In a
+// shipping app you should never do this, it is for demonstration purposes only.
+
+
+// Closed/Open state for a closed location.
+"Places.OpenNow.No"="Closed";
+// Closed/Open state for an open location.
+"Places.OpenNow.Yes"="Open";
+// Closed/Open state for when it is unknown.
+"Places.OpenNow.Unknown"="Unknown";
+
+// Relative cost for a free location.
+"Places.PriceLevel.Free"="Free";
+// Relative cost for a cheap location.
+"Places.PriceLevel.Cheap"="Cheap";
+// Relative cost for a medium cost location.
+"Places.PriceLevel.Medium"="Medium";
+// Relative cost for a high cost location.
+"Places.PriceLevel.High"="High";
+// Relative cost for an expensive location.
+"Places.PriceLevel.Expensive"="Expensive";
+// Relative cost for when it is unknown.
+"Places.PriceLevel.Unknown"="Unknown";
+
+// The value of a property which is missing
+"PlaceDetails.MissingValue"="None";
+
+// Name for the Place ID property
+"Places.Property.PlaceID"="Place ID";
+// Name for the Coordinate property
+"Places.Property.Coordinate"="Coordinate";
+// Name for the Open now status property
+"Places.Property.OpenNowStatus"="Open now status";
+// Name for the Phone number property
+"Places.Property.PhoneNumber"="Phone number";
+// Name for the Website property
+"Places.Property.Website"="Website";
+// Name for the Formatted address property
+"Places.Property.FormattedAddress"="Formatted address";
+// Name for the Rating property
+"Places.Property.Rating"="Rating";
+// Name for the Price level property
+"Places.Property.PriceLevel"="Price level";
+// Name for the Types property
+"Places.Property.Types"="Types";
+// Name for the Attributions property
+"Places.Property.Attributions"="Attributions";
+// The format string for latitude, longitude
+"Places.Property.Coordinate.Format"="%1$0.7f, %2$0.7f";

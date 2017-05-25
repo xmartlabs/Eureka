@@ -1,0 +1,54 @@
+Version 2.2.0 - February 2017
+=============================
+Resolved Issues:
+  - Fixes an issue where the Place Picker viewport was not being centered
+    correctly.
+
+Note:
+  - iOS 7 support is intended to be dropped starting with 2.3. 2.2.x will be
+    the last release series to support iOS 7.
+
+Version 2.1.1 - November 2016
+=============================
+Resolved Issues:
+  - Fixes an issue which caused rotation of the place picker to move the marker.
+
+Version 2.1.0 - September 2016
+==============================
+
+Resolved Issues:
+  - Added workaround for the `userEmail` triggering false positives during
+    submission to the Apple app store.
+  - Errors returned from lookUpPlaceID(_:callback:) now have the correct error
+    domain and codes.
+  - Small fixes to RTL support in the place picker.
+  - Minor reliability improvements for the autocomplete widget and place picker.
+
+Version 2.0.1 - July 2016
+=========================
+
+Resolved Issues:
+  - Array properties are now correctly typed when accessed from Swift.
+
+Version 2.0.0 - July 2016
+=========================
+
+Improvements:
+  ! This release splits the Places API from the Maps SDK. Previously, if you
+    wanted to use the Places API you had to include all of GoogleMaps. As a
+    result of the split, the final size of the Places API binary is 70% smaller
+    than the previous combined binary. If you are using only the Maps SDK you
+    will not be affected unless you have pinned your dependency on GoogleMaps
+    to a version earlier than 2.0. In this case, you should update this
+    restriction in your Podfile. If you are using the Places API, see the
+    migration guide online for more details.
+
+Resolved Issues:
+  - The Places framework is now available as a download for manual installation.
+    For details, see the get started guide online.
+  - The Places API no longer requests permission to access the user's location
+    on behalf of the app. This means that existing code which calls
+    GMSPlacesClient.currentPlaceWithCallback(_:) must be updated to ensure that
+    the location permission has been granted beforehand.
+
+* Items denoted with an '!' may indicate a backwards incompatible change.
