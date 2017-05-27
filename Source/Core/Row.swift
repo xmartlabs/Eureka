@@ -149,6 +149,41 @@ open class Row<Cell: CellType>: RowOf<Cell.Value>, TypedRowType where Cell: Base
     public required init(tag: String?) {
         super.init(tag: tag)
     }
+    
+    public init? (dictionary: [String: Any]) {
+        guard let tag = dictionary["tag"] as? String else {
+            return nil
+        }
+        // Set
+        super.init(tag: tag)
+        if let title = dictionary["title"] as? String {
+            self.title = title
+        }
+        if let value = dictionary["value"] as? Cell.Value {
+            self.value = value
+        }
+        
+        if let backgroundColorString = dictionary["backgroundColor"] as? String {
+            self.cell.backgroundColor = UIColor(eureka_hexColor: backgroundColorString)
+        }
+        if let textColorString = dictionary["textColor"] as? String {
+            self.cell.textLabel?.textColor = UIColor(eureka_hexColor: textColorString)
+        }
+        if let detailTextColorString = dictionary["detailTextColor"] as? String {
+            self.cell.detailTextLabel?.textColor = UIColor(eureka_hexColor: detailTextColorString)
+        }
+        // Set Conditions
+        if let hidden = dictionary["hidden"] as? Bool {
+            self.hidden = Condition(booleanLiteral: hidden)
+        } else if let hidden = dictionary["hidden"] as? String {
+            self.hidden = Condition.predicate(NSPredicate(format: hidden))
+        }
+        if let disabled = dictionary["disabled"] as? Bool {
+            self.disabled = Condition(booleanLiteral: disabled)
+        } else if let disabled = dictionary["disabled"] as? String {
+            self.disabled = Condition.predicate(NSPredicate(format: disabled))
+        }
+    }
 
     /**
      Method that reloads the cell

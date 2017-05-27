@@ -134,4 +134,25 @@ open class _DateFieldRow: Row<DateCell>, DatePickerRowProtocol, NoValueDisplayTe
             return formatter.string(from: val)
         }
     }
+    
+    public override init?(dictionary: [String : Any]) {
+        super.init(dictionary: dictionary)
+        let serializeDateFormatter = DateFormatter()
+        serializeDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss:SSS"
+        if let valueString = dictionary["value"] as? String, let value = serializeDateFormatter.date(from: valueString) {
+            self.value = value
+        }
+        if let minimumString = dictionary["minimumDate"] as? String, let minimumDate = serializeDateFormatter.date(from: minimumString) {
+            self.minimumDate = minimumDate
+        }
+        if let maximumString = dictionary["maximumDate"] as? String, let maximumDate = serializeDateFormatter.date(from: maximumString) {
+            self.maximumDate = maximumDate
+        }
+        self.minuteInterval = dictionary["minuteInterval"] as? Int
+        self.noValueDisplayText = dictionary["noValueDisplayText"] as? String
+        displayValueFor = { [unowned self] value in
+            guard let val = value, let formatter = self.dateFormatter else { return nil }
+            return formatter.string(from: val)
+        }
+    }
 }

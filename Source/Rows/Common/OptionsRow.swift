@@ -36,4 +36,13 @@ open class OptionsRow<Cell: CellType> : Row<Cell>, NoValueDisplayTextConformance
     required public init(tag: String?) {
         super.init(tag: tag)
     }
+    
+    public override init?(dictionary: [String : Any]) {
+        super.init(dictionary: dictionary)
+        if let options = dictionary["options"] as? [Cell.Value] {
+            self.options = options
+        }
+        self.selectorTitle = dictionary["selectorTitle"] as? String
+        self.noValueDisplayText = dictionary["noValueDisplayText"] as? String
+    }
 }
