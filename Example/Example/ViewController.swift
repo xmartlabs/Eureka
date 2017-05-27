@@ -1530,7 +1530,7 @@ class MultivaluedController: FormViewController {
     }
 }
 
-class MultivaluedOnlyReorderController: FormViewController {
+class MultivaluedOnlyRearderController: FormViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
