@@ -57,17 +57,17 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
 
     /// A closure that should return key for particular row value.
     /// This key is later used to break options by sections.
-    public var sectionKeyForValue: ((Row.Cell.Value) -> (String))?
+    public var sectionKeyForValue: ((Row.Cell.Value) -> (AnyHashable))?
 
     /// A closure that returns header title for a section for particular key.
     /// By default returns the key itself.
-    public var sectionHeaderTitleForKey: ((String) -> String?)? = { $0 }
+    public var sectionHeaderTitleForKey: ((AnyHashable) -> String?)? = { String(describing: $0) }
 
     /// A closure that returns footer title for a section for particular key.
-    public var sectionFooterTitleForKey: ((String) -> String?)?
+    public var sectionFooterTitleForKey: ((AnyHashable) -> String?)?
     
-    public var sectionHeader: ((String) -> HeaderFooterViewRepresentable?)?
-    public var sectionFooter: ((String) -> HeaderFooterViewRepresentable?)?
+    public var sectionHeader: ((Any) -> HeaderFooterViewRepresentable?)?
+    public var sectionFooter: ((Any) -> HeaderFooterViewRepresentable?)?
     
     /// Options provider to use to get available options. 
     /// If not set will use synchronous data provider built with `row.dataProvider.arrayData`.
@@ -111,13 +111,13 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
             for (sectionKey, options) in optionsBySections {
                 let header: HeaderFooterViewRepresentable?
                 if let sectionHeader = sectionHeader {
-                    header = sectionHeader(sectionKey)
+                    header = sectionHeader(sectionKey.base)
                 } else {
                     header = HeaderFooterView(stringLiteral: sectionHeaderTitleForKey?(sectionKey) ?? "")
                 }
                 let footer: HeaderFooterViewRepresentable?
                 if let sectionFooter = sectionFooter {
-                    footer = sectionFooter(sectionKey)
+                    footer = sectionFooter(sectionKey.base)
                 } else {
                     footer = HeaderFooterView(stringLiteral: sectionFooterTitleForKey?(sectionKey) ?? "")
                 }
@@ -134,17 +134,17 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
         }
     }
     
-    func optionsBySections() -> [(String, [Row.Cell.Value])]? {
+    func optionsBySections() -> [(AnyHashable, [Row.Cell.Value])]? {
         guard let options = row.dataProvider?.arrayData, let sectionKeyForValue = sectionKeyForValue else { return nil }
 
-        let sections = options.reduce([:]) { (reduced, option) -> [String: [Row.Cell.Value]] in
+        let sections = options.reduce([:]) { (reduced, option) -> [AnyHashable: [Row.Cell.Value]] in
             var reduced = reduced
             let key = sectionKeyForValue(option)
             reduced[key] = (reduced[key] ?? []) + [option]
             return reduced
         }
 
-        return sections.sorted(by: { (lhs, rhs) in lhs.0 < rhs.0 })
+        return sections.sorted(by: { (lhs, rhs) in String(describing: lhs.0) < String(describing: rhs.0) })
     }
 
     func section(with options: [Row.Cell.Value], header: HeaderFooterViewRepresentable?, footer: HeaderFooterViewRepresentable?) -> SelectableSection<Row> {
