@@ -94,7 +94,7 @@ public struct HeaderFooterView<ViewType: UIView> : ExpressibleByStringLiteral, H
      - returns: The header or footer of the specified section.
      */
     public func viewForSection(_ section: Section, type: HeaderFooterType) -> UIView? {
-        var view: ViewType? = nil
+        var view: ViewType?
         if type == .header {
             view = section.headerView as? ViewType ?? {
                             let result = viewProvider?.createView()
