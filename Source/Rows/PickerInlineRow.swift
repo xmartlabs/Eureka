@@ -38,6 +38,7 @@ open class PickerInlineCell<T: Equatable> : Cell<T>, CellType {
         super.setup()
         accessoryType = .none
         editingAccessoryType =  .none
+        height = { UITableViewAutomaticDimension }
     }
 
     open override func update() {
