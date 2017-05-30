@@ -133,22 +133,22 @@ class SelectableSectionTests: XCTestCase {
         selectorViewController.sectionKeyForValue = { option in
             switch option {
             case "Africa", "Asia", "Australia", "Europe":
-                return String(Hemisphere.west.rawValue)
+                return Hemisphere.west.rawValue
             case "North America", "South America":
-                return String(Hemisphere.east.rawValue)
+                return Hemisphere.east.rawValue
             default:
-                return String(Hemisphere.none.rawValue)
+                return Hemisphere.none.rawValue
             }
         }
         selectorViewController.sectionHeaderTitleForKey = { key in
-            switch Hemisphere(rawValue: Int(key)!)! {
+            switch Hemisphere(rawValue: key as! Int)! {
             case .west: return "West hemisphere"
             case .east: return "East hemisphere"
             case .none: return ""
             }
         }
         selectorViewController.sectionFooterTitleForKey = { key in
-            switch Hemisphere(rawValue: Int(key)!)! {
+            switch Hemisphere(rawValue: key as! Int)! {
             case .west: return "West hemisphere"
             case .east: return "East hemisphere"
             case .none: return ""
