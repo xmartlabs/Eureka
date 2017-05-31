@@ -772,7 +772,7 @@ extension FormViewController : UITableViewDelegate {
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let row = form[indexPath]
-            var section = row.section!
+            let section = row.section!
             if let _ = row.baseCell.findFirstResponder() {
                 tableView.endEditing(true)
             }
