@@ -193,7 +193,7 @@ open class Section {
 
     // MARK: Private
     lazy var kvoWrapper: KVOWrapper = { [unowned self] in return KVOWrapper(section: self) }()
-    
+
     var headerView: UIView?
     var footerView: UIView?
     var hiddenCache = false
@@ -233,7 +233,7 @@ extension Section: MutableCollection, BidirectionalCollection {
     }
 
     public subscript (range: Range<Int>) -> ArraySlice<BaseRow> {
-        get { return kvoWrapper.rows.map({ $0 as! BaseRow })[range] }
+        get { return ArraySlice<BaseRow>(kvoWrapper.rows.objects(at: IndexSet(integersIn: range)) as! [BaseRow]) }
         set {
             replaceSubrange(range, with: newValue)
         }
