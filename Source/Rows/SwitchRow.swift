@@ -58,7 +58,7 @@ open class SwitchCell: Cell<Bool>, CellType {
         switchControl.isEnabled = !row.isDisabled
     }
 
-    func valueChanged() {
+    @objc func valueChanged() {
         row.value = switchControl?.isOn ?? false
     }
 }
