@@ -662,7 +662,7 @@ public override func customDidSelect() {
 
 To create a custom Presenter row you must create a class that conforms the `PresenterRowType` protocol. It is highly recommended to subclass `SelectorRow` as it does conform to that protocol and adds other useful functionality.
 
-The PresenterRowType protocol is defined as followes:
+The PresenterRowType protocol is defined as follows:
 ```swift
 public protocol PresenterRowType: TypedRowType {
     typealias ProviderType : UIViewController, TypedRowControllerType
