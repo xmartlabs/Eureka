@@ -109,6 +109,21 @@ public func +++ (left: BaseRow, right: BaseRow) -> Form {
     return form
 }
 
+/**
+ Merges two forms together
+ 
+ - parameter left:  form 1
+ - parameter right: form 2
+ */
+@discardableResult
+public func +++ (left: Form, right: Form) -> Form {
+    for section in right.allSections {
+        left +++ section
+    }
+    return left
+}
+
+
 infix operator <<< : SectionPrecedence
 
 /**
