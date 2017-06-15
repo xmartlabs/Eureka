@@ -454,7 +454,7 @@ open class MultivaluedSection: Section {
         let addRow = addButtonProvider(self)
         addRow.onCellSelection { cell, row in
             guard let tableView = cell.formViewController()?.tableView, let indexPath = row.indexPath else { return }
-            cell.formViewController()?.tableView(tableView, commit: .insert, forRowAt: indexPath)
+		    cell.formViewController()?.tableView(tableView, commit: .insert, forRowAt: indexPath)
         }
         self <<< addRow
     }

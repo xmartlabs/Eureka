@@ -360,6 +360,12 @@ extension Form {
         }
         kvoWrapper.sections.insert(section, at: formIndex == NSNotFound ? 0 : formIndex + 1 )
     }
+
+	var containsMultivaluedSection: Bool{
+		return kvoWrapper.sections.contains { (section) -> Bool in
+			return section is MultivaluedSection
+		}
+	}
 }
 
 extension Form {
