@@ -769,7 +769,7 @@ extension FormViewController : UITableViewDelegate {
         return true
     }
 
-    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let row = form[indexPath]
             var section = row.section!
@@ -801,7 +801,7 @@ extension FormViewController : UITableViewDelegate {
         }
     }
 
-    public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+    open func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         guard let section = form[indexPath.section] as? MultivaluedSection, section.multivaluedOptions.contains(.Reorder) && section.count > 1 else {
             return false
         }
@@ -814,7 +814,7 @@ extension FormViewController : UITableViewDelegate {
         return true
     }
 
-    public func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+    open func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
         guard let section = form[sourceIndexPath.section] as? MultivaluedSection else { return sourceIndexPath }
         guard sourceIndexPath.section == proposedDestinationIndexPath.section else { return sourceIndexPath }
 
@@ -835,7 +835,7 @@ extension FormViewController : UITableViewDelegate {
         return proposedDestinationIndexPath
     }
 
-    public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
 
         guard var section = form[sourceIndexPath.section] as? MultivaluedSection else { return }
         if sourceIndexPath.row < section.count && destinationIndexPath.row < section.count && sourceIndexPath.row != destinationIndexPath.row {
@@ -850,7 +850,7 @@ extension FormViewController : UITableViewDelegate {
         }
     }
 
-    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    open func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         guard let section = form[indexPath.section] as? MultivaluedSection else {
             return .none
         }
@@ -863,7 +863,7 @@ extension FormViewController : UITableViewDelegate {
         return .none
     }
 
-    public func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+    open func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return self.tableView(tableView, editingStyleForRowAt: indexPath) != .none
     }
 }
