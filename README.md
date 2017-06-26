@@ -723,12 +723,10 @@ There are some things to consider when you do this:
         <img src="Example/Media/RowStatics/LabelRow.png"/>
         </center><br><br>
         </td>
-
         <td><center><b>Button Row</b><br>
         <img src="Example/Media/RowStatics/ButtonRow.png"/>
         </center><br><br>
         </td>
-
         <td><center><b>Check Row</b><br>
         <img src="Example/Media/RowStatics/CheckRow.png"/>
         </center><br><br>
@@ -739,12 +737,10 @@ There are some things to consider when you do this:
         <img src="Example/Media/RowStatics/SwitchRow.png"/>
         </center><br><br>
         </td>
-
         <td><center><b>Slider Row</b><br>
         <img src="Example/Media/RowStatics/SliderRow.png"/>
         </center><br><br>
         </td>
-
         <td><center><b>Stepper Row</b><br>
         <img src="Example/Media/RowStatics/StepperRow.png"/>
         </center><br><br>
@@ -881,16 +877,14 @@ Like PushRow but allows the selection of multiple options.
         <img src="Example/Media/RowStatics/SegmentedRow.png"/>
         </center>
         </td>
-
         <td><center><b>Segmented Row (w/Title)</b><br>
         <img src="Example/Media/RowStatics/SegmentedRowWithTitle.png"/>
         </center>
         </td>
-
         <td><center><b>Picker Row</b><br>
         <img src="Example/Media/RowStatics/PickerRow.png"/>
         <br>Presents options of a generic type through a picker view
-        <br><b>(There is also Picker Inline Row)
+        <br><b>(There is also Picker Inline Row)</b>
         </center>
         </td>
     </tr>
@@ -916,7 +910,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Eureka', '~> 3.0'
+pod 'Eureka'
 ```
 
 Then run the following command:
@@ -1027,8 +1021,6 @@ Look at this [issue](https://github.com/xmartlabs/Eureka/issues/96).
 * Set up a new header/footer data ....
 
 ```swift
-section.header = "Header Title" // use string literal as a header/footer data. HeaderFooterView conforms to ExpressibleByStringLiteral.
-//or
 section.header = HeaderFooterView(title: "Header title \(variable)") // use String interpolation
 //or
 var header = HeaderFooterView<UIView>(.class) // most flexible way to set up a header using any view type
@@ -1121,10 +1113,6 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [List sections]: #list-sections
 [Multivalued sections]: #multivalued-sections
 [Validations]: #validations
-
-* [Installation]
-* [FAQ]
-
 
 <!--- In Project -->
 [CustomCellsController]: Example/Example/ViewController.swift
