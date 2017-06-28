@@ -97,6 +97,17 @@ open class BaseRow: BaseRowType {
 
     /// The section to which this row belongs.
     public weak var section: Section?
+	
+	public var trailingSwipeConfiguration: SwipeConfiguration?
+	
+	//needs the accessor because if marked directly this throws "Stored properties cannot be marked potentially unavailable with '@available'"
+	private var _leadingSwipeConfiguration: SwipeConfiguration?
+	
+	@available(iOS 11,*)
+	public var leadingSwipeConfiguration: SwipeConfiguration?{
+		get{ return self._leadingSwipeConfiguration }
+		set{ self._leadingSwipeConfiguration = newValue }
+	}
 
     public required init(tag: String? = nil) {
         self.tag = tag

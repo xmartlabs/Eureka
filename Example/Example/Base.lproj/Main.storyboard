@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="6g3-M9-WkD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.17" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="6g3-M9-WkD">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -172,6 +172,7 @@
                         <segue destination="1By-iT-GXN" kind="push" identifier="ValidationsControllerSegue" id="e8a-Jy-4iL"/>
                         <segue destination="1Eh-Nv-AVS" kind="push" identifier="CustomDesignControllerSegue" id="qm6-xE-x5d"/>
                         <segue destination="qIY-1j-dNf" kind="push" identifier="MultivaluedSectionsControllerSegue" id="HjC-JK-Qvc"/>
+                        <segue destination="fc5-sQ-cEm" kind="push" identifier="SwipeActionsControllerSegue" id="AxK-me-pi6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Eoz-Jq-Zy9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -263,6 +264,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jCh-aA-iuT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="463" y="1077"/>
+        </scene>
+        <!--SwipeActions Example-->
+        <scene sceneID="h0m-5n-GTL">
+            <objects>
+                <viewController title="SwipeActions Example" id="fc5-sQ-cEm" customClass="SwipeActionsController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ImV-ow-JvS"/>
+                        <viewControllerLayoutGuide type="bottom" id="3OX-ei-O2d"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BDe-QW-0vU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="KY1-r2-ar2"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="axy-1K-pFt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-530" y="1833"/>
         </scene>
         <!--Multivalued Sections Example-->
         <scene sceneID="zbo-bQ-HRw">
@@ -652,9 +672,4 @@
             <point key="canvasLocation" x="859" y="1833"/>
         </scene>
     </scenes>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

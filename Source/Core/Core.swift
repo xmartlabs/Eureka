@@ -474,9 +474,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol {
             tableView.dataSource = self
         }
         tableView.estimatedRowHeight = BaseRow.estimatedRowHeight
-
-        tableView.setEditing(true, animated: false)
-        tableView.allowsSelectionDuringEditing = true
+		tableView.allowsSelectionDuringEditing = true
     }
 
     open override func viewWillAppear(_ animated: Bool) {
@@ -514,6 +512,10 @@ open class FormViewController: UIViewController, FormViewControllerProtocol {
 
         NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillShow(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
+		
+		if form.containsMultivaluedSection{
+			tableView.setEditing(true, animated: false)
+		}
     }
 
     open override func viewDidDisappear(_ animated: Bool) {
@@ -757,8 +759,13 @@ extension FormViewController : UITableViewDelegate {
     }
 
     open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        guard let section = form[indexPath.section] as? MultivaluedSection else { return false }
-        let row = form[indexPath]
+		let row = form[indexPath]
+		if let actions = row.trailingSwipeConfiguration?.actions.count, actions > 0{
+			return true
+		} else if #available(iOS 11,*), let actions = row.leadingSwipeConfiguration?.actions.count, actions > 0{
+			return true
+		}
+		guard let section = form[indexPath.section] as? MultivaluedSection else { return false }
         guard !row.isDisabled else { return false }
         guard !(indexPath.row == section.count - 1 && section.multivaluedOptions.contains(.Insert) && section.showInsertIconInAddButton) else {
             return true
@@ -768,7 +775,7 @@ extension FormViewController : UITableViewDelegate {
         }
         return true
     }
-
+	
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let row = form[indexPath]
@@ -800,7 +807,7 @@ extension FormViewController : UITableViewDelegate {
             }
         }
     }
-
+	
     public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         guard let section = form[indexPath.section] as? MultivaluedSection, section.multivaluedOptions.contains(.Reorder) && section.count > 1 else {
             return false
@@ -813,16 +820,16 @@ extension FormViewController : UITableViewDelegate {
         }
         return true
     }
-
+	
     public func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
         guard let section = form[sourceIndexPath.section] as? MultivaluedSection else { return sourceIndexPath }
         guard sourceIndexPath.section == proposedDestinationIndexPath.section else { return sourceIndexPath }
-
+		
         let destRow = form[proposedDestinationIndexPath]
         if destRow is BaseInlineRowType && destRow._inlineRow != nil {
             return IndexPath(row: proposedDestinationIndexPath.row + (sourceIndexPath.row < proposedDestinationIndexPath.row ? 1 : -1), section:sourceIndexPath.section)
         }
-
+		
         if proposedDestinationIndexPath.row > 0 {
             let previousRow = form[IndexPath(row: proposedDestinationIndexPath.row - 1, section: proposedDestinationIndexPath.section)]
             if previousRow is BaseInlineRowType && previousRow._inlineRow != nil {
@@ -834,12 +841,12 @@ extension FormViewController : UITableViewDelegate {
         }
         return proposedDestinationIndexPath
     }
-
+	
     public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-
+		
         guard var section = form[sourceIndexPath.section] as? MultivaluedSection else { return }
         if sourceIndexPath.row < section.count && destinationIndexPath.row < section.count && sourceIndexPath.row != destinationIndexPath.row {
-
+			
             let sourceRow = form[sourceIndexPath]
             animateTableView = false
             section.remove(at: sourceIndexPath.row)
@@ -849,9 +856,12 @@ extension FormViewController : UITableViewDelegate {
             let _ = inputAccessoryView(for: sourceRow)
         }
     }
-
+	
     public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         guard let section = form[indexPath.section] as? MultivaluedSection else {
+			if let actions = form[indexPath].trailingSwipeConfiguration?.actions.count, actions > 0{
+				return .delete
+			}
             return .none
         }
         if section.multivaluedOptions.contains(.Insert) && indexPath.row == section.count - 1 {
@@ -862,10 +872,24 @@ extension FormViewController : UITableViewDelegate {
         }
         return .none
     }
-
+	
     public func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return self.tableView(tableView, editingStyleForRowAt: indexPath) != .none
     }
+	
+	@available(iOS 11,*)
+	public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+		return form[indexPath].leadingSwipeConfiguration?.platformValue as? UISwipeActionsConfiguration
+	}
+	
+	@available(iOS 11,*)
+	public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+		return form[indexPath].trailingSwipeConfiguration?.platformValue as? UISwipeActionsConfiguration
+	}
+	
+	public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
+		return form[indexPath].trailingSwipeConfiguration?.platformActions as? [UITableViewRowAction]
+	}
 }
 
 extension FormViewController : UITableViewDataSource {
@@ -899,7 +923,7 @@ extension FormViewController: FormDelegate {
     // MARK: FormDelegate
 
     open func sectionsHaveBeenAdded(_ sections: [Section], at indexes: IndexSet) {
-        guard animateTableView else { return }
+		guard animateTableView else { return }
         tableView?.beginUpdates()
         tableView?.insertSections(indexes, with: insertAnimation(forSections: sections))
         tableView?.endUpdates()
