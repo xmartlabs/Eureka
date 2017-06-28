@@ -1000,7 +1000,7 @@ class FormatterExample : FormViewController {
             guard obj != nil else { return }
             var str = string.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
             
-            if self.numberStyle == .currency && !string.contains(self.currencySymbol) {
+            if !string.isEmpty, self.numberStyle == .currency && !string.contains(self.currencySymbol) {
                 // Check if the currency symbol is at the last index
                 if let formattedNumber = self.string(from: 1),
                     formattedNumber.substring(from: formattedNumber.index(before: formattedNumber.endIndex)) == self.currencySymbol {
