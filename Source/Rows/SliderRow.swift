@@ -41,8 +41,8 @@ open class SliderCell: Cell<Float>, CellType {
         NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil) { [weak self] _ in
             guard let me = self else { return }
             if me.shouldShowTitle {
-                me.contentView.addSubview(me.titleLabel)
-                me.contentView.addSubview(me.valueLabel!)
+                me.titleLabel = me.textLabel
+                me.valueLabel = me.detailTextLabel
                 me.addConstraints()
             }
         }

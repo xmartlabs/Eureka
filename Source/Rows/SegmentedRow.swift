@@ -61,6 +61,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         }
 
         NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil) { [weak self] _ in
+            self?.titleLabel = self?.textLabel
             self?.setNeedsUpdateConstraints()
         }
         contentView.addSubview(titleLabel!)
