@@ -129,7 +129,14 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
 
     func updateSegmentedControl() {
         segmentedControl.removeAllSegments()
-        items().enumerated().forEach { segmentedControl.insertSegment(withTitle: $0.element, at: $0.offset, animated: false) }
+        
+        (row as! SegmentedRow<T>).options.reversed().forEach {
+            if let image = $0 as? UIImage {
+                segmentedControl.insertSegment(with: image, at: 0, animated: false)
+            } else {
+                segmentedControl.insertSegment(withTitle: row.displayValueFor?($0) ?? "", at: 0, animated: false)
+            }
+        }
     }
 
     open override func updateConstraints() {
@@ -165,14 +172,6 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         }
         contentView.addConstraints(dynamicConstraints)
         super.updateConstraints()
-    }
-
-    func items() -> [String] {// or create protocol for options
-        var result = [String]()
-        for object in (row as! SegmentedRow<T>).options {
-            result.append(row.displayValueFor?(object) ?? "")
-        }
-        return result
     }
 
     func selectedIndex() -> Int? {
