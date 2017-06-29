@@ -172,7 +172,24 @@ extension Form: MutableCollection {
 
     public subscript (_ position: Int) -> Section {
         get { return kvoWrapper.sections[position] as! Section }
-        set { kvoWrapper.sections[position] = newValue }
+        set {
+            if position > kvoWrapper.sections.count {
+                assertionFailure("Form: Index out of bounds")
+            }
+
+            if position < kvoWrapper.sections.count {
+                let oldSection = kvoWrapper.sections[position]
+                let oldSectionIndex = kvoWrapper._allSections.index(of: oldSection as! Section)!
+                // Remove the previous section from the form
+                kvoWrapper._allSections[oldSectionIndex].willBeRemovedFromForm()
+                kvoWrapper._allSections[oldSectionIndex] = newValue
+            } else {
+                kvoWrapper._allSections.append(newValue)
+            }
+
+            kvoWrapper.sections[position] = newValue
+            newValue.wasAddedTo(form: self)
+        }
     }
     public func index(after i: Int) -> Int {
         return i+1 <= endIndex ? i+1 : endIndex
