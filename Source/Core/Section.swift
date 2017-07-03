@@ -288,6 +288,7 @@ extension Section : RangeReplaceableCollection {
         kvoWrapper._allRows.removeAll()
     }
 
+    @discardableResult
     public func remove(at position: Int) -> BaseRow {
         let row = kvoWrapper.rows.object(at: position) as! BaseRow
         row.willBeRemovedFromSection()

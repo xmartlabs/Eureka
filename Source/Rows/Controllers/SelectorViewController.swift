@@ -99,6 +99,17 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
             section.onSelectSelectableRow = { _, row in
                 let changed = self?.row.value != row.value
                 self?.row.value = row.value
+                
+                if let form = row.section?.form {
+                    for section in form where section !== row.section {
+                        let section = section as! SelectableSection<Row>
+                        if let selectedRow = section.selectedRow(), selectedRow !== row {
+                            selectedRow.value = nil
+                            selectedRow.updateCell()
+                        }
+                    }
+                }
+                
                 if self?.dismissOnSelection == true || (changed && self?.dismissOnChange == true) {
                     self?.onDismissCallback?(self!)
                 }
