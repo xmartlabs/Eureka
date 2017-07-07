@@ -204,6 +204,17 @@ extension RowType where Self: BaseRow {
         callbackOnChange = { [unowned self] in callback(self) }
         return self
     }
+	
+	/**
+	Sets a block to be called when the value of this row changes.
+	
+	- returns: this row
+	*/
+	@discardableResult
+	public func willBeRemoved(_ callback: @escaping (Self) -> Void) -> Self {
+		callbackWillBeRemoved = { [unowned self] in callback(self) }
+		return self
+	}
 
     /**
      Sets a block to be called when the cell corresponding to this row is refreshed.
