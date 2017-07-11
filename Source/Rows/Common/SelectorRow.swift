@@ -24,7 +24,7 @@
 
 import Foundation
 
-open class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
+open class PushSelectorCell<T> : Cell<T>, CellType where T: Equatable {
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -43,7 +43,7 @@ open class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
 }
 
 /// Generic row type where a user must select a value among several options.
-open class SelectorRow<Cell: CellType, VCType: TypedRowControllerType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell, VCType: UIViewController, VCType.RowValue == Cell.Value {
+open class SelectorRow<Cell , VCType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell, Cell: CellType,  VCType: UIViewController, VCType: TypedRowControllerType, VCType.RowValue == Cell.Value {
 
     /// Defines how the view controller will be presented, pushed, etc.
     open var presentationMode: PresentationMode<VCType>?

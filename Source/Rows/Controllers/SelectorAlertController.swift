@@ -25,7 +25,7 @@
 import Foundation
 
 /// Selector UIAlertController
-open class SelectorAlertController<T: Equatable> : UIAlertController, TypedRowControllerType {
+open class SelectorAlertController<T> : UIAlertController, TypedRowControllerType where T: Equatable {
 
     /// The row that pushed or presented this controller
     public var row: RowOf<T>!

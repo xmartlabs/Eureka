@@ -24,7 +24,7 @@
 
 import Foundation
 
-open class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
+open class AlertSelectorCell<T> : Cell<T>, CellType where T: Equatable {
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -86,7 +86,7 @@ public class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType
 }
 
 /// An options row where the user can select an option from an ActionSheet
-public final class ActionSheetRow<T: Equatable>: _ActionSheetRow<AlertSelectorCell<T>>, RowType {
+public final class ActionSheetRow<T>: _ActionSheetRow<AlertSelectorCell<T>>, RowType where T: Equatable {
     required public init(tag: String?) {
         super.init(tag: tag)
     }

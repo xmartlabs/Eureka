@@ -46,7 +46,7 @@ public protocol BaseInlineRowType {
  */
 public protocol InlineRowType: TypedRowType, BaseInlineRowType {
 
-    associatedtype InlineRow: BaseRow, RowType, TypedRowType
+    associatedtype InlineRow: BaseRow, RowType
 
     /**
      This function is responsible for setting up an inline row before it is first shown.
@@ -54,7 +54,7 @@ public protocol InlineRowType: TypedRowType, BaseInlineRowType {
     func setupInlineRow(_ inlineRow: InlineRow)
 }
 
-extension InlineRowType where Self: BaseRow, Self.InlineRow : BaseRow, Self.Cell.Value ==  Self.InlineRow.Cell.Value {
+extension InlineRowType where Self: BaseRow, Self.Cell.Value ==  Self.InlineRow.Cell.Value {
 
     /// The row that will be inserted below after the current one when it is selected.
     public var inlineRow: Self.InlineRow? { return _inlineRow as? Self.InlineRow }

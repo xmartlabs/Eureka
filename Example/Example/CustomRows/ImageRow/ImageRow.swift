@@ -65,7 +65,7 @@ public enum ImageClearAction {
 
 //MARK: Row
 
-open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> where Cell: BaseCell, Cell: TypedCellType, Cell.Value == UIImage {
+open class _ImageRow<Cell>: SelectorRow<Cell, ImagePickerController> where Cell: BaseCell, Cell: CellType, Cell.Value == UIImage {
     
 
     open var sourceTypes: ImageRowSourceTypes

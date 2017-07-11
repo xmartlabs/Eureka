@@ -24,7 +24,7 @@
 
 import Foundation
 
-open class _SelectorViewController<Row: SelectableRowType>: FormViewController, TypedRowControllerType where Row: BaseRow, Row: TypedRowType {
+open class _SelectorViewController<Row: SelectableRowType>: FormViewController, TypedRowControllerType where Row: BaseRow {
 
     /// The row that pushed or presented this controller
     public var row: RowOf<Row.Cell.Value>!
@@ -102,7 +102,7 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
                 
                 if let form = row.section?.form {
                     for section in form where section !== row.section {
-                        let section = section as! SelectableSection<Row>
+                        let section = section as AnyObject as! SelectableSection<Row> //  workaround to prevent compilation warning
                         if let selectedRow = section.selectedRow(), selectedRow !== row {
                             selectedRow.value = nil
                             selectedRow.updateCell()
@@ -132,5 +132,5 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
 }
 
 /// Selector Controller (used to select one option among a list)
-open class SelectorViewController<T: Equatable> : _SelectorViewController<ListCheckRow<T>> {
+open class SelectorViewController<T> : _SelectorViewController<ListCheckRow<T>> where T: Equatable{
 }

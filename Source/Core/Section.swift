@@ -232,8 +232,8 @@ extension Section : MutableCollection, BidirectionalCollection {
         }
     }
 
-    public subscript (range: Range<Int>) -> [BaseRow] {
-        get { return kvoWrapper.rows.objects(at: IndexSet(integersIn: range)) as! [BaseRow] }
+    public subscript (range: Range<Int>) -> ArraySlice<BaseRow> {
+        get { return kvoWrapper.rows.map({ $0 as! BaseRow })[range.lowerBound...range.upperBound] }
         set {
             replaceSubrange(range, with: newValue)
         }
@@ -244,6 +244,14 @@ extension Section : MutableCollection, BidirectionalCollection {
 
 }
 
+/// To add `RangeReplaceableCollection` conformance to your custom collection,
+/// add an empty initializer and the `replaceSubrange(_:with:)` method to your
+/// custom type. `RangeReplaceableCollection` provides default implementations
+/// of all its other methods using this initializer and method. For example,
+/// the `removeSubrange(_:)` method is implemented by calling
+/// `replaceSubrange(_:with:)` with an empty collection for the `newElements`
+/// parameter. You can override any of the protocol's required methods to
+/// provide your own custom implementation.
 extension Section : RangeReplaceableCollection {
 
     // MARK: RangeReplaceableCollectionType
@@ -262,18 +270,19 @@ extension Section : RangeReplaceableCollection {
         }
     }
 
-    public func replaceSubrange<C: Collection>(_ subRange: Range<Int>, with newElements: C) where C.Iterator.Element == BaseRow {
-        for i in subRange.lowerBound..<subRange.upperBound {
+    // where C.Iterator.Element == BaseRow {
+    public func replaceSubrange<C>(_ subrange: Range<Int>, with newElements: C) where C : Collection, C.Element == BaseRow {
+        for i in subrange.lowerBound..<subrange.upperBound {
             if let row = kvoWrapper.rows.object(at: i) as? BaseRow {
                 row.willBeRemovedFromSection()
                 kvoWrapper._allRows.remove(at: kvoWrapper._allRows.index(of: row)!)
             }
         }
 
-        kvoWrapper.rows.replaceObjects(in: NSRange(location: subRange.lowerBound, length: subRange.upperBound - subRange.lowerBound),
+        kvoWrapper.rows.replaceObjects(in: NSRange(location: subrange.lowerBound, length: subrange.upperBound - subrange.lowerBound),
                                        withObjectsFrom: newElements.map { $0 })
 
-        kvoWrapper._allRows.insert(contentsOf: newElements, at: indexForInsertion(at: subRange.lowerBound))
+        kvoWrapper._allRows.insert(contentsOf: newElements, at: indexForInsertion(at: subrange.lowerBound))
         for row in newElements {
             row.wasAddedTo(section: self)
         }
