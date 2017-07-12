@@ -203,7 +203,13 @@ class RowsExampleViewController: FormViewController {
                     }.cellSetup { cell, row in
                         cell.imageView?.image = UIImage(named: "plus_image")
                 }
-            
+
+                <<< SegmentedRow<UIImage>(){
+                    let names = ["selected", "plus_image", "unselected"]
+                    $0.options = names.map { UIImage(named: $0)! }
+                    $0.value = $0.options.last
+                }
+
             +++ Section("Selectors Rows Examples")
                 
                 <<< ActionSheetRow<String>() {
