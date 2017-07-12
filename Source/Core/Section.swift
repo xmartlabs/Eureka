@@ -53,7 +53,7 @@ extension Section {
 
     internal class KVOWrapper: NSObject {
 
-        dynamic private var _rows = NSMutableArray()
+        @objc dynamic private var _rows = NSMutableArray()
         var rows: NSMutableArray {
             return mutableArrayValue(forKey: "_rows")
         }
