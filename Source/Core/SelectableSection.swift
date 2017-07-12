@@ -61,7 +61,7 @@ public protocol SelectableSectionType: Collection {
     func selectedRows() -> [SelectableRow]
 }
 
-extension SelectableSectionType where Self: Section, Self.Iterator == IndexingIterator<Section>, Self.Iterator.Element == BaseRow {
+extension SelectableSectionType where Self: Section {
 
     /**
      Returns the selected row of this section. Should be used if selectionType is SingleSelection
@@ -74,9 +74,9 @@ extension SelectableSectionType where Self: Section, Self.Iterator == IndexingIt
      Returns the selected rows of this section. Should be used if selectionType is MultipleSelection
      */
     public func selectedRows() -> [SelectableRow] {
-        return filter({ (row: BaseRow) -> Bool in
+        return (kvoWrapper.rows as! [BaseRow]).filter { (row: BaseRow) -> Bool in
             row is SelectableRow && row.baseValue != nil
-        }).map({ $0 as! SelectableRow})
+        }.map { $0 as! SelectableRow }
     }
 
     /**
@@ -86,12 +86,14 @@ extension SelectableSectionType where Self: Section, Self.Iterator == IndexingIt
         for row in rows {
             if let row = row as? SelectableRow {
                 row.onCellSelection { [weak self] cell, row in
-                    guard let s = self, !row.isDisabled else { return }
+                    guard let s = self, !row.isDisabled else {
+                        return
+                    }
                     switch s.selectionType {
                     case .multipleSelection:
                         row.value = row.value == nil ? row.selectableValue : nil
                     case let .singleSelection(enableDeselection):
-                        s.filter { $0.baseValue != nil && $0 != row }.forEach {
+                        (s.kvoWrapper.rows as! [BaseRow]).filter { $0.baseValue != nil && $0 != row }.forEach {
                             $0.baseValue = nil
                             $0.updateCell()
                         }

@@ -53,7 +53,7 @@ extension Section {
 
     internal class KVOWrapper: NSObject {
 
-        dynamic private var _rows = NSMutableArray()
+        @objc dynamic private var _rows = NSMutableArray()
         var rows: NSMutableArray {
             return mutableArrayValue(forKey: "_rows")
         }
@@ -232,8 +232,8 @@ extension Section : MutableCollection, BidirectionalCollection {
         }
     }
 
-    public subscript (range: Range<Int>) -> [BaseRow] {
-        get { return kvoWrapper.rows.objects(at: IndexSet(integersIn: range)) as! [BaseRow] }
+    public subscript (range: Range<Int>) -> ArraySlice<BaseRow> {
+        get { return ArraySlice<BaseRow>(kvoWrapper.rows.objects(at: IndexSet(integersIn: range)) as! [BaseRow]) }
         set {
             replaceSubrange(range, with: newValue)
         }

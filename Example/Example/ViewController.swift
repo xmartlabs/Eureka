@@ -389,7 +389,7 @@ class RowsExampleViewController: FormViewController {
                     }
     }
 	
-    func multipleSelectorDone(_ item:UIBarButtonItem) {
+    @objc func multipleSelectorDone(_ item:UIBarButtonItem) {
         _ = navigationController?.popViewController(animated: true)
     }
     
@@ -768,7 +768,7 @@ class NativeEventFormViewController : FormViewController {
         
     }
     
-    func cancelTapped(_ barButtonItem: UIBarButtonItem) {
+    @objc func cancelTapped(_ barButtonItem: UIBarButtonItem) {
         (navigationController as? NativeEventNavigationController)?.onDismissCallback?(self)
     }
  
@@ -1573,13 +1573,14 @@ class MultivaluedOnlyRearderController: FormViewController {
             MultivaluedSection(multivaluedOptions: .Reorder,
                                            header: "Reordering Inline Rows",
                                            footer: "") { section in
-                list.enumerated().forEach({ offset, string in
-                    let dateInlineRow = DateInlineRow(){
+                list.enumerated().forEach { arg in
+                    let (offset, string) = arg
+                    let dateInlineRow = DateInlineRow {
                         $0.value = Date(timeInterval: Double(-secondsPerDay) * Double(offset), since: Date())
                         $0.title = string
                     }
                     section <<< dateInlineRow
-                })
+                }
             }
         
             +++
@@ -1680,7 +1681,7 @@ class MultivaluedOnlyDeleteController: FormViewController {
                 section2
     }
     
-    func editPressed(sender: UIBarButtonItem){
+    @objc func editPressed(sender: UIBarButtonItem){
         tableView.setEditing(!tableView.isEditing, animated: true)
         editButton.title = tableView.isEditing ? "Done" : "Edit"
         

@@ -263,7 +263,7 @@ extension Form {
     // MARK: Private Helpers
 
     class KVOWrapper: NSObject {
-        dynamic private var _sections = NSMutableArray()
+        @objc dynamic private var _sections = NSMutableArray()
         var sections: NSMutableArray { return mutableArrayValue(forKey: "_sections") }
         var _allSections = [Section]()
         private weak var form: Form?

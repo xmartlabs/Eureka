@@ -958,7 +958,7 @@ extension FormViewController {
     /**
      Called when the keyboard will appear. Adjusts insets of the tableView and scrolls it if necessary.
      */
-    open func keyboardWillShow(_ notification: Notification) {
+    @objc open func keyboardWillShow(_ notification: Notification) {
         guard let table = tableView, let cell = table.findFirstResponder()?.formCell() else { return }
         let keyBoardInfo = notification.userInfo!
         let endFrame = keyBoardInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue
@@ -986,7 +986,7 @@ extension FormViewController {
     /**
      Called when the keyboard will disappear. Adjusts insets of the tableView.
      */
-    open func keyboardWillHide(_ notification: Notification) {
+    @objc open func keyboardWillHide(_ notification: Notification) {
         guard let table = tableView, let oldBottom = oldBottomInset else { return }
         let keyBoardInfo = notification.userInfo!
         var tableInsets = table.contentInset
@@ -1009,11 +1009,11 @@ extension FormViewController {
 
     // MARK: Navigation Methods
 
-    func navigationDone(_ sender: UIBarButtonItem) {
+    @objc func navigationDone(_ sender: UIBarButtonItem) {
         tableView?.endEditing(true)
     }
 
-    func navigationAction(_ sender: UIBarButtonItem) {
+    @objc func navigationAction(_ sender: UIBarButtonItem) {
         navigateTo(direction: sender == navigationAccessoryView.previousButton ? .up : .down)
     }
 
