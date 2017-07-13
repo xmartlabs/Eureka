@@ -776,6 +776,7 @@ extension FormViewController : UITableViewDelegate {
             if let _ = row.baseCell.findFirstResponder() {
                 tableView.endEditing(true)
             }
+			row.callbackWillBeRemoved?()
             section.remove(at: indexPath.row)
             DispatchQueue.main.async {
                 tableView.isEditing = !tableView.isEditing

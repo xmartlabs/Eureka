@@ -27,6 +27,7 @@ import Foundation
 open class BaseRow: BaseRowType {
 
     var callbackOnChange: (() -> Void)?
+	var callbackWillBeRemoved: (() -> Void)?
     var callbackCellUpdate: (() -> Void)?
     var callbackCellSetup: Any?
     var callbackCellOnSelection: (() -> Void)?
