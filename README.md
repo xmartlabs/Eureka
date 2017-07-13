@@ -41,6 +41,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
   + [List sections]
   + [Multivalued sections]
   + [Validations]
+  + [Customize keyboard toolbar]
 * [Custom rows]
   + [Basic custom rows]
   + [Custom inline rows]
@@ -578,6 +579,88 @@ If you want to validate the entire form (all the rows) you can manually invoke F
 
 Each row has the `validationErrors` property that can be used to retrieve all validation errors. This property just holds the validation error list of the latest row validation execution, which means it doesn't evaluate the validation rules of the row.
 
+### Customize keyboard toolbar
+
+#### Set a new toolbar
+
+To set a new keyboard toolbar, set the `inputAccessoryView` in the row init.
+
+```swift
+<<< TextRow() {
+    $0.title = "Title"
+    $0.placeholder = "title"
+
+    //create and set the toolbar
+    let toolbar = UIToolbar(frame: $0.cell.frame)
+    let flexibleSpace = UIBarButtonItem(
+        barButtonSystemItem: .flexibleSpace,
+        target: nil,
+        action: nil
+    )
+    let awesomeButton = UIBarButtonItem(
+        title: "Awesome button",
+        style: .plain,
+        target: nil,
+        action: nil
+    )
+    
+    toolbar.setItems(
+        [
+            flexibleSpace,
+            awesomeButton,
+            flexibleSpace
+        ],
+        animated: false
+    )
+    
+    $0.cell.textField.inputAccessoryView = toolbar
+}
+```
+
+#### Add buttons to the existing toolbar
+
+To reuse the toolbar provided by `FormViewController`, and add buttons to it but keep the same navigation and done buttons, do the following in `onCellHighlightChanged`:
+
+```swift
+<<< TextRow() {
+    $0.title = "Title"
+    $0.placeholder = "title"
+}
+.onCellHighlightChanged { [weak self] (cell, row) in
+    //init the toolbar from the same toolbar use by FormViewController
+    let toolbar = NavigationAccessoryView(frame: row.cell.frame)
+    
+    //create new button and space
+    let fixedSpace = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+    fixedSpace.width = 22.0
+    let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+    let awesomeButton = UIBarButtonItem(
+        title: "Awesome button",
+        style: .plain,
+        target: nil,
+        action: nil
+    )
+
+    //set the buttons to the toolbar. reuse button from the FormViewController and add the new one
+    toolbar.setItems(
+        [
+            toolbar.previousButton, //reuse the previous button
+            fixedSpace,
+            toolbar.nextButton, //reuse the next button
+            flexibleSpace,
+            awesomeButton, //new button
+            flexibleSpace,
+            toolbar.doneButton //reuse the done button
+        ],
+        animated: false
+    )
+    
+    //configure the default behaviour of the toolbar and set it to the textfield
+    row.cell.textField.inputAccessoryView = self?.inputAccessoryView(for: row, withView: toolbar)
+}
+
+```
+
 ## Custom rows
 
 It is very common that you need a row that is different from those included in Eureka. If this is the case you will have to create your own row but this should not be difficult. You can read [this tutorial on how to create custom rows](https://blog.xmartlabs.com/2016/09/06/Eureka-custom-row-tutorial/) to get started. You might also want to have a look at [EurekaCommunity] which includes some extra rows ready to be added to Eureka.
@@ -1113,6 +1196,7 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [List sections]: #list-sections
 [Multivalued sections]: #multivalued-sections
 [Validations]: #validations
+[Customize keyboard toolbar]: #customize-keyboard-toolbar
 
 <!--- In Project -->
 [CustomCellsController]: Example/Example/ViewController.swift

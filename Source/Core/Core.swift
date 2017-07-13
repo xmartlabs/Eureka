@@ -531,7 +531,8 @@ open class FormViewController: UIViewController, FormViewControllerProtocol {
     /**
      Returns the navigation accessory view if it is enabled. Returns nil otherwise.
      */
-    open func inputAccessoryView(for row: BaseRow) -> UIView? {
+    open func inputAccessoryView(for row: BaseRow, withView _navigationAccessoryView: NavigationAccessoryView? = nil) -> UIView? {
+        guard let navigationAccessoryView = _navigationAccessoryView ?? self.navigationAccessoryView else { return nil }
         let options = navigationOptions ?? Form.defaultNavigationOptions
         guard options.contains(.Enabled) else { return nil }
         guard row.baseCell.cellCanBecomeFirstResponder() else { return nil}
