@@ -90,6 +90,8 @@ open class RowOf<T: Equatable>: BaseRow {
         return validationErrors
     }
 
+    /// Add a Validation rule for the Row
+    /// - Parameter rule: RuleType object to add
     public func add<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType {
         let validFn: ((T?) -> ValidationError?) = { (val: T?) in
             return rule.isValid(value: val)
@@ -97,6 +99,8 @@ open class RowOf<T: Equatable>: BaseRow {
         rules.append(ValidationRuleHelper(validateFn: validFn, rule: rule))
     }
 
+    /// Add a Validation rule set for the Row
+    /// - Parameter ruleSet: RuleSet<T> set of rules to add
     public func add(ruleSet: RuleSet<T>) {
         rules.append(contentsOf: ruleSet.rules)
     }

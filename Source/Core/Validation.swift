@@ -75,6 +75,8 @@ public struct RuleSet<T: Equatable> {
 
     public init() {}
 
+    /// Add a validation Rule to a Row
+    /// - Parameter rule: RuleType object typed to the same type of the Row.value
     public mutating func add<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType {
         let validFn: ((T?) -> ValidationError?) = { (val: T?) in
             return rule.isValid(value: val)
