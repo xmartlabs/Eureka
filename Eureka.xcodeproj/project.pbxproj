@@ -506,6 +506,7 @@
 				28EE0FDE1D5E889F00B91340 /* Validation.swift in Sources */,
 				2859CD951C7CF1FD0002982F /* Core.swift in Sources */,
 				2859CDBE1C7D137D0002982F /* Form.swift in Sources */,
+				2F4622821E1F46A50093CD7F /* PickerInputRow.swift in Sources */,
 				280FBE5F1D873CCE00900064 /* RuleClosure.swift in Sources */,
 				28EEC0001C7E36EB00300699 /* SwitchRow.swift in Sources */,
 				3973000A1DF0E2A000080E4D /* PickerInputRow.swift in Sources */,

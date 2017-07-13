@@ -325,7 +325,16 @@ class RowsExampleViewController: FormViewController {
                     }
                     $0.value = $0.options.first
                 }
-        
+            
+                <<< PickerInputRow<String>("Picker Input Row"){
+                    $0.title = "Options"
+                    $0.options = []
+                    for i in 1...10{
+                        $0.options.append("option \(i)")
+                    }
+                    $0.value = $0.options.first
+                }
+            
             +++ Section("FieldRow examples")
             
                 <<< TextRow() {
