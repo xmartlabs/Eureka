@@ -467,6 +467,9 @@ form +++
                 $0.placeholder = "Tag Name"
             }
         }
+        $0 <<< NameRow() {
+            $0.placeholder = "Tag Name"
+        }
     }
 ```
 
