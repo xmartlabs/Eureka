@@ -19,18 +19,6 @@ import UIKit
 	var title = UILabel()
 	
 	// MARK:- Properties
-	override public var accessibilityLabel:String! {
-		get {
-			if text?.isEmpty ?? true {
-				return title.text
-			} else {
-				return text
-			}
-		}
-		set {
-			self.accessibilityLabel = newValue
-		}
-	}
 	
 	override public var placeholder:String? {
 		didSet {

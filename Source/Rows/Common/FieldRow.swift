@@ -117,30 +117,59 @@ extension TextFieldCell {
     }
 }
 
-open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: Equatable, T: InputTypeInitiable {
+open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell  where T: Equatable, T: InputTypeInitiable {
 
     @IBOutlet public weak var textField: UITextField!
     @IBOutlet public weak var titleLabel: UILabel?
 
+    private var accessibilityLabelOverride: Bool = false
+    open override var accessibilityLabel: String? {
+        get {
+            return accessibilityLabelOverride
+                ? super.accessibilityLabel
+                : (titleLabel?.text ?? textField.placeholder)
+        }
+        set {
+            accessibilityLabelOverride = true
+            super.accessibilityLabel = accessibilityLabel
+        }
+    }
+    
+    private var accessibilityValueOverride: Bool = false
+    open override var accessibilityValue: String? {
+        get {
+            return accessibilityValueOverride
+                ? super.accessibilityValue
+                : textField.text
+        }
+        set {
+            accessibilityValueOverride = true
+            super.accessibilityValue = accessibilityValue
+        }
+    }
+    
     fileprivate var observingTitleText = false
     private var awakeFromNibCalled = false
 
     open var dynamicConstraints = [NSLayoutConstraint]()
 
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-
         let textField = UITextField()
         self.textField = textField
         textField.translatesAutoresizingMaskIntoConstraints = false
 
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        titleLabel = self.textLabel
-        titleLabel?.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel?.setContentHuggingPriority(500, for: .horizontal)
-        titleLabel?.setContentCompressionResistancePriority(1000, for: .horizontal)
+        isAccessibilityElement = true
+        accessibilityTraits = textField.accessibilityTraits
 
-        contentView.addSubview(titleLabel!)
+        titleLabel = self.textLabel
+        if let titleLabel = titleLabel {
+            titleLabel.translatesAutoresizingMaskIntoConstraints = false
+            titleLabel.setContentHuggingPriority(500, for: .horizontal)
+            titleLabel.setContentCompressionResistancePriority(1000, for: .horizontal)
+            contentView.addSubview(titleLabel)
+        }
         contentView.addSubview(textField)
 
         NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationWillResignActive, object: nil, queue: nil) { [weak self] _ in
