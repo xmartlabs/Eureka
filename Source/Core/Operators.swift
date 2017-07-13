@@ -141,6 +141,21 @@ public func <<< (left: BaseRow, right: BaseRow) -> Section {
 }
 
 /**
+ Appends a collection of rows to a section.
+ 
+ - parameter left:  the section
+ - parameter right: the collection of rows to be appended
+ 
+ - returns: the section
+ */
+@discardableResult
+public func <<< <C: Collection>(left: Section, right: C) -> Section where C.Iterator.Element == BaseRow {
+    left.append(contentsOf: right)
+    
+    return left
+}
+
+/**
  Appends a collection of rows to a section
  
  - parameter lhs: the section
