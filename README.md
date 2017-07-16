@@ -674,7 +674,7 @@ public protocol PresenterRowType: TypedRowType {
 }
 ```
 
-The onPresentCallback will be called when the row is about to present another view controller. This is done in the `SelectorRow` so if you do not sublass it you will have to call it yourself.
+The onPresentCallback will be called when the row is about to present another view controller. This is done in the `SelectorRow` so if you do not subclass it you will have to call it yourself.
 
 The `presentationMode` is what defines how the controller is presented and which controller is presented. This presentation can be using a Segue identifier, a segue class, presenting a controller modally or pushing to a specific view controller. For example a CustomPushRow can be defined like this:
 
