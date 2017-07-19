@@ -122,7 +122,7 @@ class SelectableSectionTests: XCTestCase {
     }
 
     func testSectionedSections() {
-        let selectorViewController = SelectorViewController<String>(nibName: nil, bundle: nil)
+        let selectorViewController = SelectorViewController<PushRow<String>>(nibName: nil, bundle: nil)
         selectorViewController.row = PushRow<String> { row in
             row.options = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
         }
@@ -179,13 +179,13 @@ class SelectableSectionTests: XCTestCase {
     }
 
     func testLazyOptionsProvider() {
-        let selectorViewController = SelectorViewController<String>(nibName: nil, bundle: nil)
+        let selectorViewController = SelectorViewController<PushRow<String>>(nibName: nil, bundle: nil)
         let row = PushRow<String>()
         selectorViewController.row = row
         let options = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
         
         let optionsFetched = expectation(description: "Fetched options")
-        selectorViewController.optionsProvider = .lazy({ form, completion in
+        row.optionsProvider = .lazy({ form, completion in
             DispatchQueue.main.async {
                 completion(options)
                 optionsFetched.fulfill()
@@ -201,7 +201,7 @@ class SelectableSectionTests: XCTestCase {
         
         waitForExpectations(timeout: 1, handler: nil)
         
-        XCTAssertEqual(row.options, options)
+        XCTAssertEqual(row.options ?? [], options)
         XCTAssertEqual(form.count, 1)
         XCTAssertEqual(form[0].count, options.count)
         XCTAssertEqual(form[0].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), options)

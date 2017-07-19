@@ -110,18 +110,6 @@ public enum ControllerProvider<VCType: UIViewController> {
 }
 
 /**
- *  Responsible for the options passed to a selector view controller
- */
-public struct DataProvider<T: Equatable> {
-
-    public let arrayData: [T]?
-
-    public init(arrayData: [T]) {
-        self.arrayData = arrayData
-    }
-}
-
-/**
  Defines how a controller should be presented.
  
  - Show?:           Shows the controller with `showViewController(...)`.
