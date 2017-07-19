@@ -70,9 +70,6 @@ open class RowOf<T: Equatable>: BaseRow {
         set { value = newValue as? T }
     }
 
-    /// Variable used in rows with options that serves to generate the options for that row.
-    public var dataProvider: DataProvider<T>?
-
     /// Block variable used to get the String that should be displayed for the value of this row.
     public var displayValueFor: ((T?) -> String?)? = {
         return $0.map { String(describing: $0) }

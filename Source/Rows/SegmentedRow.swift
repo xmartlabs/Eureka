@@ -113,7 +113,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     }
 
     func valueChanged() {
-        row.value =  (row as! SegmentedRow<T>).options[segmentedControl.selectedSegmentIndex]
+        row.value =  (row as! SegmentedRow<T>).options?[segmentedControl.selectedSegmentIndex]
     }
 
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -129,7 +129,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     func updateSegmentedControl() {
         segmentedControl.removeAllSegments()
         
-        (row as! SegmentedRow<T>).options.reversed().forEach {
+        (row as! SegmentedRow<T>).options?.reversed().forEach {
             if let image = $0 as? UIImage {
                 segmentedControl.insertSegment(with: image, at: 0, animated: false)
             } else {
@@ -175,7 +175,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
 
     func selectedIndex() -> Int? {
         guard let value = row.value else { return nil }
-        return (row as! SegmentedRow<T>).options.index(of: value)
+        return (row as! SegmentedRow<T>).options?.index(of: value)
     }
 }
 
