@@ -136,6 +136,16 @@ open class SelectableSection<Row: SelectableRowType> : Section, SelectableSectio
         super.init(header: header, footer: footer, { section in initializer(section as! SelectableSection<Row>) })
     }
 
+    public init(_ header: HeaderFooterViewRepresentable, selectionType: SelectionType, _ initializer: (SelectableSection<Row>) -> Void = { _ in }) {
+        self.selectionType = selectionType
+        super.init(header, { section in initializer(section as! SelectableSection<Row>) })
+    }
+    
+    public init(header: HeaderFooterViewRepresentable, footer: HeaderFooterViewRepresentable, selectionType: SelectionType, _ initializer: (SelectableSection<Row>) -> Void = { _ in }) {
+        self.selectionType = selectionType
+        super.init(header: header, footer: footer, { section in initializer(section as! SelectableSection<Row>) })
+    }
+    
     public required init() {
         super.init()
     }
