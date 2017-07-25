@@ -106,7 +106,6 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        height = { UITableViewAutomaticDimension }
     }
 
     /**

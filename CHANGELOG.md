@@ -1,6 +1,22 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [3.1.0](https://github.com/xmartlabs/Eureka/releases/tag/3.1.0)
+
+Bug fixes & stability improvements:
+
+* Fixed how sections and rows are inserted using subscripts
+* Fixed issue with disbled rows in selectable sections. Disabled rows were still selectable.
+* Multivalued section does not display image in imagerow #977
+* Improve currency formatter #1103
+* Added option to use accessory view in ImageCheckCell
+* Exact length validation (new feature)
+* Change validation on demand behaviour when row was not valid (#1148)
+* Move FormDelegate methods to `FormViewController` class to make it extensible and customizable.
+* The slider was not being disabled when the row was disabled.
+
+
+
 ### [3.0.0](https://github.com/xmartlabs/Eureka/releases/tag/3.0.0)
 
 Bug fixes & stability improvements:
