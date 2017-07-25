@@ -288,7 +288,9 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
             if let titleLabel = titleLabel, let text = titleLabel.text, !text.isEmpty {
                 views["label"] = titleLabel
                 dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:[imageView]-(15)-[label]-[textField]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views)
-                dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .width, relatedBy: calculatedTitlePercentage != nil ? .equal : .greaterThanOrEqual, toItem: contentView, attribute: .width, multiplier: calculatedTitlePercentage ?? 0.3, constant: 0.0))
+				if let calculatedTitlePercentage = calculatedTitlePercentage {
+					dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .width, relatedBy: .equal, toItem: contentView, attribute: .width, multiplier: calculatedTitlePercentage, constant: 0.0))
+				}
             }
             else{
                 dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:[imageView]-(15)-[textField]-|", options: [], metrics: nil, views: views)
@@ -298,7 +300,9 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
 			if let titleLabel = titleLabel, let text = titleLabel.text, !text.isEmpty {
                 views["label"] = titleLabel
                 dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[label]-[textField]-|", options: [], metrics: nil, views: views)
-                dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .width, relatedBy: calculatedTitlePercentage != nil ? .equal : .greaterThanOrEqual, toItem: contentView, attribute: .width, multiplier: calculatedTitlePercentage ?? 0.3, constant: 0.0))
+				if let calculatedTitlePercentage = calculatedTitlePercentage {
+					dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .width, relatedBy: .equal, toItem: contentView, attribute: .width, multiplier: calculatedTitlePercentage, constant: 0.0))
+				}
             }
             else{
                 dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[textField]-|", options: .alignAllLeft, metrics: nil, views: views)
@@ -397,10 +401,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
 	open override func layoutSubviews() {
 		super.layoutSubviews()
 		guard let row = (row as? FieldRowConformance) else { return }
-		guard let titlePercentage = row.titlePercentage else {
-			calculatedTitlePercentage = nil
-			return
-		}
+		let titlePercentage = row.titlePercentage ?? 0.3
 		var targetTitleWidth = bounds.size.width * titlePercentage
 		if let imageView = imageView, let _ = imageView.image, let titleLabel = titleLabel {
 			var extraWidthToSubtract = titleLabel.frame.minX - imageView.frame.minX // Left-to-right interface layout
