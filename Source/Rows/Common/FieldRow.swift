@@ -283,7 +283,13 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
                 views["label"] = titleLabel
                 dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:[imageView]-(15)-[label]-[textField]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views)
 				if let calculatedTitlePercentage = calculatedTitlePercentage {
-					dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .width, relatedBy: .equal, toItem: contentView, attribute: .width, multiplier: calculatedTitlePercentage, constant: 0.0))
+					dynamicConstraints.append(NSLayoutConstraint(item: titleLabel,
+					                                             attribute: .width,
+					                                             relatedBy: (row as? FieldRowConformance)?.titlePercentage != nil ? .equal : .lessThanOrEqual,
+					                                             toItem: contentView,
+					                                             attribute: .width,
+					                                             multiplier: calculatedTitlePercentage,
+					                                             constant: 0.0))
 				}
             }
             else{
@@ -295,7 +301,13 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
                 views["label"] = titleLabel
                 dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[label]-[textField]-|", options: [], metrics: nil, views: views)
 				if let calculatedTitlePercentage = calculatedTitlePercentage {
-					dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .width, relatedBy: .equal, toItem: contentView, attribute: .width, multiplier: calculatedTitlePercentage, constant: 0.0))
+					dynamicConstraints.append(NSLayoutConstraint(item: titleLabel,
+					                                             attribute: .width,
+					                                             relatedBy: (row as? FieldRowConformance)?.titlePercentage != nil ? .equal : .lessThanOrEqual,
+					                                             toItem: contentView,
+					                                             attribute: .width,
+					                                             multiplier: calculatedTitlePercentage,
+					                                             constant: 0.0))
 				}
             }
             else{
