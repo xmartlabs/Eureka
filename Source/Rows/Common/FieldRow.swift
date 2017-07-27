@@ -89,16 +89,10 @@ open class FieldRow<Cell: CellType>: FormatteableRow<Cell>, FieldRowConformance,
 	@available (*, deprecated, message: "Use titleLabelPercentage instead")
 	open var textFieldPercentage : CGFloat? {
 		get {
-			guard let titlePercentage = titlePercentage else { return nil }
-			return 1 - titlePercentage
+			return titlePercentage.map { 1 - $0 }
 		}
 		set {
-			if let newValue = newValue {
-				titlePercentage = 1 - newValue
-			}
-			else {
-				titlePercentage = nil
-			}
+			titlePercentage = newValue.map { 1 - $0 }
 		}
 	}
 	
