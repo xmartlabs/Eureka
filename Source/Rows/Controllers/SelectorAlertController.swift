@@ -25,15 +25,22 @@
 import Foundation
 
 /// Selector UIAlertController
-open class SelectorAlertController<T: Equatable> : UIAlertController, TypedRowControllerType {
+open class SelectorAlertController<OptionsRow: OptionsProviderRow>: UIAlertController, TypedRowControllerType where OptionsRow.OptionsProviderType.Option == OptionsRow.Cell.Value, OptionsRow: BaseRow {
 
     /// The row that pushed or presented this controller
-    public var row: RowOf<T>!
+    public var row: RowOf<OptionsRow.Cell.Value>!
 
     public var cancelTitle = NSLocalizedString("Cancel", comment: "")
 
     /// A closure to be called when the controller disappears.
     public var onDismissCallback: ((UIViewController) -> Void)?
+    
+    /// Options provider to use to get available options.
+    /// If not set will use synchronous data provider built with `row.dataProvider.arrayData`.
+    //    public var optionsProvider: OptionsProvider<T>?
+    public var optionsProviderRow: OptionsRow {
+        return row as! OptionsRow
+    }
 
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -50,7 +57,7 @@ open class SelectorAlertController<T: Equatable> : UIAlertController, TypedRowCo
 
     open override func viewDidLoad() {
         super.viewDidLoad()
-        guard let options = row.dataProvider?.arrayData else { return }
+        guard let options = optionsProviderRow.options else { return }
         addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: nil))
         for option in options {
             addAction(UIAlertAction(title: row.displayValueFor?(option), style: .default, handler: { [weak self] _ in

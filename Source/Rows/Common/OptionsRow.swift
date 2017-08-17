@@ -24,12 +24,11 @@
 
 import Foundation
 
-open class OptionsRow<Cell: CellType> : Row<Cell>, NoValueDisplayTextConformance where Cell: BaseCell {
+open class OptionsRow<Cell: CellType> : Row<Cell>, NoValueDisplayTextConformance, OptionsProviderRow where Cell: BaseCell {
+    
 
-    open var options: [Cell.Value] {
-        get { return dataProvider?.arrayData ?? [] }
-        set { dataProvider = DataProvider(arrayData: newValue) }
-    }
+    open var optionsProvider: OptionsProvider<Cell.Value>?
+    
     open var selectorTitle: String?
     open var noValueDisplayText: String?
 

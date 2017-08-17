@@ -207,7 +207,7 @@ class RowsExampleViewController: FormViewController {
                 <<< SegmentedRow<UIImage>(){
                     let names = ["selected", "plus_image", "unselected"]
                     $0.options = names.map { UIImage(named: $0)! }
-                    $0.value = $0.options.last
+                    $0.value = $0.options?.last
                 }
 
             +++ Section("Selectors Rows Examples")
@@ -255,7 +255,31 @@ class RowsExampleViewController: FormViewController {
                             default: return ""
                             }
                         }
-        }
+                    }
+            <<< PushRow<Emoji>() {
+                $0.title = "LazySectionedPushRow"
+                $0.value = 👦🏼
+                $0.selectorTitle = "Choose a lazy Emoji!"
+                $0.optionsProvider = .lazy({ (form, completion) in
+                    let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                    form.tableView.backgroundView = activityView
+                    activityView.startAnimating()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                        form.tableView.backgroundView = nil
+                        completion([💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻])
+                    })
+                })
+            }
+            .onPresent { from, to in
+                to.sectionKeyForValue = { option -> String in
+                    switch option {
+                    case 💁🏻, 👦🏼: return "People"
+                    case 🐗, 🐼, 🐻: return "Animals"
+                    case 🍐: return "Food"
+                    default: return ""
+                    }
+                }
+            }
 
         
         if UIDevice.current.userInterfaceIdiom == .pad {
@@ -305,7 +329,22 @@ class RowsExampleViewController: FormViewController {
                             }
                         }
                         to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
-        }
+                    }
+            <<< MultipleSelectorRow<Emoji>() {
+                $0.title = "LazyMultipleSelectorRow"
+                $0.value = [👦🏼, 🍐, 🐗]
+                $0.optionsProvider = .lazy({ (form, completion) in
+                    let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                    form.tableView.backgroundView = activityView
+                    activityView.startAnimating()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                        form.tableView.backgroundView = nil
+                        completion([💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻])
+                    })
+            })
+            }.onPresent { from, to in
+                    to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
+            }
         
         form +++ Section("Generic picker")
             
