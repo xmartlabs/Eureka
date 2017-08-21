@@ -148,10 +148,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
 
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        titleLabel = self.textLabel
-        titleLabel?.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel?.setContentHuggingPriority(500, for: .horizontal)
-        titleLabel?.setContentCompressionResistancePriority(1000, for: .horizontal)
+        setupTitleLabel()
 
         contentView.addSubview(titleLabel!)
         contentView.addSubview(textField)
@@ -170,7 +167,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         }
 
         NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil) { [weak self] _ in
-            self?.titleLabel = self?.textLabel
+            self?.setupTitleLabel()
             self?.setNeedsUpdateConstraints()
         }
     }
@@ -352,6 +349,13 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
     }
 
     // MARK: Helpers
+
+    private func setupTitleLabel() {
+        titleLabel = self.textLabel
+        titleLabel?.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel?.setContentHuggingPriority(500, for: .horizontal)
+        titleLabel?.setContentCompressionResistancePriority(1000, for: .horizontal)
+    }
 
     private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
