@@ -79,6 +79,12 @@ extension NSExpression {
     }
 }
 
+// This is a workaround for warnings in the Swift 3.2 compiler that are triggered when a generic type
+// is explicitly constrained while already implicitly constrained.
+// For instance `T: Hashable where Cell.Value == Set<T>` triggers a warning on Swift 3.2 because Set already
+// has the constraint `T: Hashable`.
+// However Swift 3.1 doesn't infer this constraint, so we need to constraint explicitly. To do this,
+// we define a `_ImplicitlyHashable` type which is Any on 3.2+ and Hashable for earlier versions.
 #if swift(>=3.2)
 public typealias _ImplicitlyHashable = Any
 #else
