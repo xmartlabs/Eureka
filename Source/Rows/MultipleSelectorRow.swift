@@ -24,14 +24,14 @@
 
 import Foundation
 
-open class _MultipleSelectorRow<T, Cell>: GenericMultipleSelectorRow<T, Cell, MultipleSelectorViewController<T>> where Cell: BaseCell, Cell: CellType, Cell.Value == Set<T> {
+open class _MultipleSelectorRow<T: _ImplicitlyHashable, Cell>: GenericMultipleSelectorRow<T, Cell, MultipleSelectorViewController<T>> where Cell: BaseCell, Cell: CellType, Cell.Value == Set<T> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
 /// A selector row where the user can pick several options from a pushed view controller
-public final class MultipleSelectorRow<T: Hashable> : _MultipleSelectorRow<T, PushSelectorCell<Set<T>>>, RowType {
+public final class MultipleSelectorRow<T: _ImplicitlyHashable> : _MultipleSelectorRow<T, PushSelectorCell<Set<T>>>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }

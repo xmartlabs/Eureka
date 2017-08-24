@@ -36,6 +36,7 @@ extension UIView {
         }
         return nil
     }
+    
 
     public func formCell() -> BaseCell? {
         if self is UITableViewCell {
@@ -77,3 +78,9 @@ extension NSExpression {
         }
     }
 }
+
+#if swift(>=3.2)
+public typealias _ImplicitlyHashable = Any
+#else
+public typealias _ImplicitlyHashable = Hashable
+#endif
