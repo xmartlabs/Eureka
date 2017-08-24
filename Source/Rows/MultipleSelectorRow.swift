@@ -31,7 +31,7 @@ open class _MultipleSelectorRow<T: _ImplicitlyHashable, Cell>: GenericMultipleSe
 }
 
 /// A selector row where the user can pick several options from a pushed view controller
-public final class MultipleSelectorRow<T: _ImplicitlyHashable> : _MultipleSelectorRow<T, PushSelectorCell<Set<T>>>, RowType {
+public final class MultipleSelectorRow<T: Hashable> : _MultipleSelectorRow<T, PushSelectorCell<Set<T>>>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
