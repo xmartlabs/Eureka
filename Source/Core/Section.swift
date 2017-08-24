@@ -270,7 +270,7 @@ extension Section : RangeReplaceableCollection {
         }
     }
 
-    // where C.Iterator.Element == BaseRow {
+    #if swift(>=3.2)
     public func replaceSubrange<C>(_ subrange: Range<Int>, with newElements: C) where C : Collection, C.Element == BaseRow {
         for i in subrange.lowerBound..<subrange.upperBound {
             if let row = kvoWrapper.rows.object(at: i) as? BaseRow {
@@ -287,6 +287,24 @@ extension Section : RangeReplaceableCollection {
             row.wasAddedTo(section: self)
         }
     }
+    #else
+    public func replaceSubrange<C>(_ subrange: Range<Index>, with newElements: C) where C : Collection, C.Iterator.Element == Iterator.Element {
+        for i in subrange.lowerBound..<subrange.upperBound {
+            if let row = kvoWrapper.rows.object(at: i) as? BaseRow {
+                row.willBeRemovedFromSection()
+                kvoWrapper._allRows.remove(at: kvoWrapper._allRows.index(of: row)!)
+            }
+        }
+        
+        kvoWrapper.rows.replaceObjects(in: NSRange(location: subrange.lowerBound, length: subrange.upperBound - subrange.lowerBound),
+                                       withObjectsFrom: newElements.map { $0 })
+        
+        kvoWrapper._allRows.insert(contentsOf: newElements, at: indexForInsertion(at: subrange.lowerBound))
+        for row in newElements {
+            row.wasAddedTo(section: self)
+        }
+    }
+    #endif
 
     public func removeAll(keepingCapacity keepCapacity: Bool = false) {
         // not doing anything with capacity
