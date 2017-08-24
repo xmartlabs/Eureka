@@ -279,8 +279,8 @@ extension Section : RangeReplaceableCollection {
             }
         }
 
-        kvoWrapper.rows.replaceObjects(in: NSRange(location: subrange.lowerBound, length: subrange.upperBound - subrange.lowerBound),
-                                       withObjectsFrom: newElements.map { $0 })
+        let range = NSRange(location: subrange.lowerBound, length: subrange.upperBound - subrange.lowerBound)
+        kvoWrapper.rows.replaceObjects(in: range, withObjectsFrom: newElements.map { $0 })
 
         kvoWrapper._allRows.insert(contentsOf: newElements, at: indexForInsertion(at: subrange.lowerBound))
         for row in newElements {
@@ -296,8 +296,8 @@ extension Section : RangeReplaceableCollection {
             }
         }
         
-        kvoWrapper.rows.replaceObjects(in: NSRange(location: subrange.lowerBound, length: subrange.upperBound - subrange.lowerBound),
-                                       withObjectsFrom: newElements.map { $0 })
+        let range = NSRange(location: subrange.lowerBound, length: subrange.upperBound - subrange.lowerBound)
+        kvoWrapper.rows.replaceObjects(in: range, withObjectsFrom: newElements.map { $0 })
         
         kvoWrapper._allRows.insert(contentsOf: newElements, at: indexForInsertion(at: subrange.lowerBound))
         for row in newElements {
