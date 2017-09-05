@@ -77,3 +77,9 @@ extension NSExpression {
         }
     }
 }
+
+#if swift(>=3.2)
+    public typealias _ImplicitlyHashable = Any
+#else
+    public typealias _ImplicitlyHashable = Hashable
+#endif
