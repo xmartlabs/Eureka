@@ -48,6 +48,7 @@ open class DateCell: Cell<Date>, CellType {
         super.setup()
         accessoryType = .none
         editingAccessoryType =  .none
+        accessibilityTraits = UIAccessibilityTraitButton
         datePicker.datePickerMode = datePickerMode()
         datePicker.addTarget(self, action: #selector(DateCell.datePickerValueChanged(_:)), for: .valueChanged)
     }

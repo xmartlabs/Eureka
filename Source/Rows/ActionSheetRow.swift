@@ -39,6 +39,7 @@ open class AlertSelectorCell<T> : Cell<T>, CellType where T: Equatable {
         accessoryType = .none
         editingAccessoryType = accessoryType
         selectionStyle = row.isDisabled ? .none : .default
+        accessibilityTraits = UIAccessibilityTraitButton
     }
 
     open override func didSelect() {

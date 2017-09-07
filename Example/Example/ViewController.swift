@@ -255,6 +255,22 @@ class RowsExampleViewController: FormViewController {
                             default: return ""
                             }
                         }
+                    }
+            <<< PushRow<Emoji>() {
+                $0.title = "LazySectionedPushRow"
+                $0.value = 👦🏼
+                $0.selectorTitle = "Choose a lazy Emoji!"
+                }.onPresent { from, to in
+                    to.row.dataProvider = nil
+                    to.optionsProvider = .lazy({ (form, completion) in
+                        let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                        form.tableView.backgroundView = activityView
+                        activityView.startAnimating()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                            form.tableView.backgroundView = nil
+                            completion([💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻])
+                        })
+                    })
         }
 
         
@@ -305,6 +321,23 @@ class RowsExampleViewController: FormViewController {
                             }
                         }
                         to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
+                    }
+            <<< MultipleSelectorRow<Emoji>() {
+                $0.title = "LazyMultipleSelectorRow"
+                $0.value = [👦🏼, 🍐, 🐗]
+                }.onPresent { from, to in
+                    to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
+
+                    to.row.dataProvider = nil
+                    to.optionsProvider = .lazy({ (form, completion) in
+                        let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                        form.tableView.backgroundView = activityView
+                        activityView.startAnimating()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                            form.tableView.backgroundView = nil
+                            completion([💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻])
+                        })
+                    })
         }
         
         form +++ Section("Generic picker")
@@ -1125,6 +1158,7 @@ class ListSectionsController: FormViewController {
             }.cellSetup { cell, _ in
                 cell.trueImage = UIImage(named: "selectedRectangle")!
                 cell.falseImage = UIImage(named: "unselectedRectangle")!
+                cell.accessoryType = .checkmark
             }
         }
     }

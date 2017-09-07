@@ -140,9 +140,38 @@ public final class WeekDayRow: Row<WeekDayCell>, RowType {
 public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell where T: Equatable, T: InputTypeInitiable {
 
     public var textField: UITextField! { return floatLabelTextField }
+    
+    private var accessibilityLabelOverride: Bool = false
+    open override var accessibilityLabel: String? {
+        get {
+            return accessibilityLabelOverride
+                ? super.accessibilityLabel
+                : (floatLabelTextField.title.text ?? textField.placeholder)
+        }
+        set {
+            accessibilityLabelOverride = true
+            super.accessibilityLabel = accessibilityLabel
+        }
+    }
+    
+    private var accessibilityValueOverride: Bool = false
+    open override var accessibilityValue: String? {
+        get {
+            return accessibilityValueOverride
+                ? super.accessibilityValue
+                : textField.text
+        }
+        set {
+            accessibilityValueOverride = true
+            super.accessibilityValue = accessibilityValue
+        }
+    }
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        isAccessibilityElement = true
+        accessibilityTraits = floatLabelTextField.accessibilityTraits
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -450,8 +479,6 @@ public class AccountFloatLabelCell : _FloatLabelCell<String>, CellType {
 //MARK: FloatLabelRow
 
 open class FloatFieldRow<Cell: CellType>: FormatteableRow<Cell> where Cell: BaseCell, Cell: TextFieldCell {
-
-
     public required init(tag: String?) {
         super.init(tag: tag)
     }
@@ -657,6 +684,8 @@ public final class ImageCheckRow<T: Equatable>: Row<ImageCheckCell<T>>, Selectab
 
 public class ImageCheckCell<T: Equatable> : Cell<T>, CellType {
 
+    private let switchControl = UISwitch()
+    
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
@@ -665,24 +694,48 @@ public class ImageCheckCell<T: Equatable> : Cell<T>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Image for selected state
     lazy public var trueImage: UIImage = {
         return UIImage(named: "selected")!
     }()
 
+    /// Image for unselected state
     lazy public var falseImage: UIImage = {
         return UIImage(named: "unselected")!
     }()
 
     public override func update() {
         super.update()
-        accessoryType = .none
-        imageView?.image = row.value != nil ? trueImage : falseImage
+        checkImageView?.image = row.value != nil ? trueImage : falseImage
+        checkImageView?.sizeToFit()
+        switchControl.isOn = row.value != nil
+        accessibilityValue = switchControl.accessibilityValue
+    }
+    
+    /// Image view to render images. If `accessoryType` is set to `checkmark`
+    /// will create a new `UIImageView` and set it as `accessoryView`.
+    /// Otherwise returns `self.imageView`.
+    open var checkImageView: UIImageView? {
+        guard accessoryType == .checkmark else {
+            return self.imageView
+        }
+        
+        guard let accessoryView = accessoryView else {
+            let imageView = UIImageView()
+            self.accessoryView = imageView
+            return imageView
+        }
+        
+        return accessoryView as? UIImageView
     }
 
     public override func setup() {
         super.setup()
+        accessoryType = .none
+        isAccessibilityElement = true
+        accessibilityTraits = switchControl.accessibilityTraits
     }
-
+    
     public override func didSelect() {
         row.reload()
         row.select()

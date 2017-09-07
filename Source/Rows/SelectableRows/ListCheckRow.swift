@@ -36,7 +36,13 @@ open class ListCheckCell<T: Equatable> : Cell<T>, CellType {
 
     open override func update() {
         super.update()
-        accessoryType = row.value != nil ? .checkmark : .none
+        accessibilityTraits = UIAccessibilityTraitButton
+        if row.value != nil {
+            accessibilityTraits = accessibilityTraits | UIAccessibilityTraitSelected
+            accessoryType = .checkmark
+        } else {
+            accessoryType = .none
+        }
         editingAccessoryType = accessoryType
         selectionStyle = .default
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
