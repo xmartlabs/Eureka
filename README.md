@@ -54,7 +54,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
 ## Requirements
 
 * iOS 8.0+
-* Xcode 8+
+* Xcode 9+
 * Swift 4
 
 ### Example project
