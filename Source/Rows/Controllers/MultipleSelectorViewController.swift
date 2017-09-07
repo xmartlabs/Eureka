@@ -129,20 +129,10 @@ open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> 
         return sections.sorted(by: { (lhs, rhs) in String(describing: lhs.0) < String(describing: rhs.0) })
     }
 
-    func section(with options: [Set<T>], header: HeaderFooterViewRepresentable?, footer: HeaderFooterViewRepresentable?) -> SelectableSection<Row> {
+    func section(with options: [Set<T>], header: HeaderFooterViewRepresentable?, footer: HeaderFooterViewRepresentable?) -> Section {
         let header = header ?? HeaderFooterView(stringLiteral: "")
         let footer = footer ?? HeaderFooterView(stringLiteral: "")
-        let section = SelectableSection<Row>(header: header, footer: footer, selectionType: .multipleSelection) { [weak self] section in
-            section.onSelectSelectableRow = { _, selectableRow in
-                var newValue: Set<T> = self?.row.value ?? []
-                if let selectableValue = selectableRow.value {
-                    newValue.insert(selectableValue)
-                } else {
-                    newValue.remove(selectableRow.selectableValue!)
-                }
-                self?.row.value = newValue
-            }
-        }
+        let section = Section(header: header, footer: footer)
         for option in options {
             section <<< Row.init { lrow in
                 lrow.title = String(describing: option.first!)

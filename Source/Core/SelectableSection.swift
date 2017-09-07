@@ -137,14 +137,14 @@ open class SelectableSection<Row>: Section, SelectableSectionType where Row: Sel
         initializer(self)
     }
 
-    public init(_ header: HeaderFooterViewRepresentable, selectionType: SelectionType, _ initializer: (SelectableSection<Row>) -> Void = { _ in }) {
+    public init(_ header: HeaderFooterViewRepresentable, selectionType: SelectionType, _ initializer: (Section) -> Void = { _ in }) {
         self.selectionType = selectionType
-        super.init(header, { section in initializer(section as! SelectableSection<Row>) })
+        super.init(header, { section in initializer(section) })
     }
     
-    public init(header: HeaderFooterViewRepresentable, footer: HeaderFooterViewRepresentable, selectionType: SelectionType, _ initializer: (SelectableSection<Row>) -> Void = { _ in }) {
+    public init(header: HeaderFooterViewRepresentable, footer: HeaderFooterViewRepresentable, selectionType: SelectionType, _ initializer: (Section) -> Void = { _ in }) {
         self.selectionType = selectionType
-        super.init(header: header, footer: footer, { section in initializer(section as! SelectableSection<Row>) })
+        super.init(header: header, footer: footer, { section in initializer(section) })
     }
     
     public required init() {
