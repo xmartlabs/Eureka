@@ -55,7 +55,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
 
 * iOS 8.0+
 * Xcode 8+
-* Swift 3
+* Swift 4
 
 ### Example project
 
