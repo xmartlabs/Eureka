@@ -59,11 +59,18 @@ class MultivaluedSectionTests: XCTestCase {
     func testDelegateMethods() {
         let form = Form()
         let section = MultivaluedSection(multivaluedOptions: .Insert, header: "", footer: "") { section in
-            section <<< TextRow()
+            section.tag = "textrows"
+            section <<< TextRow() {
+                $0.value = "text"
+            }
         }
 
         form +++ section
         formVC.form = form
+
+        // values
+        XCTAssertEqual(form.values().keys.count, 1)
+        XCTAssertEqual(form.values()["textrows"] as! [String], ["text"])
 
         // canEditRowAt
         XCTAssertTrue(formVC.tableView(formVC.tableView, canEditRowAt: IndexPath(item: 0, section: 0)))
