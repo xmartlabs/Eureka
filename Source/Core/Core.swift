@@ -463,6 +463,10 @@ open class FormViewController: UIViewController, FormViewControllerProtocol {
             if #available(iOS 9.0, *) {
                 tableView.cellLayoutMarginsFollowReadableWidth = false
             }
+            // in Xcode 9, with plain style, estimated section header/footer heights are automatic by default and measure non-zero even for header/footer-less sections.
+            // quoted iOS 11 release notes: the iOS 11 SDK, and you don’t want to adopt self-sizing, you can restore the previous behavior by disabling estimated heights by setting a value of zero for each estimated height property. (30197915)
+            tableView.estimatedSectionHeaderHeight = 0
+            tableView.estimatedSectionFooterHeight = 0
         }
         if tableView.superview == nil {
             view.addSubview(tableView)
