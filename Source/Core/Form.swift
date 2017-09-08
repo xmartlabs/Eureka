@@ -364,7 +364,7 @@ extension Form {
     func getValues(for multivaluedSections: [MultivaluedSection]?) -> [String: [Any?]] {
         return multivaluedSections?.reduce([String: [Any?]]()) {
             var result = $0
-            result[$1.tag!] = $1.kvoWrapper._allRows.filter({ $0.baseValue != nil }).map({ $0.baseValue })
+            result[$1.tag!] = $1.values()
             return result
             } ?? [:]
     }
