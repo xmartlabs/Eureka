@@ -1529,6 +1529,7 @@ class MultivaluedController: FormViewController {
             MultivaluedSection(multivaluedOptions: [.Reorder, .Insert, .Delete],
                                header: "Multivalued TextField",
                                footer: ".Insert multivaluedOption adds the 'Add New Tag' button row as last cell.") {
+                $0.tag = "textfields"
                 $0.addButtonProvider = { section in
                     return ButtonRow(){
                         $0.title = "Add New Tag"
@@ -1551,6 +1552,7 @@ class MultivaluedController: FormViewController {
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                            header: "Multivalued ActionSheet Selector example",
                                            footer: ".Insert multivaluedOption adds a 'Add' button row as last cell.") {
+                $0.tag = "options"
                 $0.multivaluedRowToInsertAt = { index in
                     return ActionSheetRow<String>{
                         $0.title = "Tap to select.."
@@ -1569,6 +1571,7 @@ class MultivaluedController: FormViewController {
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete, .Reorder],
                                            header: "Multivalued Push Selector example",
                                            footer: "") {
+                $0.tag = "push"
                 $0.multivaluedRowToInsertAt = { index in
                     return PushRow<String>{
                         $0.title = "Tap to select ;)..at \(index)"
@@ -1581,6 +1584,10 @@ class MultivaluedController: FormViewController {
                 }
                                 
             }
+    }
+
+    @IBAction func save(_ sender: Any) {
+        print("\(form.values())")
     }
 }
 
