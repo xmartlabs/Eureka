@@ -470,4 +470,13 @@ open class MultivaluedSection: Section {
         }
         self <<< addRow
     }
+
+    /**
+     Method used to get all the values of the section.
+
+     - returns: An Array mapping the row values. [value]
+     */
+    public func values() -> [Any?] {
+        return kvoWrapper._allRows.filter({ $0.baseValue != nil }).map({ $0.baseValue })
+    }
 }
