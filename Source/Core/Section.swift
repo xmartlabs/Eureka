@@ -233,7 +233,7 @@ extension Section: MutableCollection, BidirectionalCollection {
     }
 
     public subscript (range: Range<Int>) -> ArraySlice<BaseRow> {
-        get { return kvoWrapper.rows.map({ $0 as! BaseRow })[range.lowerBound...range.upperBound] }
+        get { return kvoWrapper.rows.map({ $0 as! BaseRow })[range] }
         set {
             replaceSubrange(range, with: newValue)
         }
