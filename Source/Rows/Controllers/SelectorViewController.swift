@@ -147,10 +147,29 @@ open class _SelectorViewController<Row: SelectableRowType>: FormViewController, 
         return sections.sorted(by: { (lhs, rhs) in String(describing: lhs.0) < String(describing: rhs.0) })
     }
 
-    func section(with options: [Row.Cell.Value], header: HeaderFooterViewRepresentable?, footer: HeaderFooterViewRepresentable?) -> Section {
+    func section(with options: [Row.Cell.Value], header: HeaderFooterViewRepresentable?, footer: HeaderFooterViewRepresentable?) -> SelectableSection<Row> {
         let header = header ?? HeaderFooterView(stringLiteral: "")
         let footer = footer ?? HeaderFooterView(stringLiteral: "")
-        let section = Section(header: header, footer: footer)
+        let section = SelectableSection<Row>(header: header, footer: footer, selectionType: .singleSelection(enableDeselection: enableDeselection)) { [weak self] section in
+            section.onSelectSelectableRow = { _, row in
+                let changed = self?.row.value != row.value
+                self?.row.value = row.value
+                
+                if let form = row.section?.form {
+                    for section in form where section !== row.section {
+                        let section = section as AnyObject as! SelectableSection<Row> //  workaround to prevent compilation warning
+                        if let selectedRow = section.selectedRow(), selectedRow !== row {
+                            selectedRow.value = nil
+                            selectedRow.updateCell()
+                        }
+                    }
+                }
+                
+                if self?.dismissOnSelection == true || (changed && self?.dismissOnChange == true) {
+                    self?.onDismissCallback?(self!)
+                }
+            }
+        }
         for option in options {
             section <<< Row.init(String(describing: option)) { lrow in
                 lrow.title = self.row.displayValueFor?(option)

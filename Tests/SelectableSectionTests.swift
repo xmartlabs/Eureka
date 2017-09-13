@@ -143,14 +143,14 @@ class SelectableSectionTests: XCTestCase {
             }
         }
         selectorViewController.sectionHeaderTitleForKey = { key in
-            switch Hemisphere(rawValue: Int(String(describing: key))!)! {
+            switch Hemisphere(rawValue: Int(key)!)! {
             case .west: return "West hemisphere"
             case .east: return "East hemisphere"
             case .none: return ""
             }
         }
         selectorViewController.sectionFooterTitleForKey = { key in
-            switch Hemisphere(rawValue: Int(String(describing: key))!)! {
+            switch Hemisphere(rawValue: Int(key)!)! {
             case .west: return "West hemisphere"
             case .east: return "East hemisphere"
             case .none: return ""
