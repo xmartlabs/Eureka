@@ -239,7 +239,10 @@ class RowsExampleViewController: FormViewController {
                         $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
                         $0.value = 👦🏼
                         $0.selectorTitle = "Choose an Emoji!"
-                    }
+                    }.onPresent { from, to in
+                        to.dismissOnSelection = false
+                        to.dismissOnChange = false
+            }
 
                 <<< PushRow<Emoji>() {
                         $0.title = "SectionedPushRow"
@@ -247,6 +250,8 @@ class RowsExampleViewController: FormViewController {
                         $0.value = 👦🏼
                         $0.selectorTitle = "Choose an Emoji!"
                     }.onPresent { from, to in
+                        to.dismissOnSelection = false
+                        to.dismissOnChange = false
                         to.sectionKeyForValue = { option in
                             switch option {
                             case 💁🏻, 👦🏼: return "People"
