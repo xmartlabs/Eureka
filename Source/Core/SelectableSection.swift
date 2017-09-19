@@ -89,7 +89,8 @@ extension SelectableSectionType where Self: Section {
                     case .multipleSelection:
                         row.value = row.value == nil ? row.selectableValue : nil
                     case let .singleSelection(enableDeselection):
-                        s.filter { $0.baseValue != nil && $0 != row }.forEach {
+                        s.forEach {
+                            guard $0.baseValue != nil && $0 != row else { return }
                             $0.baseValue = nil
                             $0.updateCell()
                         }
