@@ -52,6 +52,7 @@ open class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerVi
         super.setup()
         accessoryType = .none
         editingAccessoryType = .none
+        height = { UITableViewAutomaticDimension }
         picker.delegate = self
         picker.dataSource = self
     }
