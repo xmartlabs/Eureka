@@ -68,9 +68,9 @@ extension NSExpression {
             case .function, .variable:
                 let str = "\(self)"
                 if let range = str.range(of: ".") {
-                    return [str.substring(with: str.characters.index(str.startIndex, offsetBy: 1)..<range.lowerBound)]
+                    return [String(str[str.characters.index(str.startIndex, offsetBy: 1)..<range.lowerBound])]
                 } else {
-                    return [str.substring(from: str.characters.index(str.startIndex, offsetBy: 1))]
+                    return [String(str[str.characters.index(str.startIndex, offsetBy: 1)...])]
                 }
             default:
                 return []
