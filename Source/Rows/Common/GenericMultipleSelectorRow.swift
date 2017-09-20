@@ -25,7 +25,7 @@
 import Foundation
 
 /// Generic options selector row that allows multiple selection.
-open class GenericMultipleSelectorRow<T: Hashable, Cell: CellType>: Row<Cell>, PresenterRowType, NoValueDisplayTextConformance, OptionsProviderRow
+open class GenericMultipleSelectorRow<T, Cell: CellType>: Row<Cell>, PresenterRowType, NoValueDisplayTextConformance, OptionsProviderRow
             where Cell: BaseCell, Cell.Value == Set<T> {
     
     public typealias PresentedController = MultipleSelectorViewController<GenericMultipleSelectorRow<T,Cell>>

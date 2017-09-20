@@ -313,8 +313,8 @@ public enum EurekaError: Error {
 public protocol FormViewControllerProtocol {
     var tableView: UITableView! { get }
 
-    func beginEditing<T: Equatable>(of: Cell<T>)
-    func endEditing<T: Equatable>(of: Cell<T>)
+    func beginEditing<T>(of: Cell<T>)
+    func endEditing<T>(of: Cell<T>)
 
     func insertAnimation(forRows rows: [BaseRow]) -> UITableViewRowAnimation
     func deleteAnimation(forRows rows: [BaseRow]) -> UITableViewRowAnimation
@@ -539,7 +539,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
     /**
     Called when a cell becomes first responder
     */
-    public final func beginEditing<T: Equatable>(of cell: Cell<T>) {
+    public final func beginEditing<T>(of cell: Cell<T>) {
         cell.row.isHighlighted = true
         cell.row.updateCell()
         RowDefaults.onCellHighlightChanged["\(type(of: cell.row!))"]?(cell, cell.row)
@@ -557,7 +557,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
     /**
      Called when a cell resigns first responder
      */
-    public final func endEditing<T: Equatable>(of cell: Cell<T>) {
+    public final func endEditing<T>(of cell: Cell<T>) {
         cell.row.isHighlighted = false
         cell.row.wasBlurred = true
         RowDefaults.onCellHighlightChanged["\(type(of: self))"]?(cell, cell.row)
