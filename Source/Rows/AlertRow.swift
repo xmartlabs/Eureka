@@ -23,12 +23,15 @@
 // THE SOFTWARE.
 import Foundation
 
+
 open class _AlertRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
 
-    open var onPresentCallback: ((FormViewController, SelectorAlertController<Cell.Value>) -> Void)?
-    lazy open var presentationMode: PresentationMode<SelectorAlertController<Cell.Value>>? = {
-        return .presentModally(controllerProvider: ControllerProvider.callback { [weak self] in
-            let vc = SelectorAlertController<Cell.Value>(title: self?.selectorTitle, message: nil, preferredStyle: .alert)
+    public typealias PresentedController = SelectorAlertController<_AlertRow<Cell>>
+    
+    open var onPresentCallback: ((FormViewController, PresentedController) -> Void)?
+    lazy open var presentationMode: PresentationMode<PresentedController>? = {
+        return .presentModally(controllerProvider: ControllerProvider<PresentedController>.callback { [weak self] in
+            let vc = PresentedController(title: self?.selectorTitle, message: nil, preferredStyle: .alert)
             vc.row = self
             return vc
         }, onDismiss: { [weak self] in

@@ -49,10 +49,12 @@ open class AlertSelectorCell<T> : Cell<T>, CellType where T: Equatable {
 
 public class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
 
-    public var onPresentCallback: ((FormViewController, SelectorAlertController<Cell.Value>) -> Void)?
-    lazy public var presentationMode: PresentationMode<SelectorAlertController<Cell.Value>>? = {
+    public typealias ProviderType = SelectorAlertController<_ActionSheetRow<Cell>>
+    
+    public var onPresentCallback: ((FormViewController, ProviderType) -> Void)?
+    lazy public var presentationMode: PresentationMode<ProviderType>? = {
         return .presentModally(controllerProvider: ControllerProvider.callback { [weak self] in
-            let vc = SelectorAlertController<Cell.Value>(title: self?.selectorTitle, message: nil, preferredStyle: .actionSheet)
+            let vc = SelectorAlertController<_ActionSheetRow<Cell>>(title: self?.selectorTitle, message: nil, preferredStyle: .actionSheet)
             if let popView = vc.popoverPresentationController {
                 guard let cell = self?.cell, let tableView = cell.formViewController()?.tableView else { fatalError() }
                 popView.sourceView = tableView

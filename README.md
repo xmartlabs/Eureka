@@ -324,7 +324,7 @@ Section(){ section in
 
 In this case we are hiding and showing whole sections.
 
-To accomplish this each row has an `hidden` variable of optional type `Condition` which can be set using a function or `NSPredicate`.
+To accomplish this each row has a `hidden` variable of optional type `Condition` which can be set using a function or `NSPredicate`.
 
 
 #### Hiding using a function condition
@@ -475,19 +475,19 @@ form +++
 
 Previous code snippet shows how to create a multivalued section. In this case we want to insert, delete and reorder rows as multivaluedOptions argument indicates.
 
-`addButtonProvider` allows us to customize the button row which inserts a new row when tapped and `multivaluedOptions` contains .Insert` value.
+`addButtonProvider` allows us to customize the button row which inserts a new row when tapped and `multivaluedOptions` contains `.Insert` value.
 
 `multivaluedRowToInsertAt` closure property is called by Eureka each time a new row needs to be inserted. In order to provide the row to add into multivalued section we should set this property. Eureka passes the index as closure parameter. Notice that we can return any kind of row, even custom rows, even though in most cases multivalued section rows are of the same type.
 
 Eureka automatically adds a button row when we create a insertable multivalued section. We can customize how the this button row looks like as we explained before. `showInsertIconInAddButton` property indicates if plus button (insert style) should appear in the left of the button, true by default.
 
-There are some considerations we need to have in mind when creating insertable sections. Any row added to the insertable multivalued section should be placed above the row that Eureka automatically adds to insert new rows. This can be easily achieved by adding these additional rows to the section from inside section's initializer closure (last parameter of section initializer) so then Eureka adds the adds insert button at the end of the section.
+There are some considerations we need to have in mind when creating insertable sections. Any row added to the insertable multivalued section should be placed above the row that Eureka automatically adds to insert new rows. This can be easily achieved by adding these additional rows to the section from inside the section's initializer closure (last parameter of section initializer) so then Eureka adds the adds insert button at the end of the section.
 
 For more information on how to use multivalued sections please take a look at Eureka example project which contains several usage examples.
 
 ### Validations
 
-Eureka 2.0.0 introduces the very requested build-in validations feature.
+Eureka 2.0.0 introduces the much requested built-in validations feature.
 
 A row has a collection of `Rules` and a specific configuration that determines when validation rules should be evaluated.
 
@@ -578,6 +578,10 @@ If you want to validate the entire form (all the rows) you can manually invoke F
 
 Each row has the `validationErrors` property that can be used to retrieve all validation errors. This property just holds the validation error list of the latest row validation execution, which means it doesn't evaluate the validation rules of the row.
 
+#### Note on types
+
+As expected, the Rules must use the same types as the Row object. Be extra careful to check the row type used. You might see a compiler error ("Incorrect arugment label in call (have 'rule:' expected 'ruleSet:')" that is not pointing to the problem when mixing types.
+
 ## Custom rows
 
 It is very common that you need a row that is different from those included in Eureka. If this is the case you will have to create your own row but this should not be difficult. You can read [this tutorial on how to create custom rows](https://blog.xmartlabs.com/2016/09/06/Eureka-custom-row-tutorial/) to get started. You might also want to have a look at [EurekaCommunity] which includes some extra rows ready to be added to Eureka.
@@ -661,7 +665,7 @@ public override func customDidSelect() {
 
 To create a custom Presenter row you must create a class that conforms the `PresenterRowType` protocol. It is highly recommended to subclass `SelectorRow` as it does conform to that protocol and adds other useful functionality.
 
-The PresenterRowType protocol is defined as followes:
+The PresenterRowType protocol is defined as follows:
 ```swift
 public protocol PresenterRowType: TypedRowType {
     typealias ProviderType : UIViewController, TypedRowControllerType
@@ -670,7 +674,7 @@ public protocol PresenterRowType: TypedRowType {
 }
 ```
 
-The onPresentCallback will be called when the row is about to present another view controller. This is done in the `SelectorRow` so if you do not sublass it you will have to call it yourself.
+The onPresentCallback will be called when the row is about to present another view controller. This is done in the `SelectorRow` so if you do not subclass it you will have to call it yourself.
 
 The `presentationMode` is what defines how the controller is presented and which controller is presented. This presentation can be using a Segue identifier, a segue class, presenting a controller modally or pushing to a specific view controller. For example a CustomPushRow can be defined like this:
 
