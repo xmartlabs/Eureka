@@ -132,6 +132,10 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
         return row as! OptionsRow
     }
 
+    override public init(style: UITableViewStyle) {
+        super.init(style: style)
+    }
+
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
