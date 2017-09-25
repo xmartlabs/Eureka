@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="6g3-M9-WkD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="6g3-M9-WkD">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -119,7 +119,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6g3-M9-WkD" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="37i-zo-mrN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -218,7 +218,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3A7-59-k1N" customClass="NativeEventNavigationController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="dOa-Gv-ZyO">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -333,7 +333,13 @@
                             <constraint firstItem="P95-eE-cnb" firstAttribute="top" secondItem="QYB-0m-3TS" secondAttribute="bottom" id="iIx-JY-TTE"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="JnB-RD-R8g"/>
+                    <navigationItem key="navigationItem" id="JnB-RD-R8g">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="2jn-dM-TgZ">
+                            <connections>
+                                <action selector="save:" destination="3E8-i9-e3P" id="PAG-gJ-1WR"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="QYB-0m-3TS" id="iAK-pT-gJd"/>
                     </connections>
@@ -342,10 +348,10 @@
             </objects>
             <point key="canvasLocation" x="-713.5" y="2547.5"/>
         </scene>
-        <!--Multivalued Only Rearder Controller-->
+        <!--Multivalued Only Reorder Controller-->
         <scene sceneID="iCj-Rb-n4P">
             <objects>
-                <viewController id="fcN-W7-dk3" customClass="MultivaluedOnlyRearderController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="fcN-W7-dk3" customClass="MultivaluedOnlyReorderController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ZhU-x5-LEM"/>
                         <viewControllerLayoutGuide type="bottom" id="dwC-UZ-shB"/>
@@ -652,9 +658,4 @@
             <point key="canvasLocation" x="859" y="1833"/>
         </scene>
     </scenes>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

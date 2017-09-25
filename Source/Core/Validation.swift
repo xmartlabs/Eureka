@@ -64,7 +64,7 @@ public struct ValidationOptions: OptionSet {
     public static let validatesAlways: ValidationOptions = [.validatesOnChange, .validatesOnBlur]
 }
 
-internal struct ValidationRuleHelper<T: Equatable> {
+internal struct ValidationRuleHelper<T> where T: Equatable {
     let validateFn: ((T?) -> ValidationError?)
     let rule: BaseRuleType
 }

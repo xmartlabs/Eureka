@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [4.0.0](https://github.com/xmartlabs/Eureka/releases/tag/4.0.0)
+
+* Xcode 9, Swift 4 support.
+* Add the values of MultivaluedSection into form.values().
+
 ### [3.1.0](https://github.com/xmartlabs/Eureka/releases/tag/3.1.0)
 
 Bug fixes & stability improvements:

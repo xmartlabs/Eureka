@@ -79,7 +79,7 @@ class SelectableSectionTests: XCTestCase {
         formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 3, section: 1))
 
         let value1 = (formVC.form[0] as! SelectableSection<ListCheckRow<String>>).selectedRow()?.baseValue
-        let value2 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>>).selectedRows().map({$0.baseValue})
+        let value2 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>>).selectedRows().map {$0.baseValue}
 
         XCTAssertEqual(value1 as? String, "Antarctica")
         XCTAssertTrue(value2.count == 2)
@@ -91,7 +91,9 @@ class SelectableSectionTests: XCTestCase {
         formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 1, section: 1))
 
         let value3 = (formVC.form[0] as! SelectableSection<ListCheckRow<String>>).selectedRow()?.baseValue
-        let value4 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>>).selectedRows().map({$0.baseValue})
+        
+        let selectedRows = (formVC.form[1] as! SelectableSection<ListCheckRow<String>>).selectedRows()
+        let value4 = selectedRows.map { $0.baseValue }
 
         XCTAssertEqual(value3 as? String, "South America")
         XCTAssertTrue(value4.count == 1)

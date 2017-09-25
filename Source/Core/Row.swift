@@ -24,7 +24,7 @@
 
 import Foundation
 
-open class RowOf<T: Equatable>: BaseRow {
+open class RowOf<T>: BaseRow where T: Equatable{
 
     private var _value: T? {
         didSet {
