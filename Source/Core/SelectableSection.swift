@@ -90,7 +90,7 @@ extension SelectableSectionType where Self: Section {
                         row.value = row.value == nil ? row.selectableValue : nil
                     case let .singleSelection(enableDeselection):
                         s.forEach {
-                            guard $0.baseValue != nil && $0 != row else { return }
+                            guard $0.baseValue != nil && $0 != row && $0 is SelectableRow else { return }
                             $0.baseValue = nil
                             $0.updateCell()
                         }
