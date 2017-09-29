@@ -722,6 +722,38 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
 
     var oldBottomInset: CGFloat?
     var animateTableView = false
+    
+    /** Calculates the height needed for a header or footer. */
+    fileprivate func height(specifiedHeight: (() -> CGFloat)?, sectionView: UIView?, sectionTitle: String?) -> CGFloat {
+        if let height = specifiedHeight {
+            return height()
+        }
+        
+        if let sectionView = sectionView {
+            let height = sectionView.bounds.height
+            
+            if height == 0 {
+                return UITableViewAutomaticDimension
+            }
+            
+            return height
+        }
+        
+        if let sectionTitle = sectionTitle,
+            sectionTitle != "" {
+            return UITableViewAutomaticDimension
+        }
+        
+        // Fix for iOS 11+. By returning 0, we ensure that no section header or
+        // footer is shown when self-sizing is enabled (i.e. when
+        // tableView.estimatedSectionHeaderHeight or tableView.estimatedSectionFooterHeight
+        // == UITableViewAutomaticDimension).
+        if tableView.style == .plain {
+            return 0
+        }
+        
+        return UITableViewAutomaticDimension
+    }
 }
 
 extension FormViewController : UITableViewDelegate {
@@ -763,29 +795,15 @@ extension FormViewController : UITableViewDelegate {
     }
 
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if let height = form[section].header?.height {
-            return height()
-        }
-        guard let view = form[section].header?.viewForSection(form[section], type: .header) else {
-            return UITableViewAutomaticDimension
-        }
-        guard view.bounds.height != 0 else {
-            return UITableViewAutomaticDimension
-        }
-        return view.bounds.height
+        return height(specifiedHeight: form[section].header?.height,
+                      sectionView: self.tableView(tableView, viewForHeaderInSection: section),
+                      sectionTitle: self.tableView(tableView, titleForHeaderInSection: section))
     }
-
+    
     open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if let height = form[section].footer?.height {
-            return height()
-        }
-        guard let view = form[section].footer?.viewForSection(form[section], type: .footer) else {
-            return UITableViewAutomaticDimension
-        }
-        guard view.bounds.height != 0 else {
-            return UITableViewAutomaticDimension
-        }
-        return view.bounds.height
+        return height(specifiedHeight: form[section].footer?.height,
+                      sectionView: self.tableView(tableView, viewForFooterInSection: section),
+                      sectionTitle: self.tableView(tableView, titleForFooterInSection: section))
     }
 
     open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
