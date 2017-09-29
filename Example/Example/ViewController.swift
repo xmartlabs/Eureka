@@ -107,6 +107,11 @@ class HomeViewController : FormViewController {
                     row.presentationMode = .segueName(segueName: "MultivaluedSectionsControllerSegue", onDismiss: nil)
                 }
             
+                <<< ButtonRow("Plain Table View Style") { (row: ButtonRow) in
+                    row.title = row.tag
+                    row.presentationMode = .segueName(segueName: "PlainTableViewStyleViewControllerSegue", onDismiss: nil)
+                }
+            
                 
         +++ Section()
                 <<< ButtonRow() { (row: ButtonRow) -> Void in
@@ -1744,6 +1749,42 @@ class MultivaluedOnlyDeleteController: FormViewController {
         tableView.setEditing(!tableView.isEditing, animated: true)
         editButton.title = tableView.isEditing ? "Done" : "Edit"
         
+    }
+}
+
+//MARK: Plain Table View Style View Example
+
+class PlainTableViewStyleController : FormViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        form +++
+            
+            Section()
+            
+            <<< TextRow() {
+                $0.title = "Name"
+                $0.value = "John Doe"
+            }
+            
+            <<< TextRow() {
+                $0.title = "Username"
+                $0.value = "johndoe1"
+            }
+            
+            <<< EmailRow() {
+                $0.title = "Email Address"
+                $0.value = "john@doe.com"
+            }
+            
+            <<< PasswordRow() {
+                $0.title = "Password"
+                $0.value = "johndoe9876"
+            }
+        
+        // Remove excess separator lines on non-existent cells
+        tableView.tableFooterView = UIView()
     }
 }
 
