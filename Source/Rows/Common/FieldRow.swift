@@ -150,8 +150,8 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
 
         titleLabel = self.textLabel
         titleLabel?.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel?.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
-        titleLabel?.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .horizontal)
+        titleLabel?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
+        titleLabel?.setContentCompressionResistancePriority(UILayoutPriority(1000), for: .horizontal)
 
         contentView.addSubview(titleLabel!)
         contentView.addSubview(textField)
