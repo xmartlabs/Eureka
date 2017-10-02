@@ -39,7 +39,7 @@ public struct RuleMinLength: RuleType {
 
     public func isValid(value: String?) -> ValidationError? {
         guard let value = value else { return nil }
-        return value.characters.count < Int(min) ? validationError : nil
+        return value.count < Int(min) ? validationError : nil
     }
 }
 
@@ -58,7 +58,7 @@ public struct RuleMaxLength: RuleType {
 
     public func isValid(value: String?) -> ValidationError? {
         guard let value = value else { return nil }
-        return value.characters.count > Int(max) ? validationError : nil
+        return value.count > Int(max) ? validationError : nil
     }
 }
 
@@ -76,6 +76,6 @@ public struct RuleExactLength: RuleType {
     
     public func isValid(value: String?) -> ValidationError? {
         guard let value = value else { return nil }
-        return value.characters.count != Int(length) ? validationError : nil
+        return value.count != Int(length) ? validationError : nil
     }
 }
