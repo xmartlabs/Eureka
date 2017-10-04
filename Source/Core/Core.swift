@@ -929,7 +929,7 @@ extension FormViewController : UITableViewDataSource {
         return nil
     }
     
-    public func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+    open func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         return 0
     }
 }
