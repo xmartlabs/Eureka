@@ -62,7 +62,7 @@ open class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = nil
-        cellStyle = .default
+        cellStyle = .value1
     }
 
     open override func customDidSelect() {
