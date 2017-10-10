@@ -80,11 +80,11 @@ open class _ButtonRowOf<T: Equatable> : Row<ButtonCellOf<T>> {
 
     open override func customUpdateCell() {
         super.customUpdateCell()
-        let leftAligmnment = presentationMode != nil
-        cell.textLabel?.textAlignment = leftAligmnment ? .left : .center
-        cell.accessoryType = !leftAligmnment || isDisabled ? .none : .disclosureIndicator
+        let leftAlignment = presentationMode != nil
+        cell.textLabel?.textAlignment = leftAlignment ? .left : .center
+        cell.accessoryType = !leftAlignment || isDisabled ? .none : .disclosureIndicator
         cell.editingAccessoryType = cell.accessoryType
-        cell.textLabel?.textColor = !leftAligmnment ? cell.tintColor.withAlphaComponent(isDisabled ? 0.3 : 1.0) : nil
+        cell.textLabel?.textColor = !leftAlignment ? cell.tintColor.withAlphaComponent(isDisabled ? 0.3 : 1.0) : nil
     }
 
     open override func prepare(for segue: UIStoryboardSegue) {
