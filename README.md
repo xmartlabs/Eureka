@@ -1048,16 +1048,16 @@ As we've said `Form` and `Section` types conform to `MutableCollection` and `Ran
 
 ```swift
 extension RangeReplaceableCollection {
-    public mutating func append(newElement: Self.Generator.Element)
-    public mutating func appendContentsOf<S : Sequence where S.Generator.Element == Generator.Element>(newElements: S)
-    public mutating func insert(newElement: Self.Generator.Element, atIndex i: Self.Index)
-    public mutating func insertContentsOf<C : Collection where C.Generator.Element == Generator.Element>(newElements: C, at i: Self.Index)
-    public mutating func removeAtIndex(index: Self.Index) -> Self.Generator.Element
-    public mutating func removeRange(subRange: Range<Self.Index>)
-    public mutating func removeFirst(n: Int)
-    public mutating func removeFirst() -> Self.Generator.Element
-    public mutating func removeAll(keepCapacity keepCapacity: Bool = default)
-    public mutating func reserveCapacity(n: Self.Index.Distance)
+    public mutating func append(_ newElement: Self.Element)
+    public mutating func append<S>(contentsOf newElements: S) where S : Sequence, Self.Element == S.Element
+    public mutating func insert(_ newElement: Self.Element, at i: Self.Index)
+    public mutating func insert<S>(contentsOf newElements: S, at i: Self.Index) where S : Collection, Self.Element == S.Element
+    public mutating func remove(at i: Self.Index) -> Self.Element
+    public mutating func removeSubrange(_ bounds: Range<Self.Index>)
+    public mutating func removeFirst(_ n: Int)
+    public mutating func removeFirst() -> Self.Element
+    public mutating func removeAll(keepingCapacity keepCapacity: Bool)
+    public mutating func reserveCapacity(_ n: Self.IndexDistance)
 }
 ```
 
@@ -1069,8 +1069,8 @@ public func +++(left: Form, right: Section) -> Form {
     return left
 }
 
-public func +=< C : Collection where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
-    lhs.appendContentsOf(rhs)
+public func +=<C : Collection>(inout lhs: Form, rhs: C) where C.Element == Section {
+    lhs.append(contentsOf: rhs)
 }
 
 public func <<<(left: Section, right: BaseRow) -> Section {
@@ -1078,8 +1078,8 @@ public func <<<(left: Section, right: BaseRow) -> Section {
     return left
 }
 
-public func +=< C : Collection where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
-    lhs.appendContentsOf(rhs)
+public func +=<C : Collection>(inout lhs: Section, rhs: C) where C.Element == BaseRow {
+    lhs.append(contentsOf: rhs)
 }
 ```
 
