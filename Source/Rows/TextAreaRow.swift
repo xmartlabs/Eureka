@@ -124,7 +124,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         if !awakeFromNibCalled {
             placeholderLabel?.sizeToFit()
         }
-        placeholderLabel?.isHidden = textView.text.characters.count != 0
+        placeholderLabel?.isHidden = textView.text.count != 0
     }
 
     open override func cellCanBecomeFirstResponder() -> Bool {
@@ -191,7 +191,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
             UIView.setAnimationsEnabled(true)
             tableView.setContentOffset(currentOffset, animated: false)
         }
-        placeholderLabel?.isHidden = textView.text.characters.count != 0
+        placeholderLabel?.isHidden = textView.text.count != 0
         guard let textValue = textView.text else {
             row.value = nil
             return
