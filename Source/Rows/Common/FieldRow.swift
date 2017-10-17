@@ -28,10 +28,10 @@ public protocol InputTypeInitiable {
     init?(string stringValue: String)
 }
 
-public protocol FieldRowConformance: FormatterConformance {
-    var textFieldPercentage: CGFloat? { get set }
-    var placeholder: String? { get set }
-    var placeholderColor: UIColor? { get set }
+public protocol FieldRowConformance : FormatterConformance {
+    var titlePercentage : CGFloat? { get set }
+    var placeholder : String? { get set }
+    var placeholderColor : UIColor? { get set }
 }
 
 extension Int: InputTypeInitiable {
@@ -86,8 +86,19 @@ open class FieldRow<Cell: CellType>: FormatteableRow<Cell>, FieldRowConformance,
     open var keyboardReturnType: KeyboardReturnTypeConfiguration?
 
     /// The percentage of the cell that should be occupied by the textField
-    open var textFieldPercentage: CGFloat?
-
+	@available (*, deprecated, message: "Use titleLabelPercentage instead")
+	open var textFieldPercentage : CGFloat? {
+		get {
+			return titlePercentage.map { 1 - $0 }
+		}
+		set {
+			titlePercentage = newValue.map { 1 - $0 }
+		}
+	}
+	
+	/// The percentage of the cell that should be occupied by the title (i.e. the titleLabel and optional imageView combined)
+	open var titlePercentage: CGFloat?
+	
     /// The placeholder for the textField
     open var placeholder: String?
 
@@ -126,7 +137,9 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
     private var awakeFromNibCalled = false
 
     open var dynamicConstraints = [NSLayoutConstraint]()
-
+	
+	private var calculatedTitlePercentage: CGFloat = 0.7
+	
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
 
         let textField = UITextField()
@@ -157,6 +170,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         }
 
         NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil) { [weak self] _ in
+            self?.titleLabel = self?.textLabel
             self?.setNeedsUpdateConstraints()
         }
     }
@@ -268,28 +282,31 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
             if let titleLabel = titleLabel, let text = titleLabel.text, !text.isEmpty {
                 views["label"] = titleLabel
                 dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:[imageView]-(15)-[label]-[textField]-|", options: NSLayoutFormatOptions(), metrics: nil, views: views)
-                dynamicConstraints.append(NSLayoutConstraint(item: textField,
-                                                             attribute: .width,
-                                                             relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .equal : .greaterThanOrEqual,
-                                                             toItem: contentView,
-                                                             attribute: .width,
-                                                             multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3,
-                                                             constant: 0.0))
-            } else {
+				dynamicConstraints.append(NSLayoutConstraint(item: titleLabel,
+				                                             attribute: .width,
+				                                             relatedBy: (row as? FieldRowConformance)?.titlePercentage != nil ? .equal : .lessThanOrEqual,
+				                                             toItem: contentView,
+				                                             attribute: .width,
+				                                             multiplier: calculatedTitlePercentage,
+				                                             constant: 0.0))
+            }
+            else{
                 dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:[imageView]-(15)-[textField]-|", options: [], metrics: nil, views: views)
             }
-        } else {
-            if let titleLabel = titleLabel, let text = titleLabel.text, !text.isEmpty {
+        }
+        else{
+			if let titleLabel = titleLabel, let text = titleLabel.text, !text.isEmpty {
                 views["label"] = titleLabel
                 dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[label]-[textField]-|", options: [], metrics: nil, views: views)
-                dynamicConstraints.append(NSLayoutConstraint(item: textField,
-                                                             attribute: .width,
-                                                             relatedBy: (row as? FieldRowConformance)?.textFieldPercentage != nil ? .equal : .greaterThanOrEqual,
-                                                             toItem: contentView,
-                                                             attribute: .width,
-                                                             multiplier: (row as? FieldRowConformance)?.textFieldPercentage ?? 0.3,
-                                                             constant: 0.0))
-            } else {
+				dynamicConstraints.append(NSLayoutConstraint(item: titleLabel,
+				                                             attribute: .width,
+				                                             relatedBy: (row as? FieldRowConformance)?.titlePercentage != nil ? .equal : .lessThanOrEqual,
+				                                             toItem: contentView,
+				                                             attribute: .width,
+				                                             multiplier: calculatedTitlePercentage,
+				                                             constant: 0.0))
+            }
+            else{
                 dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[textField]-|", options: .alignAllLeft, metrics: nil, views: views)
             }
         }
@@ -381,6 +398,27 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
 
     open func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         return formViewController()?.textInputShouldEndEditing(textField, cell: self) ?? true
-    }
-
+	}
+	
+	open override func layoutSubviews() {
+		super.layoutSubviews()
+		guard let row = (row as? FieldRowConformance) else { return }
+		guard let titlePercentage = row.titlePercentage else  { return }
+		var targetTitleWidth = bounds.size.width * titlePercentage
+		if let imageView = imageView, let _ = imageView.image, let titleLabel = titleLabel {
+			var extraWidthToSubtract = titleLabel.frame.minX - imageView.frame.minX // Left-to-right interface layout
+			if #available(iOS 9.0, *) {
+				if UIView.userInterfaceLayoutDirection(for: self.semanticContentAttribute) == .rightToLeft {
+					extraWidthToSubtract = imageView.frame.maxX - titleLabel.frame.maxX
+				}
+			}
+			targetTitleWidth -= extraWidthToSubtract
+		}
+		let targetTitlePercentage = targetTitleWidth / contentView.bounds.size.width
+		if calculatedTitlePercentage != targetTitlePercentage {
+			calculatedTitlePercentage = targetTitlePercentage
+			setNeedsUpdateConstraints()
+			updateConstraintsIfNeeded()
+		}
+	}
 }

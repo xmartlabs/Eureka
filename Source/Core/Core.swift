@@ -110,18 +110,6 @@ public enum ControllerProvider<VCType: UIViewController> {
 }
 
 /**
- *  Responsible for the options passed to a selector view controller
- */
-public struct DataProvider<T: Equatable> {
-
-    public let arrayData: [T]?
-
-    public init(arrayData: [T]) {
-        self.arrayData = arrayData
-    }
-}
-
-/**
  Defines how a controller should be presented.
  
  - Show?:           Shows the controller with `showViewController(...)`.
@@ -325,8 +313,8 @@ public enum EurekaError: Error {
 public protocol FormViewControllerProtocol {
     var tableView: UITableView! { get }
 
-    func beginEditing<T: Equatable>(of: Cell<T>)
-    func endEditing<T: Equatable>(of: Cell<T>)
+    func beginEditing<T>(of: Cell<T>)
+    func endEditing<T>(of: Cell<T>)
 
     func insertAnimation(forRows rows: [BaseRow]) -> UITableViewRowAnimation
     func deleteAnimation(forRows rows: [BaseRow]) -> UITableViewRowAnimation
@@ -402,7 +390,7 @@ public struct InlineRowHideOptions: OptionSet {
 }
 
 /// View controller that shows a form.
-open class FormViewController: UIViewController, FormViewControllerProtocol {
+open class FormViewController: UIViewController, FormViewControllerProtocol, FormDelegate {
 
     @IBOutlet public var tableView: UITableView!
 
@@ -518,8 +506,8 @@ open class FormViewController: UIViewController, FormViewControllerProtocol {
 		}
     }
 
-    open override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillHide, object: nil)
     }
@@ -553,7 +541,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol {
     /**
     Called when a cell becomes first responder
     */
-    public final func beginEditing<T: Equatable>(of cell: Cell<T>) {
+    public final func beginEditing<T>(of cell: Cell<T>) {
         cell.row.isHighlighted = true
         cell.row.updateCell()
         RowDefaults.onCellHighlightChanged["\(type(of: cell.row!))"]?(cell, cell.row)
@@ -571,7 +559,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol {
     /**
      Called when a cell resigns first responder
      */
-    public final func endEditing<T: Equatable>(of cell: Cell<T>) {
+    public final func endEditing<T>(of cell: Cell<T>) {
         cell.row.isHighlighted = false
         cell.row.wasBlurred = true
         RowDefaults.onCellHighlightChanged["\(type(of: self))"]?(cell, cell.row)
@@ -687,6 +675,50 @@ open class FormViewController: UIViewController, FormViewControllerProtocol {
             inlineRow.collapseInlineRow()
         }
     }
+    
+    // MARK: FormDelegate
+    
+    open func sectionsHaveBeenAdded(_ sections: [Section], at indexes: IndexSet) {
+        guard animateTableView else { return }
+        tableView?.beginUpdates()
+        tableView?.insertSections(indexes, with: insertAnimation(forSections: sections))
+        tableView?.endUpdates()
+    }
+    
+    open func sectionsHaveBeenRemoved(_ sections: [Section], at indexes: IndexSet) {
+        guard animateTableView else { return }
+        tableView?.beginUpdates()
+        tableView?.deleteSections(indexes, with: deleteAnimation(forSections: sections))
+        tableView?.endUpdates()
+    }
+    
+    open func sectionsHaveBeenReplaced(oldSections: [Section], newSections: [Section], at indexes: IndexSet) {
+        guard animateTableView else { return }
+        tableView?.beginUpdates()
+        tableView?.reloadSections(indexes, with: reloadAnimation(oldSections: oldSections, newSections: newSections))
+        tableView?.endUpdates()
+    }
+    
+    open func rowsHaveBeenAdded(_ rows: [BaseRow], at indexes: [IndexPath]) {
+        guard animateTableView else { return }
+        tableView?.beginUpdates()
+        tableView?.insertRows(at: indexes, with: insertAnimation(forRows: rows))
+        tableView?.endUpdates()
+    }
+    
+    open func rowsHaveBeenRemoved(_ rows: [BaseRow], at indexes: [IndexPath]) {
+        guard animateTableView else { return }
+        tableView?.beginUpdates()
+        tableView?.deleteRows(at: indexes, with: deleteAnimation(forRows: rows))
+        tableView?.endUpdates()
+    }
+    
+    open func rowsHaveBeenReplaced(oldRows: [BaseRow], newRows: [BaseRow], at indexes: [IndexPath]) {
+        guard animateTableView else { return }
+        tableView?.beginUpdates()
+        tableView?.reloadRows(at: indexes, with: reloadAnimation(oldRows: oldRows, newRows: newRows))
+        tableView?.endUpdates()
+    }
 
     // MARK: Private
 
@@ -775,11 +807,11 @@ extension FormViewController : UITableViewDelegate {
         }
         return true
     }
-	
-    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+
+    open func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let row = form[indexPath]
-            var section = row.section!
+            let section = row.section!
             if let _ = row.baseCell.findFirstResponder() {
                 tableView.endEditing(true)
             }
@@ -807,8 +839,8 @@ extension FormViewController : UITableViewDelegate {
             }
         }
     }
-	
-    public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+
+    open func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         guard let section = form[indexPath.section] as? MultivaluedSection, section.multivaluedOptions.contains(.Reorder) && section.count > 1 else {
             return false
         }
@@ -820,8 +852,8 @@ extension FormViewController : UITableViewDelegate {
         }
         return true
     }
-	
-    public func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+
+    open func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
         guard let section = form[sourceIndexPath.section] as? MultivaluedSection else { return sourceIndexPath }
         guard sourceIndexPath.section == proposedDestinationIndexPath.section else { return sourceIndexPath }
 		
@@ -841,9 +873,9 @@ extension FormViewController : UITableViewDelegate {
         }
         return proposedDestinationIndexPath
     }
-	
-    public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-		
+
+    open func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+
         guard var section = form[sourceIndexPath.section] as? MultivaluedSection else { return }
         if sourceIndexPath.row < section.count && destinationIndexPath.row < section.count && sourceIndexPath.row != destinationIndexPath.row {
 			
@@ -856,8 +888,8 @@ extension FormViewController : UITableViewDelegate {
             let _ = inputAccessoryView(for: sourceRow)
         }
     }
-	
-    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+
+    open func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         guard let section = form[indexPath.section] as? MultivaluedSection else {
 			if let actions = form[indexPath].trailingSwipeConfiguration?.actions.count, actions > 0{
 				return .delete
@@ -872,8 +904,8 @@ extension FormViewController : UITableViewDelegate {
         }
         return .none
     }
-	
-    public func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+
+    open func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return self.tableView(tableView, editingStyleForRowAt: indexPath) != .none
     }
 	
@@ -918,52 +950,6 @@ extension FormViewController : UITableViewDataSource {
     }
 }
 
-extension FormViewController: FormDelegate {
-
-    // MARK: FormDelegate
-
-    open func sectionsHaveBeenAdded(_ sections: [Section], at indexes: IndexSet) {
-		guard animateTableView else { return }
-        tableView?.beginUpdates()
-        tableView?.insertSections(indexes, with: insertAnimation(forSections: sections))
-        tableView?.endUpdates()
-    }
-
-    open func sectionsHaveBeenRemoved(_ sections: [Section], at indexes: IndexSet) {
-        guard animateTableView else { return }
-        tableView?.beginUpdates()
-        tableView?.deleteSections(indexes, with: deleteAnimation(forSections: sections))
-        tableView?.endUpdates()
-    }
-
-    open func sectionsHaveBeenReplaced(oldSections: [Section], newSections: [Section], at indexes: IndexSet) {
-        guard animateTableView else { return }
-        tableView?.beginUpdates()
-        tableView?.reloadSections(indexes, with: reloadAnimation(oldSections: oldSections, newSections: newSections))
-        tableView?.endUpdates()
-    }
-
-    open func rowsHaveBeenAdded(_ rows: [BaseRow], at indexes: [IndexPath]) {
-        guard animateTableView else { return }
-        tableView?.beginUpdates()
-        tableView?.insertRows(at: indexes, with: insertAnimation(forRows: rows))
-        tableView?.endUpdates()
-    }
-
-    open func rowsHaveBeenRemoved(_ rows: [BaseRow], at indexes: [IndexPath]) {
-        guard animateTableView else { return }
-        tableView?.beginUpdates()
-        tableView?.deleteRows(at: indexes, with: deleteAnimation(forRows: rows))
-        tableView?.endUpdates()
-    }
-
-    open func rowsHaveBeenReplaced(oldRows: [BaseRow], newRows: [BaseRow], at indexes: [IndexPath]) {
-        guard animateTableView else { return }
-        tableView?.beginUpdates()
-        tableView?.reloadRows(at: indexes, with: reloadAnimation(oldRows: oldRows, newRows: newRows))
-        tableView?.endUpdates()
-    }
-}
 
 extension FormViewController : UIScrollViewDelegate {
 

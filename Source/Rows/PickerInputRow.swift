@@ -26,7 +26,7 @@ import Foundation
 
 // MARK: PickerInputCell
 
-open class PickerInputCell<T: Equatable> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerViewDelegate where T: Equatable, T: InputTypeInitiable {
+open class PickerInputCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerViewDelegate where T: Equatable, T: InputTypeInitiable {
 
     lazy public var picker: UIPickerView = {
         let picker = UIPickerView()

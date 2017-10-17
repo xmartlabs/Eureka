@@ -85,7 +85,7 @@ open class BaseCell: UITableViewCell, BaseCellType {
 }
 
 /// Generic class that represents the Eureka cells.
-open class Cell<T: Equatable> : BaseCell, TypedCellType {
+open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
 
     public typealias Value = T
 
@@ -106,7 +106,6 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        height = { UITableViewAutomaticDimension }
     }
 
     /**

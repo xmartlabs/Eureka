@@ -118,7 +118,7 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
         let spacing : CGFloat = 3.0
         button.titleEdgeInsets = UIEdgeInsetsMake(0.0, -imageSize.width, -(imageSize.height + spacing), 0.0)
         guard let titleLabel = button.titleLabel, let title = titleLabel.text else { return }
-        let titleSize = title.size(attributes: [NSFontAttributeName: titleLabel.font])
+        let titleSize = title.size(withAttributes: [NSAttributedStringKey.font: titleLabel.font])
         button.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height + spacing), 0, 0, -titleSize.width)
     }
 }
@@ -173,7 +173,7 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
         super.update()
         textLabel?.text = nil
         detailTextLabel?.text = nil
-        floatLabelTextField.attributedPlaceholder = NSAttributedString(string: row.title ?? "", attributes: [NSForegroundColorAttributeName: UIColor.lightGray])
+        floatLabelTextField.attributedPlaceholder = NSAttributedString(string: row.title ?? "", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         floatLabelTextField.text =  row.displayValueFor?(row.value)
         floatLabelTextField.isEnabled = !row.isDisabled
         floatLabelTextField.titleTextColour = .lightGray
@@ -198,7 +198,7 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
         return NSLayoutConstraint.constraints(withVisualFormat: "H:|-[floatLabeledTextField]-|", options: .alignAllLastBaseline, metrics: metrics, views: views) + NSLayoutConstraint.constraints(withVisualFormat: "V:|-(vMargin)-[floatLabeledTextField]-(vMargin)-|", options: .alignAllLastBaseline, metrics: metrics, views: views)
     }
 
-    public func textFieldDidChange(_ textField : UITextField){
+    @objc public func textFieldDidChange(_ textField : UITextField){
         guard let textValue = textField.text else {
             row.value = nil
             return
@@ -505,7 +505,18 @@ public final class EmailFloatLabelRow: FloatFieldRow<EmailFloatLabelCell>, RowTy
 
 //MARK: LocationRow
 
-public final class LocationRow : SelectorRow<PushSelectorCell<CLLocation>, MapViewController>, RowType {
+public final class LocationRow: OptionsRow<PushSelectorCell<CLLocation>>, PresenterRowType, RowType {
+    
+    public typealias PresenterRow = MapViewController
+    
+    /// Defines how the view controller will be presented, pushed, etc.
+    open var presentationMode: PresentationMode<PresenterRow>?
+    
+    /// Will be called before the presentation occurs.
+    open var onPresentCallback: ((FormViewController, PresenterRow) -> Void)?
+
+    
+    
     public required init(tag: String?) {
         super.init(tag: tag)
         presentationMode = .show(controllerProvider: ControllerProvider.callback { return MapViewController(){ _ in } }, onDismiss: { vc in _ = vc.navigationController?.popViewController(animated: true) })
@@ -519,6 +530,34 @@ public final class LocationRow : SelectorRow<PushSelectorCell<CLLocation>, MapVi
             let longitude = fmt.string(from: NSNumber(value: location.coordinate.longitude))!
             return  "\(latitude), \(longitude)"
         }
+    }
+    
+    /**
+     Extends `didSelect` method
+     */
+    open override func customDidSelect() {
+        super.customDidSelect()
+        guard let presentationMode = presentationMode, !isDisabled else { return }
+        if let controller = presentationMode.makeController() {
+            controller.row = self
+            controller.title = selectorTitle ?? controller.title
+            onPresentCallback?(cell.formViewController()!, controller)
+            presentationMode.present(controller, row: self, presentingController: self.cell.formViewController()!)
+        } else {
+            presentationMode.present(nil, row: self, presentingController: self.cell.formViewController()!)
+        }
+    }
+    
+    /**
+     Prepares the pushed row setting its title and completion callback.
+     */
+    open override func prepare(for segue: UIStoryboardSegue) {
+        super.prepare(for: segue)
+        guard let rowVC = segue.destination as? PresenterRow else { return }
+        rowVC.title = selectorTitle ?? rowVC.title
+        rowVC.onDismissCallback = presentationMode?.onDismissCallback ?? rowVC.onDismissCallback
+        onPresentCallback?(cell.formViewController()!, rowVC)
+        rowVC.row = self
     }
 }
 
@@ -616,7 +655,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
     }
 
 
-    func tappedDone(_ sender: UIBarButtonItem){
+    @objc func tappedDone(_ sender: UIBarButtonItem){
         let target = mapView.convert(ellipsisLayer.position, toCoordinateFrom: mapView)
         row.value = CLLocation(latitude: target.latitude, longitude: target.longitude)
         onDismissCallback?(self)
@@ -665,22 +704,42 @@ public class ImageCheckCell<T: Equatable> : Cell<T>, CellType {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Image for selected state
     lazy public var trueImage: UIImage = {
         return UIImage(named: "selected")!
     }()
 
+    /// Image for unselected state
     lazy public var falseImage: UIImage = {
         return UIImage(named: "unselected")!
     }()
 
     public override func update() {
         super.update()
-        accessoryType = .none
-        imageView?.image = row.value != nil ? trueImage : falseImage
+        checkImageView?.image = row.value != nil ? trueImage : falseImage
+        checkImageView?.sizeToFit()
+    }
+    
+    /// Image view to render images. If `accessoryType` is set to `checkmark`
+    /// will create a new `UIImageView` and set it as `accessoryView`.
+    /// Otherwise returns `self.imageView`.
+    open var checkImageView: UIImageView? {
+        guard accessoryType == .checkmark else {
+            return self.imageView
+        }
+        
+        guard let accessoryView = accessoryView else {
+            let imageView = UIImageView()
+            self.accessoryView = imageView
+            return imageView
+        }
+        
+        return accessoryView as? UIImageView
     }
 
     public override func setup() {
         super.setup()
+        accessoryType = .none
     }
 
     public override func didSelect() {

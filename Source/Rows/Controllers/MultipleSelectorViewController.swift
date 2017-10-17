@@ -25,10 +25,10 @@
 import Foundation
 
 /// Selector Controller that enables multiple selection
-open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> : FormViewController, TypedRowControllerType where Row: BaseRow, Row: TypedRowType, Row.Cell.Value == T {
+open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: OptionsProviderRow> : FormViewController, TypedRowControllerType where Row: BaseRow, Row.Cell.Value == OptionsRow.OptionsProviderType.Option, OptionsRow.OptionsProviderType.Option: Hashable {
 
     /// The row that pushed or presented this controller
-    public var row: RowOf<Set<T>>!
+    public var row: RowOf<Set<OptionsRow.OptionsProviderType.Option>>!
 
     public var selectableRowCellSetup: ((_ cell: Row.Cell, _ row: Row) -> Void)?
     public var selectableRowCellUpdate: ((_ cell: Row.Cell, _ row: Row) -> Void)?
@@ -46,6 +46,12 @@ open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> 
 
     /// A closure that returns footer title for a section for particular key.
     public var sectionFooterTitleForKey: ((String) -> String?)?
+
+
+    public var optionsProviderRow: OptionsRow {
+        return row as! OptionsRow
+    }
+    
 
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -66,34 +72,44 @@ open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> 
     }
 
     open func setupForm() {
-        guard let options = row.dataProvider?.arrayData else { return }
-
-        if let optionsBySections = self.optionsBySections() {
+        optionsProviderRow.optionsProvider?.options(for: self) { [weak self] (options: [OptionsRow.OptionsProviderType.Option]?) in
+            guard let strongSelf = self, let options = options else { return }
+            strongSelf.optionsProviderRow.cachedOptionsData = options
+            strongSelf.setupForm(with: options)
+        }
+    }
+    
+    open func setupForm(with options: [OptionsRow.OptionsProviderType.Option]) {
+        if let optionsBySections = optionsBySections(with: options) {
             for (sectionKey, options) in optionsBySections {
-                form +++ section(with: options, header: sectionHeaderTitleForKey?(sectionKey), footer: sectionFooterTitleForKey?(sectionKey))
+                form +++ section(with: options,
+                                 header: sectionHeaderTitleForKey?(sectionKey),
+                                 footer: sectionFooterTitleForKey?(sectionKey))
             }
         } else {
             form +++ section(with: options, header: row.title, footer: nil)
         }
     }
+    
+    open func optionsBySections(with options: [OptionsRow.OptionsProviderType.Option]) -> [(String, [Row.Cell.Value])]? {
+        guard let sectionKeyForValue = sectionKeyForValue else { return nil }
 
-    open func optionsBySections() -> [(String, [Set<Row.Cell.Value>])]? {
-        guard let options = row.dataProvider?.arrayData, let sectionKeyForValue = sectionKeyForValue else { return nil }
-
-        let sections = options.reduce([:]) { (reduced, option) -> [String: [Set<Row.Cell.Value>]] in
+        let sections = options.reduce([:]) { (reduced, option) -> [String: [Row.Cell.Value]] in
             var reduced = reduced
-            let key = sectionKeyForValue(option.first!)
-            reduced[key] = (reduced[key] ?? []) + [option]
+            let key = sectionKeyForValue(options.first!)
+            var items = reduced[key] ?? []
+            items.append(option)
+            reduced[key] = items
             return reduced
         }
 
         return sections.sorted(by: { (lhs, rhs) in lhs.0 < rhs.0 })
     }
 
-    func section(with options: [Set<T>], header: String?, footer: String?) -> SelectableSection<Row> {
+    func section(with options: [OptionsRow.OptionsProviderType.Option], header: String?, footer: String?) -> SelectableSection<Row> {
         let section = SelectableSection<Row>(header: header ?? "", footer: footer ?? "", selectionType: .multipleSelection) { [weak self] section in
             section.onSelectSelectableRow = { _, selectableRow in
-                var newValue: Set<T> = self?.row.value ?? []
+                var newValue: Set<OptionsRow.OptionsProviderType.Option> = self?.row.value ?? []
                 if let selectableValue = selectableRow.value {
                     newValue.insert(selectableValue)
                 } else {
@@ -104,9 +120,9 @@ open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> 
         }
         for option in options {
             section <<< Row.init { lrow in
-                lrow.title = String(describing: option.first!)
-                lrow.selectableValue = option.first!
-                lrow.value = self.row.value?.contains(option.first!) ?? false ? option.first! : nil
+                lrow.title = String(describing: option)
+                lrow.selectableValue = option
+                lrow.value = self.row.value?.contains(option) ?? false ? option : nil
             }.cellSetup { [weak self] cell, row in
                 self?.selectableRowCellSetup?(cell, row)
             }.cellUpdate { [weak self] cell, row in
@@ -117,5 +133,14 @@ open class _MultipleSelectorViewController<T: Hashable, Row: SelectableRowType> 
     }
 }
 
-open class MultipleSelectorViewController<T: Hashable> : _MultipleSelectorViewController<T, ListCheckRow<T>> {
+open class MultipleSelectorViewController<OptionsRow: OptionsProviderRow>: _MultipleSelectorViewController<ListCheckRow<OptionsRow.OptionsProviderType.Option>, OptionsRow> where OptionsRow.OptionsProviderType.Option: Hashable{
+    
+    override public init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
 }
