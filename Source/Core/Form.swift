@@ -260,40 +260,44 @@ extension Form {
         var _allSections = [Section]()
         private weak var form: Form?
 
+        private var keyValueObservation: NSKeyValueObservation!
+
         init(form: Form) {
             self.form = form
             super.init()
-            addObserver(self, forKeyPath: "_sections", options: NSKeyValueObservingOptions.new.union(.old), context:nil)
+
+            keyValueObservation = observe(\._sections, options: [.new, .old]) { [weak self] (_, change) in
+
+                let newSections = change.newValue as? [Section] ?? []
+                let oldSections = change.oldValue as? [Section] ?? []
+
+                guard let delegateValue = self?.form?.delegate else {
+                    return
+                }
+
+                switch change.kind {
+                case .setting:
+                    let indexSet = change.indexes ?? IndexSet(integer: 0)
+                    delegateValue.sectionsHaveBeenAdded(newSections, at: indexSet)
+                case .insertion:
+                    let indexSet = change.indexes!
+                    delegateValue.sectionsHaveBeenAdded(newSections, at: indexSet)
+                case .removal:
+                    let indexSet = change.indexes!
+                    delegateValue.sectionsHaveBeenRemoved(oldSections, at: indexSet)
+                case .replacement:
+                    let indexSet = change.indexes!
+                    delegateValue.sectionsHaveBeenReplaced(oldSections: oldSections, newSections: newSections, at: indexSet)
+                }
+
+            }
+
         }
 
         deinit {
-            removeObserver(self, forKeyPath: "_sections")
+            keyValueObservation.invalidate()
             _sections.removeAllObjects()
             _allSections.removeAll()
-        }
-
-        public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-
-            let newSections = change?[NSKeyValueChangeKey.newKey] as? [Section] ?? []
-            let oldSections = change?[NSKeyValueChangeKey.oldKey] as? [Section] ?? []
-            guard let delegateValue = form?.delegate, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey] else { return }
-            guard keyPathValue == "_sections" else { return }
-            switch (changeType as! NSNumber).uintValue {
-            case NSKeyValueChange.setting.rawValue:
-                let indexSet = change![NSKeyValueChangeKey.indexesKey] as? IndexSet ?? IndexSet(integer: 0)
-                delegateValue.sectionsHaveBeenAdded(newSections, at: indexSet)
-            case NSKeyValueChange.insertion.rawValue:
-                let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
-                delegateValue.sectionsHaveBeenAdded(newSections, at: indexSet)
-            case NSKeyValueChange.removal.rawValue:
-                let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
-                delegateValue.sectionsHaveBeenRemoved(oldSections, at: indexSet)
-            case NSKeyValueChange.replacement.rawValue:
-                let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
-                delegateValue.sectionsHaveBeenReplaced(oldSections: oldSections, newSections: newSections, at: indexSet)
-            default:
-                assertionFailure()
-            }
         }
     }
 
