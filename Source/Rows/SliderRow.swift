@@ -61,7 +61,6 @@ open class SliderCell: Cell<Float>, CellType {
     open override func setup() {
         super.setup()
         if !awakeFromNibCalled {
-            // title
             let title = textLabel
             textLabel?.translatesAutoresizingMaskIntoConstraints = false
             textLabel?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
@@ -70,6 +69,8 @@ open class SliderCell: Cell<Float>, CellType {
             let value = detailTextLabel
             value?.translatesAutoresizingMaskIntoConstraints = false
             value?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
+            value?.adjustsFontSizeToFitWidth = true
+            value?.minimumScaleFactor = 0.5
             self.valueLabel = value
 
             let slider = UISlider()
@@ -79,8 +80,8 @@ open class SliderCell: Cell<Float>, CellType {
 
             if shouldShowTitle {
                 contentView.addSubview(titleLabel)
-                contentView.addSubview(valueLabel!)
             }
+            contentView.addSubview(valueLabel!)
             contentView.addSubview(slider)
             addConstraints()
         }
@@ -94,25 +95,28 @@ open class SliderCell: Cell<Float>, CellType {
         super.update()
         titleLabel.text = row.title
         valueLabel.text = row.displayValueFor?(row.value)
-        valueLabel.isHidden = !shouldShowTitle && !awakeFromNibCalled
-        titleLabel.isHidden = valueLabel.isHidden
+        titleLabel.isHidden = !shouldShowTitle
         slider.value = row.value ?? 0.0
         slider.isEnabled = !row.isDisabled
     }
 
     func addConstraints() {
-        guard !awakeFromNibCalled else { return }
+        let views: [String : Any] = ["titleLabel": titleLabel, "slider": slider, "valueLabel": valueLabel]
+        let metrics = ["spacing": 15.0, "valueLabelWidth": 40.0]
 
-        let views: [String : Any] = ["titleLabel": titleLabel, "valueLabel": valueLabel, "slider": slider]
-        let metrics = ["vPadding": 12.0, "spacing": 12.0]
-        if shouldShowTitle {
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[titleLabel]-[valueLabel]-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[titleLabel]-spacing-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
-        } else {
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
-        }
+        let hContraints = NSLayoutConstraint.constraints(
+            withVisualFormat: "H:|-\(shouldShowTitle ? "[titleLabel]-spacing-" : "")[slider]-[valueLabel(valueLabelWidth)]-|",
+            options: .alignAllCenterY,
+            metrics: metrics,
+            views: views)
 
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[slider]-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
+        let vContraints = NSLayoutConstraint.constraints(
+            withVisualFormat: "V:|-[slider]-|",
+            options: .alignAllCenterX,
+            metrics: metrics,
+            views: views)
+
+        contentView.addConstraints(hContraints + vContraints)
     }
 
     @objc func valueChanged() {
