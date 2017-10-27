@@ -351,6 +351,27 @@ class RowsExampleViewController: FormViewController {
                     to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
             }
         
+            <<< SelectionListRow<Emoji>("Selection List Row") { row in
+                    row.title = "Selection List Row"
+                    row.options = [👦🏼, 🍐, 💁🏻, 🐗, 🐼, 🐻, 🐖, 🐡]
+                    row.value = 🐖
+                
+                    row.horizontalContentInset = 32
+                }
+                .configureCell { cell, _, index in
+                    cell.backgroundColor = (index % 2 == 0) ? .lightGray : .white
+                }
+            
+            <<< SelectorInlineRow<Emoji>("Selector Inline Row") { row in
+                    row.title = "Selector Inline Row"
+                    row.options = [👦🏼, 🍐, 💁🏻, 🐗, 🐼, 🐻, 🐖, 🐡]
+                    row.value = 🐗
+                }
+                .configureSubcell { cell, _, index in
+                    let part = CGFloat(index) / 8
+                    cell.backgroundColor = UIColor(white: 1 - part, alpha: 1)
+                }
+        
         form +++ Section("Generic picker")
             
                 <<< PickerRow<String>("Picker Row") { (row : PickerRow<String>) -> Void in

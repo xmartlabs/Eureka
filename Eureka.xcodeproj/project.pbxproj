@@ -84,6 +84,8 @@
 		51729DF61B9A4F5E004A00EB /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51729DEB1B9A4F5E004A00EB /* Eureka.framework */; };
 		51729E671B9A5FA5004A00EB /* Eureka.h in Headers */ = {isa = PBXBuildFile; fileRef = 51729E661B9A5FA5004A00EB /* Eureka.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8690E4BE1CFDE062004CDB1C /* Eureka.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8690E4BD1CFDE062004CDB1C /* Eureka.bundle */; };
+		A06CBF561FA320D800FC0B97 /* SelectionListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06CBF541FA320D800FC0B97 /* SelectionListRow.swift */; };
+		A06CBF571FA320D800FC0B97 /* SelectorInlineRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06CBF551FA320D800FC0B97 /* SelectorInlineRow.swift */; };
 		B257FE2E1EC0F66900043911 /* RowsInsertionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B257FE2D1EC0F66900043911 /* RowsInsertionTests.swift */; };
 		B2A401161EC0BA140042EDF0 /* SectionsInsertionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A401151EC0BA140042EDF0 /* SectionsInsertionTests.swift */; };
 		FA56B6AF1DBAD38900407C94 /* RuleEqualsToRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56B6AE1DBAD38900407C94 /* RuleEqualsToRow.swift */; };
@@ -180,6 +182,8 @@
 		51729DFC1B9A4F5E004A00EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Tests/Info.plist; sourceTree = "<group>"; };
 		51729E661B9A5FA5004A00EB /* Eureka.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Eureka.h; path = Source/Eureka.h; sourceTree = SOURCE_ROOT; };
 		8690E4BD1CFDE062004CDB1C /* Eureka.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Eureka.bundle; sourceTree = "<group>"; };
+		A06CBF541FA320D800FC0B97 /* SelectionListRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionListRow.swift; sourceTree = "<group>"; };
+		A06CBF551FA320D800FC0B97 /* SelectorInlineRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectorInlineRow.swift; sourceTree = "<group>"; };
 		B257FE2D1EC0F66900043911 /* RowsInsertionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RowsInsertionTests.swift; path = Tests/RowsInsertionTests.swift; sourceTree = SOURCE_ROOT; };
 		B2A401151EC0BA140042EDF0 /* SectionsInsertionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SectionsInsertionTests.swift; path = Tests/SectionsInsertionTests.swift; sourceTree = SOURCE_ROOT; };
 		FA56B6AE1DBAD38900407C94 /* RuleEqualsToRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RuleEqualsToRow.swift; path = Source/Validations/RuleEqualsToRow.swift; sourceTree = SOURCE_ROOT; };
@@ -254,6 +258,8 @@
 				2859CE1D1C7E08300002982F /* PopoverSelectorRow.swift */,
 				2859CDEC1C7DF0680002982F /* PushRow.swift */,
 				2859CDA81C7D0B3C0002982F /* SegmentedRow.swift */,
+				A06CBF541FA320D800FC0B97 /* SelectionListRow.swift */,
+				A06CBF551FA320D800FC0B97 /* SelectorInlineRow.swift */,
 				2859CD9A1C7CF2020002982F /* SliderRow.swift */,
 				49ADC7F81C8A83240073952B /* StepperRow.swift */,
 				2859CDA61C7CF5530002982F /* SwitchRow.swift */,
@@ -535,6 +541,7 @@
 				2859CDC41C7D19C50002982F /* HeaderFooterView.swift in Sources */,
 				28EEC00C1C7E396000300699 /* SelectorRow.swift in Sources */,
 				280FBE5D1D87360900900064 /* RuleRange.swift in Sources */,
+				A06CBF571FA320D800FC0B97 /* SelectorInlineRow.swift in Sources */,
 				28EEC0161C7E3A3200300699 /* ListCheckRow.swift in Sources */,
 				28EEC01D1C7E3A8600300699 /* SliderRow.swift in Sources */,
 				28EEC00B1C7E395700300699 /* OptionsRow.swift in Sources */,
@@ -549,6 +556,7 @@
 				2859CDE91C7DD78E0002982F /* BaseRow.swift in Sources */,
 				28EEBFF01C7E23F400300699 /* Row.swift in Sources */,
 				28EEC0121C7E399500300699 /* GenericMultipleSelectorRow.swift in Sources */,
+				A06CBF561FA320D800FC0B97 /* SelectionListRow.swift in Sources */,
 				28EEC0181C7E3A3D00300699 /* MultipleSelectorViewController.swift in Sources */,
 				28EEC00E1C7E398A00300699 /* DateFieldRow.swift in Sources */,
 			);

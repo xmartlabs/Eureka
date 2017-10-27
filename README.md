@@ -893,6 +893,19 @@ Like PushRow but allows the selection of multiple options.
     </tr>
 </table>
 
+<table>
+    <tr>
+        <td><center><b>Selection List Row</b><br>
+        <img src="Example/Media/RowStatics/SelectionListRow.png"/>
+        </center>
+        </td>
+        <td><center><b>Selector Inline Row</b><br>
+        <img src="Example/Media/RowStatics/SelectorInlineRow.png"/>
+        </center>
+        </td>
+    </tr>
+</table>
+
 ### Built your own custom row?
 Let us know about it, we would be glad to mention it here. :)
 

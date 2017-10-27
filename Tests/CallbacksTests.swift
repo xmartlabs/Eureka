@@ -51,6 +51,7 @@ class CallbacksTests: XCTestCase {
         onChangeTest(row:SliderRow(), value: 5.0)
         onChangeTest(row:StepperRow(), value: 2.5)
         onChangeTest(row:PickerInputRow(), value: "Option 2")
+        onChangeTest(row:SelectionListRow(), value: "Option 1")
     }
 
     func testCellSetup() {
@@ -64,6 +65,7 @@ class CallbacksTests: XCTestCase {
         cellSetupTest(row:SliderRow())
         cellSetupTest(row:StepperRow())
         cellSetupTest(row:PickerInputRow<String>())
+        cellSetupTest(row:SelectionListRow<String>())
     }
 
     func testCellUpdate() {
@@ -77,6 +79,7 @@ class CallbacksTests: XCTestCase {
         cellUpdateTest(row:SliderRow())
         cellUpdateTest(row:StepperRow())
         cellUpdateTest(row:PickerInputRow<String>())
+        cellUpdateTest(row:SelectionListRow<String>())
     }
 
     func testDefaultCellSetup() {
@@ -90,6 +93,7 @@ class CallbacksTests: XCTestCase {
         defaultCellSetupTest(row:SliderRow())
         defaultCellSetupTest(row:StepperRow())
         defaultCellSetupTest(row:PickerInputRow<String>())
+        defaultCellSetupTest(row:SelectionListRow<String>())
     }
 
     func testDefaultCellUpdate() {
@@ -103,6 +107,7 @@ class CallbacksTests: XCTestCase {
        defaultCellUpdateTest(row: SliderRow())
        defaultCellUpdateTest(row: StepperRow())
        defaultCellUpdateTest(row: PickerInputRow<String>())
+       defaultCellUpdateTest(row: SelectionListRow<String>())
     }
 
     func testDefaultInitializers() {
@@ -116,6 +121,7 @@ class CallbacksTests: XCTestCase {
        defaultInitializerTest(row: SliderRow())
        defaultInitializerTest(row: StepperRow())
        defaultInitializerTest(row: PickerInputRow<String>())
+       defaultInitializerTest(row: SelectionListRow<String>())
     }
 
     func testOnRowValidationChenged() {
@@ -130,6 +136,7 @@ class CallbacksTests: XCTestCase {
         onRowValidationTests(row: StepperRow(), value: 2.5)
         onRowValidationTests(row: TimeInlineRow(), value: Date())
         onRowValidationTests(row: PickerInputRow<String>(), value: "Hi!!")
+        onRowValidationTests(row: SelectionListRow<String>(), value: "Eureka!")
     }
 
     private func onChangeTest<Row, Value>(row:Row, value:Value) where Row: BaseRow, Row: RowType, Value == Row.Cell.Value {
