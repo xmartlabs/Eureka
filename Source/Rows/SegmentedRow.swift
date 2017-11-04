@@ -139,7 +139,10 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     }
 
     open override func updateConstraints() {
-        guard !awakeFromNibCalled else { return }
+        guard !awakeFromNibCalled else { 
+            super.updateConstraints()
+            return 
+        }
         contentView.removeConstraints(dynamicConstraints)
         dynamicConstraints = []
         var views: [String: AnyObject] =  ["segmentedControl": segmentedControl]
