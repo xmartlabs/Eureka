@@ -96,7 +96,7 @@ open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: O
 
         let sections = options.reduce([:]) { (reduced, option) -> [String: [Row.Cell.Value]] in
             var reduced = reduced
-            let key = sectionKeyForValue(options.first!)
+            let key = sectionKeyForValue(option)
             var items = reduced[key] ?? []
             items.append(option)
             reduced[key] = items
