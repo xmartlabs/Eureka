@@ -426,6 +426,13 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
     /// Defines the behaviour of the navigation between rows
     public var navigationOptions: RowNavigationOptions?
     private var tableViewStyle: UITableViewStyle = .grouped
+    
+    
+    /// Defines default header height if no header view has been provided
+    public var defaultHeaderHeight = UITableViewAutomaticDimension
+
+    /// Defines default footer height if no footer view has been provided
+    public var defaultFooterHeight = UITableViewAutomaticDimension
 
     public init(style: UITableViewStyle) {
         super.init(nibName: nil, bundle: nil)
@@ -767,10 +774,10 @@ extension FormViewController : UITableViewDelegate {
             return height()
         }
         guard let view = form[section].header?.viewForSection(form[section], type: .header) else {
-            return UITableViewAutomaticDimension
+            return defaultHeaderHeight
         }
         guard view.bounds.height != 0 else {
-            return UITableViewAutomaticDimension
+            return defaultHeaderHeight
         }
         return view.bounds.height
     }
@@ -780,10 +787,10 @@ extension FormViewController : UITableViewDelegate {
             return height()
         }
         guard let view = form[section].footer?.viewForSection(form[section], type: .footer) else {
-            return UITableViewAutomaticDimension
+            return defaultFooterHeight
         }
         guard view.bounds.height != 0 else {
-            return UITableViewAutomaticDimension
+            return defaultFooterHeight
         }
         return view.bounds.height
     }
