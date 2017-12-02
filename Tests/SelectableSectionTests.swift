@@ -79,7 +79,7 @@ class SelectableSectionTests: XCTestCase {
         formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 3, section: 1))
 
         let value1 = (formVC.form[0] as! SelectableSection<ListCheckRow<String>>).selectedRow()?.baseValue
-        let value2 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>>).selectedRows().map({$0.baseValue})
+        let value2 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>>).selectedRows().map {$0.baseValue}
 
         XCTAssertEqual(value1 as? String, "Antarctica")
         XCTAssertTrue(value2.count == 2)
@@ -91,7 +91,9 @@ class SelectableSectionTests: XCTestCase {
         formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 1, section: 1))
 
         let value3 = (formVC.form[0] as! SelectableSection<ListCheckRow<String>>).selectedRow()?.baseValue
-        let value4 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>>).selectedRows().map({$0.baseValue})
+        
+        let selectedRows = (formVC.form[1] as! SelectableSection<ListCheckRow<String>>).selectedRows()
+        let value4 = selectedRows.map { $0.baseValue }
 
         XCTAssertEqual(value3 as? String, "South America")
         XCTAssertTrue(value4.count == 1)
@@ -122,7 +124,7 @@ class SelectableSectionTests: XCTestCase {
     }
 
     func testSectionedSections() {
-        let selectorViewController = SelectorViewController<String>(nibName: nil, bundle: nil)
+        let selectorViewController = SelectorViewController<PushRow<String>>(nibName: nil, bundle: nil)
         selectorViewController.row = PushRow<String> { row in
             row.options = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
         }
@@ -178,4 +180,33 @@ class SelectableSectionTests: XCTestCase {
         XCTAssertEqual(form[2].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Antarctica"])
     }
 
+    func testLazyOptionsProvider() {
+        let selectorViewController = SelectorViewController<PushRow<String>>(nibName: nil, bundle: nil)
+        let row = PushRow<String>()
+        selectorViewController.row = row
+        let options = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
+        
+        let optionsFetched = expectation(description: "Fetched options")
+        row.optionsProvider = .lazy({ form, completion in
+            DispatchQueue.main.async {
+                completion(options)
+                optionsFetched.fulfill()
+            }
+        })
+
+        let form = selectorViewController.form
+        
+        XCTAssertEqual(form.count, 0)
+
+        selectorViewController.view.frame = CGRect(x: 0, y: 0, width: 375, height: 3000)
+        selectorViewController.tableView?.frame = selectorViewController.view.frame
+        
+        waitForExpectations(timeout: 1, handler: nil)
+        
+        XCTAssertEqual(row.options ?? [], options)
+        XCTAssertEqual(form.count, 1)
+        XCTAssertEqual(form[0].count, options.count)
+        XCTAssertEqual(form[0].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), options)
+    }
+    
 }

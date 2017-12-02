@@ -24,7 +24,7 @@
 
 import Foundation
 
-open class RowOf<T: Equatable>: BaseRow {
+open class RowOf<T>: BaseRow where T: Equatable{
 
     private var _value: T? {
         didSet {
@@ -55,7 +55,7 @@ open class RowOf<T: Equatable>: BaseRow {
             _value = newValue
             guard let _ = section?.form else { return }
             wasChanged = true
-            if validationOptions.contains(.validatesOnChange) || (wasBlurred && validationOptions.contains(.validatesOnChangeAfterBlurred)) || !isValid {
+            if validationOptions.contains(.validatesOnChange) || (wasBlurred && validationOptions.contains(.validatesOnChangeAfterBlurred)) ||  (!isValid && validationOptions != .validatesOnDemand) {
                 validate()
             }
         }
@@ -69,9 +69,6 @@ open class RowOf<T: Equatable>: BaseRow {
         get { return value }
         set { value = newValue as? T }
     }
-
-    /// Variable used in rows with options that serves to generate the options for that row.
-    public var dataProvider: DataProvider<T>?
 
     /// Block variable used to get the String that should be displayed for the value of this row.
     public var displayValueFor: ((T?) -> String?)? = {
@@ -90,6 +87,8 @@ open class RowOf<T: Equatable>: BaseRow {
         return validationErrors
     }
 
+    /// Add a Validation rule for the Row
+    /// - Parameter rule: RuleType object to add
     public func add<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType {
         let validFn: ((T?) -> ValidationError?) = { (val: T?) in
             return rule.isValid(value: val)
@@ -97,6 +96,8 @@ open class RowOf<T: Equatable>: BaseRow {
         rules.append(ValidationRuleHelper(validateFn: validFn, rule: rule))
     }
 
+    /// Add a Validation rule set for the Row
+    /// - Parameter ruleSet: RuleSet<T> set of rules to add
     public func add(ruleSet: RuleSet<T>) {
         rules.append(contentsOf: ruleSet.rules)
     }

@@ -62,7 +62,7 @@ open class ListCheckCell<T: Equatable> : Cell<T>, CellType {
 
 }
 
-public final class ListCheckRow<T: Equatable>: Row<ListCheckCell<T>>, SelectableRowType, RowType {
+public final class ListCheckRow<T>: Row<ListCheckCell<T>>, SelectableRowType, RowType where T: Equatable {
     public var selectableValue: T?
     required public init(tag: String?) {
         super.init(tag: tag)

@@ -33,8 +33,6 @@ open class StepperCell: Cell<Double>, CellType {
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[v]-[s]-|", options: .alignAllCenterY, metrics: nil, views: ["s": stepper, "v": valueLabel]))
         addConstraint(NSLayoutConstraint(item: stepper, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1.0, constant: 0))
         addConstraint(NSLayoutConstraint(item: valueLabel, attribute: .centerY, relatedBy: .equal, toItem: stepper, attribute: .centerY, multiplier: 1.0, constant: 0))
-
-        height = { BaseRow.estimatedRowHeight }
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -63,7 +61,7 @@ open class StepperCell: Cell<Double>, CellType {
         detailTextLabel?.text = nil
     }
 
-    func valueChanged() {
+    @objc func valueChanged() {
         row.value = stepper.value
         row.updateCell()
     }

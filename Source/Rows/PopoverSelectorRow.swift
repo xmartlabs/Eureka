@@ -24,7 +24,7 @@
 
 import Foundation
 
-open class _PopoverSelectorRow<Cell: CellType> : SelectorRow<Cell, SelectorViewController<Cell.Value>> where Cell: BaseCell, Cell: TypedCellType {
+open class _PopoverSelectorRow<Cell: CellType> : SelectorRow<Cell> where Cell: BaseCell {
 
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -35,7 +35,7 @@ open class _PopoverSelectorRow<Cell: CellType> : SelectorRow<Cell, SelectorViewC
             porpoverController.sourceView = tableView
             porpoverController.sourceRect = tableView.convert(cell.detailTextLabel?.frame ?? cell.textLabel?.frame ?? cell.contentView.frame, from: cell)
         }
-        presentationMode = .popover(controllerProvider: ControllerProvider.callback { return SelectorViewController<Cell.Value> { _ in } }, onDismiss: { [weak self] in
+        presentationMode = .popover(controllerProvider: ControllerProvider.callback { return SelectorViewController<SelectorRow<Cell>> { _ in } }, onDismiss: { [weak self] in
             $0.dismiss(animated: true)
             self?.reload()
         })
