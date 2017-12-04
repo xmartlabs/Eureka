@@ -26,7 +26,7 @@ import Foundation
 
 public enum RegExprPattern: String {
     case EmailAddress = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-+]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z‌​]{2,})$"
-    case URL = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
+    case URL = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+([/?#]\\S*)?"
     case ContainsNumber = ".*\\d.*"
     case ContainsCapital = "^.*?[A-Z].*?$"
     case ContainsLowercase = "^.*?[a-z].*?$"

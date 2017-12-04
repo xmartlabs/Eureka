@@ -948,6 +948,14 @@ extension FormViewController : UITableViewDataSource {
     open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return form[section].footer?.title
     }
+    
+    open func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return nil
+    }
+    
+    open func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return 0
+    }
 }
 
 
