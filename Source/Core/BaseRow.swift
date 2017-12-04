@@ -98,7 +98,7 @@ open class BaseRow: BaseRowType {
     public var isHidden: Bool { return hiddenCache }
 
     /// The section to which this row belongs.
-    public weak var section: Section?
+    open weak var section: Section?
 
     public required init(tag: String? = nil) {
         self.tag = tag
