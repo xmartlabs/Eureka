@@ -107,10 +107,10 @@ class HomeViewController : FormViewController {
                     row.presentationMode = .segueName(segueName: "MultivaluedSectionsControllerSegue", onDismiss: nil)
                 }
 			
-				<<< ButtonRow("Swipe Actions") { (row: ButtonRow) -> Void in
-					row.title = row.tag
-					row.presentationMode = .segueName(segueName: "SwipeActionsControllerSegue", onDismiss: nil)
-				}
+                <<< ButtonRow("Swipe Actions") { (row: ButtonRow) -> Void in
+                    row.title = row.tag
+                    row.presentationMode = .segueName(segueName: "SwipeActionsControllerSegue", onDismiss: nil)
+                }
     }
     
     
@@ -1745,60 +1745,60 @@ class MultivaluedOnlyDeleteController: FormViewController {
 
 class SwipeActionsController: FormViewController {
 	
-	override func viewDidLoad() {
-		super.viewDidLoad()
+    override func viewDidLoad() {
+        super.viewDidLoad()
 		
-		form +++ Section(footer: "Eureka sets table.isEditing = false for SwipeActions.\n\nMultivaluedSections need table.isEditing = true, therefore both can't be used on the same view.")
-			<<< LabelRow("Actions Right: iOS >= 7"){
-				$0.title = $0.tag
-				
-				$0.trailingSwipeConfiguration = SwipeConfiguration(){
-					let moreAction = SwipeAction(style: .normal, title: "More", handler: { (action, path, completionHandler) in
-						print("More")
-						completionHandler?(true)
-					})
-					
-					let deleteAction = SwipeAction(style: .destructive, title: "Delete", handler: { (action, path, completionHandler) in
-						print("Delete")
-						completionHandler?(true)
-					})
-					
-					$0.actions = [deleteAction,moreAction]
-				}
-			}
-			
-			<<< LabelRow("Actions Left & Right: iOS >= 11"){
-				$0.title = $0.tag
-				
-				$0.trailingSwipeConfiguration = SwipeConfiguration(){
-					let moreAction = SwipeAction(style: .normal, title: "More", handler: { (action, path, completionHandler) in
-						print("More")
-						completionHandler?(true)
-					})
-					
-					let deleteAction = SwipeAction(style: .destructive, title: "Delete", handler: { (action, path, completionHandler) in
-						print("Delete")
-						completionHandler?(true)
-					})
-					
-					$0.performsFirstActionWithFullSwipe = true
-					$0.actions = [deleteAction,moreAction]
-				}
-				
-				if #available(iOS 11,*){
-					$0.leadingSwipeConfiguration = SwipeConfiguration(){
-						let infoAction = SwipeAction(style: .normal, title: "Info", handler: { (action, path, completionHandler) in
-							print("Info")
-							completionHandler?(true)
-						})
-						infoAction.backgroundColor = .blue
-						
-						$0.performsFirstActionWithFullSwipe = true
-						$0.actions = [infoAction]
-					}
-				}
-		}
-	}
+        form +++ Section(footer: "Eureka sets table.isEditing = false for SwipeActions.\n\nMultivaluedSections need table.isEditing = true, therefore both can't be used on the same view.")
+            <<< LabelRow("Actions Right: iOS >= 7") {
+                $0.title = $0.tag
+
+                $0.trailingSwipeConfiguration = SwipeConfiguration() {
+                    let moreAction = SwipeAction(style: .normal, title: "More", handler: { (action, source, completionHandler) in
+                        print("More")
+                        completionHandler?(true)
+                    })
+
+                    let deleteAction = SwipeAction(style: .destructive, title: "Delete", handler: { (action, source, completionHandler) in
+                        print("Delete")
+                        completionHandler?(true)
+                    })
+
+                    $0.actions = [deleteAction,moreAction]
+                }
+            }
+
+            <<< LabelRow("Actions Left & Right: iOS >= 11") {
+                $0.title = $0.tag
+
+                $0.trailingSwipeConfiguration = SwipeConfiguration() {
+                    let moreAction = SwipeAction(style: .normal, title: "More", handler: { (action, source, completionHandler) in
+                        print("More")
+                        completionHandler?(true)
+                    })
+
+                    let deleteAction = SwipeAction(style: .destructive, title: "Delete", handler: { (action, source, completionHandler) in
+                        print("Delete")
+                        completionHandler?(true)
+                    })
+
+                    $0.performsFirstActionWithFullSwipe = true
+                    $0.actions = [deleteAction,moreAction]
+                }
+
+                if #available(iOS 11,*) {
+                    $0.leadingSwipeConfiguration = SwipeConfiguration() {
+                        let infoAction = SwipeAction(style: .normal, title: "Info", handler: { (action, source, completionHandler) in
+                            print("Info")
+                            completionHandler?(true)
+                        })
+                        infoAction.backgroundColor = .blue
+
+                        $0.performsFirstActionWithFullSwipe = true
+                        $0.actions = [infoAction]
+                    }
+                }
+        }
+    }
 }
 
 class EurekaLogoViewNib: UIView {

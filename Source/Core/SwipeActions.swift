@@ -8,33 +8,51 @@
 
 import Foundation
 
-public typealias SwipeActionHandler = (Any, Any, ((Bool) -> Void)?) -> Void
-
+public typealias SwipeActionHandler = (ContextualAction, ContextualActionSource, ((Bool) -> Void)?) -> Void
 
 public class SwipeAction{
+	public let contextualAction: ContextualAction
 	
-	public let platformValue: Any
-	
+	@available(iOS 11, *)
 	public var backgroundColor: UIColor?{
-		didSet{
-			if #available(iOS 11, *), let platformValue = self.platformValue as? UIContextualAction{
-				platformValue.backgroundColor = self.backgroundColor
-			}
+		get{
+			guard let contextualAction = self.contextualAction as? UIContextualAction else{ return nil }
+			return contextualAction.backgroundColor
+		}
+		set{
+			guard let contextualAction = self.contextualAction as? UIContextualAction else{ return }
+			contextualAction.backgroundColor = newValue
 		}
 	}
 	
+	@available(iOS 11, *)
 	public var image: UIImage?{
-		didSet{
-			if #available(iOS 11, *), let platformValue = self.platformValue as? UIContextualAction{
-				platformValue.image = self.image
-			}
+		get{
+			guard let contextualAction = self.contextualAction as? UIContextualAction else{ return nil }
+			return contextualAction.image
+		}
+		set{
+			guard let contextualAction = self.contextualAction as? UIContextualAction else{ return }
+			return contextualAction.image = newValue
 		}
 	}
 	
 	public var title: String?{
-		didSet{
-			if #available(iOS 11, *), let platformValue = self.platformValue as? UIContextualAction{
-				platformValue.title = self.title
+		get{
+			if #available(iOS 11, *), let contextualAction = self.contextualAction as? UIContextualAction{
+				return contextualAction.title
+			
+			} else if let contextualAction = self.contextualAction as? UITableViewRowAction{
+				return contextualAction.title
+			}
+			return nil
+		}
+		set{
+			if #available(iOS 11, *), let contextualAction = self.contextualAction as? UIContextualAction{
+				contextualAction.title = newValue
+			
+			} else if let contextualAction = self.contextualAction as? UITableViewRowAction{
+				contextualAction.title = newValue
 			}
 		}
 	}
@@ -45,15 +63,14 @@ public class SwipeAction{
 	public init(style: Style, title: String?, handler: @escaping SwipeActionHandler){
 		self.style = style
 		self.handler = handler
-		self.title = title
 		
 		if #available(iOS 11, *){
-			self.platformValue = UIContextualAction(style: style.platformValue as! UIContextualAction.Style, title: title){ action, view, completion -> Void in
+			self.contextualAction = UIContextualAction(style: style.contextualStyle as! UIContextualAction.Style, title: title){ action, view, completion -> Void in
 				handler(action,view,completion)
 			}
 			
 		} else {
-			self.platformValue = UITableViewRowAction(style: style.platformValue as! UITableViewRowActionStyle,title: title){ (action, indexPath) -> Void in
+			self.contextualAction = UITableViewRowAction(style: style.contextualStyle as! UITableViewRowActionStyle,title: title){ (action, indexPath) -> Void in
 				handler(action,indexPath,nil)
 			}
 		}
@@ -63,7 +80,7 @@ public class SwipeAction{
 		case normal = 0
 		case destructive = 1
 		
-		var platformValue: Any{
+		var contextualStyle: ContextualStyle{
 			if #available(iOS 11, *){
 				switch self{
 				case .normal:
@@ -82,27 +99,27 @@ public class SwipeAction{
 			}
 		}
 		
-		public init(platformValue: Any){
-			if #available(iOS 11, *), let platformValue = platformValue as? UIContextualAction.Style{
-				switch platformValue{
+		public init(contextualStyle: ContextualStyle){
+			if #available(iOS 11, *), let contextualStyle = contextualStyle as? UIContextualAction.Style{
+				switch contextualStyle{
 				case .normal:
 					self = .normal
 				case .destructive:
 					self = .destructive
 				}
 				
-			} else if let platformValue = platformValue as? UITableViewRowActionStyle{
-				switch platformValue{
+			} else if let contextualStyle = contextualStyle as? UITableViewRowActionStyle{
+				switch contextualStyle{
 				case .normal:
 					self = .normal
 				case .destructive:
 					self = .destructive
 				case .default:
-					fatalError("Unmapped UITableViewRowActionStyle for SwipeActionStyle: \(platformValue)")
+					fatalError("Unmapped UITableViewRowActionStyle for SwipeActionStyle: \(contextualStyle)")
 				}
 				
 			} else {
-				fatalError("Invalid platformValue for SwipeActionStyle: \(platformValue)")
+				fatalError("Invalid platformValue for SwipeActionStyle: \(contextualStyle)")
 			}
 		}
 	}
@@ -118,17 +135,34 @@ public class SwipeConfiguration{
 	public var performsFirstActionWithFullSwipe: Bool = false
 	public var actions: [SwipeAction] = []
 	
-	public var platformValue: Any?{
-		guard #available(iOS 11, *) else{
-			return nil
-		}
-		let platformValue = UISwipeActionsConfiguration(actions: self.platformActions as! [UIContextualAction])
-		platformValue.performsFirstActionWithFullSwipe = self.performsFirstActionWithFullSwipe
+	@available(iOSApplicationExtension 11.0, *)
+	public var contextualConfiguration: UISwipeActionsConfiguration?{
+		let contextualConfiguration = UISwipeActionsConfiguration(actions: self.contextualActions as! [UIContextualAction])
+		contextualConfiguration.performsFirstActionWithFullSwipe = self.performsFirstActionWithFullSwipe
 		
-		return platformValue
+		return contextualConfiguration
 	}
 	
-	public var platformActions: [Any]{
-		return self.actions.map{ $0.platformValue }
+	public var contextualActions: [ContextualAction]{
+		return self.actions.map{ $0.contextualAction }
 	}
 }
+
+
+public protocol ContextualAction{}
+extension UITableViewRowAction: ContextualAction{}
+
+@available(iOSApplicationExtension 11.0, *)
+extension UIContextualAction: ContextualAction{}
+
+public protocol ContextualStyle{}
+extension UITableViewRowActionStyle: ContextualStyle{}
+
+@available(iOSApplicationExtension 11.0, *)
+extension UIContextualAction.Style: ContextualStyle{}
+
+public protocol ContextualActionSource{}
+extension IndexPath: ContextualActionSource{}
+
+@available(iOSApplicationExtension 11.0, *)
+extension UIView: ContextualActionSource{}

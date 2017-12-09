@@ -98,7 +98,7 @@ open class BaseRow: BaseRowType {
     public var isHidden: Bool { return hiddenCache }
 
     /// The section to which this row belongs.
-    open weak var section: Section?
+    public weak var section: Section?
 	
 	public var trailingSwipeConfiguration: SwipeConfiguration?
 	
