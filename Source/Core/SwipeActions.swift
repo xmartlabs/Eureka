@@ -66,12 +66,12 @@ public class SwipeAction{
 		
 		if #available(iOS 11, *){
 			self.contextualAction = UIContextualAction(style: style.contextualStyle as! UIContextualAction.Style, title: title){ action, view, completion -> Void in
-				handler(action,view,completion)
+				handler(action, view, completion)
 			}
 			
 		} else {
 			self.contextualAction = UITableViewRowAction(style: style.contextualStyle as! UITableViewRowActionStyle,title: title){ (action, indexPath) -> Void in
-				handler(action,indexPath,nil)
+				handler(action, indexPath, nil)
 			}
 		}
 	}
