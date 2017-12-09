@@ -929,16 +929,16 @@ extension FormViewController : UITableViewDelegate {
 
 	@available(iOS 11,*)
 	public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-		return form[indexPath].leadingSwipeConfiguration?.platformValue as? UISwipeActionsConfiguration
+		return form[indexPath].leadingSwipeConfiguration?.contextualConfiguration as? UISwipeActionsConfiguration
 	}
 
 	@available(iOS 11,*)
 	public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-		return form[indexPath].trailingSwipeConfiguration?.platformValue as? UISwipeActionsConfiguration
+		return form[indexPath].trailingSwipeConfiguration?.contextualConfiguration as? UISwipeActionsConfiguration
 	}
 
 	public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
-		return form[indexPath].trailingSwipeConfiguration?.platformActions as? [UITableViewRowAction]
+		return form[indexPath].trailingSwipeConfiguration?.contextualActions as? [UITableViewRowAction]
 	}
 }
 
