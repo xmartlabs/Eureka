@@ -224,6 +224,7 @@ class RowsExampleViewController: FormViewController {
             
                 <<< AlertRow<Emoji>() {
                         $0.title = "AlertRow"
+                        $0.cancelTitle = "Dismiss"
                         $0.selectorTitle = "Who is there?"
                         $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
                         $0.value = 👦🏼

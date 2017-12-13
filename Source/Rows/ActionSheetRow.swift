@@ -47,7 +47,7 @@ open class AlertSelectorCell<T> : Cell<T>, CellType where T: Equatable {
     }
 }
 
-public class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
+public class _ActionSheetRow<Cell: CellType>: AlertOptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
 
     public typealias ProviderType = SelectorAlertController<_ActionSheetRow<Cell>>
     
