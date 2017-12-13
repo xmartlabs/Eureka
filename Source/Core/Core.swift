@@ -810,9 +810,9 @@ extension FormViewController : UITableViewDelegate {
 
     open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 		let row = form[indexPath]
-		if let actions = row.trailingSwipeConfiguration?.actions.count, actions > 0{
+		if row.trailingSwipe.actions.count > 0{
 			return true
-		} else if #available(iOS 11,*), let actions = row.leadingSwipeConfiguration?.actions.count, actions > 0{
+		} else if #available(iOS 11,*), row.leadingSwipe.actions.count > 0{
 			return true
 		}
 		guard let section = form[indexPath.section] as? MultivaluedSection else { return false }
@@ -909,7 +909,7 @@ extension FormViewController : UITableViewDelegate {
 
     open func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         guard let section = form[indexPath.section] as? MultivaluedSection else {
-			if let actions = form[indexPath].trailingSwipeConfiguration?.actions.count, actions > 0{
+			if form[indexPath].trailingSwipe.actions.count > 0{
 				return .delete
 			}
             return .none
@@ -929,16 +929,16 @@ extension FormViewController : UITableViewDelegate {
 
 	@available(iOS 11,*)
 	public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-		return form[indexPath].leadingSwipeConfiguration?.contextualConfiguration as? UISwipeActionsConfiguration
+		return form[indexPath].leadingSwipe.contextualConfiguration
 	}
 
 	@available(iOS 11,*)
 	public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-		return form[indexPath].trailingSwipeConfiguration?.contextualConfiguration as? UISwipeActionsConfiguration
+		return form[indexPath].trailingSwipe.contextualConfiguration
 	}
 
 	public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
-		return form[indexPath].trailingSwipeConfiguration?.contextualActions as? [UITableViewRowAction]
+		return form[indexPath].trailingSwipe.contextualActions as? [UITableViewRowAction]
 	}
 }
 

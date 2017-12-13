@@ -8,72 +8,44 @@
 
 import Foundation
 
-public typealias SwipeActionHandler = (ContextualAction, ContextualActionSource, ((Bool) -> Void)?) -> Void
+public typealias SwipeActionHandler = (ContextualAction, BaseRow, ((Bool) -> Void)?) -> Void
 
-public class SwipeAction{
-	public let contextualAction: ContextualAction
+public class SwipeAction: ContextualAction {
+	let handler: SwipeActionHandler
+	let style: Style
 	
-	@available(iOS 11, *)
-	public var backgroundColor: UIColor?{
-		get{
-			guard let contextualAction = self.contextualAction as? UIContextualAction else{ return nil }
-			return contextualAction.backgroundColor
-		}
-		set{
-			guard let contextualAction = self.contextualAction as? UIContextualAction else{ return }
-			contextualAction.backgroundColor = newValue
-		}
-	}
+	weak var row: BaseRow!
 	
-	@available(iOS 11, *)
-	public var image: UIImage?{
-		get{
-			guard let contextualAction = self.contextualAction as? UIContextualAction else{ return nil }
-			return contextualAction.image
-		}
-		set{
-			guard let contextualAction = self.contextualAction as? UIContextualAction else{ return }
-			return contextualAction.image = newValue
-		}
-	}
-	
-	public var title: String?{
-		get{
-			if #available(iOS 11, *), let contextualAction = self.contextualAction as? UIContextualAction{
-				return contextualAction.title
-			
-			} else if let contextualAction = self.contextualAction as? UITableViewRowAction{
-				return contextualAction.title
-			}
-			return nil
-		}
-		set{
-			if #available(iOS 11, *), let contextualAction = self.contextualAction as? UIContextualAction{
-				contextualAction.title = newValue
-			
-			} else if let contextualAction = self.contextualAction as? UITableViewRowAction{
-				contextualAction.title = newValue
-			}
-		}
-	}
-	
-	public let handler: SwipeActionHandler
-	public let style: Style
+	public var backgroundColor: UIColor?
+	public var image: UIImage?
+	public var title: String?
 	
 	public init(style: Style, title: String?, handler: @escaping SwipeActionHandler){
 		self.style = style
+		self.title = title
 		self.handler = handler
+	}
+	
+	var contextualAction: ContextualAction{
+		var action: ContextualAction
 		
 		if #available(iOS 11, *){
-			self.contextualAction = UIContextualAction(style: style.contextualStyle as! UIContextualAction.Style, title: title){ action, view, completion -> Void in
-				handler(action, view, completion)
+			action = UIContextualAction(style: style.contextualStyle as! UIContextualAction.Style, title: title){ [weak self] action, view, completion -> Void in
+				guard let strongSelf = self else{ return }
+				strongSelf.handler(action, strongSelf.row, completion)
 			}
-			
+		
 		} else {
-			self.contextualAction = UITableViewRowAction(style: style.contextualStyle as! UITableViewRowActionStyle,title: title){ (action, indexPath) -> Void in
-				handler(action, indexPath, nil)
+			action = UITableViewRowAction(style: style.contextualStyle as! UITableViewRowActionStyle,title: title){ [weak self] (action, indexPath) -> Void in
+				guard let strongSelf = self else{ return }
+				strongSelf.handler(action, strongSelf.row, nil)
 			}
 		}
+		
+		action.backgroundColor = self.backgroundColor ?? action.backgroundColor
+		action.image = self.image ?? action.image
+		
+		return action
 	}
 	
 	public enum Style: Int{
@@ -98,42 +70,24 @@ public class SwipeAction{
 				}
 			}
 		}
-		
-		public init(contextualStyle: ContextualStyle){
-			if #available(iOS 11, *), let contextualStyle = contextualStyle as? UIContextualAction.Style{
-				switch contextualStyle{
-				case .normal:
-					self = .normal
-				case .destructive:
-					self = .destructive
-				}
-				
-			} else if let contextualStyle = contextualStyle as? UITableViewRowActionStyle{
-				switch contextualStyle{
-				case .normal:
-					self = .normal
-				case .destructive:
-					self = .destructive
-				case .default:
-					fatalError("Unmapped UITableViewRowActionStyle for SwipeActionStyle: \(contextualStyle)")
-				}
-				
-			} else {
-				fatalError("Invalid platformValue for SwipeActionStyle: \(contextualStyle)")
-			}
-		}
 	}
 }
 
-
-public class SwipeConfiguration{
+public struct SwipeConfiguration {
+	weak var row: BaseRow!
 	
-	public init(configure: (SwipeConfiguration) -> Void){
-		configure(self)
+	init(_ row: BaseRow){
+		self.row = row
 	}
 	
-	public var performsFirstActionWithFullSwipe: Bool = false
-	public var actions: [SwipeAction] = []
+	public var performsFirstActionWithFullSwipe = false
+	public var actions: [SwipeAction] = []{
+		willSet{
+			for action in newValue{
+				action.row = self.row
+			}
+		}
+	}
 	
 	@available(iOSApplicationExtension 11.0, *)
 	public var contextualConfiguration: UISwipeActionsConfiguration?{
@@ -148,9 +102,18 @@ public class SwipeConfiguration{
 	}
 }
 
+public protocol ContextualAction {
+	var backgroundColor: UIColor?{ get set }
+	var image: UIImage?{ get set }
+	var title: String?{ get set }
+}
 
-public protocol ContextualAction{}
-extension UITableViewRowAction: ContextualAction{}
+extension UITableViewRowAction: ContextualAction {
+	public var image: UIImage? {
+		get { return nil }
+		set { return }
+	}
+}
 
 @available(iOSApplicationExtension 11.0, *)
 extension UIContextualAction: ContextualAction{}
@@ -160,9 +123,3 @@ extension UITableViewRowActionStyle: ContextualStyle{}
 
 @available(iOSApplicationExtension 11.0, *)
 extension UIContextualAction.Style: ContextualStyle{}
-
-public protocol ContextualActionSource{}
-extension IndexPath: ContextualActionSource{}
-
-@available(iOSApplicationExtension 11.0, *)
-extension UIView: ContextualActionSource{}
