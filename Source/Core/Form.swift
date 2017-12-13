@@ -375,12 +375,6 @@ extension Form {
             } ?? [:]
     }
 
-  	var containsMultivaluedSection: Bool{
-  		return kvoWrapper.sections.contains { (section) -> Bool in
-  			return section is MultivaluedSection
-  		}
-  	}
-
 }
 
 extension Form {

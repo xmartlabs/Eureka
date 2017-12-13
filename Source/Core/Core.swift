@@ -970,17 +970,6 @@ extension FormViewController : UITableViewDataSource {
 
     open func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return nil
-}
-
-extension FormViewController: FormDelegate {
-
-    // MARK: FormDelegate
-
-    open func sectionsHaveBeenAdded(_ sections: [Section], at indexes: IndexSet) {
-		  guard animateTableView else { return }
-      tableView?.beginUpdates()
-      tableView?.insertSections(indexes, with: insertAnimation(forSections: sections))
-      tableView?.endUpdates()
     }
 
     open func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
