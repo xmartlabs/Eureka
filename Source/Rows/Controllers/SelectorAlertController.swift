@@ -66,7 +66,7 @@ open class SelectorAlertController<AlertOptionsRow: AlertOptionsProviderRow>: UI
     open override func viewDidLoad() {
         super.viewDidLoad()
         guard let options = optionsProviderRow.options else { return }
-        let cancelTitle = optionsProviderRow.cancelTitle ?? self.cancelTitle
+        let cancelTitle = optionsProviderRow.cancelTitle ?? NSLocalizedString("Cancel", comment: "")
         addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: nil))
         for option in options {
             addAction(UIAlertAction(title: row.displayValueFor?(option), style: .default, handler: { [weak self] _ in

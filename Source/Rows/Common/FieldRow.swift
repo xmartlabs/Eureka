@@ -353,8 +353,8 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
     private func setupTitleLabel() {
         titleLabel = self.textLabel
         titleLabel?.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel?.setContentHuggingPriority(500, for: .horizontal)
-        titleLabel?.setContentCompressionResistancePriority(1000, for: .horizontal)
+        titleLabel?.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
+        titleLabel?.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .horizontal)
     }
 
     private func displayValue(useFormatter: Bool) -> String? {
