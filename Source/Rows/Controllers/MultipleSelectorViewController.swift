@@ -25,7 +25,7 @@
 import Foundation
 
 /// Selector Controller that enables multiple selection
-open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: OptionsProviderRow> : FormViewController, TypedRowControllerType where Row: BaseRow, Row: TypedRowType, Row.Cell.Value == OptionsRow.OptionsProviderType.Option, OptionsRow.OptionsProviderType.Option: Hashable {
+open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: OptionsProviderRow> : FormViewController, TypedRowControllerType where Row: BaseRow, Row.Cell.Value == OptionsRow.OptionsProviderType.Option, OptionsRow.OptionsProviderType.Option: Hashable {
 
     /// The row that pushed or presented this controller
     public var row: RowOf<Set<OptionsRow.OptionsProviderType.Option>>!

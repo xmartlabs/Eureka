@@ -107,6 +107,11 @@ class HomeViewController : FormViewController {
                     row.presentationMode = .segueName(segueName: "MultivaluedSectionsControllerSegue", onDismiss: nil)
                 }
             
+                <<< ButtonRow("Plain Table View Style") { (row: ButtonRow) in
+                    row.title = row.tag
+                    row.presentationMode = .segueName(segueName: "PlainTableViewStyleViewControllerSegue", onDismiss: nil)
+                }
+            
                 
         +++ Section()
                 <<< ButtonRow() { (row: ButtonRow) -> Void in
@@ -224,6 +229,7 @@ class RowsExampleViewController: FormViewController {
             
                 <<< AlertRow<Emoji>() {
                         $0.title = "AlertRow"
+                        $0.cancelTitle = "Dismiss"
                         $0.selectorTitle = "Who is there?"
                         $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
                         $0.value = 👦🏼
@@ -239,7 +245,10 @@ class RowsExampleViewController: FormViewController {
                         $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
                         $0.value = 👦🏼
                         $0.selectorTitle = "Choose an Emoji!"
-                    }
+                    }.onPresent { from, to in
+                        to.dismissOnSelection = false
+                        to.dismissOnChange = false
+            }
 
                 <<< PushRow<Emoji>() {
                         $0.title = "SectionedPushRow"
@@ -247,6 +256,8 @@ class RowsExampleViewController: FormViewController {
                         $0.value = 👦🏼
                         $0.selectorTitle = "Choose an Emoji!"
                     }.onPresent { from, to in
+                        to.dismissOnSelection = false
+                        to.dismissOnChange = false
                         to.sectionKeyForValue = { option in
                             switch option {
                             case 💁🏻, 👦🏼: return "People"
@@ -427,8 +438,8 @@ class RowsExampleViewController: FormViewController {
                         $0.placeholder = "90210"
                     }
     }
-	
-    func multipleSelectorDone(_ item:UIBarButtonItem) {
+    
+    @objc func multipleSelectorDone(_ item:UIBarButtonItem) {
         _ = navigationController?.popViewController(animated: true)
     }
     
@@ -513,7 +524,7 @@ class FieldRowCustomizationController : FormViewController {
             
                 <<< NameRow() {
                     $0.title = "Title"
-                    $0.textFieldPercentage = 0.6
+                    $0.titlePercentage = 0.4
                     $0.placeholder = "textFieldPercentage = 0.6"
                 }
                 .cellUpdate {
@@ -522,7 +533,7 @@ class FieldRowCustomizationController : FormViewController {
                 }
                 <<< NameRow() {
                     $0.title = "Another Title"
-                    $0.textFieldPercentage = 0.6
+                    $0.titlePercentage = 0.4
                     $0.placeholder = "textFieldPercentage = 0.6"
                 }
                 .cellUpdate {
@@ -531,7 +542,7 @@ class FieldRowCustomizationController : FormViewController {
                 }
                 <<< NameRow() {
                     $0.title = "One more"
-                    $0.textFieldPercentage = 0.7
+                    $0.titlePercentage = 0.3
                     $0.placeholder = "textFieldPercentage = 0.7"
                 }
                 .cellUpdate {
@@ -807,7 +818,7 @@ class NativeEventFormViewController : FormViewController {
         
     }
     
-    func cancelTapped(_ barButtonItem: UIBarButtonItem) {
+    @objc func cancelTapped(_ barButtonItem: UIBarButtonItem) {
         (navigationController as? NativeEventNavigationController)?.onDismissCallback?(self)
     }
  
@@ -1046,10 +1057,10 @@ class FormatterExample : FormViewController {
             var str = string.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
             if !string.isEmpty, numberStyle == .currency && !string.contains(currencySymbol) {
                 // Check if the currency symbol is at the last index
-                if let formattedNumber = self.string(from: 1),
-                    formattedNumber.substring(from: formattedNumber.index(before: formattedNumber.endIndex)) == currencySymbol {
+                if let formattedNumber = self.string(from: 1), String(formattedNumber[formattedNumber.index(before: formattedNumber.endIndex)...]) == currencySymbol {
                     // This means the user has deleted the currency symbol. We cut the last number and then add the symbol automatically
-                    str = str.substring(to: str.index(before: str.endIndex))
+                    str = String(str[..<str.index(before: str.endIndex)])
+                    
                 }
             }
             obj?.pointee = NSNumber(value: (Double(str) ?? 0.0)/Double(pow(10.0, Double(minimumFractionDigits))))
@@ -1529,6 +1540,7 @@ class MultivaluedController: FormViewController {
             MultivaluedSection(multivaluedOptions: [.Reorder, .Insert, .Delete],
                                header: "Multivalued TextField",
                                footer: ".Insert multivaluedOption adds the 'Add New Tag' button row as last cell.") {
+                $0.tag = "textfields"
                 $0.addButtonProvider = { section in
                     return ButtonRow(){
                         $0.title = "Add New Tag"
@@ -1551,6 +1563,7 @@ class MultivaluedController: FormViewController {
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                            header: "Multivalued ActionSheet Selector example",
                                            footer: ".Insert multivaluedOption adds a 'Add' button row as last cell.") {
+                $0.tag = "options"
                 $0.multivaluedRowToInsertAt = { index in
                     return ActionSheetRow<String>{
                         $0.title = "Tap to select.."
@@ -1569,6 +1582,7 @@ class MultivaluedController: FormViewController {
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete, .Reorder],
                                            header: "Multivalued Push Selector example",
                                            footer: "") {
+                $0.tag = "push"
                 $0.multivaluedRowToInsertAt = { index in
                     return PushRow<String>{
                         $0.title = "Tap to select ;)..at \(index)"
@@ -1582,9 +1596,13 @@ class MultivaluedController: FormViewController {
                                 
             }
     }
+
+    @IBAction func save(_ sender: Any) {
+        print("\(form.values())")
+    }
 }
 
-class MultivaluedOnlyRearderController: FormViewController {
+class MultivaluedOnlyReorderController: FormViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -1728,10 +1746,46 @@ class MultivaluedOnlyDeleteController: FormViewController {
                 section2
     }
     
-    func editPressed(sender: UIBarButtonItem){
+    @objc func editPressed(sender: UIBarButtonItem){
         tableView.setEditing(!tableView.isEditing, animated: true)
         editButton.title = tableView.isEditing ? "Done" : "Edit"
         
+    }
+}
+
+//MARK: Plain Table View Style View Example
+
+class PlainTableViewStyleController : FormViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        form +++
+            
+            Section()
+            
+            <<< TextRow() {
+                $0.title = "Name"
+                $0.value = "John Doe"
+            }
+            
+            <<< TextRow() {
+                $0.title = "Username"
+                $0.value = "johndoe1"
+            }
+            
+            <<< EmailRow() {
+                $0.title = "Email Address"
+                $0.value = "john@doe.com"
+            }
+            
+            <<< PasswordRow() {
+                $0.title = "Password"
+                $0.value = "johndoe9876"
+            }
+        
+        // Remove excess separator lines on non-existent cells
+        tableView.tableFooterView = UIView()
     }
 }
 

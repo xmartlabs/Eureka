@@ -227,7 +227,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         textField.font = .preferredFont(forTextStyle: .body)
         if let placeholder = (row as? FieldRowConformance)?.placeholder {
             if let color = (row as? FieldRowConformance)?.placeholderColor {
-                textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: color])
+                textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedStringKey.foregroundColor: color])
             } else {
                 textField.placeholder = (row as? FieldRowConformance)?.placeholder
             }
@@ -315,7 +315,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         super.updateConstraints()
     }
 
-    open func textFieldDidChange(_ textField: UITextField) {
+    @objc open func textFieldDidChange(_ textField: UITextField) {
 
         guard let textValue = textField.text else {
             row.value = nil

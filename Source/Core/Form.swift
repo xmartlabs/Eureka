@@ -70,7 +70,7 @@ public final class Form {
     /**
      Returns the row whose tag is passed as parameter. Uses a dictionary to get the row faster
      */
-    public func rowBy<T: Equatable>(tag: String) -> RowOf<T>? {
+    public func rowBy<T>(tag: String) -> RowOf<T>? where T: Equatable{
         let row: BaseRow? = rowBy(tag: tag)
         return row as? RowOf<T>
     }
@@ -78,7 +78,7 @@ public final class Form {
     /**
      Returns the row whose tag is passed as parameter. Uses a dictionary to get the row faster
      */
-    public func rowBy<Row: RowType>(tag: String) -> Row? {
+    public func rowBy<Row>(tag: String) -> Row? where Row: RowType{
         let row: BaseRow? = rowBy(tag: tag)
         return row as? Row
     }
@@ -106,19 +106,11 @@ public final class Form {
      */
     public func values(includeHidden: Bool = false) -> [String: Any?] {
         if includeHidden {
-            return allRows.filter({ $0.tag != nil })
-                .reduce([String: Any?]()) {
-                    var result = $0
-                    result[$1.tag!] = $1.baseValue
-                    return result
-                }
+            return getValues(for: allRows.filter({ $0.tag != nil }))
+                .merging(getValues(for: allSections.filter({ $0 is MultivaluedSection && $0.tag != nil }) as? [MultivaluedSection]), uniquingKeysWith: {(_, new) in new })
         }
-        return rows.filter({ $0.tag != nil })
-            .reduce([String: Any?]()) {
-                var result = $0
-                result[$1.tag!] = $1.baseValue
-                return result
-            }
+        return getValues(for: rows.filter({ $0.tag != nil }))
+            .merging(getValues(for: allSections.filter({ $0 is MultivaluedSection && $0.tag != nil }) as? [MultivaluedSection]), uniquingKeysWith: {(_, new) in new })
     }
 
     /**
@@ -263,7 +255,7 @@ extension Form {
     // MARK: Private Helpers
 
     class KVOWrapper: NSObject {
-        dynamic private var _sections = NSMutableArray()
+        @objc dynamic private var _sections = NSMutableArray()
         var sections: NSMutableArray { return mutableArrayValue(forKey: "_sections") }
         var _allSections = [Section]()
         private weak var form: Form?
@@ -359,6 +351,22 @@ extension Form {
             formIndex = kvoWrapper.sections.index(of: previous)
         }
         kvoWrapper.sections.insert(section, at: formIndex == NSNotFound ? 0 : formIndex + 1 )
+    }
+
+    func getValues(for rows: [BaseRow]) -> [String: Any?] {
+        return rows.reduce([String: Any?]()) {
+            var result = $0
+            result[$1.tag!] = $1.baseValue
+            return result
+        }
+    }
+
+    func getValues(for multivaluedSections: [MultivaluedSection]?) -> [String: [Any?]] {
+        return multivaluedSections?.reduce([String: [Any?]]()) {
+            var result = $0
+            result[$1.tag!] = $1.values()
+            return result
+            } ?? [:]
     }
 }
 

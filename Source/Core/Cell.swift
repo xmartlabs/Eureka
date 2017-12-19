@@ -85,7 +85,7 @@ open class BaseCell: UITableViewCell, BaseCellType {
 }
 
 /// Generic class that represents the Eureka cells.
-open class Cell<T: Equatable> : BaseCell, TypedCellType {
+open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
 
     public typealias Value = T
 
