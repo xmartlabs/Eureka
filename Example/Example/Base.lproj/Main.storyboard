@@ -207,6 +207,7 @@
                         <segue destination="1Eh-Nv-AVS" kind="push" identifier="CustomDesignControllerSegue" id="qm6-xE-x5d"/>
                         <segue destination="qIY-1j-dNf" kind="push" identifier="MultivaluedSectionsControllerSegue" id="HjC-JK-Qvc"/>
                         <segue destination="u8Y-1k-1VR" kind="push" identifier="PlainTableViewStyleViewControllerSegue" id="kqc-ak-a1R"/>
+                        <segue destination="fc5-sQ-cEm" kind="push" identifier="SwipeActionsControllerSegue" id="AxK-me-pi6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Eoz-Jq-Zy9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -298,6 +299,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jCh-aA-iuT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="463" y="1077"/>
+        </scene>
+        <!--SwipeActions Example-->
+        <scene sceneID="h0m-5n-GTL">
+            <objects>
+                <viewController title="SwipeActions Example" id="fc5-sQ-cEm" customClass="SwipeActionsController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ImV-ow-JvS"/>
+                        <viewControllerLayoutGuide type="bottom" id="3OX-ei-O2d"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BDe-QW-0vU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="KY1-r2-ar2"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="axy-1K-pFt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-530" y="1833"/>
         </scene>
         <!--Multivalued Sections Example-->
         <scene sceneID="zbo-bQ-HRw">

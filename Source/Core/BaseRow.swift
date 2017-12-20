@@ -35,7 +35,7 @@ open class BaseRow: BaseRowType {
     var callbackOnCellHighlightChanged: (() -> Void)?
     var callbackOnRowValidationChanged: (() -> Void)?
     var _inlineRow: BaseRow?
-    
+
     var _cachedOptionsData: Any?
 
     public var validationOptions: ValidationOptions = .validatesOnBlur
@@ -98,8 +98,19 @@ open class BaseRow: BaseRowType {
     public var isHidden: Bool { return hiddenCache }
 
     /// The section to which this row belongs.
-    public weak var section: Section?
+    open weak var section: Section?
+	
+    public lazy var trailingSwipe = SwipeConfiguration(self)
+	
+    //needs the accessor because if marked directly this throws "Stored properties cannot be marked potentially unavailable with '@available'"
+    private lazy var _leadingSwipe = SwipeConfiguration(self)
 
+    @available(iOS 11,*)
+    public var leadingSwipe: SwipeConfiguration{
+        get { return self._leadingSwipe }
+        set { self._leadingSwipe = newValue }
+    }
+    
     public required init(tag: String? = nil) {
         self.tag = tag
     }
