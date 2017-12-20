@@ -462,7 +462,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
             tableView.dataSource = self
         }
         tableView.estimatedRowHeight = BaseRow.estimatedRowHeight
-		tableView.allowsSelectionDuringEditing = true
+        tableView.allowsSelectionDuringEditing = true
     }
 
     open override func viewWillAppear(_ animated: Bool) {
@@ -501,9 +501,9 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
         NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillShow(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
 
-		if form.containsMultivaluedSection{
-			tableView.setEditing(true, animated: false)
-		}
+        if form.containsMultivaluedSection {
+            tableView.setEditing(true, animated: false)
+        }
     }
 
     open override func viewWillDisappear(_ animated: Bool) {
@@ -810,13 +810,10 @@ extension FormViewController : UITableViewDelegate {
 
     open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 		let row = form[indexPath]
-		if row.trailingSwipe.actions.count > 0{
-			return true
-		} else if #available(iOS 11,*), row.leadingSwipe.actions.count > 0{
-			return true
-		}
-		guard let section = form[indexPath.section] as? MultivaluedSection else { return false }
         guard !row.isDisabled else { return false }
+		if row.trailingSwipe.actions.count > 0 { return true }
+		if #available(iOS 11,*), row.leadingSwipe.actions.count > 0 { return true }
+		guard let section = form[indexPath.section] as? MultivaluedSection else { return false }
         guard !(indexPath.row == section.count - 1 && section.multivaluedOptions.contains(.Insert) && section.showInsertIconInAddButton) else {
             return true
         }

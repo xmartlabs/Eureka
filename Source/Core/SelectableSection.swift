@@ -84,9 +84,7 @@ extension SelectableSectionType where Self: Section {
         for row in rows {
             if let row = row as? SelectableRow {
                 row.onCellSelection { [weak self] cell, row in
-                    guard let s = self, !row.isDisabled else {
-                        return
-                    }
+                    guard let s = self, !row.isDisabled else { return }
                     switch s.selectionType {
                     case .multipleSelection:
                         row.value = row.value == nil ? row.selectableValue : nil

@@ -233,10 +233,8 @@ extension Section: MutableCollection, BidirectionalCollection {
     }
 
     public subscript (range: Range<Int>) -> ArraySlice<BaseRow> {
-        get { return ArraySlice<BaseRow>(kvoWrapper.rows.objects(at: IndexSet(integersIn: range)) as! [BaseRow]) }
-        set {
-            replaceSubrange(range, with: newValue)
-        }
+        get { return kvoWrapper.rows.map { $0 as! BaseRow }[range] }
+        set { replaceSubrange(range, with: newValue) }
     }
 
     public func index(after i: Int) -> Int { return i + 1 }
@@ -455,7 +453,7 @@ open class MultivaluedSection: Section {
         let addRow = addButtonProvider(self)
         addRow.onCellSelection { cell, row in
             guard let tableView = cell.formViewController()?.tableView, let indexPath = row.indexPath else { return }
-		    cell.formViewController()?.tableView(tableView, commit: .insert, forRowAt: indexPath)
+            cell.formViewController()?.tableView(tableView, commit: .insert, forRowAt: indexPath)
         }
         self <<< addRow
     }
