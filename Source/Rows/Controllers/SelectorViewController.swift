@@ -35,6 +35,9 @@ public protocol OptionsProviderRow: TypedRowType {
     var optionsProvider: OptionsProviderType? { get set }
     
     var cachedOptionsData: [OptionsProviderType.Option]? { get set }
+    
+    /// Block variable used to get the String that should be displayed for option rows.
+    var optionFormatter: ((OptionsProviderType.Option) -> String?) { get set }
 }
 
 extension OptionsProviderRow where Self: BaseRow {
@@ -213,7 +216,7 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
         }
         for option in options {
             section <<< Row.init(String(describing: option)) { lrow in
-                lrow.title = self.row.displayValueFor?(option)
+                lrow.title = (self.row as? OptionsRow)?.optionFormatter(option)
                 lrow.selectableValue = option
                 lrow.value = self.row.value == option ? option : nil
             }.cellSetup { [weak self] cell, row in

@@ -30,7 +30,11 @@ open class OptionsRow<Cell: CellType> : Row<Cell>, NoValueDisplayTextConformance
     
     open var selectorTitle: String?
     open var noValueDisplayText: String?
-
+    /// Block variable used to get the String that should be displayed for option rows.
+    open var optionFormatter: ((Cell.Value) -> String?) = {
+        return String(describing: $0)
+    }
+    
     required public init(tag: String?) {
         super.init(tag: tag)
     }
