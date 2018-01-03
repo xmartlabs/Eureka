@@ -24,20 +24,18 @@
 
 import Foundation
 
-
 public struct ValidationError: Equatable {
-    
+
     public let msg: String
-    
+
     public init(msg: String) {
         self.msg = msg
     }
 }
 
-public func ==(lhs: ValidationError, rhs: ValidationError) -> Bool{
+public func == (lhs: ValidationError, rhs: ValidationError) -> Bool {
     return lhs.msg == rhs.msg
 }
-
 
 public protocol BaseRuleType {
     var id: String? { get set }
@@ -46,58 +44,56 @@ public protocol BaseRuleType {
 
 public protocol RuleType: BaseRuleType {
     associatedtype RowValueType
-    
+
     func isValid(value: RowValueType?) -> ValidationError?
 }
 
-public struct ValidationOptions : OptionSet {
+public struct ValidationOptions: OptionSet {
 
     public let rawValue: Int
-    
-    public init(rawValue: Int){
+
+    public init(rawValue: Int) {
         self.rawValue = rawValue
     }
-    
+
     public static let validatesOnDemand  = ValidationOptions(rawValue: 1 << 0)
     public static let validatesOnChange  = ValidationOptions(rawValue: 1 << 1)
     public static let validatesOnBlur = ValidationOptions(rawValue: 1 << 2)
     public static let validatesOnChangeAfterBlurred = ValidationOptions(rawValue: 1 << 3)
-    
+
     public static let validatesAlways: ValidationOptions = [.validatesOnChange, .validatesOnBlur]
 }
 
-
-internal struct ValidationRuleHelper<T: Equatable> {
+internal struct ValidationRuleHelper<T> where T: Equatable {
     let validateFn: ((T?) -> ValidationError?)
     let rule: BaseRuleType
 }
 
 public struct RuleSet<T: Equatable> {
-    
+
     internal var rules: [ValidationRuleHelper<T>] = []
-    
-    public init(){}
-    
-    public mutating func add<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType{
+
+    public init() {}
+
+    /// Add a validation Rule to a Row
+    /// - Parameter rule: RuleType object typed to the same type of the Row.value
+    public mutating func add<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType {
         let validFn: ((T?) -> ValidationError?) = { (val: T?) in
             return rule.isValid(value: val)
         }
         rules.append(ValidationRuleHelper(validateFn: validFn, rule: rule))
     }
-    
+
     public mutating func remove(ruleWithIdentifier identifier: String) {
         if let index = rules.index(where: { (validationRuleHelper) -> Bool in
             return validationRuleHelper.rule.id == identifier
-        }){
+        }) {
             rules.remove(at: index)
         }
     }
-    
+
     public mutating func removeAllRules() {
         rules.removeAll()
     }
 
 }
-
-
-

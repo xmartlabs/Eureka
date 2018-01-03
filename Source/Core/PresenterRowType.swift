@@ -22,7 +22,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import Foundation
 
 /**
@@ -30,18 +29,18 @@ import Foundation
  *  This includes presenting or pushing view controllers.
  */
 public protocol PresenterRowType: TypedRowType {
-    
-    associatedtype ProviderType : UIViewController, TypedRowControllerType
-    
+
+    associatedtype PresentedControllerType : UIViewController, TypedRowControllerType
+
     /// Defines how the view controller will be presented, pushed, etc.
-    var presentationMode: PresentationMode<ProviderType>? { get set }
-    
+    var presentationMode: PresentationMode<PresentedControllerType>? { get set }
+
     /// Will be called before the presentation occurs.
-    var onPresentCallback: ((FormViewController, ProviderType)->())? { get set }
+    var onPresentCallback: ((FormViewController, PresentedControllerType) -> Void)? { get set }
 }
 
 extension PresenterRowType {
-    
+
     /**
      Sets a block to be executed when the row presents a view controller
      
@@ -49,7 +48,7 @@ extension PresenterRowType {
      
      - returns: this row
      */
-    public func onPresent(_ callback: ((FormViewController, ProviderType)->())?) -> Self {
+    public func onPresent(_ callback: ((FormViewController, PresentedControllerType) -> Void)?) -> Self {
         onPresentCallback = callback
         return self
     }

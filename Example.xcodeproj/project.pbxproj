@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2837E2A01BA3A5A800A1952C /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2837E29E1BA3A5A800A1952C /* FloatLabelTextField.swift */; };
+		284D28B61E49121E00BB38E7 /* DatePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284D28B51E49121E00BB38E7 /* DatePickerCell.xib */; };
+		284D28B81E4917A000BB38E7 /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284D28B71E4917A000BB38E7 /* SwitchCell.xib */; };
+		284D28BA1E491FEF00BB38E7 /* TextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284D28B91E491FEF00BB38E7 /* TextCell.xib */; };
 		285F2B441BB79B86005991BA /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 285F2B431BB79B86005991BA /* MapKit.framework */; };
 		287A143F1D99A96100FFE6EB /* ImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A143D1D99A96100FFE6EB /* ImagePickerController.swift */; };
 		287A14401D99A96100FFE6EB /* ImageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287A143E1D99A96100FFE6EB /* ImageRow.swift */; };
@@ -79,6 +82,9 @@
 
 /* Begin PBXFileReference section */
 		2837E29E1BA3A5A800A1952C /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FloatLabelTextField.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		284D28B51E49121E00BB38E7 /* DatePickerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DatePickerCell.xib; path = Example/CustomDesign/DatePickerCell.xib; sourceTree = "<group>"; };
+		284D28B71E4917A000BB38E7 /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SwitchCell.xib; path = Example/CustomDesign/SwitchCell.xib; sourceTree = "<group>"; };
+		284D28B91E491FEF00BB38E7 /* TextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TextCell.xib; path = Example/CustomDesign/TextCell.xib; sourceTree = "<group>"; };
 		285F2B431BB79B86005991BA /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		287A143D1D99A96100FFE6EB /* ImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImagePickerController.swift; path = Example/CustomRows/ImageRow/ImagePickerController.swift; sourceTree = "<group>"; };
 		287A143E1D99A96100FFE6EB /* ImageRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageRow.swift; path = Example/CustomRows/ImageRow/ImageRow.swift; sourceTree = "<group>"; };
@@ -126,6 +132,16 @@
 			);
 			name = Helpers;
 			path = Example/Helpers;
+			sourceTree = "<group>";
+		};
+		284D28AE1E48C27300BB38E7 /* Custom Design */ = {
+			isa = PBXGroup;
+			children = (
+				284D28B71E4917A000BB38E7 /* SwitchCell.xib */,
+				284D28B51E49121E00BB38E7 /* DatePickerCell.xib */,
+				284D28B91E491FEF00BB38E7 /* TextCell.xib */,
+			);
+			name = "Custom Design";
 			sourceTree = "<group>";
 		};
 		285F2B451BB79BB7005991BA /* Supporting Files */ = {
@@ -176,6 +192,7 @@
 		51729E1C1B9A54F1004A00EB /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				284D28AE1E48C27300BB38E7 /* Custom Design */,
 				28CD97BE1BB32EC800AFDA67 /* Custom Section Header */,
 				51729E6A1B9A657E004A00EB /* Custom Row and Cell */,
 				51729E1D1B9A54F1004A00EB /* AppDelegate.swift */,
@@ -196,7 +213,7 @@
 				51729E341B9A54F1004A00EB /* Info.plist */,
 			);
 			name = UITests;
-			path = ExampleUITests;
+			path = Example/UITests;
 			sourceTree = "<group>";
 		};
 		51729E421B9A5841004A00EB /* Products */ = {
@@ -266,17 +283,17 @@
 		51729E121B9A54F1004A00EB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Xmartlabs;
 				TargetAttributes = {
 					51729E191B9A54F1004A00EB = {
 						CreatedOnToolsVersion = 7.0;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Manual;
 					};
 					51729E2D1B9A54F1004A00EB = {
 						CreatedOnToolsVersion = 7.0;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 						TestTargetID = 51729E191B9A54F1004A00EB;
 					};
 				};
@@ -329,8 +346,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				51729E281B9A54F1004A00EB /* LaunchScreen.storyboard in Resources */,
+				284D28B81E4917A000BB38E7 /* SwitchCell.xib in Resources */,
+				284D28BA1E491FEF00BB38E7 /* TextCell.xib in Resources */,
 				51729E251B9A54F1004A00EB /* Assets.xcassets in Resources */,
 				51729E711B9A660A004A00EB /* WeekDaysCell.xib in Resources */,
+				284D28B61E49121E00BB38E7 /* DatePickerCell.xib in Resources */,
 				28CD97C21BB32F0E00AFDA67 /* EurekaSectionHeader.xib in Resources */,
 				51729E231B9A54F1004A00EB /* Main.storyboard in Resources */,
 			);
@@ -434,13 +454,21 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -478,13 +506,21 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -521,7 +557,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -539,7 +576,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.xmartlabs.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -552,7 +590,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xmartlabs.ExampleUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = Example;
 				USES_XCTRUNNER = YES;
 			};
@@ -567,7 +606,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.xmartlabs.ExampleUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = Example;
 				USES_XCTRUNNER = YES;
 			};

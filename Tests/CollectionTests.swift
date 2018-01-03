@@ -29,64 +29,65 @@ class CollectionTests: BaseEurekaTests {
 
     func testSectionRangeReplaceableCollectionTypeConformance() {
         // test if the collection function work as expected
-        
+
         fieldForm[0].replaceSubrange(Range(3...6), with: [CheckRow("check1_ctx")])          // replacing 4 rows with 1
         XCTAssertEqual(fieldForm[0].count, 8)                                                       // fieldform had 10 rows prior to replacing
         fieldForm[0][4] = CheckRow("check2_ctx")                                                    // replacing 5th row
         XCTAssertEqual(fieldForm[0].count, 8)
-        
-        XCTAssertEqual(fieldForm[0].filter({ $0 is CheckRow }).count, 2)                            // Do I have 2 CheckRows??
+        let rows: [BaseRow] = fieldForm[0].filter({ $0 is CheckRow })
+        XCTAssertEqual(rows.count, 2)                            // Do I have 2 CheckRows??
 
         fieldForm[0].append(contentsOf: [CheckRow("check3_ctx"), CheckRow("check4_ctx"), CheckRow("check5_ctx")])
         // is the same as fieldForm[0] += [...]
-        
+
         XCTAssertEqual(fieldForm[0].count, 11)
     }
-    
+
     func testFormRangeReplaceableCollectionTypeConformance() {
         // test if the collection function work as expected
-        
+
         manySectionsForm.replaceSubrange(2..<5, with: [Section("Out of order"), Section()])         // replacing 3 rows with 2
         XCTAssertEqual(manySectionsForm.count, 5)                                                                  // fieldform had 10 rows prior to replacing
         manySectionsForm[3] = Section("There is no order anyway")                                               // replacing 4th row
         XCTAssertEqual(manySectionsForm.count, 5)
+        let sections: [Section] = manySectionsForm.filter({ $0.header?.title?.contains("order") ?? false})
         
-        XCTAssertEqual(manySectionsForm.filter({ $0.header?.title?.contains("order") ?? false}).count, 2)
-        
+        XCTAssertEqual(sections.count, 2)
+
         manySectionsForm.append(contentsOf: [Section("1"), Section("2")])
         // is the same as fieldForm[0] += [...]
-        
+
         XCTAssertEqual(manySectionsForm.count, 7)
     }
-    
+
     func testDelegateFunctions() {
         // Test operators
         let form = Form()
         let delegate = MyFormDelegate()
         form.delegate = delegate
-        
+
         form +++ Section("A")                                                                  // addsection + 1
-        form +++ TextRow("textrow1_ctx"){ $0.value = " "}                                      // addsection + 1
+        form +++ TextRow("textrow1_ctx") { $0.value = " "}                                      // addsection + 1
         form +++ Section("C") <<< TextRow("textrow2_ctx") <<< TextRow("textrow3_ctx")          // addsection + 1
-        
+
         XCTAssertEqual(delegate.sectionsAdded, 3)
         XCTAssertEqual(delegate.rowsAdded, 0)
 
         form[0][0] = TextRow("textrow6_ctx")                                                    // addrow + 1
         form[1][0].baseValue = "a"                                                              // valueschanged + 1
-        
+
         XCTAssertEqual(delegate.valuesChanged, 1)
         XCTAssertEqual(delegate.sectionsAdded, 3)
         XCTAssertEqual(delegate.rowsAdded, 1)
-        
+
         form[2][1] = TextRow("textrow7_ctx")                                                    // replacerowIn+1, replacerowOut+1,
         form.replaceSubrange(Range(0...1), with: [Section("replaced in")])              // replacesectionOut+1, sectionremoved+1, replacesectionin+1
-        
+
         XCTAssertEqual(delegate.sectionsRemoved, 1)
-        
+
         form[1].removeAll()                                                                     // rowsremoved + 2
         form.removeAll()                                                                        // sectionsremoved + 2
-        
+
         //Test delegate
         XCTAssertEqual(delegate.valuesChanged, 1)
         XCTAssertEqual(delegate.sectionsAdded, 3)

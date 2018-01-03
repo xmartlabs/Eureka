@@ -24,7 +24,7 @@
 
 import Foundation
 
-open class _MultipleSelectorRow<T: Hashable, Cell: CellType>: GenericMultipleSelectorRow<T, Cell, MultipleSelectorViewController<T>> where Cell: BaseCell, Cell: TypedCellType, Cell.Value == Set<T> {
+open class _MultipleSelectorRow<T, Cell: CellType>: GenericMultipleSelectorRow<T, Cell> where Cell: BaseCell, Cell.Value == Set<T> {
     public required init(tag: String?) {
         super.init(tag: tag)
     }

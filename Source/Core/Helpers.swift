@@ -26,7 +26,7 @@ import Foundation
 import UIKit
 
 extension UIView {
-    
+
     public func findFirstResponder() -> UIView? {
         if isFirstResponder { return self }
         for subView in subviews {
@@ -36,7 +36,7 @@ extension UIView {
         }
         return nil
     }
-    
+
     public func formCell() -> BaseCell? {
         if self is UITableViewCell {
             return self as? BaseCell
@@ -46,15 +46,14 @@ extension UIView {
 }
 
 extension NSPredicate {
-    
+
     var predicateVars: [String] {
         var ret = [String]()
         if let compoundPredicate = self as? NSCompoundPredicate {
             for subPredicate in compoundPredicate.subpredicates where subPredicate is NSPredicate {
                 ret.append(contentsOf: (subPredicate as! NSPredicate).predicateVars)
             }
-        }
-        else if let comparisonPredicate = self as? NSComparisonPredicate {
+        } else if let comparisonPredicate = self as? NSComparisonPredicate {
             ret.append(contentsOf: comparisonPredicate.leftExpression.expressionVars)
             ret.append(contentsOf: comparisonPredicate.rightExpression.expressionVars)
         }
@@ -63,16 +62,15 @@ extension NSPredicate {
 }
 
 extension NSExpression {
-    
+
     var expressionVars: [String] {
-        switch expressionType{
+        switch expressionType {
             case .function, .variable:
                 let str = "\(self)"
-                if let range = str.range(of: "."){
-                    return [str.substring(with: str.characters.index(str.startIndex, offsetBy: 1)..<range.lowerBound)]
-                }
-                else{
-                    return [str.substring(from: str.characters.index(str.startIndex, offsetBy: 1))]
+                if let range = str.range(of: ".") {
+                    return [String(str[str.index(str.startIndex, offsetBy: 1)..<range.lowerBound])]
+                } else {
+                    return [String(str[str.index(str.startIndex, offsetBy: 1)...])]
                 }
             default:
                 return []

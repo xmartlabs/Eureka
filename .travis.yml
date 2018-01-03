@@ -1,7 +1,7 @@
 language: objective-c
-osx_image: xcode8
+osx_image: xcode9
 env:
-  - DESTINATION="OS=10.0,name=iPhone 6s" SCHEME="Eureka" SDK=iphonesimulator10.0
+  - DESTINATION="OS=11.0,name=iPhone 7" SCHEME="Eureka" SDK=iphonesimulator
 before_install:
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
   - brew update
@@ -9,10 +9,7 @@ before_install:
 script:
   - set -o pipefail
   - xcodebuild -version
-  - xcodebuild -project Eureka.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION"
-    -configuration Debug ONLY_ACTIVE_ARCH=NO test | xcpretty -c
-  - xcodebuild -project Example.xcodeproj -scheme "Example" -sdk "$SDK" -destination "$DESTINATION"
-    -configuration Debug ONLY_ACTIVE_ARCH=NO test | xcpretty -c
+  - xcodebuild -project Eureka.xcodeproj -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO test | xcpretty -c
 before_deploy:
   - carthage build --no-skip-current
   - carthage archive Eureka

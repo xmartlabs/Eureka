@@ -29,61 +29,61 @@ import CoreLocation
 //MARK: HomeViewController
 
 class HomeViewController : FormViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+
         ImageRow.defaultCellUpdate = { cell, row in
            cell.accessoryView?.layer.cornerRadius = 17
            cell.accessoryView?.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
         }
-        
-        form =
-            
+
+        form +++
+
             Section() {
                 $0.header = HeaderFooterView<EurekaLogoView>(.class)
             }
-        
+
                 <<< ButtonRow("Rows") {
                         $0.title = $0.tag
                         $0.presentationMode = .segueName(segueName: "RowsExampleViewControllerSegue", onDismiss: nil)
                     }
-            
+
                 <<< ButtonRow("Native iOS Event Form") { row in
                         row.title = row.tag
                         row.presentationMode = .segueName(segueName: "NativeEventsFormNavigationControllerSegue", onDismiss:{  vc in vc.dismiss(animated: true) })
                     }
-            
+
                 <<< ButtonRow("Accesory View Navigation") { (row: ButtonRow) in
                         row.title = row.tag
                         row.presentationMode = .segueName(segueName: "AccesoryViewControllerSegue", onDismiss: nil)
                     }
-            
+
                 <<< ButtonRow("Custom Cells") { (row: ButtonRow) -> () in
                         row.title = row.tag
                         row.presentationMode = .segueName(segueName: "CustomCellsControllerSegue", onDismiss: nil)
                     }
-            
+
                 <<< ButtonRow("Customization of rows with text input") { (row: ButtonRow) -> Void in
                         row.title = row.tag
                         row.presentationMode = .segueName(segueName: "FieldCustomizationControllerSegue", onDismiss: nil)
                     }
-            
+
                 <<< ButtonRow("Hidden rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
                     row.presentationMode = .segueName(segueName: "HiddenRowsControllerSegue", onDismiss: nil)
                     }
-            
+
                 <<< ButtonRow("Disabled rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
                     row.presentationMode = .segueName(segueName: "DisabledRowsControllerSegue", onDismiss: nil)
                 }
-            
+
                 <<< ButtonRow("Formatters") { (row: ButtonRow) -> Void in
                     row.title = row.tag
                     row.presentationMode = .segueName(segueName: "FormattersControllerSegue", onDismiss: nil)
                 }
-        
+
                 <<< ButtonRow("Inline rows") { (row: ButtonRow) -> Void in
                     row.title = row.tag
                     row.presentationMode = .segueName(segueName: "InlineRowsControllerSegue", onDismiss: nil)
@@ -96,10 +96,28 @@ class HomeViewController : FormViewController {
                     row.title = row.tag
                     row.presentationMode = .segueName(segueName: "ValidationsControllerSegue", onDismiss: nil)
                 }
-                <<< ButtonRow("Validation Example - IDA") { (row:ButtonRow) -> Void in
+
+                <<< ButtonRow("Custom Design") { (row: ButtonRow) -> Void in
                     row.title = row.tag
-                    row.presentationMode = .segueName(segueName: "ValidationExampleSegue", onDismiss: nil)
+                    row.presentationMode = .segueName(segueName: "CustomDesignControllerSegue", onDismiss: nil)
                 }
+
+                <<< ButtonRow("Multivalued Sections") { (row: ButtonRow) -> Void in
+                    row.title = row.tag
+                    row.presentationMode = .segueName(segueName: "MultivaluedSectionsControllerSegue", onDismiss: nil)
+                }
+
+                <<< ButtonRow("Swipe Actions") { (row: ButtonRow) -> Void in
+                  row.title = row.tag
+                  row.presentationMode = .segueName(segueName: "SwipeActionsControllerSegue", onDismiss: nil)
+                }
+
+                <<< ButtonRow("Plain Table View Style") { (row: ButtonRow) in
+                    row.title = row.tag
+                    row.presentationMode = .segueName(segueName: "PlainTableViewStyleViewControllerSegue", onDismiss: nil)
+                }
+
+
         +++ Section()
                 <<< ButtonRow() { (row: ButtonRow) -> Void in
                    row.title = "About"
@@ -107,17 +125,18 @@ class HomeViewController : FormViewController {
                 .onCellSelection { [weak self] (cell, row) in
                     self?.showAlert()
                 }
+
     }
-    
-    
+
+
     @IBAction func showAlert() {
         let alertController = UIAlertController(title: "OnCellSelection", message: "Button Row Action", preferredStyle: .alert)
         let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(defaultAction)
         present(alertController, animated: true)
-        
+
     }
-    
+
 }
 //MARK: Emoji
 
@@ -127,19 +146,19 @@ let 👦🏼 = "👦🏼", 🍐 = "🍐", 💁🏻 = "💁🏻", 🐗 = "🐗", 
 //Mark: RowsExampleViewController
 
 class RowsExampleViewController: FormViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         URLRow.defaultCellUpdate = { cell, row in cell.textField.textColor = .blue }
         LabelRow.defaultCellUpdate = { cell, row in cell.detailTextLabel?.textColor = .orange  }
         CheckRow.defaultCellSetup = { cell, row in cell.tintColor = .orange }
         DateRow.defaultRowInitializer = { row in row.minimumDate = Date() }
 
-        form =
-            
+        form +++
+
             Section()
-            
+
                 <<< LabelRow () {
                         $0.title = "LabelRow"
                         $0.value = "tap the row"
@@ -148,86 +167,141 @@ class RowsExampleViewController: FormViewController {
                         row.title = (row.title ?? "") + " 🇺🇾 "
                         row.reload() // or row.updateCell()
                     }
-            
-            
+
+
                 <<< DateRow() { $0.value = Date(); $0.title = "DateRow" }
-                
+
                 <<< CheckRow() {
                         $0.title = "CheckRow"
                         $0.value = true
                     }
-                
+
                 <<< SwitchRow() {
                         $0.title = "SwitchRow"
                         $0.value = true
                     }
-            
+
                 <<< SliderRow() {
                     $0.title = "SliderRow"
                     $0.value = 5.0
                 }
-            
+
                 <<< StepperRow() {
                     $0.title = "StepperRow"
                     $0.value = 1.0
                 }
-            
+
             +++ Section("SegmentedRow examples")
-            
+
                 <<< SegmentedRow<String>() { $0.options = ["One", "Two", "Three"] }
-                
+
                 <<< SegmentedRow<Emoji>(){
                         $0.title = "Who are you?"
                         $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻 ]
                         $0.value = 🍐
                     }
-            
+
                 <<< SegmentedRow<String>(){
                     $0.title = "SegmentedRow"
                     $0.options = ["One", "Two"]
                     }.cellSetup { cell, row in
                         cell.imageView?.image = UIImage(named: "plus_image")
                 }
-            
+
                 <<< SegmentedRow<String>(){
                     $0.options = ["One", "Two", "Three", "Four"]
                     $0.value = "Three"
                     }.cellSetup { cell, row in
                         cell.imageView?.image = UIImage(named: "plus_image")
                 }
-            
+
+                <<< SegmentedRow<UIImage>(){
+                    let names = ["selected", "plus_image", "unselected"]
+                    $0.options = names.map { UIImage(named: $0)! }
+                    $0.value = $0.options?.last
+                }
+
             +++ Section("Selectors Rows Examples")
-                
+
                 <<< ActionSheetRow<String>() {
                         $0.title = "ActionSheetRow"
                         $0.selectorTitle = "Your favourite player?"
                         $0.options = ["Diego Forlán", "Edinson Cavani", "Diego Lugano", "Luis Suarez"]
                         $0.value = "Luis Suarez"
                     }
-                
+                    .onPresent { from, to in
+                        to.popoverPresentationController?.permittedArrowDirections = .up
+                    }
+
                 <<< AlertRow<Emoji>() {
                         $0.title = "AlertRow"
+                        $0.cancelTitle = "Dismiss"
                         $0.selectorTitle = "Who is there?"
                         $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
                         $0.value = 👦🏼
                     }.onChange { row in
-                        print(row.value)
+                        print(row.value ?? "No Value")
                     }
                     .onPresent{ _, to in
                         to.view.tintColor = .purple
                     }
-            
+
                 <<< PushRow<Emoji>() {
                         $0.title = "PushRow"
                         $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
                         $0.value = 👦🏼
                         $0.selectorTitle = "Choose an Emoji!"
+                    }.onPresent { from, to in
+                        to.dismissOnSelection = false
+                        to.dismissOnChange = false
+            }
+
+                <<< PushRow<Emoji>() {
+                        $0.title = "SectionedPushRow"
+                        $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
+                        $0.value = 👦🏼
+                        $0.selectorTitle = "Choose an Emoji!"
+                    }.onPresent { from, to in
+                        to.dismissOnSelection = false
+                        to.dismissOnChange = false
+                        to.sectionKeyForValue = { option in
+                            switch option {
+                            case 💁🏻, 👦🏼: return "People"
+                            case 🐗, 🐼, 🐻: return "Animals"
+                            case 🍐: return "Food"
+                            default: return ""
+                            }
+                        }
                     }
-            
-        
+            <<< PushRow<Emoji>() {
+                $0.title = "LazySectionedPushRow"
+                $0.value = 👦🏼
+                $0.selectorTitle = "Choose a lazy Emoji!"
+                $0.optionsProvider = .lazy({ (form, completion) in
+                    let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                    form.tableView.backgroundView = activityView
+                    activityView.startAnimating()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                        form.tableView.backgroundView = nil
+                        completion([💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻])
+                    })
+                })
+            }
+            .onPresent { from, to in
+                to.sectionKeyForValue = { option -> String in
+                    switch option {
+                    case 💁🏻, 👦🏼: return "People"
+                    case 🐗, 🐼, 🐻: return "Animals"
+                    case 🍐: return "Food"
+                    default: return ""
+                    }
+                }
+            }
+
+
         if UIDevice.current.userInterfaceIdiom == .pad {
             let section = form.last!
-        
+
             section <<< PopoverSelectorRow<Emoji>() {
                     $0.title = "PopoverSelectorRow"
                     $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
@@ -235,19 +309,19 @@ class RowsExampleViewController: FormViewController {
                     $0.selectorTitle = "Choose an Emoji!"
                 }
         }
-        
+
         let section = form.last!
-                    
+
         section
                 <<< LocationRow(){
                         $0.title = "LocationRow"
                         $0.value = CLLocation(latitude: -34.91, longitude: -56.1646)
                     }
-                
+
                 <<< ImageRow(){
                         $0.title = "ImageRow"
                     }
-                
+
                 <<< MultipleSelectorRow<Emoji>() {
                         $0.title = "MultipleSelectorRow"
                         $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
@@ -256,25 +330,65 @@ class RowsExampleViewController: FormViewController {
                     .onPresent { from, to in
                         to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
                     }
-            
+
+                <<< MultipleSelectorRow<Emoji>() {
+                    $0.title = "SectionedMultipleSelectorRow"
+                    $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
+                    $0.value = [👦🏼, 🍐, 🐗]
+                    }
+                    .onPresent { from, to in
+                        to.sectionKeyForValue = { option in
+                            switch option {
+                            case 💁🏻, 👦🏼: return "People"
+                            case 🐗, 🐼, 🐻: return "Animals"
+                            case 🍐: return "Food"
+                            default: return ""
+                            }
+                        }
+                        to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
+                    }
+            <<< MultipleSelectorRow<Emoji>() {
+                $0.title = "LazyMultipleSelectorRow"
+                $0.value = [👦🏼, 🍐, 🐗]
+                $0.optionsProvider = .lazy({ (form, completion) in
+                    let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                    form.tableView.backgroundView = activityView
+                    activityView.startAnimating()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                        form.tableView.backgroundView = nil
+                        completion([💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻])
+                    })
+            })
+            }.onPresent { from, to in
+                    to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
+            }
+
         form +++ Section("Generic picker")
-            
+
                 <<< PickerRow<String>("Picker Row") { (row : PickerRow<String>) -> Void in
-                
+
                     row.options = []
                     for i in 1...10{
                         row.options.append("option \(i)")
                     }
-                
                 }
-        
+
+                <<< PickerInputRow<String>("Picker Input Row"){
+                    $0.title = "Options"
+                    $0.options = []
+                    for i in 1...10{
+                        $0.options.append("option \(i)")
+                    }
+                    $0.value = $0.options.first
+                }
+
             +++ Section("FieldRow examples")
-            
+
                 <<< TextRow() {
                         $0.title = "TextRow"
                         $0.placeholder = "Placeholder"
                     }
-                
+
                 <<< DecimalRow() {
                         $0.title = "DecimalRow"
                         $0.value = 5
@@ -284,66 +398,66 @@ class RowsExampleViewController: FormViewController {
                     }.cellSetup { cell, _  in
                         cell.textField.keyboardType = .numberPad
                     }
-                
+
                 <<< URLRow() {
                         $0.title = "URLRow"
                         $0.value = URL(string: "http://xmartlabs.com")
                     }
-                
+
                 <<< PhoneRow() {
                         $0.title = "PhoneRow (disabled)"
                         $0.value = "+598 9898983510"
                         $0.disabled = true
                     }
-            
+
                 <<< NameRow() {
                         $0.title =  "NameRow"
                     }
-        
+
                 <<< PasswordRow() {
                         $0.title = "PasswordRow"
                         $0.value = "password"
                     }
-            
+
                 <<< IntRow() {
                         $0.title = "IntRow"
                         $0.value = 2015
                     }
-        
+
                 <<< EmailRow() {
                         $0.title = "EmailRow"
                         $0.value = "a@b.com"
                     }
-        
+
                 <<< TwitterRow() {
                         $0.title = "TwitterRow"
                         $0.value = "@xmartlabs"
                     }
-        
+
                 <<< AccountRow() {
                         $0.title = "AccountRow"
                         $0.placeholder = "Placeholder"
                     }
-        
+
                 <<< ZipCodeRow() {
                         $0.title = "ZipCodeRow"
                         $0.placeholder = "90210"
                     }
     }
-	
-    func multipleSelectorDone(_ item:UIBarButtonItem) {
+
+    @objc func multipleSelectorDone(_ item:UIBarButtonItem) {
         _ = navigationController?.popViewController(animated: true)
     }
-    
+
 }
 
 //MARK: Custom Cells Example
 
 class CustomCellsController : FormViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         form +++
             Section() {
                 var header = HeaderFooterView<EurekaLogoViewNib>(.nibFile(name: "EurekaSectionHeader", bundle: nil))
@@ -360,15 +474,15 @@ class CustomCellsController : FormViewController {
                 $0.header = header
             }
             +++ Section("WeekDay cell")
-            
+
                 <<< WeekDayRow(){
                     $0.value = [.monday, .wednesday, .friday]
                 }
-               
+
                 <<< TextFloatLabelRow() {
                     $0.title = "Float Label Row, type something to see.."
                 }
-        
+
                 <<< IntFloatLabelRow() {
                     $0.title = "Float Label Row, type something to see.."
                 }
@@ -377,12 +491,12 @@ class CustomCellsController : FormViewController {
 
 //MARK: Field row customization Example
 class FieldRowCustomizationController : FormViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         form +++
             Section(header: "Default field rows", footer: "Rows with title have a right-aligned text field.\nRows without title have a left-aligned text field.\nBut this can be changed...")
-            
+
                 <<< NameRow() {
                         $0.title = "Your name:"
                         $0.placeholder = "(right alignment)"
@@ -390,33 +504,33 @@ class FieldRowCustomizationController : FormViewController {
                     .cellSetup { cell, row in
                         cell.imageView?.image = UIImage(named: "plus_image")
                     }
-            
+
                 <<< NameRow() {
                         $0.placeholder = "Name (left alignment)"
                     }
                     .cellSetup { cell, row in
                         cell.imageView?.image = UIImage(named: "plus_image")
                     }
-            
+
             +++ Section("Customized Alignment")
-            
+
                 <<< NameRow() {
                         $0.title = "Your name:"
                     }.cellUpdate { cell, row in
                         cell.textField.textAlignment = .left
                         cell.textField.placeholder = "(left alignment)"
                     }
-            
+
                 <<< NameRow().cellUpdate { cell, row in
                     cell.textField.textAlignment = .right
                     cell.textField.placeholder = "Name (right alignment)"
                 }
-        
+
             +++ Section(header: "Customized Text field width", footer: "Eureka allows us to set up a specific UITextField width using textFieldPercentage property. In the section above we have also right aligned the textLabels.")
-            
+
                 <<< NameRow() {
                     $0.title = "Title"
-                    $0.textFieldPercentage = 0.6
+                    $0.titlePercentage = 0.4
                     $0.placeholder = "textFieldPercentage = 0.6"
                 }
                 .cellUpdate {
@@ -425,7 +539,7 @@ class FieldRowCustomizationController : FormViewController {
                 }
                 <<< NameRow() {
                     $0.title = "Another Title"
-                    $0.textFieldPercentage = 0.6
+                    $0.titlePercentage = 0.4
                     $0.placeholder = "textFieldPercentage = 0.6"
                 }
                 .cellUpdate {
@@ -434,21 +548,21 @@ class FieldRowCustomizationController : FormViewController {
                 }
                 <<< NameRow() {
                     $0.title = "One more"
-                    $0.textFieldPercentage = 0.7
+                    $0.titlePercentage = 0.3
                     $0.placeholder = "textFieldPercentage = 0.7"
                 }
                 .cellUpdate {
                     $1.cell.textField.textAlignment = .left
                     $1.cell.textLabel?.textAlignment = .right
                 }
-        
+
             +++ Section("TextAreaRow")
-        
+
                 <<< TextAreaRow() {
                     $0.placeholder = "TextAreaRow"
                     $0.textAreaHeight = .dynamic(initialTextViewHeight: 110)
                 }
-        
+
             }
 }
 
@@ -456,22 +570,22 @@ class FieldRowCustomizationController : FormViewController {
 //MARK: Navigation Accessory View Example
 
 class NavigationAccessoryController : FormViewController {
-    
+
     var navigationOptionsBackup : RowNavigationOptions?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationOptions = RowNavigationOptions.Enabled.union(.SkipCanNotBecomeFirstResponderRow)
         navigationOptionsBackup = navigationOptions
-        
+
         form = Section(header: "Settings", footer: "These settings change how the navigation accessory view behaves")
-            
-             <<< SwitchRow("set_none") {
+
+             <<< SwitchRow("set_none") { [weak self] in
                     $0.title = "Navigation accessory view"
-                    $0.value = self.navigationOptions != .Disabled
+                    $0.value = self?.navigationOptions != .Disabled
                 }.onChange { [weak self] in
-                    if $0.value == true {
+                    if $0.value ?? false {
                         self?.navigationOptions = self?.navigationOptionsBackup
                         self?.form.rowBy(tag: "set_disabled")?.baseValue = self?.navigationOptions?.contains(.StopDisabledRow)
                         self?.form.rowBy(tag: "set_skip")?.baseValue = self?.navigationOptions?.contains(.SkipCanNotBecomeFirstResponderRow)
@@ -484,9 +598,9 @@ class NavigationAccessoryController : FormViewController {
                     }
                 }
 
-            <<< CheckRow("set_disabled") {
+            <<< CheckRow("set_disabled") { [weak self] in
                     $0.title = "Stop at disabled row"
-                    $0.value = self.navigationOptions?.contains(.StopDisabledRow)
+                    $0.value = self?.navigationOptions?.contains(.StopDisabledRow)
                     $0.hidden = "$set_none == false" // .Predicate(NSPredicate(format: "$set_none == false"))
                 }.onChange { [weak self] row in
                     if row.value ?? false {
@@ -497,9 +611,9 @@ class NavigationAccessoryController : FormViewController {
                     }
                 }
 
-            <<< CheckRow("set_skip") {
+            <<< CheckRow("set_skip") { [weak self] in
                     $0.title = "Skip non first responder view"
-                    $0.value = self.navigationOptions?.contains(.SkipCanNotBecomeFirstResponderRow)
+                    $0.value = self?.navigationOptions?.contains(.SkipCanNotBecomeFirstResponderRow)
                     $0.hidden = "$set_none  == false"
                 }.onChange { [weak self] row in
                     if row.value ?? false {
@@ -510,30 +624,30 @@ class NavigationAccessoryController : FormViewController {
                     }
                 }
 
-        
+
             +++
-            
+
                 NameRow() { $0.title = "Your name:" }
-            
+
                 <<< PasswordRow() { $0.title = "Your password:" }
-        
+
             +++
                 Section()
-            
+
                 <<< SegmentedRow<Emoji>() {
                         $0.title = "Favourite food:"
                         $0.options = [🐗, 🐖, 🐡, 🍐]
                     }
-            
+
                 <<< PhoneRow() { $0.title = "Your phone number" }
-            
+
                 <<< URLRow() {
                         $0.title = "Disabled"
                         $0.disabled = true
                     }
-            
+
                 <<< TextRow() { $0.title = "Your father's name"}
-            
+
                 <<< TextRow(){ $0.title = "Your mother's name"}
     }
 }
@@ -548,33 +662,33 @@ class NativeEventFormViewController : FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         initializeForm()
-        
-        self.navigationItem.leftBarButtonItem?.target = self
-        self.navigationItem.leftBarButtonItem?.action = #selector(NativeEventFormViewController.cancelTapped(_:))
+
+        navigationItem.leftBarButtonItem?.target = self
+        navigationItem.leftBarButtonItem?.action = #selector(NativeEventFormViewController.cancelTapped(_:))
     }
-    
+
     private func initializeForm() {
-        
-        form =
-            
+
+        form +++
+
                 TextRow("Title").cellSetup { cell, row in
                     cell.textField.placeholder = row.tag
                 }
-            
+
             <<< TextRow("Location").cellSetup {
                     $1.cell.textField.placeholder = $0.row.tag
                 }
-        
+
             +++
-    
+
                 SwitchRow("All-day") {
                     $0.title = $0.tag
                 }.onChange { [weak self] row in
                     let startDate: DateTimeInlineRow! = self?.form.rowBy(tag: "Starts")
                     let endDate: DateTimeInlineRow! = self?.form.rowBy(tag: "Ends")
-                    
+
                     if row.value ?? false {
                         startDate.dateFormatter?.dateStyle = .medium
                         startDate.dateFormatter?.timeStyle = .none
@@ -592,7 +706,7 @@ class NativeEventFormViewController : FormViewController {
                     startDate.inlineRow?.updateCell()
                     endDate.inlineRow?.updateCell()
                 }
-        
+
             <<< DateTimeInlineRow("Starts") {
                     $0.title = $0.tag
                     $0.value = Date().addingTimeInterval(60*60*24)
@@ -605,8 +719,8 @@ class NativeEventFormViewController : FormViewController {
                         endRow.updateCell()
                     }
                 }
-                .onExpandInlineRow { cell, row, inlineRow in
-                    inlineRow.cellUpdate { [weak self] cell, dateRow in
+                .onExpandInlineRow { [weak self] cell, row, inlineRow in
+                    inlineRow.cellUpdate() { cell, row in
                         let allRow: SwitchRow! = self?.form.rowBy(tag: "All-day")
                         if allRow.value ?? false {
                             cell.datePicker.datePickerMode = .date
@@ -621,7 +735,7 @@ class NativeEventFormViewController : FormViewController {
                     }
                     cell.detailTextLabel?.textColor = cell.tintColor
                 }
-            
+
             <<< DateTimeInlineRow("Ends"){
                     $0.title = $0.tag
                     $0.value = Date().addingTimeInterval(60*60*25)
@@ -636,8 +750,8 @@ class NativeEventFormViewController : FormViewController {
                     }
                     row.updateCell()
                 }
-                .onExpandInlineRow { cell, row, inlineRow in
-                    inlineRow.cellUpdate { [weak self] cell, dateRow in
+                .onExpandInlineRow { [weak self] cell, row, inlineRow in
+                    inlineRow.cellUpdate { cell, dateRow in
                         let allRow: SwitchRow! = self?.form.rowBy(tag: "All-day")
                         if allRow.value ?? false {
                             cell.datePicker.datePickerMode = .date
@@ -652,7 +766,7 @@ class NativeEventFormViewController : FormViewController {
                     }
                     cell.detailTextLabel?.textColor = cell.tintColor
                 }
-        
+
         form +++
 
                 PushRow<RepeatInterval>("Repeat") {
@@ -661,10 +775,11 @@ class NativeEventFormViewController : FormViewController {
                     $0.value = .Never
                 }.onPresent({ (_, vc) in
                     vc.enableDeselection = false
+                    vc.dismissOnSelection = false
                 })
-        
+
         form +++
-            
+
             PushRow<EventAlert>() {
                 $0.title = "Alert"
                 $0.options = EventAlert.allValues
@@ -688,31 +803,31 @@ class NativeEventFormViewController : FormViewController {
                     }
                 }
             }
-        
+
         form +++
-            
+
             PushRow<EventState>("Show As") {
                 $0.title = "Show As"
                 $0.options = EventState.allValues
             }
-        
+
         form +++
-            
+
             URLRow("URL") {
                 $0.placeholder = "URL"
             }
-        
+
             <<< TextAreaRow("notes") {
                     $0.placeholder = "Notes"
                     $0.textAreaHeight = .dynamic(initialTextViewHeight: 50)
                 }
-        
+
     }
-    
-    func cancelTapped(_ barButtonItem: UIBarButtonItem) {
+
+    @objc func cancelTapped(_ barButtonItem: UIBarButtonItem) {
         (navigationController as? NativeEventNavigationController)?.onDismissCallback?(self)
     }
- 
+
     enum RepeatInterval : String, CustomStringConvertible {
         case Never = "Never"
         case Every_Day = "Every Day"
@@ -720,12 +835,12 @@ class NativeEventFormViewController : FormViewController {
         case Every_2_Weeks = "Every 2 Weeks"
         case Every_Month = "Every Month"
         case Every_Year = "Every Year"
-        
+
         var description : String { return rawValue }
-        
+
         static let allValues = [Never, Every_Day, Every_Week, Every_2_Weeks, Every_Month, Every_Year]
     }
-    
+
     enum EventAlert : String, CustomStringConvertible {
         case Never = "None"
         case At_time_of_event = "At time of event"
@@ -736,16 +851,16 @@ class NativeEventFormViewController : FormViewController {
         case Two_Hour = "2 hours before"
         case One_Day = "1 day before"
         case Two_Days = "2 days before"
-        
+
         var description : String { return rawValue }
-        
+
         static let allValues = [Never, At_time_of_event, Five_Minutes, FifTeen_Minutes, Half_Hour, One_Hour, Two_Hour, One_Day, Two_Days]
     }
-    
+
     enum EventState {
         case busy
         case free
-        
+
         static let allValues = [busy, free]
     }
 }
@@ -754,14 +869,14 @@ class NativeEventFormViewController : FormViewController {
 //MARK: HiddenRowsExample
 
 class HiddenRowsExample : FormViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         TextRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.italicSystemFont(ofSize: 12)
         }
-        
+
         form = Section("What do you want to talk about:")
                 <<< SegmentedRow<String>("segments"){
                         $0.options = ["Sport", "Music", "Films"]
@@ -774,15 +889,15 @@ class HiddenRowsExample : FormViewController {
                 <<< TextRow(){
                     $0.title = "Which is your favourite soccer player?"
                 }
-            
+
                 <<< TextRow(){
                     $0.title = "Which is your favourite coach?"
                 }
-            
+
                 <<< TextRow(){
                     $0.title = "Which is your favourite team?"
                 }
-            
+
             +++ Section(){
                     $0.tag = "music_s"
                     $0.hidden = "$segments != 'Music'"
@@ -790,14 +905,14 @@ class HiddenRowsExample : FormViewController {
                 <<< TextRow(){
                     $0.title = "Which music style do you like most?"
                 }
-                
+
                 <<< TextRow(){
                     $0.title = "Which is your favourite singer?"
                 }
                 <<< TextRow(){
                     $0.title = "How many CDs have you got?"
                 }
-            
+
             +++ Section(){
                     $0.tag = "films_s"
                     $0.hidden = "$segments != 'Films'"
@@ -805,13 +920,13 @@ class HiddenRowsExample : FormViewController {
                 <<< TextRow(){
                     $0.title = "Which is your favourite actor?"
                 }
-                
+
                 <<< TextRow(){
                     $0.title = "Which is your favourite film?"
                 }
-        
+
             +++ Section()
-        
+
                 <<< SwitchRow("Show Next Row"){
                     $0.title = $0.tag
                 }
@@ -822,7 +937,7 @@ class HiddenRowsExample : FormViewController {
                         return row.value ?? false == false
                     })
                 }
-        
+
             +++ Section(footer: "This section is shown only when 'Show Next Row' switch is enabled"){
                     $0.hidden = .function(["Show Next Section"], { form -> Bool in
                         let row: RowOf<Bool>! = form.rowBy(tag: "Show Next Section")
@@ -838,29 +953,29 @@ class HiddenRowsExample : FormViewController {
 //MARK: DisabledRowsExample
 
 class DisabledRowsExample : FormViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         form = Section()
-            
+
                 <<< SegmentedRow<String>("segments"){
                     $0.options = ["Enabled", "Disabled"]
                     $0.value = "Disabled"
                 }
-            
+
                 <<< TextRow(){
                     $0.title = "choose enabled, disable above..."
                     $0.disabled = "$segments = 'Disabled'"
                 }
-            
+
                 <<< SwitchRow("Disable Next Section?"){
                     $0.title = $0.tag
                     $0.disabled = "$segments = 'Disabled'"
                 }
-            
+
             +++ Section()
-            
+
                 <<< TextRow() {
                     $0.title = "Gonna be disabled soon.."
                     $0.disabled = Eureka.Condition.function(["Disable Next Section?"], { (form) -> Bool in
@@ -868,9 +983,9 @@ class DisabledRowsExample : FormViewController {
                         return row.value ?? false
                     })
                 }
-        
+
             +++ Section()
-        
+
                 <<< SegmentedRow<String>(){
                     $0.options = ["Always Disabled"]
                     $0.disabled = true
@@ -881,10 +996,10 @@ class DisabledRowsExample : FormViewController {
 //MARK: FormatterExample
 
 class FormatterExample : FormViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         form +++ Section("Number formatters")
             <<< DecimalRow(){
                 $0.useFormatterDuringInput = true
@@ -941,14 +1056,22 @@ class FormatterExample : FormViewController {
                 $0.formatter = MassFormatter()
             }
     }
-    
+
     class CurrencyFormatter : NumberFormatter, FormatterProtocol {
         override func getObjectValue(_ obj: AutoreleasingUnsafeMutablePointer<AnyObject?>?, for string: String, range rangep: UnsafeMutablePointer<NSRange>?) throws {
             guard obj != nil else { return }
-            let str = string.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
+            var str = string.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
+            if !string.isEmpty, numberStyle == .currency && !string.contains(currencySymbol) {
+                // Check if the currency symbol is at the last index
+                if let formattedNumber = self.string(from: 1), String(formattedNumber[formattedNumber.index(before: formattedNumber.endIndex)...]) == currencySymbol {
+                    // This means the user has deleted the currency symbol. We cut the last number and then add the symbol automatically
+                    str = String(str[..<str.index(before: str.endIndex)])
+
+                }
+            }
             obj?.pointee = NSNumber(value: (Double(str) ?? 0.0)/Double(pow(10.0, Double(minimumFractionDigits))))
         }
-        
+
         func getNewPosition(forPosition position: UITextPosition, inTextInput textInput: UITextInput, oldValue: String?, newValue: String?) -> UITextPosition {
             return textInput.position(from: position, offset:((newValue?.characters.count ?? 0) - (oldValue?.characters.count ?? 0))) ?? position
         }
@@ -956,16 +1079,16 @@ class FormatterExample : FormViewController {
 }
 
 class InlineRowsController: FormViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         form.inlineRowHideOptions = InlineRowHideOptions.AnotherInlineRowIsShown.union(.FirstResponderChanges)
-        
+
         form
-        
+
         +++ Section("Automatically Hide Inline Rows?")
-            
+
             <<< SwitchRow() {
                     $0.title = "Hides when another inline row is shown"
                     $0.value = true
@@ -978,7 +1101,7 @@ class InlineRowsController: FormViewController {
                         form?.inlineRowHideOptions = form?.inlineRowHideOptions?.subtracting(.AnotherInlineRowIsShown)
                     }
                 }
-            
+
             <<< SwitchRow() {
                     $0.title = "Hides when the First Responder changes"
                     $0.value = true
@@ -991,24 +1114,24 @@ class InlineRowsController: FormViewController {
                         form?.inlineRowHideOptions = form?.inlineRowHideOptions?.subtracting(.FirstResponderChanges)
                     }
                 }
-            
+
         +++ Section()
-            
+
             <<< DateInlineRow() {
                     $0.title = "DateInlineRow"
                     $0.value = Date()
                 }
-            
+
             <<< TimeInlineRow(){
                     $0.title = "TimeInlineRow"
                     $0.value = Date()
                 }
-            
+
             <<< DateTimeInlineRow(){
                     $0.title = "DateTimeInlineRow"
                     $0.value = Date()
                 }
-            
+
             <<< CountDownInlineRow(){
                     $0.title = "CountDownInlineRow"
                     var dateComp = DateComponents()
@@ -1017,9 +1140,9 @@ class InlineRowsController: FormViewController {
                     dateComp.timeZone = TimeZone.current
                     $0.value = Calendar.current.date(from: dateComp)
                 }
-        
+
         +++ Section("Generic inline picker")
-            
+
             <<< PickerInlineRow<Date>("PickerInlineRow") { (row : PickerInlineRow<Date>) -> Void in
                     row.title = row.tag
                     row.displayValueFor = { (rowValue: Date?) in
@@ -1037,16 +1160,16 @@ class InlineRowsController: FormViewController {
 }
 
 class ListSectionsController: FormViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let continents = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
-        
+
         form +++ SelectableSection<ImageCheckRow<String>>() { section in
             section.header = HeaderFooterView(title: "Where do you live?")
         }
-        
+
         for option in continents {
             form.last! <<< ImageCheckRow<String>(option){ lrow in
                 lrow.title = option
@@ -1054,9 +1177,9 @@ class ListSectionsController: FormViewController {
                 lrow.value = nil
             }
         }
-        
+
         let oceans = ["Arctic", "Atlantic", "Indian", "Pacific", "Southern"]
-        
+
         form +++ SelectableSection<ImageCheckRow<String>>("And which of the following oceans have you taken a bath in?", selectionType: .multipleSelection)
         for option in oceans {
             form.last! <<< ImageCheckRow<String>(option){ lrow in
@@ -1066,13 +1189,14 @@ class ListSectionsController: FormViewController {
             }.cellSetup { cell, _ in
                 cell.trueImage = UIImage(named: "selectedRectangle")!
                 cell.falseImage = UIImage(named: "unselectedRectangle")!
+                cell.accessoryType = .checkmark
             }
         }
     }
-    
+
     override func valueHasBeenChanged(for row: BaseRow, oldValue: Any?, newValue: Any?) {
         if row.section === form[0] {
-            print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRow()?.baseValue)")
+            print("Single Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRow()?.baseValue ?? "No row selected")")
         }
         else if row.section === form[1] {
             print("Mutiple Selection:\((row.section as! SelectableSection<ImageCheckRow<String>>).selectedRows().map({$0.baseValue}))")
@@ -1081,36 +1205,36 @@ class ListSectionsController: FormViewController {
 }
 
 class ValidationsController: FormViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         LabelRow.defaultCellUpdate = { cell, row in
             cell.contentView.backgroundColor = .red
             cell.textLabel?.textColor = .white
             cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
             cell.textLabel?.textAlignment = .right
-            
+
         }
-        
+
         TextRow.defaultCellUpdate = { cell, row in
             if !row.isValid {
                 cell.titleLabel?.textColor = .red
             }
         }
-        
+
         form
             +++ Section(header: "Required Rule", footer: "Options: Validates on change")
-            
+
                     <<< TextRow() {
                         $0.title = "Required Rule"
                         $0.add(rule: RuleRequired())
                         $0.validationOptions = .validatesOnChange
                     }
-            
-            
+
+
             +++ Section(header: "Email Rule, Required Rule", footer: "Options: Validates on change after blurred")
-            
+
                     <<< TextRow() {
                         $0.title = "Email Rule"
                         $0.add(rule: RuleRequired())
@@ -1120,9 +1244,9 @@ class ValidationsController: FormViewController {
                         $0.add(ruleSet: ruleSet)
                         $0.validationOptions = .validatesOnChangeAfterBlurred
                     }
-    
+
             +++ Section(header: "URL Rule", footer: "Options: Validates on change")
-        
+
                     <<< URLRow() {
                         $0.title = "URL Rule"
                         $0.add(rule: RuleURL())
@@ -1133,8 +1257,8 @@ class ValidationsController: FormViewController {
                             cell.titleLabel?.textColor = .red
                         }
                     }
-        
-            
+
+
             +++ Section(header: "MinLength 8 Rule, MaxLength 13 Rule", footer: "Options: Validates on blurred")
                     <<< PasswordRow() {
                         $0.title = "Password"
@@ -1146,10 +1270,10 @@ class ValidationsController: FormViewController {
                             cell.titleLabel?.textColor = .red
                         }
                     }
-            
-            
+
+
             +++ Section(header: "Should be GreaterThan 2 and SmallerThan 999", footer: "Options: Validates on blurred")
-        
+
                     <<< IntRow() {
                         $0.title = "Range Rule"
                         $0.add(rule: RuleGreaterThan(min: 2))
@@ -1161,9 +1285,24 @@ class ValidationsController: FormViewController {
                         }
                     }
 
-        
+            +++ Section(header: "Match field values", footer: "Options: Validates on blurred")
+
+                    <<< PasswordRow("password") {
+                        $0.title = "Password"
+                    }
+                    <<< PasswordRow() {
+                        $0.title = "Confirm Password"
+                        $0.add(rule: RuleEqualsToRow(form: form, tag: "password"))
+                    }
+                    .cellUpdate { cell, row in
+                        if !row.isValid {
+                            cell.titleLabel?.textColor = .red
+                        }
+                    }
+
+
             +++ Section(header: "More sophisticated validations UX using callbacks", footer: "")
-        
+
                     <<< TextRow() {
                         $0.title = "Required Rule"
                         $0.add(rule: RuleRequired())
@@ -1189,9 +1328,9 @@ class ValidationsController: FormViewController {
                             }
                         }
                     }
-            
-        
-        
+
+
+
                     <<< EmailRow() {
                         $0.title = "Email Rule"
                         $0.add(rule: RuleRequired())
@@ -1219,8 +1358,8 @@ class ValidationsController: FormViewController {
                         }
                     }
 
-            
-        
+
+
                     <<< URLRow() {
                             $0.title = "URL Rule"
                             $0.add(rule: RuleURL())
@@ -1246,9 +1385,9 @@ class ValidationsController: FormViewController {
                             }
                         }
                     }
-            
-            
-                    <<< PasswordRow() {
+
+
+                    <<< PasswordRow("password2") {
                             $0.title = "Password"
                             $0.add(rule: RuleMinLength(minLength: 8))
                             $0.add(rule: RuleMaxLength(maxLength: 13))
@@ -1273,9 +1412,35 @@ class ValidationsController: FormViewController {
                             }
                         }
                     }
-            
-            
-            
+
+
+                    <<< PasswordRow() {
+                            $0.title = "Confirm Password"
+                            $0.add(rule: RuleEqualsToRow(form: form, tag: "password2"))
+                        }
+                        .cellUpdate { cell, row in
+                            if !row.isValid {
+                                cell.titleLabel?.textColor = .red
+                            }
+                    }
+                    .onRowValidationChanged { cell, row in
+                        let rowIndex = row.indexPath!.row
+                        while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                            row.section?.remove(at: rowIndex + 1)
+                        }
+                        if !row.isValid {
+                            for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                                let labelRow = LabelRow() {
+                                    $0.title = validationMsg
+                                    $0.cell.height = { 30 }
+                                }
+                                row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                            }
+                        }
+                    }
+
+
+
                     <<< IntRow() {
                             $0.title = "Range Rule"
                             $0.add(rule: RuleGreaterThan(min: 2))
@@ -1301,8 +1466,8 @@ class ValidationsController: FormViewController {
                                 }
                             }
                         }
-        
-        
+
+
             +++ Section()
                 <<< ButtonRow() {
                     $0.title = "Tap to force form validation"
@@ -1310,22 +1475,391 @@ class ValidationsController: FormViewController {
                 .onCellSelection { cell, row in
                     row.section?.form?.validate()
                 }
+
+
+    }
+}
+
+
+class CustomDesignController: FormViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        form +++
+            Section()
+            <<< SwitchRow() {
+                $0.cellProvider = CellProvider<SwitchCell>(nibName: "SwitchCell", bundle: Bundle.main)
+                $0.cell.height = { 67 }
+            }
+
+            <<< DatePickerRow() {
+                $0.cellProvider = CellProvider<DatePickerCell>(nibName: "DatePickerCell", bundle: Bundle.main)
+                $0.cell.height = { 345 }
+            }
+
+            <<< TextRow() {
+                $0.cellProvider = CellProvider<TextCell>(nibName: "TextCell", bundle: Bundle.main)
+                $0.cell.height = { 199 }
+            }
+            .onChange { row in
+                if let textView = row.cell.viewWithTag(99) as? UITextView {
+                    textView.text = row.cell.textField.text
+                }
+            }
+    }
+}
+
+
+class MultivaluedSectionsController: FormViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Multivalued examples"
+        form +++
+                Section("Multivalued examples")
+                    <<< ButtonRow(){
+                        $0.title = "Multivalued Sections"
+                        $0.presentationMode = .segueName(segueName: "MultivaluedControllerSegue", onDismiss: nil)
+                    }
+                    <<< ButtonRow(){
+                        $0.title = "Multivalued Only Reorder"
+                        $0.presentationMode = .segueName(segueName: "MultivaluedOnlyReorderControllerSegue", onDismiss: nil)
+                    }
+                    <<< ButtonRow(){
+                        $0.title = "Multivalued Only Insert"
+                        $0.presentationMode = .segueName(segueName: "MultivaluedOnlyInsertControllerSegue", onDismiss: nil)
+                    }
+                    <<< ButtonRow(){
+                        $0.title = "Multivalued Only Delete"
+                        $0.presentationMode = .segueName(segueName: "MultivaluedOnlyDeleteControllerSegue", onDismiss: nil)
+                    }
+    }
+
+
+}
+
+class MultivaluedController: FormViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Multivalued Examples"
+        form +++
+            MultivaluedSection(multivaluedOptions: [.Reorder, .Insert, .Delete],
+                               header: "Multivalued TextField",
+                               footer: ".Insert multivaluedOption adds the 'Add New Tag' button row as last cell.") {
+                $0.tag = "textfields"
+                $0.addButtonProvider = { section in
+                    return ButtonRow(){
+                        $0.title = "Add New Tag"
+                    }.cellUpdate { cell, row in
+                        cell.textLabel?.textAlignment = .left
+                    }
+                }
+                $0.multivaluedRowToInsertAt = { index in
+                    return NameRow() {
+                        $0.placeholder = "Tag Name"
+                    }
+                }
+                $0 <<< NameRow() {
+                    $0.placeholder = "Tag Name"
+                }
+            }
+
+            +++
+
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
+                                           header: "Multivalued ActionSheet Selector example",
+                                           footer: ".Insert multivaluedOption adds a 'Add' button row as last cell.") {
+                $0.tag = "options"
+                $0.multivaluedRowToInsertAt = { index in
+                    return ActionSheetRow<String>{
+                        $0.title = "Tap to select.."
+                        $0.options = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
+                    }
+                }
+                $0 <<< ActionSheetRow<String> {
+                            $0.title = "Tap to select.."
+                            $0.options = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
+                       }
+
+            }
+
+            +++
+
+            MultivaluedSection(multivaluedOptions: [.Insert, .Delete, .Reorder],
+                                           header: "Multivalued Push Selector example",
+                                           footer: "") {
+                $0.tag = "push"
+                $0.multivaluedRowToInsertAt = { index in
+                    return PushRow<String>{
+                        $0.title = "Tap to select ;)..at \(index)"
+                        $0.options = ["Option 1", "Option 2", "Option 3"]
+                    }
+                }
+                $0 <<< PushRow<String> {
+                    $0.title = "Tap to select ;).."
+                    $0.options = ["Option 1", "Option 2", "Option 3"]
+                }
+
+            }
+    }
+
+    @IBAction func save(_ sender: Any) {
+        print("\(form.values())")
+    }
+}
+
+class MultivaluedOnlyReorderController: FormViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        let secondsPerDay = 24 * 60 * 60
+        let list = ["Today", "Yesterday", "Before Yesterday"]
+
+        form +++
+
+            MultivaluedSection(multivaluedOptions: .Reorder,
+                               header: "Reordering Selectors",
+                               footer: "") {
+                 $0 <<< PushRow<String> {
+                        $0.title = "Tap to select ;).."
+                        $0.options = ["Option 1", "Option 2", "Option 3"]
+                    }
+                    <<< PushRow<String> {
+                        $0.title = "Tap to select ;).."
+                        $0.options = ["Option 1", "Option 2", "Option 3"]
+                    }
+                    <<< PushRow<String> {
+                        $0.title = "Tap to select ;).."
+                        $0.options = ["Option 1", "Option 2", "Option 3"]
+                    }
+                    <<< PushRow<String> {
+                        $0.title = "Tap to select ;).."
+                        $0.options = ["Option 1", "Option 2", "Option 3"]
+                    }
+
+            }
+
+            +++
+            // Multivalued Section with inline rows - section set up to support only reordering
+            MultivaluedSection(multivaluedOptions: .Reorder,
+                                           header: "Reordering Inline Rows",
+                                           footer: "") { section in
+                list.enumerated().forEach({ offset, string in
+                    let dateInlineRow = DateInlineRow(){
+                        $0.value = Date(timeInterval: Double(-secondsPerDay) * Double(offset), since: Date())
+                        $0.title = string
+                    }
+                    section <<< dateInlineRow
+                })
+            }
+
+            +++
+
+            MultivaluedSection(multivaluedOptions: .Reorder,
+                               header: "Reordering Field Rows",
+                               footer: "")
+            <<< NameRow {
+                $0.value = "Martin"
+            }
+            <<< NameRow {
+                $0.value = "Mathias"
+            }
+            <<< NameRow {
+                $0.value = "Agustin"
+            }
+            <<< NameRow {
+                $0.value = "Enrique"
+        }
+
+    }
+}
+
+class MultivaluedOnlyInsertController: FormViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Multivalued Only Insert"
+        form    +++
+
+                MultivaluedSection(multivaluedOptions: .Insert) { sec in
+                    sec.addButtonProvider = { _ in return ButtonRow {
+                                                            $0.title = "Add Tag"
+                                                          }.cellUpdate { cell, row in
+                                                                cell.textLabel?.textAlignment = .left
+                                                          }
+                    }
+                    sec.multivaluedRowToInsertAt = { index in
+                        return TextRow {
+                            $0.placeholder = "Tag Name"
+                        }
+                    }
+                    sec.showInsertIconInAddButton = false
+                }
+
+                +++
+
+                MultivaluedSection(multivaluedOptions: .Insert, header: "Insert With Inline Cells") {
+                    $0.multivaluedRowToInsertAt = { index in
+                        return DateInlineRow {
+                            $0.title = "Date"
+                            $0.value = Date()
+                        }
+                    }
+                }
+    }
+}
+
+class MultivaluedOnlyDeleteController: FormViewController {
+
+    @IBOutlet weak var editButton: UIBarButtonItem!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.isEditing = false
+        let nameList = ["family", "male", "female", "client"]
+
+        let section = MultivaluedSection(multivaluedOptions: .Delete, footer: "you can swipe to delete when table.isEditing = false (Not Editing)")
+
+
+        for tag in nameList {
+            section <<< TextRow {
+                            $0.placeholder = "Tag Name"
+                            $0.value = tag
+                        }
+        }
+
+
+        let section2 =  MultivaluedSection(multivaluedOptions: .Delete, footer: "")
+        for _ in 1..<4 {
+            section2 <<< PickerInlineRow<String> {
+                            $0.title = "Tap to select"
+                            $0.value = "client"
+                            $0.options = nameList
+                         }
+        }
+
+        editButton.title = tableView.isEditing ? "Done" : "Edit"
+        editButton.target = self
+        editButton.action = #selector(editPressed(sender:))
+
+        form    +++
+
+                section
+
+                +++
+
+                section2
+    }
+
+    @objc func editPressed(sender: UIBarButtonItem){
+        tableView.setEditing(!tableView.isEditing, animated: true)
+        editButton.title = tableView.isEditing ? "Done" : "Edit"
+
+    }
+}
+
+class SwipeActionsController: FormViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-    
+        form +++ Section(footer: "Eureka sets table.isEditing = false for SwipeActions.\n\nMultivaluedSections need table.isEditing = true, therefore both can't be used on the same view.")
+            <<< LabelRow("Actions Right: iOS >= 7") {
+                $0.title = $0.tag
+
+                let moreAction = SwipeAction(style: .normal, title: "More", handler: { (action, row, completionHandler) in
+                    print("More")
+                    completionHandler?(true)
+                })
+
+                let deleteAction = SwipeAction(style: .destructive, title: "Delete") { (action, row, completionHandler) in
+                    print("Delete")
+                    completionHandler?(true)
+                }
+
+                $0.trailingSwipe.actions = [deleteAction,moreAction]
+
+            }
+            
+            <<< LabelRow("Actions Left & Right: iOS >= 11") {
+                $0.title = $0.tag
+
+                let moreAction = SwipeAction(style: .normal, title: "More") { (action, row, completionHandler) in
+                    print("More")
+                    completionHandler?(true)
+                }
+
+                let deleteAction = SwipeAction(style: .destructive, title: "Delete", handler: { (action, row, completionHandler) in
+                    print("Delete")
+                    completionHandler?(true)
+                })
+
+                $0.trailingSwipe.actions = [deleteAction,moreAction]
+                $0.trailingSwipe.performsFirstActionWithFullSwipe = true
+
+                if #available(iOS 11,*) {
+                    let infoAction = SwipeAction(style: .normal, title: "Info", handler: { (action, row, completionHandler) in
+                        print("Info")
+                        completionHandler?(true)
+                    })
+                    infoAction.backgroundColor = .blue
+
+                    $0.leadingSwipe.actions = [infoAction]
+                    $0.leadingSwipe.performsFirstActionWithFullSwipe = true
+                }
+        }
+    }
+}
+	
+
+//MARK: Plain Table View Style View Example
+
+class PlainTableViewStyleController : FormViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        form +++
+
+            Section()
+
+            <<< TextRow() {
+                $0.title = "Name"
+                $0.value = "John Doe"
+            }
+
+            <<< TextRow() {
+                $0.title = "Username"
+                $0.value = "johndoe1"
+            }
+
+            <<< EmailRow() {
+                $0.title = "Email Address"
+                $0.value = "john@doe.com"
+            }
+
+            <<< PasswordRow() {
+                $0.title = "Password"
+                $0.value = "johndoe9876"
+            }
+
+        // Remove excess separator lines on non-existent cells
+        tableView.tableFooterView = UIView()
     }
 }
 
 class EurekaLogoViewNib: UIView {
 
     @IBOutlet weak var imageView: UIImageView!
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 }
 
 class EurekaLogoView: UIView {
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         let imageView = UIImageView(image: UIImage(named: "Eureka"))
@@ -1333,7 +1867,7 @@ class EurekaLogoView: UIView {
         imageView.autoresizingMask = .flexibleWidth
         self.frame = CGRect(x: 0, y: 0, width: 320, height: 130)
         imageView.contentMode = .scaleAspectFit
-        self.addSubview(imageView)
+        addSubview(imageView)
     }
 
     required init?(coder aDecoder: NSCoder) {

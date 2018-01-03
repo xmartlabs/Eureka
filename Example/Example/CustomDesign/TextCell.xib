@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="199" id="Aun-ko-F4t" customClass="TextCell" customModule="Eureka">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="199"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Aun-ko-F4t" id="Aaq-1L-cft">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="198.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cBY-oZ-Kev" userLabel="textField">
+                        <rect key="frame" x="16" y="16" width="343" height="60"/>
+                        <nil key="textColor"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <textInputTraits key="textInputTraits"/>
+                    </textField>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="99" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Type somethng to change the text" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oNs-UT-Tlz">
+                        <rect key="frame" x="8" y="84" width="359" height="106.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="106.5" id="qgi-fV-v2S"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="cBY-oZ-Kev" firstAttribute="leading" secondItem="Aaq-1L-cft" secondAttribute="leadingMargin" constant="8" id="HR0-UU-2qa"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="cBY-oZ-Kev" secondAttribute="trailing" constant="8" id="JpY-XL-v0t"/>
+                    <constraint firstItem="oNs-UT-Tlz" firstAttribute="top" secondItem="cBY-oZ-Kev" secondAttribute="bottom" constant="8" id="M1d-92-NIa"/>
+                    <constraint firstItem="cBY-oZ-Kev" firstAttribute="top" secondItem="Aaq-1L-cft" secondAttribute="topMargin" constant="8" id="XQo-fO-1yI"/>
+                    <constraint firstAttribute="bottom" secondItem="oNs-UT-Tlz" secondAttribute="bottom" constant="8" id="Yvs-h1-vpn"/>
+                    <constraint firstItem="oNs-UT-Tlz" firstAttribute="leading" secondItem="Aaq-1L-cft" secondAttribute="leading" constant="8" id="cI9-A7-wAN"/>
+                    <constraint firstAttribute="trailing" secondItem="oNs-UT-Tlz" secondAttribute="trailing" constant="8" id="d0N-Wz-4JO"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="textField" destination="cBY-oZ-Kev" id="FQA-hx-ho0"/>
+            </connections>
+            <point key="canvasLocation" x="40.5" y="41.5"/>
+        </tableViewCell>
+    </objects>
+</document>

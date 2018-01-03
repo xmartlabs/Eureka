@@ -1,6 +1,66 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [4.0.0](https://github.com/xmartlabs/Eureka/releases/tag/4.0.0)
+
+* Xcode 9, Swift 4 support.
+* Add the values of MultivaluedSection into form.values().
+
+### [3.1.0](https://github.com/xmartlabs/Eureka/releases/tag/3.1.0)
+
+Bug fixes & stability improvements:
+
+* Fixed how sections and rows are inserted using subscripts
+* Fixed issue with disbled rows in selectable sections. Disabled rows were still selectable.
+* Multivalued section does not display image in imagerow #977
+* Improve currency formatter #1103
+* Added option to use accessory view in ImageCheckCell
+* Exact length validation (new feature)
+* Change validation on demand behaviour when row was not valid (#1148)
+* Move FormDelegate methods to `FormViewController` class to make it extensible and customizable.
+* The slider was not being disabled when the row was disabled.
+
+
+
+### [3.0.0](https://github.com/xmartlabs/Eureka/releases/tag/3.0.0)
+
+Bug fixes & stability improvements:
+
+* CountDownRow prints Date as Optional #683
+* defaultOnCellHighlightChanged event not being called #704
+* Error when compiling CustomRow with Swift 3.0 #693
+* Fix strange animation when using `insertAtIndex` to add a new section to the form. #566
+* Ability to customize validation message.
+* New RuleEqualsToRow validation rule.
+* fix RuleMaxLength & RuleMinLength issues. #729
+* avoid `animateAlongsideTransition(in:` that could cause transition animation interruption.
+* Fix initialisation of SliderRow when it has no value at start.
+* Added isExpanded & isCollapsed helpers to InlineRowType.
+* fix #800, added form.validate() argument to indicate if hiddenRows should be considered.
+* Fix issue when showing StepperRow value. Now we use displayValueFor as we do with the rest of rows.
+* Added PickerInputRow #818
+* Fix an issue when FieldCell has a Formatter and the formatter is not used during text editing #796, #768
+* Tapping inside an enabled text area row crashes #795
+* Added ability to change scroll position when a row is selected.
+* Added ability to specify that regex validation allows empty values.
+* Changed the Access Control of Class RuleRegExp to be open.
+* Implement init?(coder: NSCoder) for some cell types #860
+* Removed fatalError from init(coder:) for selector view controllers #882
+* Always call onSelectSelectableRow, added properties to control selector vc dismissal.
+* Reload the tableView even if it is not added to a window.
+* Adds 'cell.row.wasChanged' to check for cell validation.
+* Added ability to group options of PushRow MultipleSelectorRow by adding sections to the selector table view.
+* fix #887, TextAreaRow adds an enter when pressing next on keyboard coming from another row.
+* Minor fix on how SliderRow update method is called.
+* Adds RuleClosure example in code comments.
+* Removing the forced navigationAccessoryView.tintColor set #921.
+
+Thanks to all contributors!! 🍻🍻🍻🍻🍻🍻
+
+### [2.0.1](https://github.com/xmartlabs/Eureka/releases/tag/2.0.1)
+
+* Bug fixes and stability improvements.
+
 ### [2.0.0-beta.1](https://github.com/xmartlabs/Eureka/releases/tag/2.0.0)
 
 Pull requests associated with this milestone can be found in this [filter](https://github.com/xmartlabs/Eureka/issues?utf8=%E2%9C%93&q=milestone%3A2.0.0%20).
