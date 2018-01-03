@@ -143,6 +143,64 @@ open class BaseRow: BaseRowType {
             }
         }
     }
+    
+    // MARK: - Validation Extension
+    public var validatorBeforeEditing:IdaBaseValidator?
+    public var validatorWhileEditing:IdaBaseValidator?
+    public var validatorAfterEditing:IdaBaseValidator?
+    
+    
+    public var messageRow: Eureka.BaseRow? {
+        didSet {
+            if let row = messageRow as? MessageRow {
+                row.mainRow = self
+            }
+        }
+    }
+    public var message: Any? {
+        didSet {
+            if message == nil && messageRow != nil {
+                hideMessageRow()
+            }
+            if message != nil && messageRow == nil {
+                showMessageRow()
+            }
+            messageRow?.baseValue = message
+            messageRow?.reload()
+        }
+    }
+    public var MessageRowType: Eureka.BaseRow.Type?
+    
+    private func showMessageRow() {
+        if messageRow != nil { return }
+        if let messageRow = MessageRowType?.init(), let indexPath = indexPath() {
+            self.messageRow = messageRow
+            messageRow.message = self.message
+            section?.insert(messageRow, atIndex: indexPath.row + messageRowOffset)
+            baseCell.formViewController()?.makeRowVisible(messageRow)
+        }
+    }
+    private func hideMessageRow() {
+        guard let rowToHide = messageRow, let indexPath = indexPath() else {
+            return
+        }
+        section?.removeAtIndex(indexPath.row + messageRowOffset)
+        messageRow = nil
+    }
+    
+    /// offset where inline row will be added
+    var inlineRowOffset : Int {
+        get {
+            return 1 + ( ( messageRow != nil ) ? 1 : 0 )
+        }
+    }
+    
+    /// offset where message row will be added
+    var messageRowOffset : Int {
+        get {
+            return 1
+        }
+    }
 }
 
 extension BaseRow {
