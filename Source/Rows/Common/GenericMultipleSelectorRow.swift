@@ -33,6 +33,11 @@ open class GenericMultipleSelectorRow<T, Cell: CellType>: Row<Cell>, PresenterRo
     /// Defines how the view controller will be presented, pushed, etc.
     open var presentationMode: PresentationMode<PresentedController>?
 
+    /// Block variable used to get the String that should be displayed for option rows.
+    open var optionFormatter: ((T) -> String?) = {
+        return String(describing: $0)
+    }
+    
     /// Will be called before the presentation occurs.
     open var onPresentCallback: ((FormViewController, PresentedController) -> Void)?
 

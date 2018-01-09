@@ -120,7 +120,7 @@ open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: O
         }
         for option in options {
             section <<< Row.init { lrow in
-                lrow.title = String(describing: option)
+                lrow.title = (self.row as? OptionsRow)?.optionFormatter(option)
                 lrow.selectableValue = option
                 lrow.value = self.row.value?.contains(option) ?? false ? option : nil
             }.cellSetup { [weak self] cell, row in
