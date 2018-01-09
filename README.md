@@ -1023,7 +1023,7 @@ For instance:
 let dateRow : DateRow? = form.rowBy(tag: "dateRowTag")
 let labelRow: LabelRow? = form.rowBy(tag: "labelRowTag")
 
-let dateRow2: Row<DateCell>? = form.rowBy(tag: "Rows") as? Row<DateCell>
+let dateRow2: Row<DateCell>? = form.rowBy(tag: "dateRowTag") as? Row<DateCell>
 
 let labelRow2: BaseRow? = form.rowBy(tag: "labelRowTag")
 ```
