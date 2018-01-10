@@ -223,7 +223,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         textField.delegate = self
         textField.text = row.displayValueFor?(row.value)
         textField.isEnabled = !row.isDisabled
-        textField.textColor = row.isDisabled ? .gray : .black
+        textField.textColor = row.isDisabled ? .gray : textField.textColor
         textField.font = .preferredFont(forTextStyle: .body)
         if let placeholder = (row as? FieldRowConformance)?.placeholder {
             if let color = (row as? FieldRowConformance)?.placeholderColor {
