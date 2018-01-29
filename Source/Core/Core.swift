@@ -421,7 +421,12 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
     open var animateScroll = false
 
     /// Accessory view that is responsible for the navigation between rows
-    open var navigationAccessoryView: NavigationAccessoryView!
+    private var navigationAccessoryView: (UIView & NavigationAccessory)!
+
+    /// Custom Accesory View to be used as a replacement
+    open var customNavigationAccessoryView: (UIView & NavigationAccessory)? {
+        return nil
+    }
 
     /// Defines the behaviour of the navigation between rows
     public var navigationOptions: RowNavigationOptions?
@@ -442,7 +447,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
 
     open override func viewDidLoad() {
         super.viewDidLoad()
-        navigationAccessoryView = NavigationAccessoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
+        navigationAccessoryView = customNavigationAccessoryView ?? NavigationAccessoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
         navigationAccessoryView.autoresizingMask = .flexibleWidth
 
         if tableView == nil {
@@ -525,14 +530,17 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
         let options = navigationOptions ?? Form.defaultNavigationOptions
         guard options.contains(.Enabled) else { return nil }
         guard row.baseCell.cellCanBecomeFirstResponder() else { return nil}
-        navigationAccessoryView.previousButton.isEnabled = nextRow(for: row, withDirection: .up) != nil
-        navigationAccessoryView.doneButton.target = self
-        navigationAccessoryView.doneButton.action = #selector(FormViewController.navigationDone(_:))
-        navigationAccessoryView.previousButton.target = self
-        navigationAccessoryView.previousButton.action = #selector(FormViewController.navigationAction(_:))
-        navigationAccessoryView.nextButton.target = self
-        navigationAccessoryView.nextButton.action = #selector(FormViewController.navigationAction(_:))
-        navigationAccessoryView.nextButton.isEnabled = nextRow(for: row, withDirection: .down) != nil
+        navigationAccessoryView.previousEnabled = nextRow(for: row, withDirection: .up) != nil
+        navigationAccessoryView.doneClosure = { [weak self] in
+            self?.navigationDone()
+        }
+        navigationAccessoryView.previousClosure = { [weak self] in
+            self?.navigationPrevious()
+        }
+        navigationAccessoryView.nextClosure = { [weak self] in
+            self?.navigationNext()
+        }
+        navigationAccessoryView.nextEnabled = nextRow(for: row, withDirection: .down) != nil
         return navigationAccessoryView
     }
 
@@ -1043,12 +1051,16 @@ extension FormViewController {
 
     // MARK: Navigation Methods
 
-    @objc func navigationDone(_ sender: UIBarButtonItem) {
+    @objc func navigationDone() {
         tableView?.endEditing(true)
     }
 
-    @objc func navigationAction(_ sender: UIBarButtonItem) {
-        navigateTo(direction: sender == navigationAccessoryView.previousButton ? .up : .down)
+    @objc func navigationPrevious() {
+        navigateTo(direction: .up)
+    }
+
+    @objc func navigationNext() {
+        navigateTo(direction: .down)
     }
 
     public func navigateTo(direction: Direction) {
