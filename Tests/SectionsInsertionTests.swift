@@ -37,6 +37,34 @@ class SectionInsertionTests: XCTestCase {
             expectedTitles: ["section_01", "section_02", "section_03"]
         )
     }
+    
+    func testPrependingSections() {
+        let form = Form()
+            +++ Section("section_01")
+        
+        form.prepend(Section("section_02"))
+        form.prepend(Section("section_03"))
+        
+        hideAndShowSections(
+            form: form,
+            expectedTitles: ["section_03", "section_02", "section_01"]
+        )
+    }
+    
+    func testPrependingSectionSequence() {
+        let form = Form()
+            +++ Section("section_01")
+        
+        form.prepend(contentsOf: [
+            Section("section_02"),
+            Section("section_03"),
+        ])
+        
+        hideAndShowSections(
+            form: form,
+            expectedTitles: ["section_02", "section_03", "section_01"]
+        )
+    }
 
     func testInsertingSectionsWithSubscript() {
         let form = Form()
