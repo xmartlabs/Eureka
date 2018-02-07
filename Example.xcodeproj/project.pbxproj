@@ -210,7 +210,7 @@
 				51729E341B9A54F1004A00EB /* Info.plist */,
 			);
 			name = UITests;
-			path = ExampleUITests;
+			path = Example/UITests;
 			sourceTree = "<group>";
 		};
 		51729E421B9A5841004A00EB /* Products */ = {

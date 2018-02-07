@@ -1,4 +1,5 @@
-//  OptionsRow.swift
+//
+//  AlertOptionsRow.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -24,14 +25,17 @@
 
 import Foundation
 
-open class OptionsRow<Cell: CellType> : Row<Cell>, NoValueDisplayTextConformance, OptionsProviderRow where Cell: BaseCell {
-    
-    open var optionsProvider: OptionsProvider<Cell.Value>?
-    
-    open var selectorTitle: String?
-    open var noValueDisplayText: String?
+
+import Foundation
+
+open class AlertOptionsRow<Cell: CellType> : OptionsRow<Cell>, AlertOptionsProviderRow where Cell: BaseCell {
+
+    typealias OptionsProviderType = OptionsProvider<Cell.Value>
+
+    open var cancelTitle: String?
 
     required public init(tag: String?) {
         super.init(tag: tag)
     }
+
 }

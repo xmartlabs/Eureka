@@ -41,6 +41,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
   + [List sections]
   + [Multivalued sections]
   + [Validations]
+  + [Swipe Actions]
 * [Custom rows]
   + [Basic custom rows]
   + [Custom inline rows]
@@ -581,6 +582,46 @@ Each row has the `validationErrors` property that can be used to retrieve all va
 
 As expected, the Rules must use the same types as the Row object. Be extra careful to check the row type used. You might see a compiler error ("Incorrect arugment label in call (have 'rule:' expected 'ruleSet:')" that is not pointing to the problem when mixing types.
 
+### Swipe Actions
+
+Eureka 4.1.0 introduces the swipe feature.
+
+You are now able to define multiple `leadingSwipe` and `trailingSwipe` actions per row. As swipe actions depend on iOS system features, `leadingSwipe` is available on iOS 11.0+ only.
+
+Let's see how to define swipe actions.
+
+```swift
+let row = TextRow() {
+            let deleteAction = SwipeAction(
+                style: .destructive,
+                title: "Delete",
+                handler: { (action, row, completionHandler) in
+                    //add your code here.
+                    //make sure you call the completionHandler once done.
+                    completionHandler?(true)
+                })
+            deleteAction.image = UIImage(named: "icon-trash")
+
+            $0.trailingSwipe.actions = [deleteAction]
+            $0.trailingSwipe.performsFirstActionWithFullSwipe = true
+
+            //please be aware: `leadingSwipe` is only available on iOS 11+ only
+            let infoAction = SwipeAction(
+                style: .normal,
+                title: "Info",
+                handler: { (action, row, completionHandler) in
+                    //add your code here.
+                    //make sure you call the completionHandler once done.
+                    completionHandler?(true)
+                })
+            infoAction.backgroundColor = .blue
+            infoAction.image = UIImage(named: "icon-info")
+
+            $0.leadingSwipe.actions = [infoAction]
+            $0.leadingSwipe.performsFirstActionWithFullSwipe = true
+        }
+```
+
 ## Custom rows
 
 It is very common that you need a row that is different from those included in Eureka. If this is the case you will have to create your own row but this should not be difficult. You can read [this tutorial on how to create custom rows](https://blog.xmartlabs.com/2016/09/06/Eureka-custom-row-tutorial/) to get started. You might also want to have a look at [EurekaCommunity] which includes some extra rows ready to be added to Eureka.
@@ -982,7 +1023,7 @@ For instance:
 let dateRow : DateRow? = form.rowBy(tag: "dateRowTag")
 let labelRow: LabelRow? = form.rowBy(tag: "labelRowTag")
 
-let dateRow2: Row<Date>? = form.rowBy(tag: "dateRowTag")
+let dateRow2: Row<DateCell>? = form.rowBy(tag: "dateRowTag")
 
 let labelRow2: BaseRow? = form.rowBy(tag: "labelRowTag")
 ```
@@ -1038,6 +1079,27 @@ section.header = header
 
 ```swift
 section.reload()
+```
+
+#### How to customize Selector and MultipleSelector option cells
+
+`selectableRowCellUpdate` and `selectableRowCellSetup` properties are provided to be able to customize SelectorViewController and MultipleSelectorViewController selectable cells.
+
+```swift
+let row = PushRow<Emoji>() {
+              $0.title = "PushRow"
+              $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
+              $0.value = 👦🏼
+              $0.selectorTitle = "Choose an Emoji!"
+          }.onPresent { from, to in
+              to.dismissOnSelection = false
+              to.dismissOnChange = false
+              to.selectableRowCellUpdate = { cell, row in
+                  cell.textLabel?.text = "Text " + row.selectableValue!  // customization
+                  cell.detailTextLabel?.text = "Detail " +  row.selectableValue!
+              }
+          }
+
 ```
 
 #### Don't want to use Eureka custom operators?
@@ -1116,6 +1178,7 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [List sections]: #list-sections
 [Multivalued sections]: #multivalued-sections
 [Validations]: #validations
+[Swipe Actions]: #swipe-actions
 
 <!--- In Project -->
 [CustomCellsController]: Example/Example/ViewController.swift

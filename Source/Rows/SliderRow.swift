@@ -63,7 +63,7 @@ open class SliderCell: Cell<Float>, CellType {
         if !awakeFromNibCalled {
             let title = textLabel
             textLabel?.translatesAutoresizingMaskIntoConstraints = false
-            textLabel?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
+            textLabel?.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
             self.titleLabel = title
 
             let value = detailTextLabel
@@ -75,7 +75,7 @@ open class SliderCell: Cell<Float>, CellType {
 
             let slider = UISlider()
             slider.translatesAutoresizingMaskIntoConstraints = false
-            slider.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
+            slider.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
             self.slider = slider
 
             if shouldShowTitle {
