@@ -65,7 +65,15 @@ public enum ImageClearAction {
 
 //MARK: Row
 
-open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> where Cell: BaseCell, Cell: TypedCellType, Cell.Value == UIImage {
+open class _ImageRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell, Cell.Value == UIImage {
+    
+    public typealias PresenterRow = ImagePickerController
+    
+    /// Defines how the view controller will be presented, pushed, etc.
+    open var presentationMode: PresentationMode<PresenterRow>?
+    
+    /// Will be called before the presentation occurs.
+    open var onPresentCallback: ((FormViewController, PresenterRow) -> Void)?
     
 
     open var sourceTypes: ImageRowSourceTypes
@@ -101,6 +109,7 @@ open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> w
         }
     }
     
+    /// Extends `didSelect` method
     /// Selecting the Image Row cell will open a popup to choose where to source the photo from,
     /// based on the `sourceTypes` configured and the available sources.
     open override func customDidSelect() {
@@ -126,6 +135,15 @@ open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> w
         
         if sourceTypes.isEmpty {
             super.customDidSelect()
+            guard let presentationMode = presentationMode else { return }
+            if let controller = presentationMode.makeController() {
+                controller.row = self
+                controller.title = selectorTitle ?? controller.title
+                onPresentCallback?(cell.formViewController()!, controller)
+                presentationMode.present(controller, row: self, presentingController: self.cell.formViewController()!)
+            } else {
+                presentationMode.present(nil, row: self, presentingController: self.cell.formViewController()!)
+            }
             return
         }
         
@@ -158,11 +176,16 @@ open class _ImageRow<Cell: CellType>: SelectorRow<Cell, ImagePickerController> w
         }
     }
     
+    /**
+     Prepares the pushed row setting its title and completion callback.
+     */
     open override func prepare(for segue: UIStoryboardSegue) {
         super.prepare(for: segue)
-        guard let rowVC = segue.destination as? ImagePickerController else {
-            return
-        }
+        guard let rowVC = segue.destination as? PresenterRow else { return }
+        rowVC.title = selectorTitle ?? rowVC.title
+        rowVC.onDismissCallback = presentationMode?.onDismissCallback ?? rowVC.onDismissCallback
+        onPresentCallback?(cell.formViewController()!, rowVC)
+        rowVC.row = self
         rowVC.sourceType = _sourceType
     }
     

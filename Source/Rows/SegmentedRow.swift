@@ -40,12 +40,12 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
 
         let segmentedControl = UISegmentedControl()
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        segmentedControl.setContentHuggingPriority(250, for: .horizontal)
+        segmentedControl.setContentHuggingPriority(UILayoutPriority(rawValue: 250), for: .horizontal)
         self.segmentedControl = segmentedControl
 
         self.titleLabel = self.textLabel
         self.titleLabel?.translatesAutoresizingMaskIntoConstraints = false
-        self.titleLabel?.setContentHuggingPriority(500, for: .horizontal)
+        self.titleLabel?.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
 
         NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationWillResignActive, object: nil, queue: nil) { [weak self] _ in
             guard let me = self else { return }
@@ -112,8 +112,8 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         segmentedControl.isEnabled = !row.isDisabled
     }
 
-    func valueChanged() {
-        row.value =  (row as! SegmentedRow<T>).options[segmentedControl.selectedSegmentIndex]
+    @objc func valueChanged() {
+        row.value =  (row as! SegmentedRow<T>).options?[segmentedControl.selectedSegmentIndex]
     }
 
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -128,8 +128,8 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
 
     func updateSegmentedControl() {
         segmentedControl.removeAllSegments()
-        
-        (row as! SegmentedRow<T>).options.reversed().forEach {
+
+        (row as! SegmentedRow<T>).options?.reversed().forEach {
             if let image = $0 as? UIImage {
                 segmentedControl.insertSegment(with: image, at: 0, animated: false)
             } else {
@@ -139,7 +139,10 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     }
 
     open override func updateConstraints() {
-        guard !awakeFromNibCalled else { return }
+        guard !awakeFromNibCalled else {
+            super.updateConstraints()
+            return
+        }
         contentView.removeConstraints(dynamicConstraints)
         dynamicConstraints = []
         var views: [String: AnyObject] =  ["segmentedControl": segmentedControl]
@@ -175,7 +178,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
 
     func selectedIndex() -> Int? {
         guard let value = row.value else { return nil }
-        return (row as! SegmentedRow<T>).options.index(of: value)
+        return (row as! SegmentedRow<T>).options?.index(of: value)
     }
 }
 

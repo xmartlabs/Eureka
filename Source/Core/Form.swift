@@ -70,7 +70,7 @@ public final class Form {
     /**
      Returns the row whose tag is passed as parameter. Uses a dictionary to get the row faster
      */
-    public func rowBy<T: Equatable>(tag: String) -> RowOf<T>? {
+    public func rowBy<T>(tag: String) -> RowOf<T>? where T: Equatable{
         let row: BaseRow? = rowBy(tag: tag)
         return row as? RowOf<T>
     }
@@ -78,7 +78,7 @@ public final class Form {
     /**
      Returns the row whose tag is passed as parameter. Uses a dictionary to get the row faster
      */
-    public func rowBy<Row: RowType>(tag: String) -> Row? {
+    public func rowBy<Row>(tag: String) -> Row? where Row: RowType{
         let row: BaseRow? = rowBy(tag: tag)
         return row as? Row
     }
@@ -99,31 +99,23 @@ public final class Form {
 
     /**
      Method used to get all the values of all the rows of the form. Only rows with tag are included.
-     
+
      - parameter includeHidden: If the values of hidden rows should be included.
-     
+
      - returns: A dictionary mapping the rows tag to its value. [tag: value]
      */
     public func values(includeHidden: Bool = false) -> [String: Any?] {
         if includeHidden {
-            return allRows.filter({ $0.tag != nil })
-                .reduce([String: Any?]()) {
-                    var result = $0
-                    result[$1.tag!] = $1.baseValue
-                    return result
-                }
+            return getValues(for: allRows.filter({ $0.tag != nil }))
+                .merging(getValues(for: allSections.filter({ $0 is MultivaluedSection && $0.tag != nil }) as? [MultivaluedSection]), uniquingKeysWith: {(_, new) in new })
         }
-        return rows.filter({ $0.tag != nil })
-            .reduce([String: Any?]()) {
-                var result = $0
-                result[$1.tag!] = $1.baseValue
-                return result
-            }
+        return getValues(for: rows.filter({ $0.tag != nil }))
+            .merging(getValues(for: allSections.filter({ $0 is MultivaluedSection && $0.tag != nil }) as? [MultivaluedSection]), uniquingKeysWith: {(_, new) in new })
     }
 
     /**
      Set values to the rows of this form
-     
+
      - parameter values: A dictionary mapping tag to value of the rows to be set. [tag: value]
      */
     public func setValues(_ values: [String: Any?]) {
@@ -263,7 +255,7 @@ extension Form {
     // MARK: Private Helpers
 
     class KVOWrapper: NSObject {
-        dynamic private var _sections = NSMutableArray()
+        @objc dynamic private var _sections = NSMutableArray()
         var sections: NSMutableArray { return mutableArrayValue(forKey: "_sections") }
         var _allSections = [Section]()
         private weak var form: Form?
@@ -360,6 +352,27 @@ extension Form {
         }
         kvoWrapper.sections.insert(section, at: formIndex == NSNotFound ? 0 : formIndex + 1 )
     }
+	
+	var containsMultivaluedSection: Bool {
+		return kvoWrapper.sections.contains { $0 is MultivaluedSection }
+	}
+
+    func getValues(for rows: [BaseRow]) -> [String: Any?] {
+        return rows.reduce([String: Any?]()) {
+            var result = $0
+            result[$1.tag!] = $1.baseValue
+            return result
+        }
+    }
+
+    func getValues(for multivaluedSections: [MultivaluedSection]?) -> [String: [Any?]] {
+        return multivaluedSections?.reduce([String: [Any?]]()) {
+            var result = $0
+            result[$1.tag!] = $1.values()
+            return result
+            } ?? [:]
+    }
+
 }
 
 extension Form {

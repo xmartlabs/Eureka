@@ -142,4 +142,16 @@ class ValidationsTests: XCTestCase {
         XCTAssertNil(exactLengthRule.isValid(value: "123"))
         XCTAssertNotNil(exactLengthRule.isValid(value:"1234"))
     }
+    
+    func testRuleURL() {
+        let urlRule = RuleURL()
+        
+        XCTAssertNil(urlRule.isValid(value: nil))
+        XCTAssertNil(urlRule.isValid(value: URL(string: "")))
+        XCTAssertNil(urlRule.isValid(value: URL(string: "http://example.com")))
+        XCTAssertNil(urlRule.isValid(value: URL(string: "https://example.com/path/to/file.ext?key=value#location")))
+        
+        XCTAssertNotNil(urlRule.isValid(value: URL(string: "example.com")))
+        XCTAssertNotNil(urlRule.isValid(value: URL(string: "http://")))
+    }
 }

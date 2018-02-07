@@ -3,7 +3,7 @@
 <p align="center">
 <a href="https://travis-ci.org/xmartlabs/Eureka"><img src="https://travis-ci.org/xmartlabs/Eureka.svg?branch=master" alt="Build status" /></a>
 <img src="https://img.shields.io/badge/platform-iOS-blue.svg?style=flat" alt="Platform iOS" />
-<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift3-compatible-4BC51D.svg?style=flat" alt="Swift 3 compatible" /></a>
+<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift4-compatible-4BC51D.svg?style=flat" alt="Swift 4 compatible" /></a>
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible" /></a>
 <a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/cocoapods/v/Eureka.svg" alt="CocoaPods compatible" /></a>
 <a href="https://raw.githubusercontent.com/xmartlabs/Eureka/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License: MIT" /></a>
@@ -41,6 +41,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
   + [List sections]
   + [Multivalued sections]
   + [Validations]
+  + [Swipe Actions]
 * [Custom rows]
   + [Basic custom rows]
   + [Custom inline rows]
@@ -53,9 +54,8 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
 
 ## Requirements
 
-* iOS 8.0+
-* Xcode 8+
-* Swift 3
+* Xcode 9+
+* Swift 4
 
 ### Example project
 
@@ -582,6 +582,46 @@ Each row has the `validationErrors` property that can be used to retrieve all va
 
 As expected, the Rules must use the same types as the Row object. Be extra careful to check the row type used. You might see a compiler error ("Incorrect arugment label in call (have 'rule:' expected 'ruleSet:')" that is not pointing to the problem when mixing types.
 
+### Swipe Actions
+
+Eureka 4.1.0 introduces the swipe feature.
+
+You are now able to define multiple `leadingSwipe` and `trailingSwipe` actions per row. As swipe actions depend on iOS system features, `leadingSwipe` is available on iOS 11.0+ only.
+
+Let's see how to define swipe actions.
+
+```swift
+let row = TextRow() {
+            let deleteAction = SwipeAction(
+                style: .destructive,
+                title: "Delete",
+                handler: { (action, row, completionHandler) in
+                    //add your code here.
+                    //make sure you call the completionHandler once done.
+                    completionHandler?(true)
+                })
+            deleteAction.image = UIImage(named: "icon-trash")
+
+            $0.trailingSwipe.actions = [deleteAction]
+            $0.trailingSwipe.performsFirstActionWithFullSwipe = true
+
+            //please be aware: `leadingSwipe` is only available on iOS 11+ only
+            let infoAction = SwipeAction(
+                style: .normal,
+                title: "Info",
+                handler: { (action, row, completionHandler) in
+                    //add your code here.
+                    //make sure you call the completionHandler once done.
+                    completionHandler?(true)
+                })
+            infoAction.backgroundColor = .blue
+            infoAction.image = UIImage(named: "icon-info")
+
+            $0.leadingSwipe.actions = [infoAction]
+            $0.leadingSwipe.performsFirstActionWithFullSwipe = true
+        }
+```
+
 ## Custom rows
 
 It is very common that you need a row that is different from those included in Eureka. If this is the case you will have to create your own row but this should not be difficult. You can read [this tutorial on how to create custom rows](https://blog.xmartlabs.com/2016/09/06/Eureka-custom-row-tutorial/) to get started. You might also want to have a look at [EurekaCommunity] which includes some extra rows ready to be added to Eureka.
@@ -930,7 +970,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 3.0
+github "xmartlabs/Eureka" ~> 4.0
 ```
 
 #### Manually as Embedded Framework
@@ -983,7 +1023,7 @@ For instance:
 let dateRow : DateRow? = form.rowBy(tag: "dateRowTag")
 let labelRow: LabelRow? = form.rowBy(tag: "labelRowTag")
 
-let dateRow2: Row<Date>? = form.rowBy(tag: "dateRowTag")
+let dateRow2: Row<DateCell>? = form.rowBy(tag: "dateRowTag")
 
 let labelRow2: BaseRow? = form.rowBy(tag: "labelRowTag")
 ```
@@ -1041,6 +1081,27 @@ section.header = header
 section.reload()
 ```
 
+#### How to customize Selector and MultipleSelector option cells
+
+`selectableRowCellUpdate` and `selectableRowCellSetup` properties are provided to be able to customize SelectorViewController and MultipleSelectorViewController selectable cells.
+
+```swift
+let row = PushRow<Emoji>() {
+              $0.title = "PushRow"
+              $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
+              $0.value = 👦🏼
+              $0.selectorTitle = "Choose an Emoji!"
+          }.onPresent { from, to in
+              to.dismissOnSelection = false
+              to.dismissOnChange = false
+              to.selectableRowCellUpdate = { cell, row in
+                  cell.textLabel?.text = "Text " + row.selectableValue!  // customization
+                  cell.detailTextLabel?.text = "Detail " +  row.selectableValue!
+              }
+          }
+
+```
+
 #### Don't want to use Eureka custom operators?
 
 As we've said `Form` and `Section` types conform to `MutableCollection` and `RangeReplaceableCollection`. A Form is a collection of Sections and a Section is a collection of Rows.
@@ -1049,16 +1110,16 @@ As we've said `Form` and `Section` types conform to `MutableCollection` and `Ran
 
 ```swift
 extension RangeReplaceableCollection {
-    public mutating func append(newElement: Self.Generator.Element)
-    public mutating func appendContentsOf<S : Sequence where S.Generator.Element == Generator.Element>(newElements: S)
-    public mutating func insert(newElement: Self.Generator.Element, atIndex i: Self.Index)
-    public mutating func insertContentsOf<C : Collection where C.Generator.Element == Generator.Element>(newElements: C, at i: Self.Index)
-    public mutating func removeAtIndex(index: Self.Index) -> Self.Generator.Element
-    public mutating func removeRange(subRange: Range<Self.Index>)
-    public mutating func removeFirst(n: Int)
-    public mutating func removeFirst() -> Self.Generator.Element
-    public mutating func removeAll(keepCapacity keepCapacity: Bool = default)
-    public mutating func reserveCapacity(n: Self.Index.Distance)
+    public mutating func append(_ newElement: Self.Element)
+    public mutating func append<S>(contentsOf newElements: S) where S : Sequence, Self.Element == S.Element
+    public mutating func insert(_ newElement: Self.Element, at i: Self.Index)
+    public mutating func insert<S>(contentsOf newElements: S, at i: Self.Index) where S : Collection, Self.Element == S.Element
+    public mutating func remove(at i: Self.Index) -> Self.Element
+    public mutating func removeSubrange(_ bounds: Range<Self.Index>)
+    public mutating func removeFirst(_ n: Int)
+    public mutating func removeFirst() -> Self.Element
+    public mutating func removeAll(keepingCapacity keepCapacity: Bool)
+    public mutating func reserveCapacity(_ n: Self.IndexDistance)
 }
 ```
 
@@ -1070,8 +1131,8 @@ public func +++(left: Form, right: Section) -> Form {
     return left
 }
 
-public func +=< C : Collection where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
-    lhs.appendContentsOf(rhs)
+public func +=<C : Collection>(inout lhs: Form, rhs: C) where C.Element == Section {
+    lhs.append(contentsOf: rhs)
 }
 
 public func <<<(left: Section, right: BaseRow) -> Section {
@@ -1079,8 +1140,8 @@ public func <<<(left: Section, right: BaseRow) -> Section {
     return left
 }
 
-public func +=< C : Collection where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
-    lhs.appendContentsOf(rhs)
+public func +=<C : Collection>(inout lhs: Section, rhs: C) where C.Element == BaseRow {
+    lhs.append(contentsOf: rhs)
 }
 ```
 
@@ -1117,6 +1178,7 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [List sections]: #list-sections
 [Multivalued sections]: #multivalued-sections
 [Validations]: #validations
+[Swipe Actions]: #swipe-actions
 
 <!--- In Project -->
 [CustomCellsController]: Example/Example/ViewController.swift
