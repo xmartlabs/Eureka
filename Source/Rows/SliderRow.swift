@@ -81,7 +81,11 @@ open class SliderCell: Cell<Float>, CellType {
             if shouldShowTitle {
                 contentView.addSubview(titleLabel)
             }
-            contentView.addSubview(valueLabel!)
+
+            if !sliderRow.shouldHideValue {
+              contentView.addSubview(valueLabel)
+            }
+
             contentView.addSubview(slider)
             addConstraints()
         }
@@ -94,8 +98,9 @@ open class SliderCell: Cell<Float>, CellType {
     open override func update() {
         super.update()
         titleLabel.text = row.title
-        valueLabel.text = row.displayValueFor?(row.value)
         titleLabel.isHidden = !shouldShowTitle
+        valueLabel.text = row.displayValueFor?(row.value)
+        valueLabel.isHidden = sliderRow.shouldHideValue
         slider.value = row.value ?? 0.0
         slider.isEnabled = !row.isDisabled
     }
@@ -104,8 +109,11 @@ open class SliderCell: Cell<Float>, CellType {
         let views: [String : Any] = ["titleLabel": titleLabel, "slider": slider, "valueLabel": valueLabel]
         let metrics = ["spacing": 15.0, "valueLabelWidth": 40.0]
 
+        let title = shouldShowTitle ? "[titleLabel]-spacing-" : ""
+        let value = !sliderRow.shouldHideValue ? "-[valueLabel(valueLabelWidth)]" : ""
+
         let hContraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-\(shouldShowTitle ? "[titleLabel]-spacing-" : "")[slider]-[valueLabel(valueLabelWidth)]-|",
+            withVisualFormat: "H:|-\(title)[slider]\(value)-|",
             options: .alignAllCenterY,
             metrics: metrics,
             views: views)
@@ -148,6 +156,7 @@ public final class SliderRow: Row<SliderCell>, RowType {
     public var minimumValue: Float = 0.0
     public var maximumValue: Float = 10.0
     public var steps: UInt = 20
+    public var shouldHideValue = false
 
     required public init(tag: String?) {
         super.init(tag: tag)

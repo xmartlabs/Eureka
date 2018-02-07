@@ -175,6 +175,11 @@ class RowsExampleViewController: FormViewController {
                     $0.value = 5.0
                 }
             
+                <<< SliderRow() {
+                    $0.value = 5.0
+                    $0.shouldHideValue = true
+                }
+
                 <<< StepperRow() {
                     $0.title = "StepperRow"
                     $0.value = 1.0
