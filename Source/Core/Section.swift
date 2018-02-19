@@ -154,9 +154,11 @@ open class Section {
 
     public required init() {}
 
+    #if swift(>=4.1)
     public required init<S>(_ elements: S) where S: Sequence, S.Element == BaseRow {
         self.append(contentsOf: elements)
     }
+    #endif
 
     public init(_ initializer: (Section) -> Void) {
         initializer(self)
@@ -463,12 +465,13 @@ open class MultivaluedSection: Section {
         initialize()
     }
 
-
+    #if swift(>=4.1)
     public required init<S>(_ elements: S) where S : Sequence, S.Element == BaseRow {
         self.multivaluedOptions = MultivaluedOptions.Insert.union(.Delete)
         super.init(elements)
         initialize()
     }
+    #endif
 
     func initialize() {
         let addRow = addButtonProvider(self)
