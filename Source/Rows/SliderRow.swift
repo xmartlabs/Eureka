@@ -84,6 +84,7 @@ open class SliderCell: Cell<Float>, CellType {
             contentView.addSubview(slider)
             addConstraints()
         }
+        height = { UITableViewAutomaticDimension }
         selectionStyle = .none
         slider.minimumValue = sliderRow.minimumValue
         slider.maximumValue = sliderRow.maximumValue

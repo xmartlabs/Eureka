@@ -23,7 +23,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>"Show ImageRow example"</string>
+	<string>Show ImageRow example</string>
+	<key>NSCameraUsageDescription</key>
+	<string>ImageRow example</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
