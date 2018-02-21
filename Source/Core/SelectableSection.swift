@@ -22,7 +22,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import Foundation
 
 // MARK: SelectableSection
@@ -34,101 +33,116 @@ import Foundation
  - SingleSelection:   Only one selection at a time. Can additionally specify if deselection is enabled or not.
  */
 public enum SelectionType {
-    
+
     /**
      * Multiple options can be selected at once
      */
-    case MultipleSelection
-    
+    case multipleSelection
+
     /**
      * Only one selection at a time. Can additionally specify if deselection is enabled or not.
      */
-    case SingleSelection(enableDeselection: Bool)
+    case singleSelection(enableDeselection: Bool)
 }
 
 /**
  *  Protocol to be implemented by selectable sections types. Enables easier customization
  */
-public protocol SelectableSectionType: CollectionType {
+public protocol SelectableSectionType: Collection {
     associatedtype SelectableRow: BaseRow, SelectableRowType
-    
+
     /// Defines how the selection works (single / multiple selection)
-    var selectionType : SelectionType { get set }
-    
+    var selectionType: SelectionType { get set }
+
     /// A closure called when a row of this section is selected.
     var onSelectSelectableRow: ((SelectableRow.Cell, SelectableRow) -> Void)? { get set }
-    
+
     func selectedRow() -> SelectableRow?
     func selectedRows() -> [SelectableRow]
 }
 
-extension SelectableSectionType where Self: Section, SelectableRow.Value == SelectableRow.Cell.Value, Self.Generator == IndexingGenerator<Section>, Self.Generator.Element == BaseRow {
-    
+extension SelectableSectionType where Self: Section {
     /**
      Returns the selected row of this section. Should be used if selectionType is SingleSelection
      */
     public func selectedRow() -> SelectableRow? {
         return selectedRows().first
     }
-    
+
     /**
      Returns the selected rows of this section. Should be used if selectionType is MultipleSelection
      */
     public func selectedRows() -> [SelectableRow] {
-        return filter({ (row: BaseRow) -> Bool in
-            row is SelectableRow && row.baseValue != nil
-        }).map({ $0 as! SelectableRow})
+        let selectedRows: [BaseRow] = self.filter { $0 is SelectableRow && $0.baseValue != nil }
+        return selectedRows.map { $0 as! SelectableRow }
     }
-    
+
     /**
      Internal function used to set up a collection of rows before they are added to the section
      */
-    func prepareSelectableRows(rows: [BaseRow]){
+    func prepare(selectableRows rows: [BaseRow]) {
         for row in rows {
             if let row = row as? SelectableRow {
                 row.onCellSelection { [weak self] cell, row in
-                    guard let s = self else { return }
+                    guard let s = self, !row.isDisabled else { return }
                     switch s.selectionType {
-                    case .MultipleSelection:
+                    case .multipleSelection:
                         row.value = row.value == nil ? row.selectableValue : nil
-                        row.updateCell()
-                    case .SingleSelection(let enableDeselection):
-                        s.filter { $0.baseValue != nil && $0 != row }.forEach {
+                    case let .singleSelection(enableDeselection):
+                        s.forEach {
+                            guard $0.baseValue != nil && $0 != row && $0 is SelectableRow else { return }
                             $0.baseValue = nil
                             $0.updateCell()
                         }
-                        row.value = !enableDeselection || row.value == nil ? row.selectableValue : nil
-                        row.updateCell()
+                        // Check if row is not already selected
+                        if row.value == nil {
+                            row.value = row.selectableValue
+                        } else if enableDeselection {
+                            row.value = nil
+                        }
                     }
+                    row.updateCell()
                     s.onSelectSelectableRow?(cell, row)
                 }
             }
         }
     }
-    
+
 }
 
 /// A subclass of Section that serves to create a section with a list of selectable options.
-public class SelectableSection<Row: SelectableRowType, T where Row: BaseRow, Row.Value == T, T == Row.Cell.Value> : Section, SelectableSectionType  {
-    
+open class SelectableSection<Row>: Section, SelectableSectionType where Row: SelectableRowType, Row: BaseRow {
+
     public typealias SelectableRow = Row
-    
+
     /// Defines how the selection works (single / multiple selection)
-    public var selectionType = SelectionType.SingleSelection(enableDeselection: true)
-    
+    public var selectionType = SelectionType.singleSelection(enableDeselection: true)
+
     /// A closure called when a row of this section is selected.
     public var onSelectSelectableRow: ((Row.Cell, Row) -> Void)?
-    
-    public required init(@noescape _ initializer: Section -> ()) {
-        super.init(initializer)
+
+    public override init(_ initializer: (SelectableSection<Row>) -> Void) {
+        super.init({ _ in })
+        initializer(self)
     }
-    
-    public init(_ header: String, selectionType: SelectionType, @noescape _ initializer: Section -> () = { _ in }) {
+
+    public init(_ header: String, selectionType: SelectionType, _ initializer: (SelectableSection<Row>) -> Void = { _ in }) {
         self.selectionType = selectionType
-        super.init(header, initializer)
+        super.init(header, { _ in })
+        initializer(self)
     }
-    
-    public override func rowsHaveBeenAdded(rows: [BaseRow], atIndexes: NSIndexSet) {
-        prepareSelectableRows(rows)
+
+    public init(header: String, footer: String, selectionType: SelectionType, _ initializer: (SelectableSection<Row>) -> Void = { _ in }) {
+        self.selectionType = selectionType
+        super.init(header: header, footer: footer, { _ in })
+        initializer(self)
+    }
+
+    public required init() {
+        super.init()
+    }
+
+    open override func rowsHaveBeenAdded(_ rows: [BaseRow], at: IndexSet) {
+        prepare(selectableRows: rows)
     }
 }

@@ -1,7 +1,7 @@
 //  CustomCells.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
-//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2016 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,11 +30,11 @@ import Eureka
 //MARK: WeeklyDayCell
 
 public enum WeekDay {
-    case Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+    case monday, tuesday, wednesday, thursday, friday, saturday, sunday
 }
 
 public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
-    
+
     @IBOutlet var sundayButton: UIButton!
     @IBOutlet var mondayButton: UIButton!
     @IBOutlet var tuesdayButton: UIButton!
@@ -42,34 +42,34 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
     @IBOutlet var thursdayButton: UIButton!
     @IBOutlet var fridayButton: UIButton!
     @IBOutlet var saturdayButton: UIButton!
-        
-    public override func setup() {
+
+    open override func setup() {
         height = { 60 }
         row.title = nil
         super.setup()
-        selectionStyle = .None
+        selectionStyle = .none
         for subview in contentView.subviews {
             if let button = subview as? UIButton {
-                button.setImage(UIImage(named: "checkedDay"), forState: .Selected)
-                button.setImage(UIImage(named: "uncheckedDay"), forState: .Normal)
+                button.setImage(UIImage(named: "checkedDay"), for: .selected)
+                button.setImage(UIImage(named: "uncheckedDay"), for: .normal)
                 button.adjustsImageWhenHighlighted = false
                 imageTopTitleBottom(button)
             }
         }
     }
-    
-    public override func update() {
+
+    open override func update() {
         row.title = nil
         super.update()
         let value = row.value
-        mondayButton.selected = value?.contains(.Monday) ?? false
-        tuesdayButton.selected = value?.contains(.Tuesday) ?? false
-        wednesdayButton.selected = value?.contains(.Wednesday) ?? false
-        thursdayButton.selected = value?.contains(.Thursday) ?? false
-        fridayButton.selected = value?.contains(.Friday) ?? false
-        saturdayButton.selected = value?.contains(.Saturday) ?? false
-        sundayButton.selected = value?.contains(.Sunday) ?? false
-        
+        mondayButton.isSelected = value?.contains(.monday) ?? false
+        tuesdayButton.isSelected = value?.contains(.tuesday) ?? false
+        wednesdayButton.isSelected = value?.contains(.wednesday) ?? false
+        thursdayButton.isSelected = value?.contains(.thursday) ?? false
+        fridayButton.isSelected = value?.contains(.friday) ?? false
+        saturdayButton.isSelected = value?.contains(.saturday) ?? false
+        sundayButton.isSelected = value?.contains(.sunday) ?? false
+
         mondayButton.alpha = row.isDisabled ? 0.6 : 1.0
         tuesdayButton.alpha = mondayButton.alpha
         wednesdayButton.alpha = mondayButton.alpha
@@ -78,55 +78,55 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
         saturdayButton.alpha = mondayButton.alpha
         sundayButton.alpha = mondayButton.alpha
     }
-    
-    @IBAction func dayTapped(sender: UIButton) {
+
+    @IBAction func dayTapped(_ sender: UIButton) {
         dayTapped(sender, day: getDayFromButton(sender))
     }
-    
-    private func getDayFromButton(button: UIButton) -> WeekDay{
+
+    private func getDayFromButton(_ button: UIButton) -> WeekDay{
         switch button{
         case sundayButton:
-            return .Sunday
+            return .sunday
         case mondayButton:
-            return .Monday
+            return .monday
         case tuesdayButton:
-            return .Tuesday
+            return .tuesday
         case wednesdayButton:
-            return .Wednesday
+            return .wednesday
         case thursdayButton:
-            return .Thursday
+            return .thursday
         case fridayButton:
-            return .Friday
+            return .friday
         default:
-            return .Saturday
+            return .saturday
         }
     }
-    
-    private func dayTapped(button: UIButton, day: WeekDay){
-        button.selected = !button.selected
-        if button.selected{
+
+    private func dayTapped(_ button: UIButton, day: WeekDay){
+        button.isSelected = !button.isSelected
+        if button.isSelected{
             row.value?.insert(day)
         }
         else{
-            row.value?.remove(day)
+            _ = row.value?.remove(day)
         }
     }
-    
-    private func imageTopTitleBottom(button : UIButton){
-        
+
+    private func imageTopTitleBottom(_ button : UIButton){
+
         guard let imageSize = button.imageView?.image?.size else { return }
         let spacing : CGFloat = 3.0
         button.titleEdgeInsets = UIEdgeInsetsMake(0.0, -imageSize.width, -(imageSize.height + spacing), 0.0)
         guard let titleLabel = button.titleLabel, let title = titleLabel.text else { return }
-        let titleSize = title.sizeWithAttributes([NSFontAttributeName: titleLabel.font])
+        let titleSize = title.size(withAttributes: [NSAttributedStringKey.font: titleLabel.font])
         button.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height + spacing), 0, 0, -titleSize.width)
     }
 }
 
 //MARK: WeekDayRow
 
-public final class WeekDayRow: Row<Set<WeekDay>, WeekDayCell>, RowType {
-    
+public final class WeekDayRow: Row<WeekDayCell>, RowType {
+
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = nil
@@ -137,90 +137,94 @@ public final class WeekDayRow: Row<Set<WeekDay>, WeekDayCell>, RowType {
 
 //MARK: FloatLabelCell
 
-public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<T>, UITextFieldDelegate, TextFieldCell {
-        
-    public var textField : UITextField { return floatLabelTextField }
+public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell where T: Equatable, T: InputTypeInitiable {
+
+    public var textField: UITextField! { return floatLabelTextField }
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     lazy public var floatLabelTextField: FloatLabelTextField = { [unowned self] in
         let floatTextField = FloatLabelTextField()
         floatTextField.translatesAutoresizingMaskIntoConstraints = false
-        floatTextField.font = .preferredFontForTextStyle(UIFontTextStyleBody)
-        floatTextField.titleFont = .boldSystemFontOfSize(11.0)
-        floatTextField.clearButtonMode = .WhileEditing
+        floatTextField.font = .preferredFont(forTextStyle: .body)
+        floatTextField.titleFont = .boldSystemFont(ofSize: 11.0)
+        floatTextField.clearButtonMode = .whileEditing
         return floatTextField
         }()
-    
-    
-    public override func setup() {
+
+
+    open override func setup() {
         super.setup()
         height = { 55 }
-        selectionStyle = .None
+        selectionStyle = .none
         contentView.addSubview(floatLabelTextField)
         floatLabelTextField.delegate = self
-        floatLabelTextField.addTarget(self, action: #selector(_FloatLabelCell.textFieldDidChange(_:)), forControlEvents: .EditingChanged)
+        floatLabelTextField.addTarget(self, action: #selector(_FloatLabelCell.textFieldDidChange(_:)), for: .editingChanged)
         contentView.addConstraints(layoutConstraints())
     }
-    
-    public override func update() {
+
+    open override func update() {
         super.update()
         textLabel?.text = nil
         detailTextLabel?.text = nil
-        floatLabelTextField.attributedPlaceholder = NSAttributedString(string: row.title ?? "", attributes: [NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+        floatLabelTextField.attributedPlaceholder = NSAttributedString(string: row.title ?? "", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         floatLabelTextField.text =  row.displayValueFor?(row.value)
-        floatLabelTextField.enabled = !row.isDisabled
-        floatLabelTextField.titleTextColour = .lightGrayColor()
+        floatLabelTextField.isEnabled = !row.isDisabled
+        floatLabelTextField.titleTextColour = .lightGray
         floatLabelTextField.alpha = row.isDisabled ? 0.6 : 1
     }
-    
-    public override func cellCanBecomeFirstResponder() -> Bool {
-        return !row.isDisabled && floatLabelTextField.canBecomeFirstResponder()
+
+    open override func cellCanBecomeFirstResponder() -> Bool {
+        return !row.isDisabled && floatLabelTextField.canBecomeFirstResponder
     }
-    
-    public override func cellBecomeFirstResponder(direction: Direction) -> Bool {
+
+    open override func cellBecomeFirstResponder(withDirection direction: Direction) -> Bool {
         return floatLabelTextField.becomeFirstResponder()
     }
-    
-    public override func cellResignFirstResponder() -> Bool {
+
+    open override func cellResignFirstResponder() -> Bool {
         return floatLabelTextField.resignFirstResponder()
     }
-    
+
     private func layoutConstraints() -> [NSLayoutConstraint] {
         let views = ["floatLabeledTextField": floatLabelTextField]
         let metrics = ["vMargin":8.0]
-        return NSLayoutConstraint.constraintsWithVisualFormat("H:|-[floatLabeledTextField]-|", options: .AlignAllBaseline, metrics: metrics, views: views) + NSLayoutConstraint.constraintsWithVisualFormat("V:|-(vMargin)-[floatLabeledTextField]-(vMargin)-|", options: .AlignAllBaseline, metrics: metrics, views: views)
+        return NSLayoutConstraint.constraints(withVisualFormat: "H:|-[floatLabeledTextField]-|", options: .alignAllLastBaseline, metrics: metrics, views: views) + NSLayoutConstraint.constraints(withVisualFormat: "V:|-(vMargin)-[floatLabeledTextField]-(vMargin)-|", options: .alignAllLastBaseline, metrics: metrics, views: views)
     }
-    
-    public func textFieldDidChange(textField : UITextField){
+
+    @objc public func textFieldDidChange(_ textField : UITextField){
         guard let textValue = textField.text else {
             row.value = nil
             return
         }
         if let fieldRow = row as? FormatterConformance, let formatter = fieldRow.formatter {
             if fieldRow.useFormatterDuringInput {
-                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
-                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
-                if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                    row.value = value.memory as? T
+                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.allocate(capacity: 1))
+                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?>? = nil
+                if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
+                    row.value = value.pointee as? T
                     if var selStartPos = textField.selectedTextRange?.start {
                         let oldVal = textField.text
                         textField.text = row.displayValueFor?(row.value)
                         if let f = formatter as? FormatterProtocol {
                             selStartPos = f.getNewPosition(forPosition: selStartPos, inTextInput: textField, oldValue: oldVal, newValue: textField.text)
                         }
-                        textField.selectedTextRange = textField.textRangeFromPosition(selStartPos, toPosition: selStartPos)
+                        textField.selectedTextRange = textField.textRange(from: selStartPos, to: selStartPos)
                     }
                     return
                 }
             }
             else {
-                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.alloc(1))
-                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?> = nil
-                if formatter.getObjectValue(value, forString: textValue, errorDescription: errorDesc) {
-                    row.value = value.memory as? T
+                let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.allocate(capacity: 1))
+                let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?>? = nil
+                if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
+                    row.value = value.pointee as? T
                 }
                 return
             }
@@ -234,31 +238,31 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
         }
         row.value = newValue
     }
-    
-    
+
+
     //Mark: Helpers
-    
-    private func displayValue(useFormatter useFormatter: Bool) -> String? {
+
+    private func displayValue(useFormatter: Bool) -> String? {
         guard let v = row.value else { return nil }
-        if let formatter = (row as? FormatterConformance)?.formatter where useFormatter {
-            return textField.isFirstResponder() ? formatter.editingStringForObjectValue(v as! AnyObject) : formatter.stringForObjectValue(v as! AnyObject)
+        if let formatter = (row as? FormatterConformance)?.formatter, useFormatter {
+            return textField?.isFirstResponder == true ? formatter.editingString(for: v) : formatter.string(for: v)
         }
-        return String(v)
+        return String(describing: v)
     }
-    
+
     //MARK: TextFieldDelegate
-    
-    public func textFieldDidBeginEditing(textField: UITextField) {
-        formViewController()?.beginEditing(self)
-        if let fieldRowConformance = row as? FormatterConformance, let _ = fieldRowConformance.formatter where fieldRowConformance.useFormatterOnDidBeginEditing ?? fieldRowConformance.useFormatterDuringInput {
+
+    public func textFieldDidBeginEditing(_ textField: UITextField) {
+        formViewController()?.beginEditing(of: self)
+        if let fieldRowConformance = row as? FormatterConformance, let _ = fieldRowConformance.formatter, fieldRowConformance.useFormatterOnDidBeginEditing ?? fieldRowConformance.useFormatterDuringInput {
             textField.text = displayValue(useFormatter: true)
         } else {
             textField.text = displayValue(useFormatter: false)
         }
     }
-    
-    public func textFieldDidEndEditing(textField: UITextField) {
-        formViewController()?.endEditing(self)
+
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        formViewController()?.endEditing(of: self)
         formViewController()?.textInputDidEndEditing(textField, cell: self)
         textFieldDidChange(textField)
         textField.text = displayValue(useFormatter: (row as? FormatterConformance)?.formatter != nil)
@@ -266,138 +270,178 @@ public class _FloatLabelCell<T where T: Equatable, T: InputTypeInitiable>: Cell<
 }
 
 public class TextFloatLabelCell : _FloatLabelCell<String>, CellType {
-    
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .Default
-        textField.autocapitalizationType = .Sentences
-        textField.keyboardType = .Default
+        textField?.autocorrectionType = .default
+        textField?.autocapitalizationType = .sentences
+        textField?.keyboardType = .default
     }
 }
 
 
 public class IntFloatLabelCell : _FloatLabelCell<Int>, CellType {
-    
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .Default
-        textField.autocapitalizationType = .None
-        textField.keyboardType = .NumberPad
+        textField?.autocorrectionType = .default
+        textField?.autocapitalizationType = .none
+        textField?.keyboardType = .numberPad
     }
 }
 
 public class PhoneFloatLabelCell : _FloatLabelCell<String>, CellType {
-    
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     public override func setup() {
         super.setup()
-        textField.keyboardType = .PhonePad
+        textField?.keyboardType = .phonePad
     }
 }
 
 public class NameFloatLabelCell : _FloatLabelCell<String>, CellType {
-    
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .Words
-        textField.keyboardType = .NamePhonePad
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .words
+        textField.keyboardType = .asciiCapable
     }
 }
 
 public class EmailFloatLabelCell : _FloatLabelCell<String>, CellType {
-    
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
-        textField.keyboardType = .EmailAddress
+        textField?.autocorrectionType = .no
+        textField?.autocapitalizationType = .none
+        textField?.keyboardType = .emailAddress
     }
 }
 
 public class PasswordFloatLabelCell : _FloatLabelCell<String>, CellType {
-    
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
-        textField.keyboardType = .ASCIICapable
-        textField.secureTextEntry = true
+        textField?.autocorrectionType = .no
+        textField?.autocapitalizationType = .none
+        textField?.keyboardType = .asciiCapable
+        textField?.isSecureTextEntry = true
     }
 }
 
 public class DecimalFloatLabelCell : _FloatLabelCell<Float>, CellType {
-    
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     public override func setup() {
         super.setup()
-        textField.keyboardType = .DecimalPad
+        textField?.keyboardType = .decimalPad
     }
 }
 
-public class URLFloatLabelCell : _FloatLabelCell<NSURL>, CellType {
-    
+public class URLFloatLabelCell : _FloatLabelCell<URL>, CellType {
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     public override func setup() {
         super.setup()
-        textField.keyboardType = .URL
+        textField?.keyboardType = .URL
     }
 }
 
 public class TwitterFloatLabelCell : _FloatLabelCell<String>, CellType {
-    
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
-        textField.keyboardType = .Twitter
+        textField?.autocorrectionType = .no
+        textField?.autocapitalizationType = .none
+        textField?.keyboardType = .twitter
     }
 }
 
 public class AccountFloatLabelCell : _FloatLabelCell<String>, CellType {
-    
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     public override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
-        textField.keyboardType = .ASCIICapable
+        textField?.autocorrectionType = .no
+        textField?.autocapitalizationType = .none
+        textField?.keyboardType = .asciiCapable
     }
 }
 
@@ -405,7 +449,7 @@ public class AccountFloatLabelCell : _FloatLabelCell<String>, CellType {
 
 //MARK: FloatLabelRow
 
-public class FloatFieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: TypedCellType, Cell: TextFieldCell, Cell.Value == T>: FormatteableRow<T, Cell> {
+open class FloatFieldRow<Cell: CellType>: FormatteableRow<Cell> where Cell: BaseCell, Cell: TextFieldCell {
 
 
     public required init(tag: String?) {
@@ -413,47 +457,47 @@ public class FloatFieldRow<T: Any, Cell: CellType where Cell: BaseCell, Cell: Ty
     }
 }
 
-public final class TextFloatLabelRow: FloatFieldRow<String, TextFloatLabelCell>, RowType {
+public final class TextFloatLabelRow: FloatFieldRow<TextFloatLabelCell>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
-public final class IntFloatLabelRow: FloatFieldRow<Int, IntFloatLabelCell>, RowType {
+public final class IntFloatLabelRow: FloatFieldRow<IntFloatLabelCell>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
-public final class DecimalFloatLabelRow: FloatFieldRow<Float, DecimalFloatLabelCell>, RowType {
+public final class DecimalFloatLabelRow: FloatFieldRow<DecimalFloatLabelCell>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
-public final class URLFloatLabelRow: FloatFieldRow<NSURL, URLFloatLabelCell>, RowType {
+public final class URLFloatLabelRow: FloatFieldRow<URLFloatLabelCell>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
-public final class TwitterFloatLabelRow: FloatFieldRow<String, TwitterFloatLabelCell>, RowType {
+public final class TwitterFloatLabelRow: FloatFieldRow<TwitterFloatLabelCell>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
-public final class AccountFloatLabelRow: FloatFieldRow<String, AccountFloatLabelCell>, RowType {
+public final class AccountFloatLabelRow: FloatFieldRow<AccountFloatLabelCell>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
-public final class PasswordFloatLabelRow: FloatFieldRow<String, PasswordFloatLabelCell>, RowType {
+public final class PasswordFloatLabelRow: FloatFieldRow<PasswordFloatLabelCell>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
-public final class NameFloatLabelRow: FloatFieldRow<String, NameFloatLabelCell>, RowType {
+public final class NameFloatLabelRow: FloatFieldRow<NameFloatLabelCell>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
-public final class EmailFloatLabelRow: FloatFieldRow<String, EmailFloatLabelCell>, RowType {
+public final class EmailFloatLabelRow: FloatFieldRow<EmailFloatLabelCell>, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
@@ -461,59 +505,99 @@ public final class EmailFloatLabelRow: FloatFieldRow<String, EmailFloatLabelCell
 
 //MARK: LocationRow
 
-public final class LocationRow : SelectorRow<CLLocation, PushSelectorCell<CLLocation>, MapViewController>, RowType {
+public final class LocationRow: OptionsRow<PushSelectorCell<CLLocation>>, PresenterRowType, RowType {
+    
+    public typealias PresenterRow = MapViewController
+    
+    /// Defines how the view controller will be presented, pushed, etc.
+    open var presentationMode: PresentationMode<PresenterRow>?
+    
+    /// Will be called before the presentation occurs.
+    open var onPresentCallback: ((FormViewController, PresenterRow) -> Void)?
+
+    
+    
     public required init(tag: String?) {
         super.init(tag: tag)
-        presentationMode = .Show(controllerProvider: ControllerProvider.Callback { return MapViewController(){ _ in } }, completionCallback: { vc in vc.navigationController?.popViewControllerAnimated(true) })
+        presentationMode = .show(controllerProvider: ControllerProvider.callback { return MapViewController(){ _ in } }, onDismiss: { vc in _ = vc.navigationController?.popViewController(animated: true) })
+
         displayValueFor = {
             guard let location = $0 else { return "" }
-            let fmt = NSNumberFormatter()
+            let fmt = NumberFormatter()
             fmt.maximumFractionDigits = 4
             fmt.minimumFractionDigits = 4
-            let latitude = fmt.stringFromNumber(location.coordinate.latitude)!
-            let longitude = fmt.stringFromNumber(location.coordinate.longitude)!
+            let latitude = fmt.string(from: NSNumber(value: location.coordinate.latitude))!
+            let longitude = fmt.string(from: NSNumber(value: location.coordinate.longitude))!
             return  "\(latitude), \(longitude)"
         }
+    }
+    
+    /**
+     Extends `didSelect` method
+     */
+    open override func customDidSelect() {
+        super.customDidSelect()
+        guard let presentationMode = presentationMode, !isDisabled else { return }
+        if let controller = presentationMode.makeController() {
+            controller.row = self
+            controller.title = selectorTitle ?? controller.title
+            onPresentCallback?(cell.formViewController()!, controller)
+            presentationMode.present(controller, row: self, presentingController: self.cell.formViewController()!)
+        } else {
+            presentationMode.present(nil, row: self, presentingController: self.cell.formViewController()!)
+        }
+    }
+    
+    /**
+     Prepares the pushed row setting its title and completion callback.
+     */
+    open override func prepare(for segue: UIStoryboardSegue) {
+        super.prepare(for: segue)
+        guard let rowVC = segue.destination as? PresenterRow else { return }
+        rowVC.title = selectorTitle ?? rowVC.title
+        rowVC.onDismissCallback = presentationMode?.onDismissCallback ?? rowVC.onDismissCallback
+        onPresentCallback?(cell.formViewController()!, rowVC)
+        rowVC.row = self
     }
 }
 
 public class MapViewController : UIViewController, TypedRowControllerType, MKMapViewDelegate {
-    
+
     public var row: RowOf<CLLocation>!
-    public var completionCallback : ((UIViewController) -> ())?
-    
+    public var onDismissCallback: ((UIViewController) -> ())?
+
     lazy var mapView : MKMapView = { [unowned self] in
         let v = MKMapView(frame: self.view.bounds)
-        v.autoresizingMask = UIViewAutoresizing.FlexibleWidth.union(UIViewAutoresizing.FlexibleHeight)
+        v.autoresizingMask = UIViewAutoresizing.flexibleWidth.union(.flexibleHeight)
         return v
         }()
-    
+
     lazy var pinView: UIImageView = { [unowned self] in
-        let v = UIImageView(frame: CGRectMake(0, 0, 50, 50))
-        v.image = UIImage(named: "map_pin", inBundle: NSBundle(forClass: MapViewController.self), compatibleWithTraitCollection: nil)
-        v.image = v.image?.imageWithRenderingMode(.AlwaysTemplate)
+        let v = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        v.image = UIImage(named: "map_pin", in: Bundle(for: MapViewController.self), compatibleWith: nil)
+        v.image = v.image?.withRenderingMode(.alwaysTemplate)
         v.tintColor = self.view.tintColor
-        v.backgroundColor = .clearColor()
+        v.backgroundColor = .clear
         v.clipsToBounds = true
-        v.contentMode = .ScaleAspectFit
-        v.userInteractionEnabled = false
+        v.contentMode = .scaleAspectFit
+        v.isUserInteractionEnabled = false
         return v
         }()
-    
+
     let width: CGFloat = 10.0
     let height: CGFloat = 5.0
-    
+
     lazy var ellipse: UIBezierPath = { [unowned self] in
-        let ellipse = UIBezierPath(ovalInRect: CGRectMake(0 , 0, self.width, self.height))
+        let ellipse = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: self.width, height: self.height))
         return ellipse
         }()
-    
-    
+
+
     lazy var ellipsisLayer: CAShapeLayer = { [unowned self] in
         let layer = CAShapeLayer()
-        layer.bounds = CGRectMake(0, 0, self.width, self.height)
-        layer.path = self.ellipse.CGPath
-        layer.fillColor = UIColor.grayColor().CGColor
+        layer.bounds = CGRect(x: 0, y: 0, width: self.width, height: self.height)
+        layer.path = self.ellipse.cgPath
+        layer.fillColor = UIColor.gray.cgColor
         layer.fillRule = kCAFillRuleNonZero
         layer.lineCap = kCALineCapButt
         layer.lineDashPattern = nil
@@ -521,36 +605,36 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
         layer.lineJoin = kCALineJoinMiter
         layer.lineWidth = 1.0
         layer.miterLimit = 10.0
-        layer.strokeColor = UIColor.grayColor().CGColor
+        layer.strokeColor = UIColor.gray.cgColor
         return layer
         }()
-    
-    
+
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
-    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+
+    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
     }
-    
-    convenience public init(_ callback: (UIViewController) -> ()){
+
+    convenience public init(_ callback: ((UIViewController) -> ())?){
         self.init(nibName: nil, bundle: nil)
-        completionCallback = callback
+        onDismissCallback = callback
     }
-    
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(mapView)
-        
+
         mapView.delegate = self
         mapView.addSubview(pinView)
         mapView.layer.insertSublayer(ellipsisLayer, below: pinView.layer)
-        
-        let button = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(MapViewController.tappedDone(_:)))
+
+        let button = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(MapViewController.tappedDone(_:)))
         button.title = "Done"
         navigationItem.rightBarButtonItem = button
-        
+
         if let value = row.value {
             let region = MKCoordinateRegionMakeWithDistance(value.coordinate, 400, 400)
             mapView.setRegion(region, animated: true)
@@ -559,50 +643,50 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
             mapView.showsUserLocation = true
         }
         updateTitle()
-        
+
     }
-    
-    public override func viewWillAppear(animated: Bool) {
+
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        let center = mapView.convertCoordinate(mapView.centerCoordinate, toPointToView: pinView)
-        pinView.center = CGPointMake(center.x, center.y - (CGRectGetHeight(pinView.bounds)/2))
+
+        let center = mapView.convert(mapView.centerCoordinate, toPointTo: pinView)
+        pinView.center = CGPoint(x: center.x, y: center.y - (pinView.bounds.height/2))
         ellipsisLayer.position = center
     }
-    
-    
-    func tappedDone(sender: UIBarButtonItem){
-        let target = mapView.convertPoint(ellipsisLayer.position, toCoordinateFromView: mapView)
-        row.value? = CLLocation(latitude: target.latitude, longitude: target.longitude)
-        completionCallback?(self)
+
+
+    @objc func tappedDone(_ sender: UIBarButtonItem){
+        let target = mapView.convert(ellipsisLayer.position, toCoordinateFrom: mapView)
+        row.value = CLLocation(latitude: target.latitude, longitude: target.longitude)
+        onDismissCallback?(self)
     }
-    
+
     func updateTitle(){
-        let fmt = NSNumberFormatter()
+        let fmt = NumberFormatter()
         fmt.maximumFractionDigits = 4
         fmt.minimumFractionDigits = 4
-        let latitude = fmt.stringFromNumber(mapView.centerCoordinate.latitude)!
-        let longitude = fmt.stringFromNumber(mapView.centerCoordinate.longitude)!
+        let latitude = fmt.string(from: NSNumber(value: mapView.centerCoordinate.latitude))!
+        let longitude = fmt.string(from: NSNumber(value: mapView.centerCoordinate.longitude))!
         title = "\(latitude), \(longitude)"
     }
-    
-    public func mapView(mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+
+    public func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
         ellipsisLayer.transform = CATransform3DMakeScale(0.5, 0.5, 1)
-        UIView.animateWithDuration(0.2, animations: { [weak self] in
-            self?.pinView.center = CGPointMake(self!.pinView.center.x, self!.pinView.center.y - 10)
+        UIView.animate(withDuration: 0.2, animations: { [weak self] in
+            self?.pinView.center = CGPoint(x: self!.pinView.center.x, y: self!.pinView.center.y - 10)
             })
     }
-    
-    public func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+
+    public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         ellipsisLayer.transform = CATransform3DIdentity
-        UIView.animateWithDuration(0.2, animations: { [weak self] in
-            self?.pinView.center = CGPointMake(self!.pinView.center.x, self!.pinView.center.y + 10)
+        UIView.animate(withDuration: 0.2, animations: { [weak self] in
+            self?.pinView.center = CGPoint(x: self!.pinView.center.x, y: self!.pinView.center.y + 10)
             })
         updateTitle()
     }
 }
 
-public final class ImageCheckRow<T: Equatable>: Row<T, ImageCheckCell<T>>, SelectableRowType, RowType {
+public final class ImageCheckRow<T: Equatable>: Row<ImageCheckCell<T>>, SelectableRowType, RowType {
     public var selectableValue: T?
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -611,34 +695,57 @@ public final class ImageCheckRow<T: Equatable>: Row<T, ImageCheckCell<T>>, Selec
 }
 
 public class ImageCheckCell<T: Equatable> : Cell<T>, CellType {
-    
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    /// Image for selected state
     lazy public var trueImage: UIImage = {
         return UIImage(named: "selected")!
     }()
-    
+
+    /// Image for unselected state
     lazy public var falseImage: UIImage = {
         return UIImage(named: "unselected")!
     }()
-    
+
     public override func update() {
         super.update()
-        accessoryType = .None
-        imageView?.image = row.value != nil ? trueImage : falseImage
+        checkImageView?.image = row.value != nil ? trueImage : falseImage
+        checkImageView?.sizeToFit()
     }
     
+    /// Image view to render images. If `accessoryType` is set to `checkmark`
+    /// will create a new `UIImageView` and set it as `accessoryView`.
+    /// Otherwise returns `self.imageView`.
+    open var checkImageView: UIImageView? {
+        guard accessoryType == .checkmark else {
+            return self.imageView
+        }
+        
+        guard let accessoryView = accessoryView else {
+            let imageView = UIImageView()
+            self.accessoryView = imageView
+            return imageView
+        }
+        
+        return accessoryView as? UIImageView
+    }
+
     public override func setup() {
         super.setup()
+        accessoryType = .none
     }
-    
+
     public override func didSelect() {
         row.reload()
         row.select()
         row.deselect()
     }
-    
-}
 
+}

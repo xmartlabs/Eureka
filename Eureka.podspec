@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name = 'Eureka'
-  s.version = '1.7.0'
+  s.version = '4.0.1'
   s.license = 'MIT'
-  s.summary = 'Elegant iOS Forms in pure Swift 2'
+  s.summary = 'Elegant iOS Forms in pure Swift'
   s.homepage = 'https://github.com/xmartlabs/Eureka'
   s.social_media_url = 'http://twitter.com/xmartlabs'
   s.authors = { 'Martin Barreto' => 'martin@xmartlabs.com', 'Mathias Claassen' => 'mathias@xmartlabs.com' }
