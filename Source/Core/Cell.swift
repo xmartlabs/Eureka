@@ -150,6 +150,12 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
         return result
     }
 
+    open override func tintColorDidChange() {
+        super.tintColorDidChange()
+
+        row.updateCell()
+    }
+
     /// The untyped row associated to this cell.
     public override var baseRow: BaseRow! { return row }
 }
