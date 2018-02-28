@@ -1726,6 +1726,13 @@ class MultivaluedOnlyDeleteController: FormViewController {
             section <<< TextRow {
                             $0.placeholder = "Tag Name"
                             $0.value = tag
+				
+							let deleteAction = SwipeAction(style: .destructive, title: "Delete") { (action, row, completionHandler) in
+								print("Delete")
+								completionHandler?(true)
+							}
+				
+							$0.trailingSwipe.actions = [deleteAction]
                         }
         }
 
@@ -1736,6 +1743,13 @@ class MultivaluedOnlyDeleteController: FormViewController {
                             $0.title = "Tap to select"
                             $0.value = "client"
                             $0.options = nameList
+				
+							let deleteAction = SwipeAction(style: .destructive, title: "Delete") { (action, row, completionHandler) in
+								print("Delete")
+								completionHandler?(true)
+							}
+				
+							$0.trailingSwipe.actions = [deleteAction]
                          }
         }
 
