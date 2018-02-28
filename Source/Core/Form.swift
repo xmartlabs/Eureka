@@ -212,6 +212,22 @@ extension Form : RangeReplaceableCollection {
             section.wasAddedTo(form: self)
         }
     }
+    
+    public func prepend(_ formSection: Section) {
+        kvoWrapper.sections.insert(formSection, at: 0)
+        kvoWrapper._allSections.insert(formSection, at: 0)
+        formSection.wasAddedTo(form: self)
+    }
+    
+    public func prepend<S: Sequence>(contentsOf newElements: S) where S.Iterator.Element == Section {
+        let newElementsArr: [S.Iterator.Element] = newElements.map { $0 }
+        let indexSet: IndexSet = IndexSet(integersIn: 0..<newElementsArr.count)
+        kvoWrapper.sections.insert(newElementsArr, at: indexSet)
+        kvoWrapper._allSections.insert(contentsOf: newElementsArr, at: 0)
+        for section in newElements {
+            section.wasAddedTo(form: self)
+        }
+    }
 
     public func replaceSubrange<C: Collection>(_ subRange: Range<Int>, with newElements: C) where C.Iterator.Element == Section {
         for i in subRange.lowerBound..<subRange.upperBound {
