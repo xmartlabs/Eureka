@@ -107,10 +107,12 @@ open class SliderCell: Cell<Float>, CellType {
 
     func addConstraints() {
         let views: [String : Any] = ["titleLabel": titleLabel, "slider": slider, "valueLabel": valueLabel]
-        let metrics = ["spacing": 15.0, "valueLabelWidth": 40.0]
+        let metrics = ["spacing": 15.0]
+        valueLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
 
         let title = shouldShowTitle ? "[titleLabel]-spacing-" : ""
-        let value = !sliderRow.shouldHideValue ? "-[valueLabel(valueLabelWidth)]" : ""
+        let value = !sliderRow.shouldHideValue ? "-[valueLabel]" : ""
 
         let hContraints = NSLayoutConstraint.constraints(
             withVisualFormat: "H:|-\(title)[slider]\(value)-|",
@@ -118,13 +120,11 @@ open class SliderCell: Cell<Float>, CellType {
             metrics: metrics,
             views: views)
 
-        let vContraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-[slider]-|",
-            options: .alignAllCenterX,
-            metrics: metrics,
-            views: views)
 
-        contentView.addConstraints(hContraints + vContraints)
+        let vContraint = NSLayoutConstraint(item: slider, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0)
+
+        contentView.addConstraints(hContraints)
+        contentView.addConstraint(vContraint)
     }
 
     @objc func valueChanged() {

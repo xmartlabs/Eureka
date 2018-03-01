@@ -461,6 +461,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
         if tableView.dataSource == nil {
             tableView.dataSource = self
         }
+        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = BaseRow.estimatedRowHeight
         tableView.allowsSelectionDuringEditing = true
     }
@@ -783,7 +784,7 @@ extension FormViewController : UITableViewDelegate {
     }
 
     open func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard tableView == self.tableView else { return tableView.rowHeight }
+        guard tableView == self.tableView else { return tableView.estimatedRowHeight }
         let row = form[indexPath.section][indexPath.row]
         return row.baseCell.height?() ?? tableView.estimatedRowHeight
     }
@@ -906,7 +907,7 @@ extension FormViewController : UITableViewDelegate {
 
     open func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         guard let section = form[indexPath.section] as? MultivaluedSection else {
-			if form[indexPath].trailingSwipe.actions.count > 0{
+			if form[indexPath].trailingSwipe.actions.count > 0 {
 				return .delete
 			}
             return .none
