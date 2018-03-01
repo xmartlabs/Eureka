@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ### [4.1.0](https://github.com/xmartlabs/Eureka/releases/tag/4.1.0)
 
 * Add compatibility for Xcode 9.3 beta 2 and Swift 4.1.
-* New functionality 🎉. https://github.com/xmartlabs/eureka#swipe-actions. Thanks (@marbetschar)[https://github.com/marbetschar].
+* New functionality 🎉. https://github.com/xmartlabs/eureka#swipe-actions. Thanks [@marbetschar](https://github.com/marbetschar).
 * Add sectionIndexTitles and sectionForSectionIndexTitles to FormViewController to allow for subclasses to override.
 * Fix SliderRow layout.
 * Fix regular expression for URLs to allow query and location parameter.
