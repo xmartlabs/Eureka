@@ -405,6 +405,8 @@ public class URLFloatLabelCell : _FloatLabelCell<URL>, CellType {
 
     public override func setup() {
         super.setup()
+        textField?.autocorrectionType = .no
+        textField?.autocapitalizationType = .none
         textField?.keyboardType = .URL
     }
 }
@@ -502,6 +504,12 @@ public final class EmailFloatLabelRow: FloatFieldRow<EmailFloatLabelCell>, RowTy
         super.init(tag: tag)
     }
 }
+public final class PhoneFloatLabelRow: FloatFieldRow<PhoneFloatLabelCell>, RowType {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+
 
 //MARK: LocationRow
 
