@@ -47,7 +47,7 @@ open class AlertSelectorCell<T> : Cell<T>, CellType where T: Equatable {
     }
 }
 
-public class _ActionSheetRow<Cell: CellType>: AlertOptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
+open class _ActionSheetRow<Cell: CellType>: AlertOptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
 
     public typealias ProviderType = SelectorAlertController<_ActionSheetRow<Cell>>
     
@@ -69,7 +69,7 @@ public class _ActionSheetRow<Cell: CellType>: AlertOptionsRow<Cell>, PresenterRo
         })
     }()
 
-    public required init(tag: String?) {
+    open required init(tag: String?) {
         super.init(tag: tag)
     }
 
