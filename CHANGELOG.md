@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [4.1.1](https://github.com/xmartlabs/Eureka/releases/tag/4.1.1)
+
+* Bug fixes and stability improvements.
+
 ### [4.1.0](https://github.com/xmartlabs/Eureka/releases/tag/4.1.0)
 
 * Add compatibility for Xcode 9.3 beta 2 and Swift 4.1.
