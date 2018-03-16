@@ -69,7 +69,7 @@ open class _ActionSheetRow<Cell: CellType>: AlertOptionsRow<Cell>, PresenterRowT
         })
     }()
 
-    public required init(tag: String?) {
+    open required init(tag: String?) {
         super.init(tag: tag)
     }
 
