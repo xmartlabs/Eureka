@@ -22,7 +22,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import Foundation
 
 /**
@@ -33,22 +32,22 @@ import Foundation
  - NibFile:            Will load the view from a nib file.
  */
 public enum HeaderFooterProvider<ViewType: UIView> {
-    
+
     /**
      * Will generate a view of the specified class.
      */
     case `class`
-    
+
     /**
      * Will generate the view as a result of the given closure.
      */
     case callback(()->ViewType)
-    
+
     /**
      * Will load the view from a nib file.
      */
     case nibFile(name: String, bundle: Bundle?)
-    
+
     internal func createView() -> ViewType {
         switch self {
         case .class:
@@ -72,20 +71,19 @@ public enum HeaderFooterType {
  *  Struct used to generate headers and footers either from a view or a String.
  */
 public struct HeaderFooterView<ViewType: UIView> : ExpressibleByStringLiteral, HeaderFooterViewRepresentable {
-    
+
     /// Holds the title of the view if it was set up with a String.
     public var title: String?
-    
+
     /// Generates the view.
     public var viewProvider: HeaderFooterProvider<ViewType>?
-    
+
     /// Closure called when the view is created. Useful to customize its appearance.
-    public var onSetupView: ((_ view: ViewType, _ section: Section) -> ())?
-    
+    public var onSetupView: ((_ view: ViewType, _ section: Section) -> Void)?
+
     /// A closure that returns the height for the header or footer view.
-    public var height: (()->CGFloat)?
-    
-    
+    public var height: (() -> CGFloat)?
+
     /**
      This method can be called to get the view corresponding to the header or footer of a section in a specific controller.
      
@@ -103,8 +101,7 @@ public struct HeaderFooterView<ViewType: UIView> : ExpressibleByStringLiteral, H
                             section.headerView = result
                             return result
                         }()
-        }
-        else {
+        } else {
             view = section.footerView as? ViewType ?? {
                             let result = viewProvider?.createView()
                             section.footerView = result
@@ -115,36 +112,36 @@ public struct HeaderFooterView<ViewType: UIView> : ExpressibleByStringLiteral, H
         onSetupView?(v, section)
         return v
     }
-    
+
     /**
      Initiates the view with a String as title
      */
-    public init?(title: String?){
+    public init?(title: String?) {
         guard let t = title else { return nil }
         self.init(stringLiteral: t)
     }
-    
+
     /**
      Initiates the view with a view provider, ideal for customized headers or footers
      */
-    public init(_ provider: HeaderFooterProvider<ViewType>){
+    public init(_ provider: HeaderFooterProvider<ViewType>) {
         viewProvider = provider
     }
-    
+
     /**
      Initiates the view with a String as title
      */
     public init(unicodeScalarLiteral value: String) {
         self.title  = value
     }
-    
+
     /**
      Initiates the view with a String as title
      */
     public init(extendedGraphemeClusterLiteral value: String) {
         self.title = value
     }
-    
+
     /**
      Initiates the view with a String as title
      */
@@ -154,11 +151,11 @@ public struct HeaderFooterView<ViewType: UIView> : ExpressibleByStringLiteral, H
 }
 
 extension UIView {
-    
+
     func eurekaInvalidate() {
         setNeedsUpdateConstraints()
         updateConstraintsIfNeeded()
         setNeedsLayout()
     }
-    
+
 }

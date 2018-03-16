@@ -22,25 +22,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import XCTest
 @testable import Eureka
 
 class CallbacksTests: XCTestCase {
-    
+
     var formVC = FormViewController()
-    
+
     override func setUp() {
         super.setUp()
         // load the view to test the cells
         formVC.view.frame = CGRect(x: 0, y: 0, width: 375, height: 3000)
         formVC.tableView?.frame = formVC.view.frame
     }
-    
+
     override func tearDown() {
         super.tearDown()
     }
-    
+
     func testOnChange() {
         onChangeTest(row:TextRow(), value: "text")
         onChangeTest(row:IntRow(), value: 33)
@@ -51,8 +50,9 @@ class CallbacksTests: XCTestCase {
         onChangeTest(row:PopoverSelectorRow<String>(), value: "text")
         onChangeTest(row:SliderRow(), value: 5.0)
         onChangeTest(row:StepperRow(), value: 2.5)
+        onChangeTest(row:PickerInputRow(), value: "Option 2")
     }
-    
+
     func testCellSetup() {
         cellSetupTest(row:TextRow())
         cellSetupTest(row:IntRow())
@@ -63,8 +63,9 @@ class CallbacksTests: XCTestCase {
         cellSetupTest(row:PopoverSelectorRow<String>())
         cellSetupTest(row:SliderRow())
         cellSetupTest(row:StepperRow())
+        cellSetupTest(row:PickerInputRow<String>())
     }
-    
+
     func testCellUpdate() {
         cellUpdateTest(row:TextRow())
         cellUpdateTest(row:IntRow())
@@ -75,8 +76,9 @@ class CallbacksTests: XCTestCase {
         cellUpdateTest(row:PopoverSelectorRow<String>())
         cellUpdateTest(row:SliderRow())
         cellUpdateTest(row:StepperRow())
+        cellUpdateTest(row:PickerInputRow<String>())
     }
-    
+
     func testDefaultCellSetup() {
         defaultCellSetupTest(row:TextRow())
         defaultCellSetupTest(row:IntRow())
@@ -87,8 +89,9 @@ class CallbacksTests: XCTestCase {
         defaultCellSetupTest(row:PopoverSelectorRow<String>())
         defaultCellSetupTest(row:SliderRow())
         defaultCellSetupTest(row:StepperRow())
+        defaultCellSetupTest(row:PickerInputRow<String>())
     }
-    
+
     func testDefaultCellUpdate() {
        defaultCellUpdateTest(row: TextRow())
        defaultCellUpdateTest(row: IntRow())
@@ -99,8 +102,9 @@ class CallbacksTests: XCTestCase {
        defaultCellUpdateTest(row: PopoverSelectorRow<String>())
        defaultCellUpdateTest(row: SliderRow())
        defaultCellUpdateTest(row: StepperRow())
+       defaultCellUpdateTest(row: PickerInputRow<String>())
     }
-    
+
     func testDefaultInitializers() {
        defaultInitializerTest(row: TextRow())
        defaultInitializerTest(row: IntRow())
@@ -111,9 +115,10 @@ class CallbacksTests: XCTestCase {
        defaultInitializerTest(row: PopoverSelectorRow<String>())
        defaultInitializerTest(row: SliderRow())
        defaultInitializerTest(row: StepperRow())
+       defaultInitializerTest(row: PickerInputRow<String>())
     }
-    
-    func testOnRowValidationChenged(){
+
+    func testOnRowValidationChenged() {
         onRowValidationTests(row: TextRow(), value: "Eureka!")
         onRowValidationTests(row: IntRow(), value: 33)
         onRowValidationTests(row: DecimalRow(), value: 35.7)
@@ -124,44 +129,44 @@ class CallbacksTests: XCTestCase {
         onRowValidationTests(row: SliderRow(), value: 5.0)
         onRowValidationTests(row: StepperRow(), value: 2.5)
         onRowValidationTests(row: TimeInlineRow(), value: Date())
-        
+        onRowValidationTests(row: PickerInputRow<String>(), value: "Hi!!")
     }
-    
+
     private func onChangeTest<Row, Value>(row:Row, value:Value) where Row: BaseRow, Row: RowType, Value == Row.Cell.Value {
         var invoked = false
-        row.onChange { row in
+        row.onChange { _ in
             invoked = true
         }
         formVC.form +++ Section() <<< row
         row.value = value
         XCTAssertTrue(invoked)
     }
-    
+
     private func cellSetupTest<Row, Value>(row:Row) where  Row: BaseRow, Row : RowType, Value == Row.Cell.Value {
         var invoked = false
-        row.cellSetup { cell, row in
+        row.cellSetup { _, _ in
             invoked = true
         }
         formVC.form +++ Section() <<< row
         let _ = row.cell // laod cell
         XCTAssertTrue(invoked)
     }
-    
+
     private func cellUpdateTest<Row, Value>(row:Row) where  Row: BaseRow, Row : RowType, Value == Row.Cell.Value {
         var invoked = false
-        row.cellUpdate { cell, row in
+        row.cellUpdate { _, _ in
             invoked = true
         }
         formVC.form +++ Section() <<< row
         let _ = formVC.tableView(formVC.tableView!, cellForRowAt: row.indexPath!) // should invoke cell update
         XCTAssertTrue(invoked)
     }
-    
+
     func onRowValidationTests<Row, Value>(row:Row, value:Value) where Row: BaseRow, Row: RowType, Value == Row.Cell.Value {
         var invoked = false
         row.validationOptions = ValidationOptions.validatesOnChange
-        row.add(rule: RuleClosure() { _ in return ValidationError(msg: "Validation Error") })
-        row.onRowValidationChanged { row in
+        row.add(rule: RuleClosure { _ in return ValidationError(msg: "Validation Error") })
+        row.onRowValidationChanged { _, _ in
             invoked = true
         }
         formVC.form +++ Section() <<< row
@@ -169,16 +174,16 @@ class CallbacksTests: XCTestCase {
 
         XCTAssertTrue(invoked)
     }
-    
+
     private func defaultInitializerTest<Row>(row:Row) where Row: BaseRow, Row : RowType {
         var invoked = false
         Row.defaultRowInitializer = { row in
             invoked = true
         }
-        formVC.form +++ Row.init() { _ in }
+        formVC.form +++ Row.init { _ in }
         XCTAssertTrue(invoked)
     }
-    
+
     private func defaultCellSetupTest<Row>(row:Row) where Row: BaseRow, Row: RowType {
         var invoked = false
         Row.defaultCellSetup = { cell, row in

@@ -24,37 +24,40 @@
 
 import Foundation
 
-open class DatePickerCell : Cell<Date>, CellType {
-    
-    public var datePicker: UIDatePicker
-    
-    public required init(style: UITableViewCellStyle, reuseIdentifier: String?){
-        self.datePicker = UIDatePicker()
+open class DatePickerCell: Cell<Date>, CellType {
+
+    @IBOutlet weak public var datePicker: UIDatePicker!
+
+    public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        let datePicker = UIDatePicker()
+        self.datePicker = datePicker
         self.datePicker.translatesAutoresizingMaskIntoConstraints = false
-        
+
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         self.contentView.addSubview(self.datePicker)
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": self.datePicker]))
         self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[picker]-0-|", options: [], metrics: nil, views: ["picker": self.datePicker]))
-        self.datePicker.addTarget(self, action: #selector(DatePickerCell.datePickerValueChanged(_:)), for: .valueChanged)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
-    
+
     open override func setup() {
         super.setup()
+        selectionStyle = .none
         accessoryType = .none
         editingAccessoryType =  .none
+        height = { UITableViewAutomaticDimension }
         datePicker.datePickerMode = datePickerMode()
+        datePicker.addTarget(self, action: #selector(DatePickerCell.datePickerValueChanged(_:)), for: .valueChanged)
     }
-    
+
     deinit {
-        datePicker.removeTarget(self, action: nil, for: .allEvents)
+        datePicker?.removeTarget(self, action: nil, for: .allEvents)
     }
-    
+
     open override func update() {
         super.update()
         selectionStyle = row.isDisabled ? .none : .default
@@ -64,16 +67,23 @@ open class DatePickerCell : Cell<Date>, CellType {
         datePicker.setDate(row.value ?? Date(), animated: row is CountDownPickerRow)
         datePicker.minimumDate = (row as? DatePickerRowProtocol)?.minimumDate
         datePicker.maximumDate = (row as? DatePickerRowProtocol)?.maximumDate
-        if let minuteIntervalValue = (row as? DatePickerRowProtocol)?.minuteInterval{
+        if let minuteIntervalValue = (row as? DatePickerRowProtocol)?.minuteInterval {
             datePicker.minuteInterval = minuteIntervalValue
         }
     }
-    
-    func datePickerValueChanged(_ sender: UIDatePicker){
+
+    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         row?.value = sender.date
+        
+        // workaround for UIDatePicker bug when it doesn't trigger "value changed" event after trying to pick 00:00 value
+        // for details see this comment: https://stackoverflow.com/questions/20181980/uidatepicker-bug-uicontroleventvaluechanged-after-hitting-minimum-internal#comment56681891_20204225
+        if sender.datePickerMode == .countDownTimer && sender.countDownDuration == TimeInterval(sender.minuteInterval * 60) {
+            datePicker.countDownDuration = sender.countDownDuration
+        }
+        
     }
-    
-    private func datePickerMode() -> UIDatePickerMode{
+
+    private func datePickerMode() -> UIDatePickerMode {
         switch row {
         case is DatePickerRow:
             return .date
@@ -87,14 +97,15 @@ open class DatePickerCell : Cell<Date>, CellType {
             return .date
         }
     }
+
 }
 
-open class _DatePickerRow : Row<DatePickerCell>, DatePickerRowProtocol {
-    
-    open var minimumDate : Date?
-    open var maximumDate : Date?
-    open var minuteInterval : Int?
-    
+open class _DatePickerRow: Row<DatePickerCell>, DatePickerRowProtocol {
+
+    open var minimumDate: Date?
+    open var maximumDate: Date?
+    open var minuteInterval: Int?
+
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = nil
@@ -102,28 +113,28 @@ open class _DatePickerRow : Row<DatePickerCell>, DatePickerRowProtocol {
 }
 
 /// A row with an Date as value where the user can select a date directly.
-public final class DatePickerRow : _DatePickerRow, RowType {
+public final class DatePickerRow: _DatePickerRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
 /// A row with an Date as value where the user can select a time directly.
-public final class TimePickerRow : _DatePickerRow, RowType {
+public final class TimePickerRow: _DatePickerRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
 /// A row with an Date as value where the user can select date and time directly.
-public final class DateTimePickerRow : _DatePickerRow, RowType {
+public final class DateTimePickerRow: _DatePickerRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
 /// A row with an Date as value where the user can select hour and minute as a countdown timer.
-public final class CountDownPickerRow : _DatePickerRow, RowType {
+public final class CountDownPickerRow: _DatePickerRow, RowType {
     public required init(tag: String?) {
         super.init(tag: tag)
     }

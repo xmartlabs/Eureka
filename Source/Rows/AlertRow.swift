@@ -24,34 +24,34 @@
 import Foundation
 
 
-open class _AlertRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
+open class _AlertRow<Cell: CellType>: AlertOptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
+
+    public typealias PresentedController = SelectorAlertController<_AlertRow<Cell>>
     
-    open var onPresentCallback : ((FormViewController, SelectorAlertController<Cell.Value>)->())?
-    lazy open var presentationMode: PresentationMode<SelectorAlertController<Cell.Value>>? = {
-        return .presentModally(controllerProvider: ControllerProvider.callback { [weak self] in
-            let vc = SelectorAlertController<Cell.Value>(title: self?.selectorTitle, message: nil, preferredStyle: .alert)
+    open var onPresentCallback: ((FormViewController, PresentedController) -> Void)?
+    lazy open var presentationMode: PresentationMode<PresentedController>? = {
+        return .presentModally(controllerProvider: ControllerProvider<PresentedController>.callback { [weak self] in
+            let vc = PresentedController(title: self?.selectorTitle, message: nil, preferredStyle: .alert)
             vc.row = self
             return vc
-            }, onDismiss: { [weak self] in
-                $0.dismiss(animated: true)
-                self?.cell?.formViewController()?.tableView?.reloadData()
-            }
-        )
+        }, onDismiss: { [weak self] in
+            $0.dismiss(animated: true)
+            self?.cell?.formViewController()?.tableView?.reloadData()
+        })
     }()
-    
+
     public required init(tag: String?) {
         super.init(tag: tag)
     }
-    
+
     open override func customDidSelect() {
         super.customDidSelect()
-        if let presentationMode = presentationMode, !isDisabled  {
-            if let controller = presentationMode.makeController(){
+        if let presentationMode = presentationMode, !isDisabled {
+            if let controller = presentationMode.makeController() {
                 controller.row = self
                 onPresentCallback?(cell.formViewController()!, controller)
                 presentationMode.present(controller, row: self, presentingController: cell.formViewController()!)
-            }
-            else{
+            } else {
                 presentationMode.present(nil, row: self, presentingController: cell.formViewController()!)
             }
         }
@@ -64,4 +64,3 @@ public final class AlertRow<T: Equatable>: _AlertRow<AlertSelectorCell<T>>, RowT
         super.init(tag: tag)
     }
 }
-

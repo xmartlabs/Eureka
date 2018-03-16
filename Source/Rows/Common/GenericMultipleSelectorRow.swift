@@ -24,64 +24,62 @@
 
 import Foundation
 
-
-
 /// Generic options selector row that allows multiple selection.
-open class GenericMultipleSelectorRow<T: Hashable, Cell: CellType, VCType: TypedRowControllerType>: Row<Cell>, PresenterRowType, NoValueDisplayTextConformance where Cell: BaseCell, Cell.Value == Set<T>, VCType: UIViewController, VCType.RowValue == Set<T> {
+open class GenericMultipleSelectorRow<T, Cell: CellType>: Row<Cell>, PresenterRowType, NoValueDisplayTextConformance, OptionsProviderRow
+            where Cell: BaseCell, Cell.Value == Set<T> {
     
+    public typealias PresentedController = MultipleSelectorViewController<GenericMultipleSelectorRow<T,Cell>>
+
     /// Defines how the view controller will be presented, pushed, etc.
-    open var presentationMode: PresentationMode<VCType>?
-    
+    open var presentationMode: PresentationMode<PresentedController>?
+
     /// Will be called before the presentation occurs.
-    open var onPresentCallback : ((FormViewController, VCType)->())?
-    
+    open var onPresentCallback: ((FormViewController, PresentedController) -> Void)?
+
     /// Title to be displayed for the options
     open var selectorTitle: String?
-    
     open var noValueDisplayText: String?
-    
+
     /// Options from which the user will choose
-    open var options: [T] {
-        get { return self.dataProvider?.arrayData?.map({ $0.first! }) ?? [] }
-        set { self.dataProvider = DataProvider(arrayData: newValue.map({ Set<T>(arrayLiteral: $0) })) }
-    }
-    
+    open var optionsProvider: OptionsProvider<T>?
+
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = { (rowValue: Set<T>?) in
             return rowValue?.map({ String(describing: $0) }).sorted().joined(separator: ", ")
         }
-        presentationMode = .show(controllerProvider: ControllerProvider.callback { return VCType() }, onDismiss: { vc in
-            let _ = vc.navigationController?.popViewController(animated: true) })
+        presentationMode = .show(controllerProvider: ControllerProvider.callback {
+                return MultipleSelectorViewController<GenericMultipleSelectorRow<T,Cell>>()
+        }, onDismiss: { vc in
+            let _ = vc.navigationController?.popViewController(animated: true)
+        })
     }
-    
+
     /**
      Extends `didSelect` method
      */
     open override func customDidSelect() {
         super.customDidSelect()
         guard let presentationMode = presentationMode, !isDisabled else { return }
-        if let controller = presentationMode.makeController(){
+        if let controller = presentationMode.makeController() {
             controller.row = self
             controller.title = selectorTitle ?? controller.title
             onPresentCallback?(cell.formViewController()!, controller)
             presentationMode.present(controller, row: self, presentingController: self.cell.formViewController()!)
-        }
-        else{
+        } else {
             presentationMode.present(nil, row: self, presentingController: self.cell.formViewController()!)
         }
     }
-    
+
     /**
      Prepares the pushed row setting its title and completion callback.
      */
     open override func prepare(for segue: UIStoryboardSegue) {
         super.prepare(for: segue)
-        guard let rowVC = segue.destination as? VCType else { return }
+        guard let rowVC = segue.destination as? PresentedController else { return }
         rowVC.title = selectorTitle ?? rowVC.title
         rowVC.onDismissCallback = presentationMode?.onDismissCallback ?? rowVC.onDismissCallback
         onPresentCallback?(cell.formViewController()!, rowVC)
         rowVC.row = self
     }
 }
-

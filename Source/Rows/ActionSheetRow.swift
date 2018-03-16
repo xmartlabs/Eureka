@@ -22,38 +22,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import Foundation
 
-open class AlertSelectorCell<T: Equatable> : Cell<T>, CellType {
-    
+open class AlertSelectorCell<T> : Cell<T>, CellType where T: Equatable {
+
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
-    
+
     open override func update() {
         super.update()
         accessoryType = .none
         editingAccessoryType = accessoryType
         selectionStyle = row.isDisabled ? .none : .default
     }
-    
+
     open override func didSelect() {
         super.didSelect()
         row.deselect()
     }
 }
 
-open class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
+open class _ActionSheetRow<Cell: CellType>: AlertOptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
+
+    public typealias ProviderType = SelectorAlertController<_ActionSheetRow<Cell>>
     
-    public var onPresentCallback : ((FormViewController, SelectorAlertController<Cell.Value>)->())?
-    lazy public var presentationMode: PresentationMode<SelectorAlertController<Cell.Value>>? = {
+    public var onPresentCallback: ((FormViewController, ProviderType) -> Void)?
+    lazy public var presentationMode: PresentationMode<ProviderType>? = {
         return .presentModally(controllerProvider: ControllerProvider.callback { [weak self] in
-            let vc = SelectorAlertController<Cell.Value>(title: self?.selectorTitle, message: nil, preferredStyle: .actionSheet)
+            let vc = SelectorAlertController<_ActionSheetRow<Cell>>(title: self?.selectorTitle, message: nil, preferredStyle: .actionSheet)
             if let popView = vc.popoverPresentationController {
                 guard let cell = self?.cell, let tableView = cell.formViewController()?.tableView else { fatalError() }
                 popView.sourceView = tableView
@@ -61,26 +62,25 @@ open class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType w
             }
             vc.row = self
             return vc
-            },
-            onDismiss: { [weak self] in
-                $0.dismiss(animated: true)
-                self?.cell?.formViewController()?.tableView?.reloadData()
-            })
+        },
+        onDismiss: { [weak self] in
+            $0.dismiss(animated: true)
+            self?.cell?.formViewController()?.tableView?.reloadData()
+        })
     }()
-    
+
     public required init(tag: String?) {
         super.init(tag: tag)
     }
-    
+
     public override func customDidSelect() {
         super.customDidSelect()
         if let presentationMode = presentationMode, !isDisabled {
-            if let controller = presentationMode.makeController(){
+            if let controller = presentationMode.makeController() {
                 controller.row = self
                 onPresentCallback?(cell.formViewController()!, controller)
                 presentationMode.present(controller, row: self, presentingController: cell.formViewController()!)
-            }
-            else{
+            } else {
                 presentationMode.present(nil, row: self, presentingController: cell.formViewController()!)
             }
         }
@@ -88,9 +88,8 @@ open class _ActionSheetRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType w
 }
 
 /// An options row where the user can select an option from an ActionSheet
-public final class ActionSheetRow<T: Equatable>: _ActionSheetRow<AlertSelectorCell<T>>, RowType {
+public final class ActionSheetRow<T>: _ActionSheetRow<AlertSelectorCell<T>>, RowType where T: Equatable {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
 }
-

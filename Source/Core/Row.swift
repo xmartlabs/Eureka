@@ -22,10 +22,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import Foundation
 
-open class RowOf<T: Equatable>: BaseRow {
+open class RowOf<T>: BaseRow where T: Equatable{
 
     private var _value: T? {
         didSet {
@@ -37,12 +36,12 @@ open class RowOf<T: Equatable>: BaseRow {
             }
             guard let t = tag else { return }
             form.tagToValues[t] = (value != nil ? value! : NSNull())
-            if let rowObservers = form.rowObservers[t]?[.hidden]{
+            if let rowObservers = form.rowObservers[t]?[.hidden] {
                 for rowObserver in rowObservers {
                     (rowObserver as? Hidable)?.evaluateHidden()
                 }
             }
-            if let rowObservers = form.rowObservers[t]?[.disabled]{
+            if let rowObservers = form.rowObservers[t]?[.disabled] {
                 for rowObserver in rowObservers {
                     (rowObserver as? Disableable)?.evaluateDisabled()
                 }
@@ -51,12 +50,12 @@ open class RowOf<T: Equatable>: BaseRow {
     }
 
     /// The typed value of this row.
-    open var value : T?{
-        set (newValue){
+    open var value: T? {
+        set (newValue) {
             _value = newValue
             guard let _ = section?.form else { return }
             wasChanged = true
-            if validationOptions.contains(.validatesOnChange) || (wasBlurred && validationOptions.contains(.validatesOnChangeAfterBlurred)) || !isValid {
+            if validationOptions.contains(.validatesOnChange) || (wasBlurred && validationOptions.contains(.validatesOnChangeAfterBlurred)) ||  (!isValid && validationOptions != .validatesOnDemand) {
                 validate()
             }
         }
@@ -71,15 +70,12 @@ open class RowOf<T: Equatable>: BaseRow {
         set { value = newValue as? T }
     }
 
-    /// Variable used in rows with options that serves to generate the options for that row.
-    public var dataProvider: DataProvider<T>?
-
     /// Block variable used to get the String that should be displayed for the value of this row.
-    public var displayValueFor : ((T?) -> String?)? = {
+    public var displayValueFor: ((T?) -> String?)? = {
         return $0.map { String(describing: $0) }
     }
 
-    public required init(tag: String?){
+    public required init(tag: String?) {
         super.init(tag: tag)
     }
 
@@ -87,25 +83,33 @@ open class RowOf<T: Equatable>: BaseRow {
 
     @discardableResult
     public override func validate() -> [ValidationError] {
+        #if swift(>=4.1)
+        validationErrors = rules.compactMap { $0.validateFn(value) }
+        #else
         validationErrors = rules.flatMap { $0.validateFn(value) }
+        #endif
         return validationErrors
     }
 
-    public func add<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType{
+    /// Add a Validation rule for the Row
+    /// - Parameter rule: RuleType object to add
+    public func add<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType {
         let validFn: ((T?) -> ValidationError?) = { (val: T?) in
             return rule.isValid(value: val)
         }
         rules.append(ValidationRuleHelper(validateFn: validFn, rule: rule))
     }
 
-    public func add(ruleSet: RuleSet<T>){
+    /// Add a Validation rule set for the Row
+    /// - Parameter ruleSet: RuleSet<T> set of rules to add
+    public func add(ruleSet: RuleSet<T>) {
         rules.append(contentsOf: ruleSet.rules)
     }
 
     public func remove(ruleWithIdentifier identifier: String) {
         if let index = rules.index(where: { (validationRuleHelper) -> Bool in
             return validationRuleHelper.rule.id == identifier
-        }){
+        }) {
             rules.remove(at: index)
         }
     }
@@ -129,12 +133,12 @@ open class Row<Cell: CellType>: RowOf<Cell.Value>, TypedRowType where Cell: Base
     private var _cell: Cell! {
         didSet {
             RowDefaults.cellSetup["\(type(of: self))"]?(_cell, self)
-            (callbackCellSetup as? ((Cell) -> ()))?(_cell)
+            (callbackCellSetup as? ((Cell) -> Void))?(_cell)
         }
     }
 
     /// The cell associated to this row.
-    public var cell : Cell! {
+    public var cell: Cell! {
         return _cell ?? {
             let result = cellProvider.makeCell(style: self.cellStyle)
             result.row = self
@@ -177,11 +181,11 @@ open class Row<Cell: CellType>: RowOf<Cell.Value>, TypedRowType where Cell: Base
     /**
      Will be called inside `didSelect` method of the row. Can be used to customize row selection from the definition of the row.
      */
-    open func customDidSelect(){}
+    open func customDidSelect() {}
 
     /**
      Will be called inside `updateCell` method of the row. Can be used to customize reloading a row from its definition.
      */
-    open func customUpdateCell(){}
+    open func customUpdateCell() {}
 
 }

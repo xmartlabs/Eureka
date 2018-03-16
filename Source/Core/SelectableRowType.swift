@@ -22,12 +22,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import Foundation
 
 /**
  *  Every row that shall be used in a SelectableSection must conform to this protocol.
  */
-public protocol SelectableRowType : TypedRowType, RowType {
-    var selectableValue : Cell.Value? { get set }
+public protocol SelectableRowType: RowType {
+    var selectableValue: Cell.Value? { get set }
 }
