@@ -47,7 +47,7 @@ open class AlertSelectorCell<T> : Cell<T>, CellType where T: Equatable {
     }
 }
 
-public class _ActionSheetRow<Cell: CellType>: AlertOptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
+open class _ActionSheetRow<Cell: CellType>: AlertOptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
 
     public typealias ProviderType = SelectorAlertController<_ActionSheetRow<Cell>>
     
@@ -73,7 +73,7 @@ public class _ActionSheetRow<Cell: CellType>: AlertOptionsRow<Cell>, PresenterRo
         super.init(tag: tag)
     }
 
-    public override func customDidSelect() {
+    open override func customDidSelect() {
         super.customDidSelect()
         if let presentationMode = presentationMode, !isDisabled {
             if let controller = presentationMode.makeController() {
