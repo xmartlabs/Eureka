@@ -115,6 +115,21 @@ open class BaseRow: BaseRowType {
         self.tag = tag
     }
 
+    
+    /**
+     Scrolls to a wanted part of the view
+     Usage :
+     override this method somewhere in new class.
+     
+     //isScrollToTop
+     open override func isScrollToTop() -> Bool {
+        return true
+     }
+     */
+    open func isScrollToTop() -> Bool {
+        return false
+    }
+    
     /**
      Method that reloads the cell
      */
