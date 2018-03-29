@@ -12,7 +12,7 @@
 
 Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation of [XLForm] in Swift.
 
-### [简体中文](Documentation/README_CN.md)
+[简体中文](Documentation/README_CN.md)
 
 ## Overview
 
