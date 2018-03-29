@@ -10,7 +10,7 @@
 <a href="https://codebeat.co/projects/github-com-xmartlabs-eureka"><img alt="codebeat badge" src="https://codebeat.co/badges/16f29afb-f072-4633-9497-333c6eb71263" /></a>
 </p>
 
-由[XMARTLABS](http://xmartlabs.com)精心编写。 是[XLForm]的Swift版本.
+由[XMARTLABS](http://xmartlabs.com)精心编写，是[XLForm]的Swift版本。
 
 ## 概览
 
@@ -50,7 +50,7 @@
 * [安装]
 * [常见问题解答]
 
-**想了解更多，可以查看我们的关于*Eureka*的博客。*
+**想了解更多，可以查看我们的关于*Eureka*的[博客](https://blog.xmartlabs.com/2015/09/29/Introducing-Eureka-iOS-form-library-written-in-pure-Swift/)。**
 
 ## 要求
 
@@ -941,8 +941,8 @@ push到一个新的controller。
         </td>
         <td><center><b>Picker Row</b><br>
         <img src="../Example/Media/RowStatics/PickerRow.png"/>
-        <br>Presents options of a generic type through a picker view
-        <br><b>(There is also Picker Inline Row)</b>
+        <br>通过picker view来显示通用类型选项
+        <br><b>(也有Picker内联Row)</b>
         </center>
         </td>
     </tr>
