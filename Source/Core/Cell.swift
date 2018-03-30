@@ -92,6 +92,8 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
     /// The row associated to this cell
     public weak var row: RowOf<T>!
 
+    private var updating = false
+
     /// Returns the navigationAccessoryView if it is defined or calls super if not.
     override open var inputAccessoryView: UIView? {
         if let v = formViewController()?.inputAccessoryView(for: row) {
@@ -119,10 +121,14 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
      Function responsible for updating the cell each time it is reloaded.
      */
     open override func update() {
+        updating = true
+
         super.update()
         textLabel?.text = row.title
         textLabel?.textColor = row.isDisabled ? .gray : .black
         detailTextLabel?.text = row.displayValueFor?(row.value) ?? (row as? NoValueDisplayTextConformance)?.noValueDisplayText
+
+        updating = false
     }
 
     /**
@@ -153,7 +159,10 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
     open override func tintColorDidChange() {
         super.tintColorDidChange()
 
-        row.updateCell()
+        /* Protection from infinite recursion in case an update method changes the tintColor */
+        if !updating {
+            row.updateCell()
+        }
     }
 
     /// The untyped row associated to this cell.
