@@ -231,7 +231,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     }
 
     open func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        if let textAreaRow = self.row as? TextAreaRow, textAreaRow.textAreaMode == .readOnly {
+        if let textAreaRow = self.row as? _TextAreaRow, textAreaRow.textAreaMode == .readOnly {
             return false
         }
         return formViewController()?.textInputShouldBeginEditing(textView, cell: self) ?? true
