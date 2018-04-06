@@ -1086,7 +1086,7 @@ section.reload()
 
 #### How to customize Selector and MultipleSelector option cells
 
-`selectableRowCellUpdate` and `selectableRowCellSetup` properties are provided to be able to customize SelectorViewController and MultipleSelectorViewController selectable cells.
+`selectableRowSetup`, `selectableRowCellUpdate` and `selectableRowCellSetup` properties are provided to be able to customize SelectorViewController and MultipleSelectorViewController selectable cells.
 
 ```swift
 let row = PushRow<Emoji>() {
@@ -1097,6 +1097,9 @@ let row = PushRow<Emoji>() {
           }.onPresent { from, to in
               to.dismissOnSelection = false
               to.dismissOnChange = false
+              to.selectableRowSetup = { row in
+                  row.cellProvider = CellProvider<ListCheckCell<Emoji>>(nibName: "EmojiCell", bundle: Bundle.main)
+              }
               to.selectableRowCellUpdate = { cell, row in
                   cell.textLabel?.text = "Text " + row.selectableValue!  // customization
                   cell.detailTextLabel?.text = "Detail " +  row.selectableValue!
