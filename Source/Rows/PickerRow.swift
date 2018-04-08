@@ -75,7 +75,7 @@ open class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerVi
     open func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-
+    
     open func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return pickerRow?.options.count ?? 0
     }
@@ -84,6 +84,16 @@ open class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerVi
         return pickerRow?.displayValueFor?(pickerRow?.options[row])
     }
 
+    public func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        guard
+            let attributes = pickerRow?.onProvideStringAttributes?(),
+            let title = self.pickerView(pickerView, titleForRow: row, forComponent: component)
+        else {
+            return nil
+        }
+        return NSAttributedString(string: title, attributes: attributes)
+    }
+    
     open func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if let picker = pickerRow, !picker.options.isEmpty {
             picker.value = picker.options[row]
@@ -97,6 +107,7 @@ open class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerVi
 open class _PickerRow<T> : Row<PickerCell<T>> where T: Equatable {
 
     open var options = [T]()
+    open var onProvideStringAttributes: (() -> ([NSAttributedStringKey : Any]))?
 
     required public init(tag: String?) {
         super.init(tag: tag)
