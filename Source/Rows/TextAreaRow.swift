@@ -126,9 +126,6 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         textView.textColor = row.isDisabled ? .gray : .black
         textView.text = row.displayValueFor?(row.value)
         placeholderLabel?.text = (row as? TextAreaConformance)?.placeholder
-        if !awakeFromNibCalled {
-            placeholderLabel?.sizeToFit()
-        }
         placeholderLabel?.isHidden = textView.text.count != 0
     }
 
