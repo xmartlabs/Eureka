@@ -54,6 +54,7 @@ extension Section {
     internal class KVOWrapper: NSObject {
 
         @objc dynamic private var _rows = NSMutableArray()
+        @objc dynamic private var _deletedRows = NSMutableArray()
         var rows: NSMutableArray {
             return mutableArrayValue(forKey: "_rows")
         }
@@ -71,6 +72,7 @@ extension Section {
             removeObserver(self, forKeyPath: "_rows")
             _rows.removeAllObjects()
             _allRows.removeAll()
+            _deletedRows.removeAllObjects()
         }
 
         public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -90,11 +92,13 @@ extension Section {
                     delegateValue?.rowsHaveBeenAdded(newRows, at: indexSet.map { IndexPath(row: $0, section: _index ) })
                 }
             case NSKeyValueChange.removal.rawValue:
+                _deletedRows.addObjects(from: oldRows)
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
                 section?.rowsHaveBeenRemoved(oldRows, at: indexSet)
                 if let _index = section?.index {
                     delegateValue?.rowsHaveBeenRemoved(oldRows, at: indexSet.map { IndexPath(row: $0, section: _index ) })
                 }
+                _deletedRows.removeAllObjects()
             case NSKeyValueChange.replacement.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
                 section?.rowsHaveBeenReplaced(oldRows: oldRows, newRows: newRows, at: indexSet)
@@ -104,6 +108,10 @@ extension Section {
             default:
                 assertionFailure()
             }
+        }
+        
+        public func deletedRows() -> [BaseRow] {
+            return _deletedRows as! [BaseRow]
         }
     }
 
@@ -214,7 +222,12 @@ extension Section: MutableCollection, BidirectionalCollection {
     public subscript (position: Int) -> BaseRow {
         get {
             if position >= kvoWrapper.rows.count {
-                assertionFailure("Section: Index out of bounds")
+                let offsetPosition = position-kvoWrapper.rows.count
+                let deletedRows = kvoWrapper.deletedRows()
+                if offsetPosition >= deletedRows.count {
+                    assertionFailure("Section: Index out of bounds")
+                }
+                return deletedRows[offsetPosition]
             }
             return kvoWrapper.rows[position] as! BaseRow
         }
