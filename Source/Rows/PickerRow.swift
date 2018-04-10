@@ -75,7 +75,7 @@ open class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerVi
     open func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-    
+
     open func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return pickerRow?.options.count ?? 0
     }
