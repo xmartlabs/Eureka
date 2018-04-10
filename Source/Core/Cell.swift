@@ -85,12 +85,14 @@ open class BaseCell: UITableViewCell, BaseCellType {
 }
 
 /// Generic class that represents the Eureka cells.
-open class Cell<T: Equatable> : BaseCell, TypedCellType {
+open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
 
     public typealias Value = T
 
     /// The row associated to this cell
     public weak var row: RowOf<T>!
+
+    private var updatingCellForTintColorDidChange = false
 
     /// Returns the navigationAccessoryView if it is defined or calls super if not.
     override open var inputAccessoryView: UIView? {
@@ -148,6 +150,17 @@ open class Cell<T: Equatable> : BaseCell, TypedCellType {
             formViewController()?.endEditing(of: self)
         }
         return result
+    }
+
+    open override func tintColorDidChange() {
+        super.tintColorDidChange()
+
+        /* Protection from infinite recursion in case an update method changes the tintColor */
+        if !updatingCellForTintColorDidChange {
+            updatingCellForTintColorDidChange = true
+            row.updateCell()
+            updatingCellForTintColorDidChange = false
+        }
     }
 
     /// The untyped row associated to this cell.

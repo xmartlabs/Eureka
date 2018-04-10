@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="6g3-M9-WkD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="6g3-M9-WkD">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -42,6 +42,40 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qff-bS-Fd6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="786" y="-385"/>
+        </scene>
+        <!--Plain Table View Style Controller-->
+        <scene sceneID="8Iv-ww-ibT">
+            <objects>
+                <viewController id="u8Y-1k-1VR" customClass="PlainTableViewStyleController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="A6N-NO-zxI"/>
+                        <viewControllerLayoutGuide type="bottom" id="SE1-NN-0jX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="aCc-Ey-nD3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="9b5-qK-Oul">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="9b5-qK-Oul" secondAttribute="trailing" id="I31-Ya-LHb"/>
+                            <constraint firstItem="SE1-NN-0jX" firstAttribute="top" secondItem="9b5-qK-Oul" secondAttribute="bottom" id="KES-Sz-LzE"/>
+                            <constraint firstItem="9b5-qK-Oul" firstAttribute="top" secondItem="A6N-NO-zxI" secondAttribute="bottom" constant="-64" id="NDA-ez-DqV"/>
+                            <constraint firstItem="9b5-qK-Oul" firstAttribute="leading" secondItem="aCc-Ey-nD3" secondAttribute="leading" id="Tc2-VW-AzC"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="ZBu-dV-FRu"/>
+                    <connections>
+                        <outlet property="tableView" destination="9b5-qK-Oul" id="yv5-t9-NwK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U1f-50-jOU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="349" y="-386"/>
         </scene>
         <!--Eureka! Rows Example-->
         <scene sceneID="bWN-GL-dH9">
@@ -119,7 +153,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6g3-M9-WkD" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="37i-zo-mrN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -172,6 +206,8 @@
                         <segue destination="1By-iT-GXN" kind="push" identifier="ValidationsControllerSegue" id="e8a-Jy-4iL"/>
                         <segue destination="1Eh-Nv-AVS" kind="push" identifier="CustomDesignControllerSegue" id="qm6-xE-x5d"/>
                         <segue destination="qIY-1j-dNf" kind="push" identifier="MultivaluedSectionsControllerSegue" id="HjC-JK-Qvc"/>
+                        <segue destination="u8Y-1k-1VR" kind="push" identifier="PlainTableViewStyleViewControllerSegue" id="kqc-ak-a1R"/>
+                        <segue destination="fc5-sQ-cEm" kind="push" identifier="SwipeActionsControllerSegue" id="AxK-me-pi6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Eoz-Jq-Zy9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -218,7 +254,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3A7-59-k1N" customClass="NativeEventNavigationController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="dOa-Gv-ZyO">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -263,6 +299,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jCh-aA-iuT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="463" y="1077"/>
+        </scene>
+        <!--SwipeActions Example-->
+        <scene sceneID="h0m-5n-GTL">
+            <objects>
+                <viewController title="SwipeActions Example" id="fc5-sQ-cEm" customClass="SwipeActionsController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ImV-ow-JvS"/>
+                        <viewControllerLayoutGuide type="bottom" id="3OX-ei-O2d"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BDe-QW-0vU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="KY1-r2-ar2"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="axy-1K-pFt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-530" y="1833"/>
         </scene>
         <!--Multivalued Sections Example-->
         <scene sceneID="zbo-bQ-HRw">
@@ -333,7 +388,13 @@
                             <constraint firstItem="P95-eE-cnb" firstAttribute="top" secondItem="QYB-0m-3TS" secondAttribute="bottom" id="iIx-JY-TTE"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="JnB-RD-R8g"/>
+                    <navigationItem key="navigationItem" id="JnB-RD-R8g">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="2jn-dM-TgZ">
+                            <connections>
+                                <action selector="save:" destination="3E8-i9-e3P" id="PAG-gJ-1WR"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="QYB-0m-3TS" id="iAK-pT-gJd"/>
                     </connections>
@@ -342,10 +403,10 @@
             </objects>
             <point key="canvasLocation" x="-713.5" y="2547.5"/>
         </scene>
-        <!--Multivalued Only Rearder Controller-->
+        <!--Multivalued Only Reorder Controller-->
         <scene sceneID="iCj-Rb-n4P">
             <objects>
-                <viewController id="fcN-W7-dk3" customClass="MultivaluedOnlyRearderController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="fcN-W7-dk3" customClass="MultivaluedOnlyReorderController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ZhU-x5-LEM"/>
                         <viewControllerLayoutGuide type="bottom" id="dwC-UZ-shB"/>
@@ -652,9 +713,4 @@
             <point key="canvasLocation" x="859" y="1833"/>
         </scene>
     </scenes>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

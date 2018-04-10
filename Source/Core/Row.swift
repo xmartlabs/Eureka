@@ -24,7 +24,7 @@
 
 import Foundation
 
-open class RowOf<T: Equatable>: BaseRow {
+open class RowOf<T>: BaseRow where T: Equatable{
 
     private var _value: T? {
         didSet {
@@ -83,7 +83,11 @@ open class RowOf<T: Equatable>: BaseRow {
 
     @discardableResult
     public override func validate() -> [ValidationError] {
+        #if swift(>=4.1)
+        validationErrors = rules.compactMap { $0.validateFn(value) }
+        #else
         validationErrors = rules.flatMap { $0.validateFn(value) }
+        #endif
         return validationErrors
     }
 

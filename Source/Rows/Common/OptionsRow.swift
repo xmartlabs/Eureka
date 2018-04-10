@@ -26,7 +26,6 @@ import Foundation
 
 open class OptionsRow<Cell: CellType> : Row<Cell>, NoValueDisplayTextConformance, OptionsProviderRow where Cell: BaseCell {
     
-
     open var optionsProvider: OptionsProvider<Cell.Value>?
     
     open var selectorTitle: String?

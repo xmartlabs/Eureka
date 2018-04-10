@@ -166,7 +166,7 @@ class CallbacksTests: XCTestCase {
         var invoked = false
         row.validationOptions = ValidationOptions.validatesOnChange
         row.add(rule: RuleClosure { _ in return ValidationError(msg: "Validation Error") })
-        row.onRowValidationChanged { _ in
+        row.onRowValidationChanged { _, _ in
             invoked = true
         }
         formVC.form +++ Section() <<< row

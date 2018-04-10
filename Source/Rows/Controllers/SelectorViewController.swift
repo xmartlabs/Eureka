@@ -37,7 +37,7 @@ public protocol OptionsProviderRow: TypedRowType {
     var cachedOptionsData: [OptionsProviderType.Option]? { get set }
 }
 
-extension OptionsProviderRow where Self: BaseRow, OptionsProviderType.Option: Equatable {
+extension OptionsProviderRow where Self: BaseRow {
     
     public var options: [OptionsProviderType.Option]? {
         set (newValue){
@@ -103,7 +103,7 @@ public enum OptionsProvider<T: Equatable>: OptionsProviderConformance {
     }
 }
 
-open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsProviderRow>: FormViewController, TypedRowControllerType where Row: BaseRow, Row: TypedRowType, Row.Cell.Value == OptionsRow.OptionsProviderType.Option {
+open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsProviderRow>: FormViewController, TypedRowControllerType where Row: BaseRow, Row.Cell.Value == OptionsRow.OptionsProviderType.Option {
 
     /// The row that pushed or presented this controller
     public var row: RowOf<Row.Cell.Value>!
@@ -111,9 +111,10 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
     public var dismissOnSelection = true
     public var dismissOnChange = true
 
+    public var selectableRowSetup: ((_ row: Row) -> Void)?
     public var selectableRowCellUpdate: ((_ cell: Row.Cell, _ row: Row) -> Void)?
     public var selectableRowCellSetup: ((_ cell: Row.Cell, _ row: Row) -> Void)?
-
+	
     /// A closure to be called when the controller disappears.
     public var onDismissCallback: ((UIViewController) -> Void)?
 
@@ -130,6 +131,10 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
     
     public var optionsProviderRow: OptionsRow {
         return row as! OptionsRow
+    }
+
+    override public init(style: UITableViewStyle) {
+        super.init(style: style)
     }
 
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -212,6 +217,7 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
                 lrow.title = self.row.displayValueFor?(option)
                 lrow.selectableValue = option
                 lrow.value = self.row.value == option ? option : nil
+                self.selectableRowSetup?(lrow)
             }.cellSetup { [weak self] cell, row in
                 self?.selectableRowCellSetup?(cell, row)
             }.cellUpdate { [weak self] cell, row in
