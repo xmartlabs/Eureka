@@ -176,9 +176,9 @@ class SelectableSectionTests: XCTestCase {
         XCTAssertEqual(form[1].footer?.title, "East hemisphere")
         XCTAssertEqual(form[2].footer?.title, "")
 
-        XCTAssertEqual(form[0].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Africa", "Asia", "Australia", "Europe"])
-        XCTAssertEqual(form[1].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["North America", "South America"])
-        XCTAssertEqual(form[2].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Antarctica"])
+        XCTAssertEqual(form[0].compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Africa", "Asia", "Australia", "Europe"])
+        XCTAssertEqual(form[1].compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["North America", "South America"])
+        XCTAssertEqual(form[2].compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Antarctica"])
     }
 
     func testLazyOptionsProvider() {
@@ -207,7 +207,7 @@ class SelectableSectionTests: XCTestCase {
         XCTAssertEqual(row.options ?? [], options)
         XCTAssertEqual(form.count, 1)
         XCTAssertEqual(form[0].count, options.count)
-        XCTAssertEqual(form[0].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), options)
+        XCTAssertEqual(form[0].compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), options)
     }
     
 }
