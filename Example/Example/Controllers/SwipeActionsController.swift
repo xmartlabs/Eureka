@@ -13,7 +13,7 @@ class SwipeActionsController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        form +++ Section(footer: "Eureka sets table.isEditing = false for SwipeActions.\n\nMultivaluedSections need table.isEditing = true, therefore both can't be used on the same view.")
+        form +++ Section(footer: "Eureka sets table.isEditing = true only if the form contains a MultivaluedSection. SwipeActions only work when isEditing = false, therefore you have to set that in ViewWillAppear. Both can't be used on the same form.")
             <<< LabelRow("Actions Right: iOS >= 7") {
                 $0.title = $0.tag
 
