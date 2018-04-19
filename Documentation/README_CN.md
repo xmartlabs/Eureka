@@ -491,6 +491,10 @@ form +++
 
 当创建一个可以插入的sections时，我们还需要更多的考虑。所以被添加到可插入的多值section的rows都应该放在Eureka通过点击按钮来插入的rows上面。我们可以在初始化section的时候，在最后一个闭包参数里添加额外的row，这样在点击button row的时候就会自动把要插入的rows放在最后面。
 
+#### 编辑模式
+
+默认情况下，Eureka只会在当表格中有含有MultivaluedSection的时候把tableView的`isEditing`设置为`true`，而且会在表格第一次显示时的`viewWillAppear`完成。
+
 要了解更多如何使用多值section的相关信息，可以看下Eureka的示例程序，里面包含了多种用法。
 
 ### 验证
@@ -628,6 +632,8 @@ let row = TextRow() {
             $0.leadingSwipe.performsFirstActionWithFullSwipe = true
         }
 ```
+
+滑动操作需要把`tableView.isEditing`设置为`false`。Eureka会在当表格中有含有MultivaluedSection的时候把tableView的`isEditing`设置为`true`（在`viewWillAppear`设置）。如果你在同一个表格中同时拥有MultivaluedSections和滑动操作，你要根据情况来设置`isEditing`。
 
 ## 自定义row
 
@@ -1097,7 +1103,7 @@ section.reload()
 
 #### 如何自定义Selector 和 MultipleSelector 选项的cells
 
-`selectableRowCellUpdate` 和 `selectableRowCellSetup` 可以自定义 SelectorViewController 和 MultipleSelectorViewController的可选cells.
+`selectableRowSetup`、`selectableRowCellUpdate` 和 `selectableRowCellSetup` 可以自定义 SelectorViewController 和 MultipleSelectorViewController的可选cells.
 
 ```swift
 let row = PushRow<Emoji>() {
@@ -1108,6 +1114,9 @@ let row = PushRow<Emoji>() {
           }.onPresent { from, to in
               to.dismissOnSelection = false
               to.dismissOnChange = false
+              to.selectableRowSetup = { row in
+                  row.cellProvider = CellProvider<ListCheckCell<Emoji>>(nibName: "EmojiCell", bundle: Bundle.main)
+              }
               to.selectableRowCellUpdate = { cell, row in
                   cell.textLabel?.text = "Text " + row.selectableValue!  // 自定义
                   cell.detailTextLabel?.text = "Detail " +  row.selectableValue!
