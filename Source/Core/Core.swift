@@ -502,7 +502,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
         NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillShow(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
 
-        if form.containsMultivaluedSection {
+        if form.containsMultivaluedSection && (isBeingPresented || isMovingToParentViewController) {
             tableView.setEditing(true, animated: false)
         }
     }

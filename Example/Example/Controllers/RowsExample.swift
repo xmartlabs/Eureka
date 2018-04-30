@@ -164,6 +164,28 @@ class RowsExampleViewController: FormViewController {
                     }
         }
 
+            <<< PushRow<Emoji>() {
+                $0.title = "Custom Cell Push Row"
+                $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
+                $0.value = 👦🏼
+                $0.selectorTitle = "Choose an Emoji!"
+                }
+                .onPresent { from, to in
+                    to.selectableRowSetup = { row in
+                        row.cellProvider = CellProvider<ListCheckCell<Emoji>>(nibName: "EmojiCell", bundle: Bundle.main)
+                    }
+                    to.selectableRowCellUpdate = { cell, row in
+                        var detailText: String?
+                        switch row.selectableValue {
+                        case 💁🏻, 👦🏼: detailText = "Person"
+                        case 🐗, 🐼, 🐻: detailText = "Animal"
+                        case 🍐: detailText = "Food"
+                        default: detailText = ""
+                        }
+                        cell.detailTextLabel?.text = detailText
+                    }
+        }
+
 
         if UIDevice.current.userInterfaceIdiom == .pad {
             let section = form.last!

@@ -486,6 +486,10 @@ Eureka automatically adds a button row when we create a insertable multivalued s
 
 There are some considerations we need to have in mind when creating insertable sections. Any row added to the insertable multivalued section should be placed above the row that Eureka automatically adds to insert new rows. This can be easily achieved by adding these additional rows to the section from inside the section's initializer closure (last parameter of section initializer) so then Eureka adds the adds insert button at the end of the section.
 
+#### Editing mode
+
+By default Eureka will set the tableView's `isEditing` to true only if there is a MultivaluedSection in the form. This will be done in `viewWillAppear` the first time a form is presented.
+
 For more information on how to use multivalued sections please take a look at Eureka example project which contains several usage examples.
 
 ### Validations
@@ -624,6 +628,9 @@ let row = TextRow() {
             $0.leadingSwipe.performsFirstActionWithFullSwipe = true
         }
 ```
+
+Swipe Actions need `tableView.isEditing` be set to `false`. Eureka will set this to `true` if there is a MultivaluedSection in the form (in the `viewWillAppear`).
+If you have both MultivaluedSections and swipe actions in the same form you should set `isEditing` according to your needs.
 
 ## Custom rows
 
@@ -1086,7 +1093,7 @@ section.reload()
 
 #### How to customize Selector and MultipleSelector option cells
 
-`selectableRowCellUpdate` and `selectableRowCellSetup` properties are provided to be able to customize SelectorViewController and MultipleSelectorViewController selectable cells.
+`selectableRowSetup`, `selectableRowCellUpdate` and `selectableRowCellSetup` properties are provided to be able to customize SelectorViewController and MultipleSelectorViewController selectable cells.
 
 ```swift
 let row = PushRow<Emoji>() {
@@ -1097,6 +1104,9 @@ let row = PushRow<Emoji>() {
           }.onPresent { from, to in
               to.dismissOnSelection = false
               to.dismissOnChange = false
+              to.selectableRowSetup = { row in
+                  row.cellProvider = CellProvider<ListCheckCell<Emoji>>(nibName: "EmojiCell", bundle: Bundle.main)
+              }
               to.selectableRowCellUpdate = { cell, row in
                   cell.textLabel?.text = "Text " + row.selectableValue!  // customization
                   cell.detailTextLabel?.text = "Detail " +  row.selectableValue!

@@ -40,6 +40,7 @@
 		8F325067205AAD7A006AF0A6 /* MultivaluedExamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F325066205AAD7A006AF0A6 /* MultivaluedExamples.swift */; };
 		8F325069205AAF1E006AF0A6 /* SwipeActionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F325068205AAF1E006AF0A6 /* SwipeActionsController.swift */; };
 		8F32506B205AAF66006AF0A6 /* PlainTableViewExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F32506A205AAF66006AF0A6 /* PlainTableViewExample.swift */; };
+		D4ACF9132074B52200AEA952 /* EmojiCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4ACF9122074B52200AEA952 /* EmojiCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,6 +132,7 @@
 		8F325066205AAD7A006AF0A6 /* MultivaluedExamples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultivaluedExamples.swift; sourceTree = "<group>"; };
 		8F325068205AAF1E006AF0A6 /* SwipeActionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionsController.swift; sourceTree = "<group>"; };
 		8F32506A205AAF66006AF0A6 /* PlainTableViewExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTableViewExample.swift; sourceTree = "<group>"; };
+		D4ACF9122074B52200AEA952 /* EmojiCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmojiCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +261,7 @@
 				287A143B1D99A91B00FFE6EB /* ImageRow */,
 				2837E29D1BA3A5A800A1952C /* Helpers */,
 				51729E6F1B9A660A004A00EB /* WeekDaysCell.xib */,
+				D4ACF9122074B52200AEA952 /* EmojiCell.xib */,
 				51729E6D1B9A6601004A00EB /* CustomCells.swift */,
 			);
 			name = "Custom Row and Cell";
@@ -334,7 +337,7 @@
 		51729E121B9A54F1004A00EB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = Xmartlabs;
 				TargetAttributes = {
 					51729E191B9A54F1004A00EB = {
@@ -404,6 +407,7 @@
 				284D28B61E49121E00BB38E7 /* DatePickerCell.xib in Resources */,
 				28CD97C21BB32F0E00AFDA67 /* EurekaSectionHeader.xib in Resources */,
 				51729E231B9A54F1004A00EB /* Main.storyboard in Resources */,
+				D4ACF9132074B52200AEA952 /* EmojiCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,12 +527,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -575,12 +581,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
