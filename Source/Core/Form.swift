@@ -354,7 +354,7 @@ extension Form {
     }
 	
 	var containsMultivaluedSection: Bool {
-		return kvoWrapper.sections.contains { $0 is MultivaluedSection }
+		return kvoWrapper._allSections.contains { $0 is MultivaluedSection }
 	}
 
     func getValues(for rows: [BaseRow]) -> [String: Any?] {
