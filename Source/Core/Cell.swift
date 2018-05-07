@@ -156,7 +156,7 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
         super.tintColorDidChange()
 
         /* Protection from infinite recursion in case an update method changes the tintColor */
-        if !updatingCellForTintColorDidChange {
+        if !updatingCellForTintColorDidChange && row != nil {
             updatingCellForTintColorDidChange = true
             row.updateCell()
             updatingCellForTintColorDidChange = false
