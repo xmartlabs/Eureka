@@ -307,11 +307,11 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
             
         default:
             var views: [String: AnyObject] =  ["textField": textField]
-            dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-11-[textField]-11-|", options: .alignAllLastBaseline, metrics: nil, views: views)
+            dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-" + String(verticalPadding) + "-[textField]-" + String(verticalPadding) + "-|", options: .alignAllLastBaseline, metrics: nil, views: views)
             
             if let titleLabel = titleLabel, let text = titleLabel.text, !text.isEmpty {
                 views["titleLabel"] = titleLabel
-                dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-11-[titleLabel]-11-|", options: .alignAllLastBaseline, metrics: nil, views: views)
+                dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-" + String(verticalPadding) + "-[titleLabel]-" + String(verticalPadding) + "-|", options: .alignAllLastBaseline, metrics: nil, views: views)
                 dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .centerY, relatedBy: .equal, toItem: textField, attribute: .centerY, multiplier: 1, constant: 0))
             }
             

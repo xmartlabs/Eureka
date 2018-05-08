@@ -26,6 +26,9 @@ import Foundation
 
 /// Base class for the Eureka cells
 open class BaseCell: UITableViewCell, BaseCellType {
+    
+    //for changing vertical padding of cell
+    open var verticalPadding: Int = 4
 
     /// Untyped row associated to this cell.
     public var baseRow: BaseRow! { return nil }
