@@ -85,6 +85,7 @@
 		51729E671B9A5FA5004A00EB /* Eureka.h in Headers */ = {isa = PBXBuildFile; fileRef = 51729E661B9A5FA5004A00EB /* Eureka.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		798C5ADA1EF1E35600A21F52 /* SwipeActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798C5AD91EF1E35600A21F52 /* SwipeActions.swift */; };
 		8690E4BE1CFDE062004CDB1C /* Eureka.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8690E4BD1CFDE062004CDB1C /* Eureka.bundle */; };
+		8FCCF8EF20A24085004793A0 /* MultiplePickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FCCF8EE20A24085004793A0 /* MultiplePickerRow.swift */; };
 		B244E6541FE1C94F0026B944 /* AlertOptionsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B244E6531FE1C94F0026B944 /* AlertOptionsRow.swift */; };
 		B257FE2E1EC0F66900043911 /* RowsInsertionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B257FE2D1EC0F66900043911 /* RowsInsertionTests.swift */; };
 		B2A401161EC0BA140042EDF0 /* SectionsInsertionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A401151EC0BA140042EDF0 /* SectionsInsertionTests.swift */; };
@@ -183,6 +184,7 @@
 		51729E661B9A5FA5004A00EB /* Eureka.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Eureka.h; path = Source/Eureka.h; sourceTree = SOURCE_ROOT; };
 		798C5AD91EF1E35600A21F52 /* SwipeActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActions.swift; sourceTree = "<group>"; };
 		8690E4BD1CFDE062004CDB1C /* Eureka.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Eureka.bundle; sourceTree = "<group>"; };
+		8FCCF8EE20A24085004793A0 /* MultiplePickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplePickerRow.swift; sourceTree = "<group>"; };
 		B244E6531FE1C94F0026B944 /* AlertOptionsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlertOptionsRow.swift; path = Common/AlertOptionsRow.swift; sourceTree = "<group>"; };
 		B257FE2D1EC0F66900043911 /* RowsInsertionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RowsInsertionTests.swift; path = Tests/RowsInsertionTests.swift; sourceTree = SOURCE_ROOT; };
 		B2A401151EC0BA140042EDF0 /* SectionsInsertionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SectionsInsertionTests.swift; path = Tests/SectionsInsertionTests.swift; sourceTree = SOURCE_ROOT; };
@@ -263,6 +265,7 @@
 				49ADC7F81C8A83240073952B /* StepperRow.swift */,
 				2859CDA61C7CF5530002982F /* SwitchRow.swift */,
 				2859CDAC1C7D0BCA0002982F /* TextAreaRow.swift */,
+				8FCCF8EE20A24085004793A0 /* MultiplePickerRow.swift */,
 			);
 			name = Rows;
 			path = Source/Rows;
@@ -514,6 +517,7 @@
 				28EEC0001C7E36EB00300699 /* SwitchRow.swift in Sources */,
 				3973000A1DF0E2A000080E4D /* PickerInputRow.swift in Sources */,
 				287E7D901D7601850065F4DE /* RuleLength.swift in Sources */,
+				8FCCF8EF20A24085004793A0 /* MultiplePickerRow.swift in Sources */,
 				28EEC02A1C7E3B5A00300699 /* MultipleSelectorRow.swift in Sources */,
 				28EEC0231C7E3B1900300699 /* AlertRow.swift in Sources */,
 				28EEC0221C7E3B1300300699 /* ActionSheetRow.swift in Sources */,

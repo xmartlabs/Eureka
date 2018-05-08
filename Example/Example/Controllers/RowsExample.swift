@@ -34,6 +34,14 @@ class RowsExampleViewController: FormViewController {
                     row.reload() // or row.updateCell()
             }
 
+            <<< MultiplePickerRow<String, String>() {
+                $0.firstOptions = { return ["a", "b", "c"]}
+                $0.secondOptions = { return [$0, $0 + $0, $0 + "-" + $0]}
+                }
+            <<< MultiplePickerInlineRow<String, String>() {
+                $0.firstOptions = { return ["a", "b", "c"]}
+                $0.secondOptions = { return [$0, $0 + $0, $0 + "-" + $0]}
+            }
 
             <<< DateRow() { $0.value = Date(); $0.title = "DateRow" }
 

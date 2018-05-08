@@ -91,3 +91,51 @@ public final class PickerInlineRow<T> : _PickerInlineRow<T>, RowType, InlineRowT
         inlineRow.cell.height = { UITableViewAutomaticDimension }
     }
 }
+
+open class _MultiplePickerInlineRow<A, B> : Row<PickerInlineCell<Tuple<A, B>>>, NoValueDisplayTextConformance where A: Equatable, B: Equatable {
+
+    public typealias InlineRow = MultiplePickerRow<A, B>
+    open var firstOptions: (() -> [A]) = {[]}
+    open var secondOptions: ((A) -> [B]) = { _ in [] }
+    open var noValueDisplayText: String?
+
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        self.displayValueFor = { [weak self] tuple in
+            if let tuple = tuple {
+                return String(describing: tuple.a) + ", " + String(describing: tuple.b)
+            }
+            return self?.noValueDisplayText
+        }
+    }
+}
+
+/// A generic inline row where the user can pick an option from a picker view which shows and hides itself automatically
+public final class MultiplePickerInlineRow<A, B> : _MultiplePickerInlineRow<A, B>, RowType, InlineRowType where A: Equatable, B: Equatable {
+
+    required public init(tag: String?) {
+        super.init(tag: tag)
+        onExpandInlineRow { cell, row, _ in
+            let color = cell.detailTextLabel?.textColor
+            row.onCollapseInlineRow { cell, _, _ in
+                cell.detailTextLabel?.textColor = color
+            }
+            cell.detailTextLabel?.textColor = cell.tintColor
+        }
+    }
+
+    public override func customDidSelect() {
+        super.customDidSelect()
+        if !isDisabled {
+            toggleInlineRow()
+        }
+    }
+
+    public func setupInlineRow(_ inlineRow: InlineRow) {
+        inlineRow.firstOptions = firstOptions
+        inlineRow.secondOptions = secondOptions
+        inlineRow.displayValueFor = self.displayValueFor
+        inlineRow.cell.height = { UITableViewAutomaticDimension }
+    }
+}
+
