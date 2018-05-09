@@ -92,9 +92,9 @@ public final class PickerInlineRow<T> : _PickerInlineRow<T>, RowType, InlineRowT
     }
 }
 
-open class _MultiplePickerInlineRow<A, B> : Row<PickerInlineCell<Tuple<A, B>>>, NoValueDisplayTextConformance where A: Equatable, B: Equatable {
+open class _DoublePickerInlineRow<A, B> : Row<PickerInlineCell<Tuple<A, B>>>, NoValueDisplayTextConformance where A: Equatable, B: Equatable {
 
-    public typealias InlineRow = MultiplePickerRow<A, B>
+    public typealias InlineRow = DoublePickerRow<A, B>
     open var firstOptions: (() -> [A]) = {[]}
     open var secondOptions: ((A) -> [B]) = { _ in [] }
     open var noValueDisplayText: String?
@@ -111,7 +111,7 @@ open class _MultiplePickerInlineRow<A, B> : Row<PickerInlineCell<Tuple<A, B>>>, 
 }
 
 /// A generic inline row where the user can pick an option from a picker view which shows and hides itself automatically
-public final class MultiplePickerInlineRow<A, B> : _MultiplePickerInlineRow<A, B>, RowType, InlineRowType where A: Equatable, B: Equatable {
+public final class DoublePickerInlineRow<A, B> : _DoublePickerInlineRow<A, B>, RowType, InlineRowType where A: Equatable, B: Equatable {
 
     required public init(tag: String?) {
         super.init(tag: tag)

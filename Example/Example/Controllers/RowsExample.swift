@@ -34,15 +34,6 @@ class RowsExampleViewController: FormViewController {
                     row.reload() // or row.updateCell()
             }
 
-            <<< MultiplePickerRow<String, String>() {
-                $0.firstOptions = { return ["a", "b", "c"]}
-                $0.secondOptions = { return [$0, $0 + $0, $0 + "-" + $0]}
-                }
-            <<< MultiplePickerInlineRow<String, String>() {
-                $0.firstOptions = { return ["a", "b", "c"]}
-                $0.secondOptions = { return [$0, $0 + $0, $0 + "-" + $0]}
-            }
-
             <<< DateRow() { $0.value = Date(); $0.title = "DateRow" }
 
             <<< CheckRow() {
@@ -276,6 +267,22 @@ class RowsExampleViewController: FormViewController {
                     $0.options.append("option \(i)")
                 }
                 $0.value = $0.options.first
+            }
+
+            <<< DoublePickerRow<String, String>() {
+                $0.firstOptions = { return ["a", "b", "c"]}
+                $0.secondOptions = { return [$0, $0 + $0, $0 + "-" + $0, "asd"]}
+            }
+
+            <<< TriplePickerRow<String, String, String>() {
+                $0.firstOptions = { return ["a", "b", "c"]}
+                $0.secondOptions = { return [$0, $0 + $0, $0 + "-" + $0, "asd"]}
+                $0.thirdOptions = {(a: String, b: String) in return [a + b, a + "_" + b, a + "-" + b, "asd"]}
+            }
+            
+            <<< DoublePickerInlineRow<String, Int>() {
+                $0.firstOptions = { return ["a", "b", "c"]}
+                $0.secondOptions = { _ in return [1, 2, 3]}
             }
 
             +++ Section("FieldRow examples")

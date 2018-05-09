@@ -27,9 +27,9 @@ public func == <A: Equatable, B: Equatable>(lhs: Tuple<A, B>, rhs: Tuple<A, B>) 
 
 // MARK: MultiplePickerCell
 
-open class MultiplePickerCell<A, B> : PickerCell<Tuple<A, B>> where A: Equatable, B: Equatable {
+open class DoublePickerCell<A, B> : PickerCell<Tuple<A, B>> where A: Equatable, B: Equatable {
 
-    private var pickerRow: _MultiplePickerRow<A, B>! { return row as? _MultiplePickerRow<A, B> }
+    private var pickerRow: _DoublePickerRow<A, B>! { return row as? _DoublePickerRow<A, B> }
 
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -59,8 +59,7 @@ open class MultiplePickerCell<A, B> : PickerCell<Tuple<A, B>> where A: Equatable
         if component == 0 {
             return String(describing: pickerRow.firstOptions()[row])
         } else {
-            let a = pickerRow.value?.a ?? pickerRow.firstOptions()[0]
-            return String(describing: pickerRow.secondOptions(a)[row])
+            return String(describing: pickerRow.secondOptions(pickerRow.selectedFirst())[row])
         }
     }
 
@@ -73,6 +72,7 @@ open class MultiplePickerCell<A, B> : PickerCell<Tuple<A, B>> where A: Equatable
                 }
                 if pickerRow.secondOptions(a).contains(value.b) {
                     pickerRow.value = Tuple(a: a, b: value.b)
+                    pickerView.reloadComponent(1)
                     return
                 } else {
                     pickerRow.value = Tuple(a: a, b: pickerRow.secondOptions(a)[0])
@@ -83,7 +83,7 @@ open class MultiplePickerCell<A, B> : PickerCell<Tuple<A, B>> where A: Equatable
             pickerView.reloadComponent(1)
             pickerView.selectRow(0, inComponent: 1, animated: true)
         } else {
-            let a = pickerRow.value?.a ?? pickerRow.firstOptions()[0]
+            let a = pickerRow.selectedFirst()
             pickerRow.value = Tuple(a: a, b: pickerRow.secondOptions(a)[row])
         }
     }
@@ -91,7 +91,7 @@ open class MultiplePickerCell<A, B> : PickerCell<Tuple<A, B>> where A: Equatable
 }
 
 // MARK: PickerRow
-open class _MultiplePickerRow<A, B> : Row<MultiplePickerCell<A, B>> where A: Equatable, B: Equatable {
+open class _DoublePickerRow<A, B> : Row<DoublePickerCell<A, B>> where A: Equatable, B: Equatable {
 
     open var firstOptions: (() -> [A]) = {[]}
     open var secondOptions: ((A) -> [B]) = {_ in []}
@@ -99,10 +99,15 @@ open class _MultiplePickerRow<A, B> : Row<MultiplePickerCell<A, B>> where A: Equ
     required public init(tag: String?) {
         super.init(tag: tag)
     }
+
+    func selectedFirst() -> A {
+        return value?.a ?? firstOptions()[0]
+    }
+
 }
 
 /// A generic row where the user can pick an option from a picker view
-public final class MultiplePickerRow<A, B>: _MultiplePickerRow<A, B>, RowType where A: Equatable, B: Equatable {
+public final class DoublePickerRow<A, B>: _DoublePickerRow<A, B>, RowType where A: Equatable, B: Equatable {
 
     required public init(tag: String?) {
         super.init(tag: tag)
