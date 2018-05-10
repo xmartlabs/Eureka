@@ -26,7 +26,7 @@ import Foundation
 
 // MARK: PickerInputCell
 
-open class PickerInputCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerViewDelegate where T: Equatable, T: InputTypeInitiable {
+open class PickerInputCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerViewDelegate where T: Equatable {
 
     lazy public var picker: UIPickerView = {
         let picker = UIPickerView()
@@ -74,10 +74,13 @@ open class PickerInputCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPic
         }
 
         picker.reloadAllComponents()
+        selectValue()
+    }
+
+    open func selectValue() {
         if let selectedValue = pickerInputRow?.value, let index = pickerInputRow?.options.index(of: selectedValue) {
             picker.selectRow(index, inComponent: 0, animated: true)
         }
-
     }
 
     open override func didSelect() {
@@ -119,7 +122,7 @@ open class PickerInputCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPic
 
 // MARK: PickerInputRow
 
-open class _PickerInputRow<T> : Row<PickerInputCell<T>>, NoValueDisplayTextConformance where T: Equatable, T: InputTypeInitiable {
+open class _PickerInputRow<T> : Row<PickerInputCell<T>>, NoValueDisplayTextConformance where T: Equatable {
     open var noValueDisplayText: String? = nil
 
     open var options = [T]()

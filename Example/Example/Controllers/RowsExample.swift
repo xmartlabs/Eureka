@@ -268,21 +268,17 @@ class RowsExampleViewController: FormViewController {
                 }
                 $0.value = $0.options.first
             }
-
-            <<< DoublePickerRow<String, String>() {
-                $0.firstOptions = { return ["a", "b", "c"]}
-                $0.secondOptions = { return [$0, $0 + $0, $0 + "-" + $0, "asd"]}
-            }
-
-            <<< TriplePickerRow<String, String, String>() {
-                $0.firstOptions = { return ["a", "b", "c"]}
-                $0.secondOptions = { return [$0, $0 + $0, $0 + "-" + $0, "asd"]}
-                $0.thirdOptions = {(a: String, b: String) in return [a + b, a + "_" + b, a + "-" + b, "asd"]}
-            }
             
             <<< DoublePickerInlineRow<String, Int>() {
+                $0.title = "2 Component picker"
                 $0.firstOptions = { return ["a", "b", "c"]}
                 $0.secondOptions = { _ in return [1, 2, 3]}
+            }
+            <<< TriplePickerInputRow<String, String, Int>() {
+                $0.firstOptions = { return ["a", "b", "c"]}
+                $0.secondOptions = { return [$0, $0 + $0, $0 + "-" + $0, "asd"]}
+                $0.thirdOptions = { _,_ in return [1, 2, 3]}
+                $0.title = "3 Component picker"
             }
 
             +++ Section("FieldRow examples")

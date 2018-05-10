@@ -1,37 +1,16 @@
 //
-//  TriplePickerRow.swift
+//  TriplePickerInputRow.swift
 //  Eureka
 //
-//  Created by Mathias Claassen on 5/9/18.
+//  Created by Mathias Claassen on 5/10/18.
 //  Copyright © 2018 Xmartlabs. All rights reserved.
 //
 
 import Foundation
 
-public struct Tuple3<A: Equatable, B: Equatable, C: Equatable> {
-    let a: A
-    let b: B
-    let c: C
+open class TriplePickerInputCell<A, B, C> : PickerInputCell<Tuple3<A, B, C>> where A: Equatable, B: Equatable, C: Equatable {
 
-    public init(a: A, b: B, c: C) {
-        self.a = a
-        self.b = b
-        self.c = c
-    }
-
-}
-
-extension Tuple3: Equatable {}
-
-public func == <A: Equatable, B: Equatable, C: Equatable>(lhs: Tuple3<A, B, C>, rhs: Tuple3<A, B, C>) -> Bool {
-    return lhs.a == rhs.a && lhs.b == rhs.b && lhs.c == rhs.c
-}
-
-// MARK: MultiplePickerCell
-
-open class TriplePickerCell<A, B, C> : PickerCell<Tuple3<A, B, C>> where A: Equatable, B: Equatable, C: Equatable {
-
-    private var pickerRow: _TriplePickerRow<A, B, C>! { return row as? _TriplePickerRow<A, B, C> }
+    private var pickerRow: _TriplePickerInputRow<A, B, C>! { return row as? _TriplePickerInputRow<A, B, C> }
 
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -112,6 +91,7 @@ open class TriplePickerCell<A, B, C> : PickerCell<Tuple3<A, B, C>> where A: Equa
                 if pickerRow.thirdOptions(a, b).contains(value.c) {
                     pickerRow.value = Tuple3(a: a, b: b, c: value.c)
                     pickerView.reloadComponent(2)
+                    update()
                     return
                 } else {
                     pickerRow.value = Tuple3(a: a, b: b, c: pickerRow.thirdOptions(a, b)[0])
@@ -126,13 +106,13 @@ open class TriplePickerCell<A, B, C> : PickerCell<Tuple3<A, B, C>> where A: Equa
             let b = pickerRow.selectedSecond()
             pickerRow.value = Tuple3(a: a, b: b, c: pickerRow.thirdOptions(a, b)[row])
         }
+        update()
     }
-
 }
 
-// MARK: PickerRow
-open class _TriplePickerRow<A, B, C> : Row<TriplePickerCell<A, B, C>> where A: Equatable, B: Equatable, C: Equatable {
+open class _TriplePickerInputRow<A: Equatable, B: Equatable, C: Equatable> : Row<TriplePickerInputCell<A, B, C>>, NoValueDisplayTextConformance {
 
+    open var noValueDisplayText: String? = nil
     /// Options for first component. Will be called often so should be O(1)
     public var firstOptions: (() -> [A]) = {[]}
     /// Options for second component given the selected value from the first component. Will be called often so should be O(1)
@@ -154,11 +134,16 @@ open class _TriplePickerRow<A, B, C> : Row<TriplePickerCell<A, B, C>> where A: E
 
 }
 
-/// A generic row where the user can pick an option from a picker view
-public final class TriplePickerRow<A, B, C>: _TriplePickerRow<A, B, C>, RowType where A: Equatable, B: Equatable, C: Equatable {
+/// A generic row where the user can pick an option from a picker view displayed in the keyboard area
+public final class TriplePickerInputRow<A, B, C>: _TriplePickerInputRow<A, B, C>, RowType where A: Equatable, B: Equatable, C: Equatable {
 
     required public init(tag: String?) {
         super.init(tag: tag)
+        self.displayValueFor = { [weak self] tuple in
+            if let tuple = tuple {
+                return String(describing: tuple.a) + ", " + String(describing: tuple.b) + ", " + String(describing: tuple.c)
+            }
+            return self?.noValueDisplayText
+        }
     }
-
 }

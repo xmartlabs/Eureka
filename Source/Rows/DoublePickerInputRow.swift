@@ -1,35 +1,16 @@
 //
-//  MultiplePickerRow.swift
+//  DoublePickerInputRow.swift
 //  Eureka
 //
-//  Created by Mathias Claassen on 5/8/18.
+//  Created by Mathias Claassen on 5/10/18.
 //  Copyright © 2018 Xmartlabs. All rights reserved.
 //
 
 import Foundation
 
-public struct Tuple<A: Equatable, B: Equatable> {
-    let a: A
-    let b: B
+open class DoublePickerInputCell<A, B> : PickerInputCell<Tuple<A, B>> where A: Equatable, B: Equatable {
 
-    public init(a: A, b: B) {
-        self.a = a
-        self.b = b
-    }
-
-}
-
-extension Tuple: Equatable {}
-
-public func == <A: Equatable, B: Equatable>(lhs: Tuple<A, B>, rhs: Tuple<A, B>) -> Bool {
-    return lhs.a == rhs.a && lhs.b == rhs.b
-}
-
-// MARK: MultiplePickerCell
-
-open class DoublePickerCell<A, B> : PickerCell<Tuple<A, B>> where A: Equatable, B: Equatable {
-
-    private var pickerRow: _DoublePickerRow<A, B>! { return row as? _DoublePickerRow<A, B> }
+    private var pickerRow: _DoublePickerInputRow<A, B>! { return row as? _DoublePickerInputRow<A, B> }
 
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -73,6 +54,7 @@ open class DoublePickerCell<A, B> : PickerCell<Tuple<A, B>> where A: Equatable, 
                 if pickerRow.secondOptions(a).contains(value.b) {
                     pickerRow.value = Tuple(a: a, b: value.b)
                     pickerView.reloadComponent(1)
+                    update()
                     return
                 } else {
                     pickerRow.value = Tuple(a: a, b: pickerRow.secondOptions(a)[0])
@@ -86,18 +68,18 @@ open class DoublePickerCell<A, B> : PickerCell<Tuple<A, B>> where A: Equatable, 
             let a = pickerRow.selectedFirst()
             pickerRow.value = Tuple(a: a, b: pickerRow.secondOptions(a)[row])
         }
+        update()
     }
-
 }
 
-// MARK: PickerRow
-open class _DoublePickerRow<A, B> : Row<DoublePickerCell<A, B>> where A: Equatable, B: Equatable {
+open class _DoublePickerInputRow<A: Equatable, B: Equatable> : Row<DoublePickerInputCell<A, B>>, NoValueDisplayTextConformance {
 
+    open var noValueDisplayText: String? = nil
     /// Options for first component. Will be called often so should be O(1)
     public var firstOptions: (() -> [A]) = {[]}
     /// Options for second component given the selected value from the first component. Will be called often so should be O(1)
     public var secondOptions: ((A) -> [B]) = {_ in []}
-
+    
     required public init(tag: String?) {
         super.init(tag: tag)
     }
@@ -108,11 +90,16 @@ open class _DoublePickerRow<A, B> : Row<DoublePickerCell<A, B>> where A: Equatab
 
 }
 
-/// A generic row where the user can pick an option from a picker view
-public final class DoublePickerRow<A, B>: _DoublePickerRow<A, B>, RowType where A: Equatable, B: Equatable {
+/// A generic row where the user can pick an option from a picker view displayed in the keyboard area
+public final class DoublePickerInputRow<A, B>: _DoublePickerInputRow<A, B>, RowType where A: Equatable, B: Equatable {
 
     required public init(tag: String?) {
         super.init(tag: tag)
+        self.displayValueFor = { [weak self] tuple in
+            if let tuple = tuple {
+                return String(describing: tuple.a) + ", " + String(describing: tuple.b)
+            }
+            return self?.noValueDisplayText
+        }
     }
-
 }
