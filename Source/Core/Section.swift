@@ -44,7 +44,7 @@ extension Section : Hidable, SectionDelegate {}
 extension Section {
 
     public func reload(with rowAnimation: UITableViewRowAnimation = .none) {
-        guard let tableView = (form?.delegate as? FormViewController)?.tableView, let index = index else { return }
+        guard let tableView = (form?.delegate as? FormViewController)?.tableView, let index = index, index < tableView.numberOfSections else { return }
         tableView.reloadSections(IndexSet(integer: index), with: rowAnimation)
     }
 }
@@ -154,6 +154,12 @@ open class Section {
 
     public required init() {}
 
+    #if swift(>=4.1)
+    public required init<S>(_ elements: S) where S: Sequence, S.Element == BaseRow {
+        self.append(contentsOf: elements)
+    }
+    #endif
+
     public init(_ initializer: (Section) -> Void) {
         initializer(self)
     }
@@ -193,7 +199,7 @@ open class Section {
 
     // MARK: Private
     lazy var kvoWrapper: KVOWrapper = { [unowned self] in return KVOWrapper(section: self) }()
-    
+
     var headerView: UIView?
     var footerView: UIView?
     var hiddenCache = false
@@ -233,10 +239,8 @@ extension Section: MutableCollection, BidirectionalCollection {
     }
 
     public subscript (range: Range<Int>) -> ArraySlice<BaseRow> {
-        get { return kvoWrapper.rows.map({ $0 as! BaseRow })[range] }
-        set {
-            replaceSubrange(range, with: newValue)
-        }
+        get { return kvoWrapper.rows.map { $0 as! BaseRow }[range] }
+        set { replaceSubrange(range, with: newValue) }
     }
 
     public func index(after i: Int) -> Int { return i + 1 }
@@ -452,17 +456,24 @@ open class MultivaluedSection: Section {
         self.multivaluedOptions = multivaluedOptions
         super.init(header: header, footer: footer, {section in initializer(section as! MultivaluedSection) })
         guard multivaluedOptions.contains(.Insert) else { return }
-        let addRow = addButtonProvider(self)
-        addRow.onCellSelection { cell, row in
-            guard let tableView = cell.formViewController()?.tableView, let indexPath = row.indexPath else { return }
-            cell.formViewController()?.tableView(tableView, commit: .insert, forRowAt: indexPath)
-        }
-        self <<< addRow
+        initialize()
     }
 
     public required init() {
         self.multivaluedOptions = MultivaluedOptions.Insert.union(.Delete)
         super.init()
+        initialize()
+    }
+
+    #if swift(>=4.1)
+    public required init<S>(_ elements: S) where S : Sequence, S.Element == BaseRow {
+        self.multivaluedOptions = MultivaluedOptions.Insert.union(.Delete)
+        super.init(elements)
+        initialize()
+    }
+    #endif
+
+    func initialize() {
         let addRow = addButtonProvider(self)
         addRow.onCellSelection { cell, row in
             guard let tableView = cell.formViewController()?.tableView, let indexPath = row.indexPath else { return }
@@ -470,7 +481,6 @@ open class MultivaluedSection: Section {
         }
         self <<< addRow
     }
-
     /**
      Method used to get all the values of the section.
 

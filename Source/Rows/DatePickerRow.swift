@@ -74,6 +74,13 @@ open class DatePickerCell: Cell<Date>, CellType {
 
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         row?.value = sender.date
+        
+        // workaround for UIDatePicker bug when it doesn't trigger "value changed" event after trying to pick 00:00 value
+        // for details see this comment: https://stackoverflow.com/questions/20181980/uidatepicker-bug-uicontroleventvaluechanged-after-hitting-minimum-internal#comment56681891_20204225
+        if sender.datePickerMode == .countDownTimer && sender.countDownDuration == TimeInterval(sender.minuteInterval * 60) {
+            datePicker.countDownDuration = sender.countDownDuration
+        }
+        
     }
 
     private func datePickerMode() -> UIDatePickerMode {
