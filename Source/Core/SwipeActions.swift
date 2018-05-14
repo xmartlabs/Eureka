@@ -45,9 +45,12 @@ public class SwipeAction: ContextualAction {
 				}
             }
         }
-        action.backgroundColor = self.backgroundColor ?? action.backgroundColor
-        action.image = self.image ?? action.image
-        
+        if let color = self.backgroundColor {
+            action.backgroundColor = color
+        }
+        if let image = self.image {
+            action.image = image
+        }
         return action
     }
 	

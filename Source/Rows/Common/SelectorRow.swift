@@ -79,7 +79,7 @@ open class SelectorRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where
      */
     open override func prepare(for segue: UIStoryboardSegue) {
         super.prepare(for: segue)
-        guard let rowVC = segue.destination as? PresenterRow else { return }
+        guard let rowVC = segue.destination as Any as? PresenterRow else { return }
         rowVC.title = selectorTitle ?? rowVC.title
         rowVC.onDismissCallback = presentationMode?.onDismissCallback ?? rowVC.onDismissCallback
         onPresentCallback?(cell.formViewController()!, rowVC)
