@@ -32,7 +32,7 @@ public protocol FormDelegate : class {
     func rowsHaveBeenAdded(_ rows: [BaseRow], at: [IndexPath])
     func rowsHaveBeenRemoved(_ rows: [BaseRow], at: [IndexPath])
     func rowsHaveBeenReplaced(oldRows: [BaseRow], newRows: [BaseRow], at: [IndexPath])
-    func valueHasBeenChanged(for: BaseRow, oldValue: Any?, newValue: Any?)
+    func valueHasBeenChanged(for row: BaseRow, oldValue: Any?, newValue: Any?)
 }
 
 // MARK: Form

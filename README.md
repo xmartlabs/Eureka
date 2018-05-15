@@ -718,9 +718,14 @@ To create a custom Presenter row you must create a class that conforms the `Pres
 The PresenterRowType protocol is defined as follows:
 ```swift
 public protocol PresenterRowType: TypedRowType {
-    typealias ProviderType : UIViewController, TypedRowControllerType
-    var presentationMode: PresentationMode<ProviderType>? { get set }
-    var onPresentCallback: ((FormViewController, ProviderType)->())? { get set }
+
+     associatedtype PresentedControllerType : UIViewController, TypedRowControllerType
+
+     /// Defines how the view controller will be presented, pushed, etc.
+     var presentationMode: PresentationMode<PresentedControllerType>? { get set }
+
+     /// Will be called before the presentation occurs.
+     var onPresentCallback: ((FormViewController, PresentedControllerType) -> Void)? { get set }
 }
 ```
 
@@ -728,8 +733,57 @@ The onPresentCallback will be called when the row is about to present another vi
 
 The `presentationMode` is what defines how the controller is presented and which controller is presented. This presentation can be using a Segue identifier, a segue class, presenting a controller modally or pushing to a specific view controller. For example a CustomPushRow can be defined like this:
 
+
+Let's see an example..
+
 ```swift
-public final class CustomPushRow<T: Equatable>: SelectorRow<PushSelectorCell<T>, SelectorViewController<T>>, RowType {
+
+/// Generic row type where a user must select a value among several options.
+open class SelectorRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
+
+
+    /// Defines how the view controller will be presented, pushed, etc.
+    open var presentationMode: PresentationMode<SelectorViewController<SelectorRow<Cell>>>?
+
+    /// Will be called before the presentation occurs.
+    open var onPresentCallback: ((FormViewController, SelectorViewController<SelectorRow<Cell>>) -> Void)?
+
+    required public init(tag: String?) {
+        super.init(tag: tag)
+    }
+
+    /**
+     Extends `didSelect` method
+     */
+    open override func customDidSelect() {
+        super.customDidSelect()
+        guard let presentationMode = presentationMode, !isDisabled else { return }
+        if let controller = presentationMode.makeController() {
+            controller.row = self
+            controller.title = selectorTitle ?? controller.title
+            onPresentCallback?(cell.formViewController()!, controller)
+            presentationMode.present(controller, row: self, presentingController: self.cell.formViewController()!)
+        } else {
+            presentationMode.present(nil, row: self, presentingController: self.cell.formViewController()!)
+        }
+    }
+
+    /**
+     Prepares the pushed row setting its title and completion callback.
+     */
+    open override func prepare(for segue: UIStoryboardSegue) {
+        super.prepare(for: segue)
+        guard let rowVC = segue.destination as Any as? SelectorViewController<SelectorRow<Cell>> else { return }
+        rowVC.title = selectorTitle ?? rowVC.title
+        rowVC.onDismissCallback = presentationMode?.onDismissCallback ?? rowVC.onDismissCallback
+        onPresentCallback?(cell.formViewController()!, rowVC)
+        rowVC.row = self
+    }
+}
+
+
+// SelectorRow conforms to PresenterRowType
+public final class CustomPushRow<T: Equatable>: SelectorRow<PushSelectorCell<T>>, RowType {
 
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -742,7 +796,6 @@ public final class CustomPushRow<T: Equatable>: SelectorRow<PushSelectorCell<T>,
 }
 ```
 
-You can place your own UIViewController instead of `SelectorViewController<T>` and your own cell instead of `PushSelectorCell<T>`.
 
 ### Subclassing cells using the same row
 
