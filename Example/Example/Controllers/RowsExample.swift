@@ -34,7 +34,6 @@ class RowsExampleViewController: FormViewController {
                     row.reload() // or row.updateCell()
             }
 
-
             <<< DateRow() { $0.value = Date(); $0.title = "DateRow" }
 
             <<< CheckRow() {
@@ -268,6 +267,18 @@ class RowsExampleViewController: FormViewController {
                     $0.options.append("option \(i)")
                 }
                 $0.value = $0.options.first
+            }
+            
+            <<< DoublePickerInlineRow<String, Int>() {
+                $0.title = "2 Component picker"
+                $0.firstOptions = { return ["a", "b", "c"]}
+                $0.secondOptions = { _ in return [1, 2, 3]}
+            }
+            <<< TriplePickerInputRow<String, String, Int>() {
+                $0.firstOptions = { return ["a", "b", "c"]}
+                $0.secondOptions = { return [$0, $0 + $0, $0 + "-" + $0, "asd"]}
+                $0.thirdOptions = { _,_ in return [1, 2, 3]}
+                $0.title = "3 Component picker"
             }
 
             +++ Section("FieldRow examples")
