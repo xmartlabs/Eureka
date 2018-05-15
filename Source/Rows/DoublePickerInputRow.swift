@@ -8,7 +8,7 @@
 
 import Foundation
 
-open class DoublePickerInputCell<A, B> : PickerInputCell<Tuple<A, B>> where A: Equatable, B: Equatable {
+open class DoublePickerInputCell<A, B> : _PickerInputCell<Tuple<A, B>> where A: Equatable, B: Equatable {
 
     private var pickerRow: _DoublePickerInputRow<A, B>! { return row as? _DoublePickerInputRow<A, B> }
 
@@ -20,7 +20,8 @@ open class DoublePickerInputCell<A, B> : PickerInputCell<Tuple<A, B>> where A: E
         super.init(coder: aDecoder)
     }
 
-    open override func selectValue() {
+    open override func update() {
+        super.update()
         if let selectedValue = pickerRow.value, let indexA = pickerRow.firstOptions().index(of: selectedValue.a),
             let indexB = pickerRow.secondOptions(selectedValue.a).index(of: selectedValue.b) {
             picker.selectRow(indexA, inComponent: 0, animated: true)
@@ -48,7 +49,7 @@ open class DoublePickerInputCell<A, B> : PickerInputCell<Tuple<A, B>> where A: E
         if component == 0 {
             let a = pickerRow.firstOptions()[row]
             if let value = pickerRow.value {
-                if value.a == a {
+                guard value.a != a else {
                     return
                 }
                 if pickerRow.secondOptions(a).contains(value.b) {
@@ -96,10 +97,10 @@ public final class DoublePickerInputRow<A, B>: _DoublePickerInputRow<A, B>, RowT
     required public init(tag: String?) {
         super.init(tag: tag)
         self.displayValueFor = { [weak self] tuple in
-            if let tuple = tuple {
-                return String(describing: tuple.a) + ", " + String(describing: tuple.b)
+            guard let tuple = tuple else {
+                return self?.noValueDisplayText
             }
-            return self?.noValueDisplayText
+            return String(describing: tuple.a) + ", " + String(describing: tuple.b)
         }
     }
 }

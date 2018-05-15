@@ -27,7 +27,7 @@ public func == <A: Equatable, B: Equatable>(lhs: Tuple<A, B>, rhs: Tuple<A, B>) 
 
 // MARK: MultiplePickerCell
 
-open class DoublePickerCell<A, B> : PickerCell<Tuple<A, B>> where A: Equatable, B: Equatable {
+open class DoublePickerCell<A, B> : _PickerCell<Tuple<A, B>> where A: Equatable, B: Equatable {
 
     private var pickerRow: _DoublePickerRow<A, B>! { return row as? _DoublePickerRow<A, B> }
 
@@ -39,7 +39,8 @@ open class DoublePickerCell<A, B> : PickerCell<Tuple<A, B>> where A: Equatable, 
         super.init(coder: aDecoder)
     }
 
-    open override func selectValue() {
+    open override func update() {
+        super.update()
         if let selectedValue = pickerRow.value, let indexA = pickerRow.firstOptions().index(of: selectedValue.a),
             let indexB = pickerRow.secondOptions(selectedValue.a).index(of: selectedValue.b) {
             picker.selectRow(indexA, inComponent: 0, animated: true)
@@ -67,7 +68,7 @@ open class DoublePickerCell<A, B> : PickerCell<Tuple<A, B>> where A: Equatable, 
         if component == 0 {
             let a = pickerRow.firstOptions()[row]
             if let value = pickerRow.value {
-                if value.a == a {
+                guard value.a != a else {
                     return
                 }
                 if pickerRow.secondOptions(a).contains(value.b) {

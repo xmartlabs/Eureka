@@ -29,7 +29,7 @@ public func == <A: Equatable, B: Equatable, C: Equatable>(lhs: Tuple3<A, B, C>, 
 
 // MARK: MultiplePickerCell
 
-open class TriplePickerCell<A, B, C> : PickerCell<Tuple3<A, B, C>> where A: Equatable, B: Equatable, C: Equatable {
+open class TriplePickerCell<A, B, C> : _PickerCell<Tuple3<A, B, C>> where A: Equatable, B: Equatable, C: Equatable {
 
     private var pickerRow: _TriplePickerRow<A, B, C>! { return row as? _TriplePickerRow<A, B, C> }
 
@@ -41,10 +41,11 @@ open class TriplePickerCell<A, B, C> : PickerCell<Tuple3<A, B, C>> where A: Equa
         super.init(coder: aDecoder)
     }
 
-    open override func selectValue() {
+    open override func update() {
+        super.update()
         if let selectedValue = pickerRow.value, let indexA = pickerRow.firstOptions().index(of: selectedValue.a),
             let indexB = pickerRow.secondOptions(selectedValue.a).index(of: selectedValue.b),
-            let indexC = pickerRow.thirdOptions(selectedValue.a, selectedValue.b).index(of: selectedValue.c){
+            let indexC = pickerRow.thirdOptions(selectedValue.a, selectedValue.b).index(of: selectedValue.c) {
             picker.selectRow(indexA, inComponent: 0, animated: true)
             picker.selectRow(indexB, inComponent: 1, animated: true)
             picker.selectRow(indexC, inComponent: 2, animated: true)
@@ -79,7 +80,7 @@ open class TriplePickerCell<A, B, C> : PickerCell<Tuple3<A, B, C>> where A: Equa
         if component == 0 {
             let a = pickerRow.firstOptions()[row]
             if let value = pickerRow.value {
-                if value.a == a {
+                guard value.a != a else {
                     return
                 }
 
@@ -106,7 +107,7 @@ open class TriplePickerCell<A, B, C> : PickerCell<Tuple3<A, B, C>> where A: Equa
             let a = pickerRow.selectedFirst()
             let b = pickerRow.secondOptions(a)[row]
             if let value = pickerRow.value {
-                if value.b == b {
+                guard value.b != b else {
                     return
                 }
                 if pickerRow.thirdOptions(a, b).contains(value.c) {

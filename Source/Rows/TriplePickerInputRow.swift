@@ -8,7 +8,7 @@
 
 import Foundation
 
-open class TriplePickerInputCell<A, B, C> : PickerInputCell<Tuple3<A, B, C>> where A: Equatable, B: Equatable, C: Equatable {
+open class TriplePickerInputCell<A, B, C> : _PickerInputCell<Tuple3<A, B, C>> where A: Equatable, B: Equatable, C: Equatable {
 
     private var pickerRow: _TriplePickerInputRow<A, B, C>! { return row as? _TriplePickerInputRow<A, B, C> }
 
@@ -20,7 +20,8 @@ open class TriplePickerInputCell<A, B, C> : PickerInputCell<Tuple3<A, B, C>> whe
         super.init(coder: aDecoder)
     }
 
-    open override func selectValue() {
+    open override func update() {
+        super.update()
         if let selectedValue = pickerRow.value, let indexA = pickerRow.firstOptions().index(of: selectedValue.a),
             let indexB = pickerRow.secondOptions(selectedValue.a).index(of: selectedValue.b),
             let indexC = pickerRow.thirdOptions(selectedValue.a, selectedValue.b).index(of: selectedValue.c){
@@ -58,7 +59,7 @@ open class TriplePickerInputCell<A, B, C> : PickerInputCell<Tuple3<A, B, C>> whe
         if component == 0 {
             let a = pickerRow.firstOptions()[row]
             if let value = pickerRow.value {
-                if value.a == a {
+                guard value.a != a else {
                     return
                 }
 
@@ -85,7 +86,7 @@ open class TriplePickerInputCell<A, B, C> : PickerInputCell<Tuple3<A, B, C>> whe
             let a = pickerRow.selectedFirst()
             let b = pickerRow.secondOptions(a)[row]
             if let value = pickerRow.value {
-                if value.b == b {
+                guard value.b != b else {
                     return
                 }
                 if pickerRow.thirdOptions(a, b).contains(value.c) {
@@ -140,10 +141,10 @@ public final class TriplePickerInputRow<A, B, C>: _TriplePickerInputRow<A, B, C>
     required public init(tag: String?) {
         super.init(tag: tag)
         self.displayValueFor = { [weak self] tuple in
-            if let tuple = tuple {
-                return String(describing: tuple.a) + ", " + String(describing: tuple.b) + ", " + String(describing: tuple.c)
+            guard let tuple = tuple else {
+                return self?.noValueDisplayText
             }
-            return self?.noValueDisplayText
+            return String(describing: tuple.a) + ", " + String(describing: tuple.b) + ", " + String(describing: tuple.c)
         }
     }
 }
