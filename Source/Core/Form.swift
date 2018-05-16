@@ -386,4 +386,9 @@ extension Form {
             return res
         }
     }
+    
+    public func cleanValidationErrors(){
+        allRows.forEach { $0.cleanValidationErrors() }
+    }
 }
+
