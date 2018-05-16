@@ -151,7 +151,7 @@ open class BaseRow: BaseRowType {
 }
 
 extension BaseRow {
-    // Clear validation Errors
+    // Reset validation
     public func cleanValidationErrors(){
         validationErrors = []
     }
