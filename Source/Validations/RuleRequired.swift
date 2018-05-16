@@ -26,8 +26,9 @@ import Foundation
 
 public struct RuleRequired<T: Equatable>: RuleType {
 
-    public init(msg: String = "Field required!") {
+    public init(msg: String = "Field required!", id: String? = nil) {
         self.validationError = ValidationError(msg: msg)
+        self.id = id
     }
 
     public var id: String?
