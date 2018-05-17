@@ -9,8 +9,9 @@
 import Foundation
 
 public struct Tuple<A: Equatable, B: Equatable> {
-    let a: A
-    let b: B
+    
+    public let a: A
+    public let b: B
 
     public init(a: A, b: B) {
         self.a = a

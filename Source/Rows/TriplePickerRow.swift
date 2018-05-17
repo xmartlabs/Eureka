@@ -9,9 +9,9 @@
 import Foundation
 
 public struct Tuple3<A: Equatable, B: Equatable, C: Equatable> {
-    let a: A
-    let b: B
-    let c: C
+    public let a: A
+    public let b: B
+    public let c: C
 
     public init(a: A, b: B, c: C) {
         self.a = a
