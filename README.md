@@ -1070,6 +1070,19 @@ If you use **Eureka** in your app We would love to hear about it! Drop us a line
 
 ## FAQ
 
+#### How to change the text representation of the row value shown in the  cell.
+
+Every row has the following property:
+
+```swift
+/// Block variable used to get the String that should be displayed for the value of this row.
+public var displayValueFor: ((T?) -> String?)? = {
+    return $0.map { String(describing: $0) }
+}
+```
+
+You can set `displayValueFor` according the string value you want to display.
+
 #### How to get a Row using its tag value
 
 We can get a particular row by invoking any of the following functions exposed by the `Form` class:
