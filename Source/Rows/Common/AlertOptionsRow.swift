@@ -1,4 +1,5 @@
-//  RegexRule.swift
+//
+//  AlertOptionsRow.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -24,37 +25,17 @@
 
 import Foundation
 
-public enum RegExprPattern: String {
-    case EmailAddress = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-+]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z‌​]{2,})$"
-    case URL = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+([/?#]\\S*)?"
-    case ContainsNumber = ".*\\d.*"
-    case ContainsCapital = "^.*?[A-Z].*?$"
-    case ContainsLowercase = "^.*?[a-z].*?$"
-}
 
-open class RuleRegExp: RuleType {
+import Foundation
 
-    public var regExpr: String = ""
-    public var id: String?
-    public var validationError: ValidationError
-    public var allowsEmpty = true
+open class AlertOptionsRow<Cell: CellType> : OptionsRow<Cell>, AlertOptionsProviderRow where Cell: BaseCell {
 
-    public init(regExpr: String, allowsEmpty: Bool = true, msg: String = "Invalid field value!") {
-        self.validationError = ValidationError(msg: msg)
-        self.regExpr = regExpr
-        self.allowsEmpty = allowsEmpty
+    typealias OptionsProviderType = OptionsProvider<Cell.Value>
+
+    open var cancelTitle: String?
+
+    required public init(tag: String?) {
+        super.init(tag: tag)
     }
 
-    public func isValid(value: String?) -> ValidationError? {
-        if let value = value, !value.isEmpty {
-            let predicate = NSPredicate(format: "SELF MATCHES %@", regExpr)
-            guard predicate.evaluate(with: value) else {
-                return validationError
-            }
-            return nil
-        } else if !allowsEmpty {
-            return validationError
-        }
-        return nil
-    }
 }
