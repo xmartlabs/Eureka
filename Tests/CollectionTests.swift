@@ -34,7 +34,7 @@ class CollectionTests: BaseEurekaTests {
         XCTAssertEqual(fieldForm[0].count, 8)                                                       // fieldform had 10 rows prior to replacing
         fieldForm[0][4] = CheckRow("check2_ctx")                                                    // replacing 5th row
         XCTAssertEqual(fieldForm[0].count, 8)
-        let rows = fieldForm[0].filter({ $0 is CheckRow })
+        let rows: [BaseRow] = fieldForm[0].filter({ $0 is CheckRow })
         XCTAssertEqual(rows.count, 2)                            // Do I have 2 CheckRows??
 
         fieldForm[0].append(contentsOf: [CheckRow("check3_ctx"), CheckRow("check4_ctx"), CheckRow("check5_ctx")])
@@ -50,7 +50,8 @@ class CollectionTests: BaseEurekaTests {
         XCTAssertEqual(manySectionsForm.count, 5)                                                                  // fieldform had 10 rows prior to replacing
         manySectionsForm[3] = Section("There is no order anyway")                                               // replacing 4th row
         XCTAssertEqual(manySectionsForm.count, 5)
-        let sections = manySectionsForm.filter({ $0.header?.title?.contains("order") ?? false})
+        let sections: [Section] = manySectionsForm.filter({ $0.header?.title?.contains("order") ?? false})
+        
         XCTAssertEqual(sections.count, 2)
 
         manySectionsForm.append(contentsOf: [Section("1"), Section("2")])

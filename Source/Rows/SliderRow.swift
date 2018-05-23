@@ -105,18 +105,17 @@ open class SliderCell: Cell<Float>, CellType {
 
     func addConstraints() {
         guard !awakeFromNibCalled else { return }
-        let views: [String : Any] = ["titleLabel": titleLabel, "valueLabel": valueLabel, "slider": slider]
-        //TODO: in Iphone 6 Plus hPadding should be 20
-        let metrics = ["hPadding": 15.0, "vPadding": 12.0, "spacing": 12.0]
-        if shouldShowTitle {
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-hPadding-[titleLabel]-[valueLabel]-hPadding-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[titleLabel]-spacing-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
 
+        let views: [String : Any] = ["titleLabel": titleLabel, "valueLabel": valueLabel, "slider": slider]
+        let metrics = ["vPadding": 12.0, "spacing": 12.0]
+        if shouldShowTitle {
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[titleLabel]-[valueLabel]-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[titleLabel]-spacing-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
         } else {
             contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
         }
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-hPadding-[slider]-hPadding-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
 
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[slider]-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
     }
 
     @objc func valueChanged() {

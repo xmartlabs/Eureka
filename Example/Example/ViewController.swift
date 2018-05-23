@@ -207,7 +207,7 @@ class RowsExampleViewController: FormViewController {
                 <<< SegmentedRow<UIImage>(){
                     let names = ["selected", "plus_image", "unselected"]
                     $0.options = names.map { UIImage(named: $0)! }
-                    $0.value = $0.options.last
+                    $0.value = $0.options?.last
                 }
 
             +++ Section("Selectors Rows Examples")
@@ -239,6 +239,9 @@ class RowsExampleViewController: FormViewController {
                         $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
                         $0.value = 👦🏼
                         $0.selectorTitle = "Choose an Emoji!"
+                    }.onPresent { from, to in
+                        to.dismissOnSelection = false
+                        to.dismissOnChange = false
                     }
 
                 <<< PushRow<Emoji>() {
@@ -247,6 +250,8 @@ class RowsExampleViewController: FormViewController {
                         $0.value = 👦🏼
                         $0.selectorTitle = "Choose an Emoji!"
                     }.onPresent { from, to in
+                        to.dismissOnSelection = false
+                        to.dismissOnChange = false
                         to.sectionKeyForValue = { option in
                             switch option {
                             case 💁🏻, 👦🏼: return "People"
@@ -271,6 +276,29 @@ class RowsExampleViewController: FormViewController {
                             completion([💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻])
                         })
                     })
+            <<< PushRow<Emoji>() {
+                $0.title = "LazySectionedPushRow"
+                $0.value = 👦🏼
+                $0.selectorTitle = "Choose a lazy Emoji!"
+                $0.optionsProvider = .lazy({ (form, completion) in
+                    let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                    form.tableView.backgroundView = activityView
+                    activityView.startAnimating()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                        form.tableView.backgroundView = nil
+                        completion([💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻])
+                    })
+                })
+            }.onPresent { from, to in
+                to.sectionKeyForValue = { option -> String in
+                    switch option {
+                    case 💁🏻, 👦🏼: return "People"
+                    case 🐗, 🐼, 🐻: return "Animals"
+                    case 🍐: return "Food"
+                    default: return ""
+                    }
+                }
+            }
         }
 
         
@@ -340,6 +368,22 @@ class RowsExampleViewController: FormViewController {
                     })
         }
         
+            <<< MultipleSelectorRow<Emoji>() {
+                $0.title = "LazyMultipleSelectorRow"
+                $0.value = [👦🏼, 🍐, 🐗]
+                $0.optionsProvider = .lazy({ (form, completion) in
+                    let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                    form.tableView.backgroundView = activityView
+                    activityView.startAnimating()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                        form.tableView.backgroundView = nil
+                        completion([💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻])
+                    })
+                })
+                }.onPresent { from, to in
+                    to.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: from, action: #selector(RowsExampleViewController.multipleSelectorDone(_:)))
+                }
+    
         form +++ Section("Generic picker")
             
                 <<< PickerRow<String>("Picker Row") { (row : PickerRow<String>) -> Void in
@@ -507,7 +551,7 @@ class FieldRowCustomizationController : FormViewController {
             
                 <<< NameRow() {
                     $0.title = "Title"
-                    $0.textFieldPercentage = 0.6
+                    $0.titlePercentage = 0.4
                     $0.placeholder = "textFieldPercentage = 0.6"
                 }
                 .cellUpdate {
@@ -516,7 +560,7 @@ class FieldRowCustomizationController : FormViewController {
                 }
                 <<< NameRow() {
                     $0.title = "Another Title"
-                    $0.textFieldPercentage = 0.6
+                    $0.titlePercentage = 0.4
                     $0.placeholder = "textFieldPercentage = 0.6"
                 }
                 .cellUpdate {
@@ -525,7 +569,7 @@ class FieldRowCustomizationController : FormViewController {
                 }
                 <<< NameRow() {
                     $0.title = "One more"
-                    $0.textFieldPercentage = 0.7
+                    $0.titlePercentage = 0.3
                     $0.placeholder = "textFieldPercentage = 0.7"
                 }
                 .cellUpdate {
@@ -1037,7 +1081,15 @@ class FormatterExample : FormViewController {
     class CurrencyFormatter : NumberFormatter, FormatterProtocol {
         override func getObjectValue(_ obj: AutoreleasingUnsafeMutablePointer<AnyObject?>?, for string: String, range rangep: UnsafeMutablePointer<NSRange>?) throws {
             guard obj != nil else { return }
-            let str = string.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
+            var str = string.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
+            if !string.isEmpty, numberStyle == .currency && !string.contains(currencySymbol) {
+                // Check if the currency symbol is at the last index
+                if let formattedNumber = self.string(from: 1), String(formattedNumber[formattedNumber.index(before: formattedNumber.endIndex)...]) == currencySymbol {
+                    // This means the user has deleted the currency symbol. We cut the last number and then add the symbol automatically
+                    str = String(str[..<str.index(before: str.endIndex)])
+                    
+                }
+            }
             obj?.pointee = NSNumber(value: (Double(str) ?? 0.0)/Double(pow(10.0, Double(minimumFractionDigits))))
         }
         
@@ -1515,6 +1567,7 @@ class MultivaluedController: FormViewController {
             MultivaluedSection(multivaluedOptions: [.Reorder, .Insert, .Delete],
                                header: "Multivalued TextField",
                                footer: ".Insert multivaluedOption adds the 'Add New Tag' button row as last cell.") {
+                $0.tag = "textfields"
                 $0.addButtonProvider = { section in
                     return ButtonRow(){
                         $0.title = "Add New Tag"
@@ -1537,6 +1590,7 @@ class MultivaluedController: FormViewController {
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete],
                                            header: "Multivalued ActionSheet Selector example",
                                            footer: ".Insert multivaluedOption adds a 'Add' button row as last cell.") {
+                $0.tag = "options"
                 $0.multivaluedRowToInsertAt = { index in
                     return ActionSheetRow<String>{
                         $0.title = "Tap to select.."
@@ -1555,6 +1609,7 @@ class MultivaluedController: FormViewController {
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete, .Reorder],
                                            header: "Multivalued Push Selector example",
                                            footer: "") {
+                $0.tag = "push"
                 $0.multivaluedRowToInsertAt = { index in
                     return PushRow<String>{
                         $0.title = "Tap to select ;)..at \(index)"
@@ -1567,6 +1622,10 @@ class MultivaluedController: FormViewController {
                 }
                                 
             }
+    }
+
+    @IBAction func save(_ sender: Any) {
+        print("\(form.values())")
     }
 }
 
