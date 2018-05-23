@@ -434,6 +434,13 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell  where T:
 	open override func layoutSubviews() {
 		super.layoutSubviews()
 		guard let row = (row as? FieldRowConformance) else { return }
+		defer {
+			// As titleLabel is the textLabel, iOS may re-layout without updating constraints, for example:
+			// swiping, showing alert or actionsheet from the same section.
+			// thus we need forcing update to use customConstraints()
+			setNeedsUpdateConstraints()
+			updateConstraintsIfNeeded()
+		}
 		guard let titlePercentage = row.titlePercentage else  { return }
 		var targetTitleWidth = bounds.size.width * titlePercentage
 		if let imageView = imageView, let _ = imageView.image, let titleLabel = titleLabel {
@@ -445,11 +452,6 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell  where T:
 			}
 			targetTitleWidth -= extraWidthToSubtract
 		}
-		let targetTitlePercentage = targetTitleWidth / contentView.bounds.size.width
-		if calculatedTitlePercentage != targetTitlePercentage {
-			calculatedTitlePercentage = targetTitlePercentage
-			setNeedsUpdateConstraints()
-			updateConstraintsIfNeeded()
-		}
+		calculatedTitlePercentage = targetTitleWidth / contentView.bounds.size.width
 	}
 }

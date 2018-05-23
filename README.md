@@ -1022,7 +1022,7 @@ For instance:
 let dateRow : DateRow? = form.rowBy(tag: "dateRowTag")
 let labelRow: LabelRow? = form.rowBy(tag: "labelRowTag")
 
-let dateRow2: Row<Date>? = form.rowBy(tag: "dateRowTag")
+let dateRow2: Row<DateCell>? = form.rowBy(tag: "dateRowTag")
 
 let labelRow2: BaseRow? = form.rowBy(tag: "labelRowTag")
 ```
@@ -1078,6 +1078,27 @@ section.header = header
 
 ```swift
 section.reload()
+```
+
+#### How to customize Selector and MultipleSelector option cells
+
+`selectableRowCellUpdate` and `selectableRowCellSetup` properties are provided to be able to customize SelectorViewController and MultipleSelectorViewController selectable cells.
+
+```swift
+let row = PushRow<Emoji>() {
+              $0.title = "PushRow"
+              $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
+              $0.value = 👦🏼
+              $0.selectorTitle = "Choose an Emoji!"
+          }.onPresent { from, to in
+              to.dismissOnSelection = false
+              to.dismissOnChange = false
+              to.selectableRowCellUpdate = { cell, row in
+                  cell.textLabel?.text = "Text " + row.selectableValue!  // customization
+                  cell.detailTextLabel?.text = "Detail " +  row.selectableValue!
+              }
+          }
+
 ```
 
 #### Don't want to use Eureka custom operators?
