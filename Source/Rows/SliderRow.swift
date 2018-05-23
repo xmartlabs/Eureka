@@ -61,7 +61,6 @@ open class SliderCell: Cell<Float>, CellType {
     open override func setup() {
         super.setup()
         if !awakeFromNibCalled {
-            // title
             let title = textLabel
             textLabel?.translatesAutoresizingMaskIntoConstraints = false
             textLabel?.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
@@ -69,7 +68,9 @@ open class SliderCell: Cell<Float>, CellType {
 
             let value = detailTextLabel
             value?.translatesAutoresizingMaskIntoConstraints = false
-            value?.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
+            value?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
+            value?.adjustsFontSizeToFitWidth = true
+            value?.minimumScaleFactor = 0.5
             self.valueLabel = value
 
             let slider = UISlider()
@@ -79,11 +80,16 @@ open class SliderCell: Cell<Float>, CellType {
 
             if shouldShowTitle {
                 contentView.addSubview(titleLabel)
-                contentView.addSubview(valueLabel!)
             }
+
+            if !sliderRow.shouldHideValue {
+              contentView.addSubview(valueLabel)
+            }
+
             contentView.addSubview(slider)
             addConstraints()
         }
+        height = { UITableViewAutomaticDimension }
         selectionStyle = .none
         slider.minimumValue = sliderRow.minimumValue
         slider.maximumValue = sliderRow.maximumValue
@@ -96,26 +102,33 @@ open class SliderCell: Cell<Float>, CellType {
     open override func update() {
         super.update()
         titleLabel.text = row.title
+        titleLabel.isHidden = !shouldShowTitle
         valueLabel.text = row.displayValueFor?(row.value)
-        valueLabel.isHidden = !shouldShowTitle && !awakeFromNibCalled
-        titleLabel.isHidden = valueLabel.isHidden
+        valueLabel.isHidden = sliderRow.shouldHideValue
         slider.value = row.value ?? 0.0
         slider.isEnabled = !row.isDisabled
     }
 
     func addConstraints() {
-        guard !awakeFromNibCalled else { return }
+        let views: [String : Any] = ["titleLabel": titleLabel, "slider": slider, "valueLabel": valueLabel]
+        let metrics = ["spacing": 15.0, "valueLabelWidth": 40.0]
 
-        let views: [String : Any] = ["titleLabel": titleLabel, "valueLabel": valueLabel, "slider": slider]
-        let metrics = ["vPadding": 12.0, "spacing": 12.0]
-        if shouldShowTitle {
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[titleLabel]-[valueLabel]-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[titleLabel]-spacing-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
-        } else {
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
-        }
+        let title = shouldShowTitle ? "[titleLabel]-spacing-" : ""
+        let value = !sliderRow.shouldHideValue ? "-[valueLabel(valueLabelWidth)]" : ""
 
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[slider]-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
+        let hContraints = NSLayoutConstraint.constraints(
+            withVisualFormat: "H:|-\(title)[slider]\(value)-|",
+            options: .alignAllCenterY,
+            metrics: metrics,
+            views: views)
+
+        let vContraints = NSLayoutConstraint.constraints(
+            withVisualFormat: "V:|-[slider]-|",
+            options: .alignAllCenterX,
+            metrics: metrics,
+            views: views)
+
+        contentView.addConstraints(hContraints + vContraints)
     }
 
     @objc func valueChanged() {
@@ -161,6 +174,7 @@ public final class SliderRow: Row<SliderCell>, RowType {
     public var minimumValue: Float = 0.0
     public var maximumValue: Float = 10.0
     public var steps: UInt = 20
+    public var shouldHideValue = false
 
     required public init(tag: String?) {
         super.init(tag: tag)
