@@ -95,10 +95,10 @@ open class FieldRow<Cell: CellType>: FormatteableRow<Cell>, FieldRowConformance,
 			titlePercentage = newValue.map { 1 - $0 }
 		}
 	}
-	
+
 	/// The percentage of the cell that should be occupied by the title (i.e. the titleLabel and optional imageView combined)
 	open var titlePercentage: CGFloat?
-	
+
     /// The placeholder for the textField
     open var placeholder: String?
 
@@ -163,9 +163,9 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell  where T:
     private var awakeFromNibCalled = false
 
     open var dynamicConstraints = [NSLayoutConstraint]()
-	
+
 	private var calculatedTitlePercentage: CGFloat = 0.7
-	
+
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         let textField = UITextField()
         self.textField = textField
@@ -430,7 +430,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell  where T:
     open func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         return formViewController()?.textInputShouldEndEditing(textField, cell: self) ?? true
 	}
-	
+
 	open override func layoutSubviews() {
 		super.layoutSubviews()
 		guard let row = (row as? FieldRowConformance) else { return }
