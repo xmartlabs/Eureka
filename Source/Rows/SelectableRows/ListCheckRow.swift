@@ -45,13 +45,11 @@ open class ListCheckCell<T: Equatable> : Cell<T>, CellType {
         }
         editingAccessoryType = accessoryType
         selectionStyle = .default
-        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
-        tintColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         if row.isDisabled {
-            tintColor = UIColor(red: red, green: green, blue: blue, alpha: 0.3)
+            tintAdjustmentMode = .dimmed
             selectionStyle = .none
         } else {
-            tintColor = UIColor(red: red, green: green, blue: blue, alpha: 1)
+            tintAdjustmentMode = .automatic
         }
     }
 

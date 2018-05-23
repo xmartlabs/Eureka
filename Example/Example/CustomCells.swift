@@ -790,3 +790,5 @@ public class ImageCheckCell<T: Equatable> : Cell<T>, CellType {
     }
 
 }
+
+class EmojiCell: ListCheckCell<Emoji> {}

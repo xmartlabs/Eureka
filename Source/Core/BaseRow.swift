@@ -128,6 +128,11 @@ open class BaseRow: BaseRowType {
     open func prepare(for segue: UIStoryboardSegue) {}
 
     /**
+     Helps to pick destination part of the cell after scrolling
+     */
+    open var destinationScrollPosition: UITableViewScrollPosition = .bottom
+
+    /**
      Returns the IndexPath where this row is in the current form.
      */
     public final var indexPath: IndexPath? {

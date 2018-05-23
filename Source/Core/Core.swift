@@ -1087,10 +1087,10 @@ extension FormViewControllerProtocol {
 
     // MARK: Helpers
 
-    func makeRowVisible(_ row: BaseRow) {
+    func makeRowVisible(_ row: BaseRow, destinationScrollPosition: UITableViewScrollPosition) {
         guard let cell = row.baseCell, let indexPath = row.indexPath, let tableView = tableView else { return }
         if cell.window == nil || (tableView.contentOffset.y + tableView.frame.size.height <= cell.frame.origin.y + cell.frame.size.height) {
-            tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            tableView.scrollToRow(at: indexPath, at: destinationScrollPosition, animated: true)
         }
     }
 }

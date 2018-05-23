@@ -30,9 +30,10 @@ open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: O
     /// The row that pushed or presented this controller
     public var row: RowOf<Set<OptionsRow.OptionsProviderType.Option>>!
 
+    public var selectableRowSetup: ((_ row: Row) -> Void)?
     public var selectableRowCellSetup: ((_ cell: Row.Cell, _ row: Row) -> Void)?
     public var selectableRowCellUpdate: ((_ cell: Row.Cell, _ row: Row) -> Void)?
-
+    
     /// A closure to be called when the controller disappears.
     public var onDismissCallback: ((UIViewController) -> Void)?
 
@@ -142,6 +143,7 @@ open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: O
                 lrow.title = String(describing: option)
                 lrow.selectableValue = option
                 lrow.value = self.row.value?.contains(option) ?? false ? option : nil
+                self.selectableRowSetup?(lrow)
             }.cellSetup { [weak self] cell, row in
                 self?.selectableRowCellSetup?(cell, row)
             }.cellUpdate { [weak self] cell, row in

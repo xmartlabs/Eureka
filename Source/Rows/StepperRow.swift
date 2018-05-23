@@ -44,7 +44,6 @@ open class StepperCell: Cell<Double>, CellType {
         selectionStyle = .none
 
         stepper.addTarget(self, action: #selector(StepperCell.valueChanged), for: .valueChanged)
-        valueLabel?.textColor = stepper.tintColor
         
         isAccessibilityElement = true
         accessibilityTraits = UIAccessibilityTraitAdjustable
@@ -59,6 +58,7 @@ open class StepperCell: Cell<Double>, CellType {
         stepper.isEnabled = !row.isDisabled
         stepper.value = row.value ?? 0
         stepper.alpha = row.isDisabled ? 0.3 : 1.0
+        valueLabel?.textColor = tintColor
         valueLabel?.alpha = row.isDisabled ? 0.3 : 1.0
         valueLabel?.text = row.displayValueFor?(row.value)
         detailTextLabel?.text = nil
