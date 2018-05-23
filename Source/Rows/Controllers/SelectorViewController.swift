@@ -170,8 +170,8 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
         }
     }
     
-        open func setupForm(with options: [Row.Cell.Value]) {
-            if let optionsBySections = optionsBySections(with: options) {
+    open func setupForm(with options: [Row.Cell.Value]) {
+        if let optionsBySections = optionsBySections(with: options) {
             for (sectionKey, options) in optionsBySections {
                 let header: HeaderFooterViewRepresentable?
                 if let sectionHeader = sectionHeader {
