@@ -144,14 +144,14 @@ class SelectableSectionTests: XCTestCase {
             }
         }
         selectorViewController.sectionHeaderTitleForKey = { key in
-            switch Hemisphere(rawValue: Int(key)!)! {
+            switch Hemisphere(rawValue: Int(key as! String)!)! {
             case .west: return "West hemisphere"
             case .east: return "East hemisphere"
             case .none: return ""
             }
         }
         selectorViewController.sectionFooterTitleForKey = { key in
-            switch Hemisphere(rawValue: Int(key)!)! {
+            switch Hemisphere(rawValue: Int(key as! String)!)! {
             case .west: return "West hemisphere"
             case .east: return "East hemisphere"
             case .none: return ""
@@ -176,40 +176,11 @@ class SelectableSectionTests: XCTestCase {
         XCTAssertEqual(form[1].footer?.title, "East hemisphere")
         XCTAssertEqual(form[2].footer?.title, "")
 
-        XCTAssertEqual(form[0].compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Africa", "Asia", "Australia", "Europe"])
-        XCTAssertEqual(form[1].compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["North America", "South America"])
-        XCTAssertEqual(form[2].compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Antarctica"])
+        XCTAssertEqual(form[0].kvoWrapper._allRows.compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Africa", "Asia", "Australia", "Europe"])
+        XCTAssertEqual(form[1].kvoWrapper._allRows.compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["North America", "South America"])
+        XCTAssertEqual(form[2].kvoWrapper._allRows.compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Antarctica"])
     }
 
-    func testLazyOptionsProvider() {
-        let selectorViewController = SelectorViewController<String>(nibName: nil, bundle: nil)
-        let row = PushRow<String>()
-        selectorViewController.row = row
-        let options = ["Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America"]
-        
-        let optionsFetched = expectation(description: "Fetched options")
-        selectorViewController.optionsProvider = .lazy({ form, completion in
-            DispatchQueue.main.async {
-                completion(options)
-                optionsFetched.fulfill()
-            }
-        })
-
-        let form = selectorViewController.form
-        
-        XCTAssertEqual(form.count, 0)
-
-        selectorViewController.view.frame = CGRect(x: 0, y: 0, width: 375, height: 3000)
-        selectorViewController.tableView?.frame = selectorViewController.view.frame
-        
-        waitForExpectations(timeout: 1, handler: nil)
-        
-        XCTAssertEqual(row.options, options)
-        XCTAssertEqual(form.count, 1)
-        XCTAssertEqual(form[0].count, options.count)
-        XCTAssertEqual(form[0].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), options)
-    }
-    
     func testLazyOptionsProvider() {
         let selectorViewController = SelectorViewController<PushRow<String>>(nibName: nil, bundle: nil)
         let row = PushRow<String>()
