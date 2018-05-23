@@ -64,17 +64,17 @@ open class SliderCell: Cell<Float>, CellType {
             // title
             let title = textLabel
             textLabel?.translatesAutoresizingMaskIntoConstraints = false
-            textLabel?.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
+            textLabel?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
             self.titleLabel = title
 
             let value = detailTextLabel
             value?.translatesAutoresizingMaskIntoConstraints = false
-            value?.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
+            value?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
             self.valueLabel = value
 
             let slider = UISlider()
             slider.translatesAutoresizingMaskIntoConstraints = false
-            slider.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
+            slider.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
             self.slider = slider
 
             if shouldShowTitle {

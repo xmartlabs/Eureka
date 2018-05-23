@@ -40,12 +40,12 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
 
         let segmentedControl = UISegmentedControl()
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        segmentedControl.setContentHuggingPriority(UILayoutPriority(rawValue: 250), for: .horizontal)
+        segmentedControl.setContentHuggingPriority(UILayoutPriority(250), for: .horizontal)
         self.segmentedControl = segmentedControl
 
         self.titleLabel = self.textLabel
         self.titleLabel?.translatesAutoresizingMaskIntoConstraints = false
-        self.titleLabel?.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
+        self.titleLabel?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
 
         NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationWillResignActive, object: nil, queue: nil) { [weak self] _ in
             guard let me = self else { return }
