@@ -27,8 +27,11 @@ import UIKit
 
 public struct RuleURL: RuleType {
 
-    public init(allowsEmpty: Bool = true, requiresProtocol: Bool = false, msg: String = "Field value must be an URL!") {
+    public init(allowsEmpty: Bool = true, requiresProtocol: Bool = false, msg: String = "Field value must be an URL!", id: String? = nil) {
         validationError = ValidationError(msg: msg)
+        self.allowsEmpty = allowsEmpty
+        self.requiresProtocol = requiresProtocol
+        self.id = id
     }
 
     public var id: String?

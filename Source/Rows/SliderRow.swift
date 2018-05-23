@@ -43,7 +43,7 @@ open class SliderCell: Cell<Float>, CellType {
             if me.shouldShowTitle {
                 me.titleLabel = me.textLabel
                 me.valueLabel = me.detailTextLabel
-                me.addConstraints()
+                me.setNeedsUpdateConstraints()
             }
         }
     }
@@ -85,13 +85,11 @@ open class SliderCell: Cell<Float>, CellType {
             if !sliderRow.shouldHideValue {
               contentView.addSubview(valueLabel)
             }
-
             contentView.addSubview(slider)
-            addConstraints()
         }
         selectionStyle = .none
-        slider.minimumValue = sliderRow.minimumValue
-        slider.maximumValue = sliderRow.maximumValue
+        slider.minimumValue = 0
+        slider.maximumValue = 10
         slider.addTarget(self, action: #selector(SliderCell.valueChanged), for: .valueChanged)
     }
 
@@ -101,30 +99,9 @@ open class SliderCell: Cell<Float>, CellType {
         titleLabel.isHidden = !shouldShowTitle
         valueLabel.text = row.displayValueFor?(row.value)
         valueLabel.isHidden = sliderRow.shouldHideValue
-        slider.value = row.value ?? 0.0
+        slider.value = row.value ?? slider.minimumValue
         slider.isEnabled = !row.isDisabled
-    }
-
-    func addConstraints() {
-        let views: [String : Any] = ["titleLabel": titleLabel, "slider": slider, "valueLabel": valueLabel]
-        let metrics = ["spacing": 15.0]
-        valueLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-        titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-
-        let title = shouldShowTitle ? "[titleLabel]-spacing-" : ""
-        let value = !sliderRow.shouldHideValue ? "-[valueLabel]" : ""
-
-        let hContraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-\(title)[slider]\(value)-|",
-            options: .alignAllCenterY,
-            metrics: metrics,
-            views: views)
-
-
-        let vContraint = NSLayoutConstraint(item: slider, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0)
-
-        contentView.addConstraints(hContraints)
-        contentView.addConstraint(vContraint)
+        
     }
 
     @objc func valueChanged() {
@@ -148,13 +125,46 @@ open class SliderCell: Cell<Float>, CellType {
     private var sliderRow: SliderRow {
         return row as! SliderRow
     }
+    
+    open override func updateConstraints() {
+        customConstraints()
+        super.updateConstraints()
+    }
+    
+    open var dynamicConstraints = [NSLayoutConstraint]()
+    
+    open func customConstraints() {
+        guard !awakeFromNibCalled else { return }
+        contentView.removeConstraints(dynamicConstraints)
+        dynamicConstraints = []
+        
+        var views: [String : Any] = ["titleLabel": titleLabel, "slider": slider, "valueLabel": valueLabel]
+        let metrics = ["spacing": 15.0]
+        valueLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        
+        let title = shouldShowTitle ? "[titleLabel]-spacing-" : ""
+        let value = !sliderRow.shouldHideValue ? "-[valueLabel]" : ""
+        
+        if let imageView = imageView, let _ = imageView.image {
+            views["imageView"] = imageView
+            let hContraints = NSLayoutConstraint.constraints(withVisualFormat: "H:[imageView]-(15)-\(title)[slider]\(value)-|", options: .alignAllCenterY, metrics: metrics, views: views)
+            dynamicConstraints.append(contentsOf: hContraints)
+        } else {
+            let hContraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(title)[slider]\(value)-|", options: .alignAllCenterY, metrics: metrics, views: views)
+            dynamicConstraints.append(contentsOf: hContraints)
+        }
+        let vContraint = NSLayoutConstraint(item: slider, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0)
+        dynamicConstraints.append(vContraint)
+        contentView.addConstraints(dynamicConstraints)
+    }
+
 }
+        
 
 /// A row that displays a UISlider. If there is a title set then the title and value will appear above the UISlider.
 public final class SliderRow: Row<SliderCell>, RowType {
 
-    public var minimumValue: Float = 0.0
-    public var maximumValue: Float = 10.0
     public var steps: UInt = 20
     public var shouldHideValue = false
 

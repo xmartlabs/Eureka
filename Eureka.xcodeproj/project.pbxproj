@@ -85,6 +85,10 @@
 		51729E671B9A5FA5004A00EB /* Eureka.h in Headers */ = {isa = PBXBuildFile; fileRef = 51729E661B9A5FA5004A00EB /* Eureka.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		798C5ADA1EF1E35600A21F52 /* SwipeActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798C5AD91EF1E35600A21F52 /* SwipeActions.swift */; };
 		8690E4BE1CFDE062004CDB1C /* Eureka.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8690E4BD1CFDE062004CDB1C /* Eureka.bundle */; };
+		8FCCF8EF20A24085004793A0 /* DoublePickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FCCF8EE20A24085004793A0 /* DoublePickerRow.swift */; };
+		8FCCF8F120A32613004793A0 /* TriplePickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FCCF8F020A32613004793A0 /* TriplePickerRow.swift */; };
+		8FCCF92320A473E7004793A0 /* DoublePickerInputRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FCCF92220A473E7004793A0 /* DoublePickerInputRow.swift */; };
+		8FCCF92520A4794B004793A0 /* TriplePickerInputRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FCCF92420A4794B004793A0 /* TriplePickerInputRow.swift */; };
 		B244E6541FE1C94F0026B944 /* AlertOptionsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B244E6531FE1C94F0026B944 /* AlertOptionsRow.swift */; };
 		B257FE2E1EC0F66900043911 /* RowsInsertionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B257FE2D1EC0F66900043911 /* RowsInsertionTests.swift */; };
 		B2A401161EC0BA140042EDF0 /* SectionsInsertionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A401151EC0BA140042EDF0 /* SectionsInsertionTests.swift */; };
@@ -183,6 +187,10 @@
 		51729E661B9A5FA5004A00EB /* Eureka.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Eureka.h; path = Source/Eureka.h; sourceTree = SOURCE_ROOT; };
 		798C5AD91EF1E35600A21F52 /* SwipeActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActions.swift; sourceTree = "<group>"; };
 		8690E4BD1CFDE062004CDB1C /* Eureka.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Eureka.bundle; sourceTree = "<group>"; };
+		8FCCF8EE20A24085004793A0 /* DoublePickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublePickerRow.swift; sourceTree = "<group>"; };
+		8FCCF8F020A32613004793A0 /* TriplePickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriplePickerRow.swift; sourceTree = "<group>"; };
+		8FCCF92220A473E7004793A0 /* DoublePickerInputRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublePickerInputRow.swift; sourceTree = "<group>"; };
+		8FCCF92420A4794B004793A0 /* TriplePickerInputRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriplePickerInputRow.swift; sourceTree = "<group>"; };
 		B244E6531FE1C94F0026B944 /* AlertOptionsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlertOptionsRow.swift; path = Common/AlertOptionsRow.swift; sourceTree = "<group>"; };
 		B257FE2D1EC0F66900043911 /* RowsInsertionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RowsInsertionTests.swift; path = Tests/RowsInsertionTests.swift; sourceTree = SOURCE_ROOT; };
 		B2A401151EC0BA140042EDF0 /* SectionsInsertionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SectionsInsertionTests.swift; path = Tests/SectionsInsertionTests.swift; sourceTree = SOURCE_ROOT; };
@@ -250,6 +258,8 @@
 				2859CDFE1C7DF9A70002982F /* DateRow.swift */,
 				2859CDF41C7DF2740002982F /* DateInlineRow.swift */,
 				2859CDFC1C7DF9430002982F /* DatePickerRow.swift */,
+				8FCCF92220A473E7004793A0 /* DoublePickerInputRow.swift */,
+				8FCCF8EE20A24085004793A0 /* DoublePickerRow.swift */,
 				2859CE061C7DFBFA0002982F /* FieldsRow.swift */,
 				2859CDA01C7CF3A10002982F /* LabelRow.swift */,
 				2859CE1F1C7E092B0002982F /* MultipleSelectorRow.swift */,
@@ -263,6 +273,8 @@
 				49ADC7F81C8A83240073952B /* StepperRow.swift */,
 				2859CDA61C7CF5530002982F /* SwitchRow.swift */,
 				2859CDAC1C7D0BCA0002982F /* TextAreaRow.swift */,
+				8FCCF92420A4794B004793A0 /* TriplePickerInputRow.swift */,
+				8FCCF8F020A32613004793A0 /* TriplePickerRow.swift */,
 			);
 			name = Rows;
 			path = Source/Rows;
@@ -439,7 +451,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = Xmartlabs;
 				TargetAttributes = {
 					51729DEA1B9A4F5E004A00EB = {
@@ -514,6 +526,7 @@
 				28EEC0001C7E36EB00300699 /* SwitchRow.swift in Sources */,
 				3973000A1DF0E2A000080E4D /* PickerInputRow.swift in Sources */,
 				287E7D901D7601850065F4DE /* RuleLength.swift in Sources */,
+				8FCCF8EF20A24085004793A0 /* DoublePickerRow.swift in Sources */,
 				28EEC02A1C7E3B5A00300699 /* MultipleSelectorRow.swift in Sources */,
 				28EEC0231C7E3B1900300699 /* AlertRow.swift in Sources */,
 				28EEC0221C7E3B1300300699 /* ActionSheetRow.swift in Sources */,
@@ -523,6 +536,7 @@
 				28EEC0321C7E64A400300699 /* DatePickerRow.swift in Sources */,
 				FA56B6AF1DBAD38900407C94 /* RuleEqualsToRow.swift in Sources */,
 				28EEBFE81C7E1D7E00300699 /* CellType.swift in Sources */,
+				8FCCF92320A473E7004793A0 /* DoublePickerInputRow.swift in Sources */,
 				28EEC0241C7E3B1D00300699 /* PickerRow.swift in Sources */,
 				28EEC0281C7E3B4B00300699 /* FieldsRow.swift in Sources */,
 				2859CD961C7CF1FD0002982F /* Helpers.swift in Sources */,
@@ -548,11 +562,13 @@
 				28EE46A81C7F5D5200EFF4A2 /* SelectableSection.swift in Sources */,
 				28EEBFF61C7E240B00300699 /* InlineRowType.swift in Sources */,
 				287E7D841D75F9C80065F4DE /* RuleEmail.swift in Sources */,
+				8FCCF8F120A32613004793A0 /* TriplePickerRow.swift in Sources */,
 				28EEBFFB1C7E25C500300699 /* Operators.swift in Sources */,
 				28DB37301CE4F864009E46BA /* Protocols.swift in Sources */,
 				2859CDC01C7D138D0002982F /* Section.swift in Sources */,
 				28EEC0151C7E39C100300699 /* DateRow.swift in Sources */,
 				2859CDE91C7DD78E0002982F /* BaseRow.swift in Sources */,
+				8FCCF92520A4794B004793A0 /* TriplePickerInputRow.swift in Sources */,
 				28EEBFF01C7E23F400300699 /* Row.swift in Sources */,
 				28EEC0121C7E399500300699 /* GenericMultipleSelectorRow.swift in Sources */,
 				28EEC0181C7E3A3D00300699 /* MultipleSelectorViewController.swift in Sources */,
@@ -606,12 +622,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -663,12 +681,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
