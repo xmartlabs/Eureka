@@ -156,6 +156,13 @@ open class BaseRow: BaseRowType {
 }
 
 extension BaseRow {
+    // Reset validation
+    public func cleanValidationErrors(){
+        validationErrors = []
+    }
+}
+
+extension BaseRow {
 
     /**
      Evaluates if the row should be hidden or not and updates the form accordingly
