@@ -1,6 +1,29 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [4.1.1](https://github.com/xmartlabs/Eureka/releases/tag/4.1.1)
+
+* Bug fixes and stability improvements.
+
+### [4.1.0](https://github.com/xmartlabs/Eureka/releases/tag/4.1.0)
+
+* Add compatibility for Xcode 9.3 beta 2 and Swift 4.1.
+* New functionality 🎉. https://github.com/xmartlabs/eureka#swipe-actions. Thanks [@marbetschar](https://github.com/marbetschar).
+* Add sectionIndexTitles and sectionForSectionIndexTitles to FormViewController to allow for subclasses to override.
+* Fix SliderRow layout.
+* Fix regular expression for URLs to allow query and location parameter.
+* Corrected issue in section sorting function of MultipleSelectorViewController, where all options were placed in one section, with a section title based on the first option.
+* Added missing call to super.updateConstraints in SegmentedCell.
+* Add ability to setup alert cancel title from AlertRow.
+* remove blank section headers/footers from plain tables on iOS 11. This prevents blank section headers and footers from appearing on iOS
+11 when setting the table view style to plain and there are no headers
+or footers.
+* Fix UIDatePicker bug when mode == .countDownTimer.
+* Allow non-selectable rows to exist besides selectable rows in a selectable section.
+* SliderRow - added option 'shouldHideValue' to hide value label (default to false).
+* Update cell when tintColor changes.
+* Support dynamic font size changes.
+
 ### [4.0.0](https://github.com/xmartlabs/Eureka/releases/tag/4.0.0)
 
 * Xcode 9, Swift 4 support.
