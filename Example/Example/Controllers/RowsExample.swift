@@ -24,7 +24,8 @@ class RowsExampleViewController: FormViewController {
         form +++
 
             Section()
-
+// disabled, because it crashes the current swift compiler (xcode 9.3/swift 4.1), try enabling with newer development tools
+        
 //            <<< LabelRow () {
 //                $0.title = "LabelRow"
 //                $0.value = "tap the row"
