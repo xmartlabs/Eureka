@@ -1013,6 +1013,7 @@ Let us know about it, we would be glad to mention it here. :)
 Specify Eureka into your project's `Podfile`:
 
 ```ruby
+source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
