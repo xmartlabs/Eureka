@@ -44,6 +44,9 @@ open class StepperCell: Cell<Double>, CellType {
         selectionStyle = .none
 
         stepper.addTarget(self, action: #selector(StepperCell.valueChanged), for: .valueChanged)
+        
+        isAccessibilityElement = true
+        accessibilityTraits = UIAccessibilityTraitAdjustable
     }
 
     deinit {
@@ -64,6 +67,22 @@ open class StepperCell: Cell<Double>, CellType {
     @objc func valueChanged() {
         row.value = stepper.value
         row.updateCell()
+    }
+    
+    open override func accessibilityIncrement() {
+        stepper.value += stepper.stepValue
+        valueChanged()
+        if let value = row.displayValueFor?(row.value) {
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, value)
+        }
+    }
+    
+    open override func accessibilityDecrement() {
+        stepper.value -= stepper.stepValue
+        valueChanged()
+        if let value = row.displayValueFor?(row.value) {
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, value)
+        }
     }
 }
 

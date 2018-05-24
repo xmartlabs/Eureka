@@ -146,6 +146,11 @@ open class BaseRow: BaseRowType {
             if newValue && !disabledCache {
                 baseCell.cellResignFirstResponder()
             }
+            if newValue {
+                baseCell.accessibilityTraits = baseCell.accessibilityTraits | UIAccessibilityTraitNotEnabled
+            } else {
+                baseCell.accessibilityTraits = baseCell.accessibilityTraits & ~UIAccessibilityTraitNotEnabled
+            }
         }
     }
 }

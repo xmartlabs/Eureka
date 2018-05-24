@@ -22,7 +22,7 @@ public struct Tuple<A: Equatable, B: Equatable> {
 
 extension Tuple: Equatable {}
 
-public func == <A: Equatable, B: Equatable>(lhs: Tuple<A, B>, rhs: Tuple<A, B>) -> Bool {
+public func == <A, B>(lhs: Tuple<A, B>, rhs: Tuple<A, B>) -> Bool {
     return lhs.a == rhs.a && lhs.b == rhs.b
 }
 

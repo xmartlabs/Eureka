@@ -39,16 +39,18 @@ open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: O
 
     /// A closure that should return key for particular row value.
     /// This key is later used to break options by sections.
-    public var sectionKeyForValue: ((Row.Cell.Value) -> (String))?
+    public var sectionKeyForValue: ((Row.Cell.Value) -> (AnyHashable))?
 
     /// A closure that returns header title for a section for particular key.
     /// By default returns the key itself.
-    public var sectionHeaderTitleForKey: ((String) -> String?)? = { $0 }
+    public var sectionHeaderTitleForKey: ((AnyHashable) -> String?)? = { String(describing: $0) }
 
     /// A closure that returns footer title for a section for particular key.
-    public var sectionFooterTitleForKey: ((String) -> String?)?
+    public var sectionFooterTitleForKey: ((AnyHashable) -> String?)?
 
-
+    public var sectionHeader: ((Any) -> HeaderFooterViewRepresentable?)?
+    public var sectionFooter: ((Any) -> HeaderFooterViewRepresentable?)?
+    
     public var optionsProviderRow: OptionsRow {
         return row as! OptionsRow
     }
@@ -83,19 +85,34 @@ open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: O
     open func setupForm(with options: [OptionsRow.OptionsProviderType.Option]) {
         if let optionsBySections = optionsBySections(with: options) {
             for (sectionKey, options) in optionsBySections {
-                form +++ section(with: options,
-                                 header: sectionHeaderTitleForKey?(sectionKey),
-                                 footer: sectionFooterTitleForKey?(sectionKey))
+                let header: HeaderFooterViewRepresentable?
+                if let sectionHeader = sectionHeader {
+                    header = sectionHeader(sectionKey)
+                } else {
+                    header = HeaderFooterView(stringLiteral: sectionHeaderTitleForKey?(sectionKey) ?? "")
+                }
+                let footer: HeaderFooterViewRepresentable?
+                if let sectionFooter = sectionFooter {
+                    footer = sectionFooter(sectionKey)
+                } else {
+                    footer = HeaderFooterView(stringLiteral: sectionFooterTitleForKey?(sectionKey) ?? "")
+                }
+                form +++ section(with: options,  header: header, footer: footer)
             }
         } else {
-            form +++ section(with: options, header: row.title, footer: nil)
+            let header: HeaderFooterViewRepresentable?
+            if let sectionHeader = sectionHeader {
+                header = row.title.flatMap(sectionHeader)
+            } else {
+                header = row.title.map(HeaderFooterView.init(stringLiteral:))
+            }
+            form +++ section(with: options, header: header, footer: nil)
         }
     }
     
-    open func optionsBySections(with options: [OptionsRow.OptionsProviderType.Option]) -> [(String, [Row.Cell.Value])]? {
+    open func optionsBySections(with options: [OptionsRow.OptionsProviderType.Option]) -> [(AnyHashable, [Row.Cell.Value])]? {
         guard let sectionKeyForValue = sectionKeyForValue else { return nil }
-
-        let sections = options.reduce([:]) { (reduced, option) -> [String: [Row.Cell.Value]] in
+        let sections = options.reduce([:]) { (reduced, option) -> [AnyHashable: [Row.Cell.Value]] in
             var reduced = reduced
             let key = sectionKeyForValue(option)
             var items = reduced[key] ?? []
@@ -104,11 +121,13 @@ open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: O
             return reduced
         }
 
-        return sections.sorted(by: { (lhs, rhs) in lhs.0 < rhs.0 })
+        return sections.sorted(by: { (lhs, rhs) in String(describing: lhs.0) < String(describing: rhs.0) })
     }
 
-    func section(with options: [OptionsRow.OptionsProviderType.Option], header: String?, footer: String?) -> SelectableSection<Row> {
-        let section = SelectableSection<Row>(header: header ?? "", footer: footer ?? "", selectionType: .multipleSelection) { [weak self] section in
+    func section(with options: [OptionsRow.OptionsProviderType.Option], header: HeaderFooterViewRepresentable?, footer: HeaderFooterViewRepresentable?) -> SelectableSection<Row> {
+        let header = header ?? HeaderFooterView(stringLiteral: "")
+        let footer = footer ?? HeaderFooterView(stringLiteral: "")
+        let section = SelectableSection<Row>(header: header, footer: footer, selectionType: .multipleSelection) { [weak self] section in
             section.onSelectSelectableRow = { _, selectableRow in
                 var newValue: Set<OptionsRow.OptionsProviderType.Option> = self?.row.value ?? []
                 if let selectableValue = selectableRow.value {

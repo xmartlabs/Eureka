@@ -23,7 +23,7 @@ public struct Tuple3<A: Equatable, B: Equatable, C: Equatable> {
 
 extension Tuple3: Equatable {}
 
-public func == <A: Equatable, B: Equatable, C: Equatable>(lhs: Tuple3<A, B, C>, rhs: Tuple3<A, B, C>) -> Bool {
+public func == <A, B, C>(lhs: Tuple3<A, B, C>, rhs: Tuple3<A, B, C>) -> Bool {
     return lhs.a == rhs.a && lhs.b == rhs.b && lhs.c == rhs.c
 }
 

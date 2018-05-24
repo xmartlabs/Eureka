@@ -179,6 +179,22 @@ open class Section {
         self.footer = HeaderFooterView(stringLiteral: footer)
         initializer(self)
     }
+    
+    public init(_ header: HeaderFooterViewRepresentable, _ initializer: (Section) -> Void = { _ in }) {
+        self.header = header
+        initializer(self)
+    }
+    
+    public init(header: HeaderFooterViewRepresentable, footer: HeaderFooterViewRepresentable, _ initializer: (Section) -> Void = { _ in }) {
+        self.header = header
+        self.footer = footer
+        initializer(self)
+    }
+    
+    public init(footer: HeaderFooterViewRepresentable, _ initializer: (Section) -> Void = { _ in }) {
+        self.footer = footer
+        initializer(self)
+    }
 
     // MARK: SectionDelegate
 

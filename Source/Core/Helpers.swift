@@ -67,10 +67,11 @@ extension NSExpression {
         switch expressionType {
             case .function, .variable:
                 let str = "\(self)"
-                if let range = str.range(of: ".") {
-                    return [String(str[str.index(str.startIndex, offsetBy: 1)..<range.lowerBound])]
+                let substring = str[str.index(str.startIndex, offsetBy: 1)...]
+                if let range = substring.range(of: ".") {
+                    return [String(substring[..<range.lowerBound])]
                 } else {
-                    return [String(str[str.index(str.startIndex, offsetBy: 1)...])]
+                    return [String(substring)]
                 }
             default:
                 return []

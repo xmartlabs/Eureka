@@ -37,14 +37,11 @@ open class ListCheckCell<T: Equatable> : Cell<T>, CellType {
     open override func update() {
         super.update()
         accessoryType = row.value != nil ? .checkmark : .none
+        accessibilityTraits = row.value != nil ? (UIAccessibilityTraitButton | UIAccessibilityTraitSelected)
+                                               : UIAccessibilityTraitButton
         editingAccessoryType = accessoryType
-        selectionStyle = .default
-        if row.isDisabled {
-            tintAdjustmentMode = .dimmed
-            selectionStyle = .none
-        } else {
-            tintAdjustmentMode = .automatic
-        }
+        selectionStyle = row.isDisabled ? .none : .default
+        tintAdjustmentMode = row.isDisabled ? .dimmed : .automatic
     }
 
     open override func setup() {
