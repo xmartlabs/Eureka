@@ -39,9 +39,9 @@ open class DoublePickerInputCell<A, B> : _PickerInputCell<Tuple<A, B>> where A: 
 
     open override func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if component == 0 {
-            return String(describing: pickerRow.firstOptions()[row])
+            return pickerRow.displayValueForFirstRow(pickerRow.firstOptions()[row])
         } else {
-            return String(describing: pickerRow.secondOptions(pickerRow.selectedFirst())[row])
+            return pickerRow.displayValueForSecondRow(pickerRow.secondOptions(pickerRow.selectedFirst())[row])
         }
     }
 
@@ -80,6 +80,11 @@ open class _DoublePickerInputRow<A: Equatable, B: Equatable> : Row<DoublePickerI
     public var firstOptions: (() -> [A]) = {[]}
     /// Options for second component given the selected value from the first component. Will be called often so should be O(1)
     public var secondOptions: ((A) -> [B]) = {_ in []}
+    
+    /// Modify the displayed values for the first picker row.
+    public var displayValueForFirstRow: ((A) -> (String)) = { a in return String(describing: a) }
+    /// Modify the displayed values for the second picker row.
+    public var displayValueForSecondRow: ((B) -> (String)) = { b in return String(describing: b) }
     
     required public init(tag: String?) {
         super.init(tag: tag)
