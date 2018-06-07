@@ -68,11 +68,11 @@ open class TriplePickerCell<A, B, C> : _PickerCell<Tuple3<A, B, C>> where A: Equ
 
     open override func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if component == 0 {
-            return String(describing: pickerRow.firstOptions()[row])
+            return pickerRow.displayValueForFirstRow(pickerRow.firstOptions()[row])
         } else if component == 1 {
-            return String(describing: pickerRow.secondOptions(pickerRow.selectedFirst())[row])
+            return pickerRow.displayValueForSecondRow(pickerRow.secondOptions(pickerRow.selectedFirst())[row])
         } else {
-            return String(describing: pickerRow.thirdOptions(pickerRow.selectedFirst(), pickerRow.selectedSecond())[row])
+            return pickerRow.displayValueForThirdRow(pickerRow.thirdOptions(pickerRow.selectedFirst(), pickerRow.selectedSecond())[row])
         }
     }
 
@@ -140,6 +140,13 @@ open class _TriplePickerRow<A, B, C> : Row<TriplePickerCell<A, B, C>> where A: E
     public var secondOptions: ((A) -> [B]) = {_ in []}
     /// Options for third component given the selected value from the first and second components. Will be called often so should be O(1)
     public var thirdOptions: ((A, B) -> [C]) = {_, _ in []}
+    
+    /// Modify the displayed values for the first picker row.
+    public var displayValueForFirstRow: ((A) -> (String)) = { a in return String(describing: a) }
+    /// Modify the displayed values for the second picker row.
+    public var displayValueForSecondRow: ((B) -> (String)) = { b in return String(describing: b) }
+    /// Modify the displayed values for the third picker row.
+    public var displayValueForThirdRow: ((C) -> (String)) = { c in return String(describing: c) }
 
     required public init(tag: String?) {
         super.init(tag: tag)
