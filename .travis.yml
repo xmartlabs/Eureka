@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode9.3
+osx_image: xcode9.4
 env:
   - DESTINATION="OS=11.3,name=iPhone 8" SCHEME="Eureka" SDK=iphonesimulator
 before_install:
