@@ -214,8 +214,8 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
     func section(with options: [Row.Cell.Value], header: HeaderFooterViewRepresentable?, footer: HeaderFooterViewRepresentable?) -> SelectableSection<Row> {
         let header = header ?? HeaderFooterView(stringLiteral: "")
         let footer = footer ?? HeaderFooterView(stringLiteral: "")
-        let section = SelectableSection<Row>(header: header, footer: footer, selectionType: .singleSelection(enableDeselection: enableDeselection)) { [weak self] section in
-            section.onSelectSelectableRow = { _, row in
+        let section = SelectableSection<Row>(header: header, footer: footer, selectionType: .singleSelection(enableDeselection: enableDeselection)) { section in
+            section.onSelectSelectableRow = { [weak self] _, row in
                 let changed = self?.row.value != row.value
                 self?.row.value = row.value
                 
