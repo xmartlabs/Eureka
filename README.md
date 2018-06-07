@@ -12,6 +12,8 @@
 
 Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation of [XLForm] in Swift.
 
+[简体中文](Documentation/README_CN.md)
+
 ## Overview
 
 <table>
@@ -41,6 +43,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
   + [List sections]
   + [Multivalued sections]
   + [Validations]
+  + [Swipe Actions]
 * [Custom rows]
   + [Basic custom rows]
   + [Custom inline rows]
@@ -53,9 +56,8 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
 
 ## Requirements
 
-* iOS 8.0+
-* Xcode 9+
-* Swift 4
+* Xcode 9.2+
+* Swift 4+
 
 ### Example project
 
@@ -324,7 +326,7 @@ Section(){ section in
 
 In this case we are hiding and showing whole sections.
 
-To accomplish this each row has an `hidden` variable of optional type `Condition` which can be set using a function or `NSPredicate`.
+To accomplish this each row has a `hidden` variable of optional type `Condition` which can be set using a function or `NSPredicate`.
 
 
 #### Hiding using a function condition
@@ -398,7 +400,8 @@ Note that if you want to disable a row permanently you can also set `disabled` v
 ### List Sections
 
 To display a list of options, Eureka includes a special section called `SelectableSection`.
-When creating one you need to pass the type of row to use in the options and the `selectionStyle`. The `selectionStyle` is an enum which can be either `multipleSelection` or `singleSelection(enableDeselection: Bool)` where the `enableDeselection` parameter determines if the selected rows can be deselected or not.
+When creating one you need to pass the type of row to use in the options and the `selectionType`.
+The `selectionType` is an enum which can be either `multipleSelection` or `singleSelection(enableDeselection: Bool)` where the `enableDeselection` parameter determines if the selected rows can be deselected or not.
 
 ```swift
 form +++ SelectableSection<ListCheckRow<String>>("Where do you live", selectionType: .singleSelection(enableDeselection: true))
@@ -475,19 +478,23 @@ form +++
 
 Previous code snippet shows how to create a multivalued section. In this case we want to insert, delete and reorder rows as multivaluedOptions argument indicates.
 
-`addButtonProvider` allows us to customize the button row which inserts a new row when tapped and `multivaluedOptions` contains .Insert` value.
+`addButtonProvider` allows us to customize the button row which inserts a new row when tapped and `multivaluedOptions` contains `.Insert` value.
 
 `multivaluedRowToInsertAt` closure property is called by Eureka each time a new row needs to be inserted. In order to provide the row to add into multivalued section we should set this property. Eureka passes the index as closure parameter. Notice that we can return any kind of row, even custom rows, even though in most cases multivalued section rows are of the same type.
 
 Eureka automatically adds a button row when we create a insertable multivalued section. We can customize how the this button row looks like as we explained before. `showInsertIconInAddButton` property indicates if plus button (insert style) should appear in the left of the button, true by default.
 
-There are some considerations we need to have in mind when creating insertable sections. Any row added to the insertable multivalued section should be placed above the row that Eureka automatically adds to insert new rows. This can be easily achieved by adding these additional rows to the section from inside section's initializer closure (last parameter of section initializer) so then Eureka adds the adds insert button at the end of the section.
+There are some considerations we need to have in mind when creating insertable sections. Any row added to the insertable multivalued section should be placed above the row that Eureka automatically adds to insert new rows. This can be easily achieved by adding these additional rows to the section from inside the section's initializer closure (last parameter of section initializer) so then Eureka adds the adds insert button at the end of the section.
+
+#### Editing mode
+
+By default Eureka will set the tableView's `isEditing` to true only if there is a MultivaluedSection in the form. This will be done in `viewWillAppear` the first time a form is presented.
 
 For more information on how to use multivalued sections please take a look at Eureka example project which contains several usage examples.
 
 ### Validations
 
-Eureka 2.0.0 introduces the very requested build-in validations feature.
+Eureka 2.0.0 introduces the much requested built-in validations feature.
 
 A row has a collection of `Rules` and a specific configuration that determines when validation rules should be evaluated.
 
@@ -578,6 +585,53 @@ If you want to validate the entire form (all the rows) you can manually invoke F
 
 Each row has the `validationErrors` property that can be used to retrieve all validation errors. This property just holds the validation error list of the latest row validation execution, which means it doesn't evaluate the validation rules of the row.
 
+#### Note on types
+
+As expected, the Rules must use the same types as the Row object. Be extra careful to check the row type used. You might see a compiler error ("Incorrect arugment label in call (have 'rule:' expected 'ruleSet:')" that is not pointing to the problem when mixing types.
+
+### Swipe Actions
+
+Eureka 4.1.0 introduces the swipe feature.
+
+You are now able to define multiple `leadingSwipe` and `trailingSwipe` actions per row. As swipe actions depend on iOS system features, `leadingSwipe` is available on iOS 11.0+ only.
+
+Let's see how to define swipe actions.
+
+```swift
+let row = TextRow() {
+            let deleteAction = SwipeAction(
+                style: .destructive,
+                title: "Delete",
+                handler: { (action, row, completionHandler) in
+                    //add your code here.
+                    //make sure you call the completionHandler once done.
+                    completionHandler?(true)
+                })
+            deleteAction.image = UIImage(named: "icon-trash")
+
+            $0.trailingSwipe.actions = [deleteAction]
+            $0.trailingSwipe.performsFirstActionWithFullSwipe = true
+
+            //please be aware: `leadingSwipe` is only available on iOS 11+ only
+            let infoAction = SwipeAction(
+                style: .normal,
+                title: "Info",
+                handler: { (action, row, completionHandler) in
+                    //add your code here.
+                    //make sure you call the completionHandler once done.
+                    completionHandler?(true)
+                })
+            infoAction.backgroundColor = .blue
+            infoAction.image = UIImage(named: "icon-info")
+
+            $0.leadingSwipe.actions = [infoAction]
+            $0.leadingSwipe.performsFirstActionWithFullSwipe = true
+        }
+```
+
+Swipe Actions need `tableView.isEditing` be set to `false`. Eureka will set this to `true` if there is a MultivaluedSection in the form (in the `viewWillAppear`).
+If you have both MultivaluedSections and swipe actions in the same form you should set `isEditing` according to your needs.
+
 ## Custom rows
 
 It is very common that you need a row that is different from those included in Eureka. If this is the case you will have to create your own row but this should not be difficult. You can read [this tutorial on how to create custom rows](https://blog.xmartlabs.com/2016/09/06/Eureka-custom-row-tutorial/) to get started. You might also want to have a look at [EurekaCommunity] which includes some extra rows ready to be added to Eureka.
@@ -661,21 +715,75 @@ public override func customDidSelect() {
 
 To create a custom Presenter row you must create a class that conforms the `PresenterRowType` protocol. It is highly recommended to subclass `SelectorRow` as it does conform to that protocol and adds other useful functionality.
 
-The PresenterRowType protocol is defined as followes:
+The PresenterRowType protocol is defined as follows:
 ```swift
 public protocol PresenterRowType: TypedRowType {
-    typealias ProviderType : UIViewController, TypedRowControllerType
-    var presentationMode: PresentationMode<ProviderType>? { get set }
-    var onPresentCallback: ((FormViewController, ProviderType)->())? { get set }
+
+     associatedtype PresentedControllerType : UIViewController, TypedRowControllerType
+
+     /// Defines how the view controller will be presented, pushed, etc.
+     var presentationMode: PresentationMode<PresentedControllerType>? { get set }
+
+     /// Will be called before the presentation occurs.
+     var onPresentCallback: ((FormViewController, PresentedControllerType) -> Void)? { get set }
 }
 ```
 
-The onPresentCallback will be called when the row is about to present another view controller. This is done in the `SelectorRow` so if you do not sublass it you will have to call it yourself.
+The onPresentCallback will be called when the row is about to present another view controller. This is done in the `SelectorRow` so if you do not subclass it you will have to call it yourself.
 
 The `presentationMode` is what defines how the controller is presented and which controller is presented. This presentation can be using a Segue identifier, a segue class, presenting a controller modally or pushing to a specific view controller. For example a CustomPushRow can be defined like this:
 
+
+Let's see an example..
+
 ```swift
-public final class CustomPushRow<T: Equatable>: SelectorRow<PushSelectorCell<T>, SelectorViewController<T>>, RowType {
+
+/// Generic row type where a user must select a value among several options.
+open class SelectorRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
+
+
+    /// Defines how the view controller will be presented, pushed, etc.
+    open var presentationMode: PresentationMode<SelectorViewController<SelectorRow<Cell>>>?
+
+    /// Will be called before the presentation occurs.
+    open var onPresentCallback: ((FormViewController, SelectorViewController<SelectorRow<Cell>>) -> Void)?
+
+    required public init(tag: String?) {
+        super.init(tag: tag)
+    }
+
+    /**
+     Extends `didSelect` method
+     */
+    open override func customDidSelect() {
+        super.customDidSelect()
+        guard let presentationMode = presentationMode, !isDisabled else { return }
+        if let controller = presentationMode.makeController() {
+            controller.row = self
+            controller.title = selectorTitle ?? controller.title
+            onPresentCallback?(cell.formViewController()!, controller)
+            presentationMode.present(controller, row: self, presentingController: self.cell.formViewController()!)
+        } else {
+            presentationMode.present(nil, row: self, presentingController: self.cell.formViewController()!)
+        }
+    }
+
+    /**
+     Prepares the pushed row setting its title and completion callback.
+     */
+    open override func prepare(for segue: UIStoryboardSegue) {
+        super.prepare(for: segue)
+        guard let rowVC = segue.destination as Any as? SelectorViewController<SelectorRow<Cell>> else { return }
+        rowVC.title = selectorTitle ?? rowVC.title
+        rowVC.onDismissCallback = presentationMode?.onDismissCallback ?? rowVC.onDismissCallback
+        onPresentCallback?(cell.formViewController()!, rowVC)
+        rowVC.row = self
+    }
+}
+
+
+// SelectorRow conforms to PresenterRowType
+public final class CustomPushRow<T: Equatable>: SelectorRow<PushSelectorCell<T>>, RowType {
 
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -688,7 +796,6 @@ public final class CustomPushRow<T: Equatable>: SelectorRow<PushSelectorCell<T>,
 }
 ```
 
-You can place your own UIViewController instead of `SelectorViewController<T>` and your own cell instead of `PushSelectorCell<T>`.
 
 ### Subclassing cells using the same row
 
@@ -906,6 +1013,7 @@ Let us know about it, we would be glad to mention it here. :)
 Specify Eureka into your project's `Podfile`:
 
 ```ruby
+source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
@@ -925,7 +1033,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 3.0
+github "xmartlabs/Eureka" ~> 4.0
 ```
 
 #### Manually as Embedded Framework
@@ -962,6 +1070,19 @@ If you use **Eureka** in your app We would love to hear about it! Drop us a line
 
 ## FAQ
 
+#### How to change the text representation of the row value shown in the  cell.
+
+Every row has the following property:
+
+```swift
+/// Block variable used to get the String that should be displayed for the value of this row.
+public var displayValueFor: ((T?) -> String?)? = {
+    return $0.map { String(describing: $0) }
+}
+```
+
+You can set `displayValueFor` according the string value you want to display.
+
 #### How to get a Row using its tag value
 
 We can get a particular row by invoking any of the following functions exposed by the `Form` class:
@@ -978,7 +1099,7 @@ For instance:
 let dateRow : DateRow? = form.rowBy(tag: "dateRowTag")
 let labelRow: LabelRow? = form.rowBy(tag: "labelRowTag")
 
-let dateRow2: Row<Date>? = form.rowBy(tag: "dateRowTag")
+let dateRow2: Row<DateCell>? = form.rowBy(tag: "dateRowTag")
 
 let labelRow2: BaseRow? = form.rowBy(tag: "labelRowTag")
 ```
@@ -1036,6 +1157,30 @@ section.header = header
 section.reload()
 ```
 
+#### How to customize Selector and MultipleSelector option cells
+
+`selectableRowSetup`, `selectableRowCellUpdate` and `selectableRowCellSetup` properties are provided to be able to customize SelectorViewController and MultipleSelectorViewController selectable cells.
+
+```swift
+let row = PushRow<Emoji>() {
+              $0.title = "PushRow"
+              $0.options = [💁🏻, 🍐, 👦🏼, 🐗, 🐼, 🐻]
+              $0.value = 👦🏼
+              $0.selectorTitle = "Choose an Emoji!"
+          }.onPresent { from, to in
+              to.dismissOnSelection = false
+              to.dismissOnChange = false
+              to.selectableRowSetup = { row in
+                  row.cellProvider = CellProvider<ListCheckCell<Emoji>>(nibName: "EmojiCell", bundle: Bundle.main)
+              }
+              to.selectableRowCellUpdate = { cell, row in
+                  cell.textLabel?.text = "Text " + row.selectableValue!  // customization
+                  cell.detailTextLabel?.text = "Detail " +  row.selectableValue!
+              }
+          }
+
+```
+
 #### Don't want to use Eureka custom operators?
 
 As we've said `Form` and `Section` types conform to `MutableCollection` and `RangeReplaceableCollection`. A Form is a collection of Sections and a Section is a collection of Rows.
@@ -1044,16 +1189,16 @@ As we've said `Form` and `Section` types conform to `MutableCollection` and `Ran
 
 ```swift
 extension RangeReplaceableCollection {
-    public mutating func append(newElement: Self.Generator.Element)
-    public mutating func appendContentsOf<S : Sequence where S.Generator.Element == Generator.Element>(newElements: S)
-    public mutating func insert(newElement: Self.Generator.Element, atIndex i: Self.Index)
-    public mutating func insertContentsOf<C : Collection where C.Generator.Element == Generator.Element>(newElements: C, at i: Self.Index)
-    public mutating func removeAtIndex(index: Self.Index) -> Self.Generator.Element
-    public mutating func removeRange(subRange: Range<Self.Index>)
-    public mutating func removeFirst(n: Int)
-    public mutating func removeFirst() -> Self.Generator.Element
-    public mutating func removeAll(keepCapacity keepCapacity: Bool = default)
-    public mutating func reserveCapacity(n: Self.Index.Distance)
+    public mutating func append(_ newElement: Self.Element)
+    public mutating func append<S>(contentsOf newElements: S) where S : Sequence, Self.Element == S.Element
+    public mutating func insert(_ newElement: Self.Element, at i: Self.Index)
+    public mutating func insert<S>(contentsOf newElements: S, at i: Self.Index) where S : Collection, Self.Element == S.Element
+    public mutating func remove(at i: Self.Index) -> Self.Element
+    public mutating func removeSubrange(_ bounds: Range<Self.Index>)
+    public mutating func removeFirst(_ n: Int)
+    public mutating func removeFirst() -> Self.Element
+    public mutating func removeAll(keepingCapacity keepCapacity: Bool)
+    public mutating func reserveCapacity(_ n: Self.IndexDistance)
 }
 ```
 
@@ -1065,8 +1210,8 @@ public func +++(left: Form, right: Section) -> Form {
     return left
 }
 
-public func +=< C : Collection where C.Generator.Element == Section>(inout lhs: Form, rhs: C){
-    lhs.appendContentsOf(rhs)
+public func +=<C : Collection>(inout lhs: Form, rhs: C) where C.Element == Section {
+    lhs.append(contentsOf: rhs)
 }
 
 public func <<<(left: Section, right: BaseRow) -> Section {
@@ -1074,8 +1219,8 @@ public func <<<(left: Section, right: BaseRow) -> Section {
     return left
 }
 
-public func +=< C : Collection where C.Generator.Element == BaseRow>(inout lhs: Section, rhs: C){
-    lhs.appendContentsOf(rhs)
+public func +=<C : Collection>(inout lhs: Section, rhs: C) where C.Element == BaseRow {
+    lhs.append(contentsOf: rhs)
 }
 ```
 
@@ -1112,6 +1257,7 @@ It's up to you to decide if you want to use Eureka custom operators or not.
 [List sections]: #list-sections
 [Multivalued sections]: #multivalued-sections
 [Validations]: #validations
+[Swipe Actions]: #swipe-actions
 
 <!--- In Project -->
 [CustomCellsController]: Example/Example/ViewController.swift

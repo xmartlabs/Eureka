@@ -26,7 +26,6 @@ import XCTest
 @testable import Eureka
 
 class ValidationsTests: XCTestCase {
-
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -48,7 +47,6 @@ class ValidationsTests: XCTestCase {
     }
 
     func testRuleSet() {
-
         var ruleSet = RuleSet<String>()
         ruleSet.add(rule: RuleRequired())
         ruleSet.add(rule: RuleEmail())
@@ -102,7 +100,6 @@ class ValidationsTests: XCTestCase {
     }
 
     func testRequired() {
-
         let textRow = TextRow()
         textRow.add(rule: RuleRequired())
 
@@ -123,7 +120,6 @@ class ValidationsTests: XCTestCase {
         XCTAssertNotNil(emailRule.isValid(value: "abc"))
         XCTAssertNotNil(emailRule.isValid(value: "abc.com"))
         XCTAssertNotNil(emailRule.isValid(value: "abc@assa"))
-
     }
 
     func testMaxLengthRule() {
@@ -133,10 +129,29 @@ class ValidationsTests: XCTestCase {
         XCTAssertNotNil(maxLengthRule.isValid(value:"12345678910"))
     }
 
-    func testminLengthRule() {
+    func testMinLengthRule() {
         let minLengthRule = RuleMinLength(minLength: 5)
         XCTAssertNil(minLengthRule.isValid(value: nil))
         XCTAssertNil(minLengthRule.isValid(value: "12345"))
         XCTAssertNotNil(minLengthRule.isValid(value:"1234"))
+    }
+    
+    func testExactLengthRule() {
+        let exactLengthRule = RuleExactLength(exactLength: 3)
+        XCTAssertNil(exactLengthRule.isValid(value: nil))
+        XCTAssertNil(exactLengthRule.isValid(value: "123"))
+        XCTAssertNotNil(exactLengthRule.isValid(value:"1234"))
+    }
+    
+    func testRuleURL() {
+        let urlRule = RuleURL()
+        
+        XCTAssertNil(urlRule.isValid(value: nil))
+        XCTAssertNil(urlRule.isValid(value: URL(string: "")))
+        XCTAssertNil(urlRule.isValid(value: URL(string: "http://example.com")))
+        XCTAssertNil(urlRule.isValid(value: URL(string: "https://example.com/path/to/file.ext?key=value#location")))
+        
+        XCTAssertNotNil(urlRule.isValid(value: URL(string: "example.com")))
+        XCTAssertNotNil(urlRule.isValid(value: URL(string: "http://")))
     }
 }

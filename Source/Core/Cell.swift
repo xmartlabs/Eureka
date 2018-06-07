@@ -92,6 +92,8 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
     /// The row associated to this cell
     public weak var row: RowOf<T>!
 
+    private var updatingCellForTintColorDidChange = false
+
     /// Returns the navigationAccessoryView if it is defined or calls super if not.
     override open var inputAccessoryView: UIView? {
         if let v = formViewController()?.inputAccessoryView(for: row) {
@@ -106,7 +108,6 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        height = { UITableViewAutomaticDimension }
     }
 
     /**
@@ -149,6 +150,17 @@ open class Cell<T>: BaseCell, TypedCellType where T: Equatable {
             formViewController()?.endEditing(of: self)
         }
         return result
+    }
+
+    open override func tintColorDidChange() {
+        super.tintColorDidChange()
+
+        /* Protection from infinite recursion in case an update method changes the tintColor */
+        if !updatingCellForTintColorDidChange && row != nil {
+            updatingCellForTintColorDidChange = true
+            row.updateCell()
+            updatingCellForTintColorDidChange = false
+        }
     }
 
     /// The untyped row associated to this cell.

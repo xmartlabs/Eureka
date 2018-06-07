@@ -26,7 +26,7 @@ import Foundation
 
 public enum RegExprPattern: String {
     case EmailAddress = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-+]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z‌​]{2,})$"
-    case URL = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
+    case URL = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+([/?#]\\S*)?"
     case ContainsNumber = ".*\\d.*"
     case ContainsCapital = "^.*?[A-Z].*?$"
     case ContainsLowercase = "^.*?[a-z].*?$"
@@ -39,10 +39,11 @@ open class RuleRegExp: RuleType {
     public var validationError: ValidationError
     public var allowsEmpty = true
 
-    public init(regExpr: String, allowsEmpty: Bool = true, msg: String = "Invalid field value!") {
+    public init(regExpr: String, allowsEmpty: Bool = true, msg: String = "Invalid field value!", id: String? = nil) {
         self.validationError = ValidationError(msg: msg)
         self.regExpr = regExpr
         self.allowsEmpty = allowsEmpty
+        self.id = id
     }
 
     public func isValid(value: String?) -> ValidationError? {

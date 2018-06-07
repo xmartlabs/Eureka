@@ -131,6 +131,12 @@
       "idiom" : "ipad",
       "filename" : "appIcon83-5pt@2x.png",
       "scale" : "2x"
+    },
+    {
+      "size" : "1024x1024",
+      "idiom" : "ios-marketing",
+      "filename" : "appIcon1024.png",
+      "scale" : "1x"
     }
   ],
   "info" : {

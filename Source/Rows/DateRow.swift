@@ -63,12 +63,9 @@ open class _CountDownRow: _DateFieldRow {
             if let formatter = self.dateFormatter {
                 return formatter.string(from: val)
             }
-            let components = Calendar.current.dateComponents([Calendar.Component.minute, Calendar.Component.hour], from: val)
-            var hourString = "hour"
-            if components.hour != 1 {
-                hourString += "s"
-            }
-            return  "\(components.hour!) \(hourString) \(components.minute!) min"
+
+            let dateComponents = Calendar.current.dateComponents([.hour, .minute], from: val)
+            return DateComponentsFormatter.localizedString(from: dateComponents, unitsStyle: .full)?.replacingOccurrences(of: ",", with: "")
         }
     }
 }

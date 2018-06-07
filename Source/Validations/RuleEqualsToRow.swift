@@ -26,18 +26,20 @@ import Foundation
 
 public struct RuleEqualsToRow<T: Equatable>: RuleType {
 
-    public init(form: Form, tag: String, msg: String = "Fields don't match!") {
+    public init(form: Form, tag: String, msg: String = "Fields don't match!", id: String? = nil) {
         self.validationError = ValidationError(msg: msg)
         self.form = form
         self.tag = tag
         self.row = nil
+        self.id = id
     }
 
-    public init(row: RowOf<T>, msg: String = "Fields don't match!") {
+    public init(row: RowOf<T>, msg: String = "Fields don't match!", id: String? = nil) {
         self.validationError = ValidationError(msg: msg)
         self.form = nil
         self.tag = nil
         self.row = row
+        self.id = id
     }
 
     public var id: String?

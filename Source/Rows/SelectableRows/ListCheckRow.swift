@@ -36,23 +36,12 @@ open class ListCheckCell<T: Equatable> : Cell<T>, CellType {
 
     open override func update() {
         super.update()
-        accessibilityTraits = UIAccessibilityTraitButton
-        if row.value != nil {
-            accessibilityTraits = accessibilityTraits | UIAccessibilityTraitSelected
-            accessoryType = .checkmark
-        } else {
-            accessoryType = .none
-        }
+        accessoryType = row.value != nil ? .checkmark : .none
+        accessibilityTraits = row.value != nil ? (UIAccessibilityTraitButton | UIAccessibilityTraitSelected)
+                                               : UIAccessibilityTraitButton
         editingAccessoryType = accessoryType
-        selectionStyle = .default
-        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
-        tintColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        if row.isDisabled {
-            tintColor = UIColor(red: red, green: green, blue: blue, alpha: 0.3)
-            selectionStyle = .none
-        } else {
-            tintColor = UIColor(red: red, green: green, blue: blue, alpha: 1)
-        }
+        selectionStyle = row.isDisabled ? .none : .default
+        tintAdjustmentMode = row.isDisabled ? .dimmed : .automatic
     }
 
     open override func setup() {
