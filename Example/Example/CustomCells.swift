@@ -116,10 +116,10 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
 
         guard let imageSize = button.imageView?.image?.size else { return }
         let spacing : CGFloat = 3.0
-        button.titleEdgeInsets = UIEdgeInsetsMake(0.0, -imageSize.width, -(imageSize.height + spacing), 0.0)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0.0, left: -imageSize.width, bottom: -(imageSize.height + spacing), right: 0.0)
         guard let titleLabel = button.titleLabel, let title = titleLabel.text else { return }
-        let titleSize = title.size(withAttributes: [NSAttributedStringKey.font: titleLabel.font])
-        button.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height + spacing), 0, 0, -titleSize.width)
+        let titleSize = title.size(withAttributes: [.font: titleLabel.font])
+        button.imageEdgeInsets = UIEdgeInsets(top: -(titleSize.height + spacing), left: 0, bottom: 0, right: -titleSize.width)
     }
 }
 
@@ -173,7 +173,7 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
         super.update()
         textLabel?.text = nil
         detailTextLabel?.text = nil
-        floatLabelTextField.attributedPlaceholder = NSAttributedString(string: row.title ?? "", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        floatLabelTextField.attributedPlaceholder = NSAttributedString(string: row.title ?? "", attributes: [.foregroundColor: UIColor.lightGray])
         floatLabelTextField.text =  row.displayValueFor?(row.value)
         floatLabelTextField.isEnabled = !row.isDisabled
         floatLabelTextField.titleTextColour = .lightGray
@@ -518,10 +518,10 @@ public final class LocationRow: OptionsRow<PushSelectorCell<CLLocation>>, Presen
     public typealias PresenterRow = MapViewController
     
     /// Defines how the view controller will be presented, pushed, etc.
-    open var presentationMode: PresentationMode<PresenterRow>?
+    public var presentationMode: PresentationMode<PresenterRow>?
     
     /// Will be called before the presentation occurs.
-    open var onPresentCallback: ((FormViewController, PresenterRow) -> Void)?
+    public var onPresentCallback: ((FormViewController, PresenterRow) -> Void)?
 
     
     
@@ -543,7 +543,7 @@ public final class LocationRow: OptionsRow<PushSelectorCell<CLLocation>>, Presen
     /**
      Extends `didSelect` method
      */
-    open override func customDidSelect() {
+    public override func customDidSelect() {
         super.customDidSelect()
         guard let presentationMode = presentationMode, !isDisabled else { return }
         if let controller = presentationMode.makeController() {
@@ -559,7 +559,7 @@ public final class LocationRow: OptionsRow<PushSelectorCell<CLLocation>>, Presen
     /**
      Prepares the pushed row setting its title and completion callback.
      */
-    open override func prepare(for segue: UIStoryboardSegue) {
+    public override func prepare(for segue: UIStoryboardSegue) {
         super.prepare(for: segue)
         guard let rowVC = segue.destination as? PresenterRow else { return }
         rowVC.title = selectorTitle ?? rowVC.title
@@ -576,7 +576,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
 
     lazy var mapView : MKMapView = { [unowned self] in
         let v = MKMapView(frame: self.view.bounds)
-        v.autoresizingMask = UIViewAutoresizing.flexibleWidth.union(.flexibleHeight)
+        v.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         return v
         }()
 
@@ -606,11 +606,11 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
         layer.bounds = CGRect(x: 0, y: 0, width: self.width, height: self.height)
         layer.path = self.ellipse.cgPath
         layer.fillColor = UIColor.gray.cgColor
-        layer.fillRule = kCAFillRuleNonZero
-        layer.lineCap = kCALineCapButt
+        layer.fillRule = .nonZero
+        layer.lineCap = .butt
         layer.lineDashPattern = nil
         layer.lineDashPhase = 0.0
-        layer.lineJoin = kCALineJoinMiter
+        layer.lineJoin = .miter
         layer.lineWidth = 1.0
         layer.miterLimit = 10.0
         layer.strokeColor = UIColor.gray.cgColor
@@ -639,12 +639,12 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
         mapView.addSubview(pinView)
         mapView.layer.insertSublayer(ellipsisLayer, below: pinView.layer)
 
-        let button = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(MapViewController.tappedDone(_:)))
+        let button = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(MapViewController.tappedDone(_:)))
         button.title = "Done"
         navigationItem.rightBarButtonItem = button
 
         if let value = row.value {
-            let region = MKCoordinateRegionMakeWithDistance(value.coordinate, 400, 400)
+            let region = MKCoordinateRegion(center: value.coordinate, latitudinalMeters: 400, longitudinalMeters: 400)
             mapView.setRegion(region, animated: true)
         }
         else{
