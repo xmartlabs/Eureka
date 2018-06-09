@@ -43,7 +43,7 @@ extension Section : Hidable, SectionDelegate {}
 
 extension Section {
 
-    public func reload(with rowAnimation: UITableViewRowAnimation = .none) {
+    public func reload(with rowAnimation: UITableView.RowAnimation = .none) {
         guard let tableView = (form?.delegate as? FormViewController)?.tableView, let index = index, index < tableView.numberOfSections else { return }
         tableView.reloadSections(IndexSet(integer: index), with: rowAnimation)
     }

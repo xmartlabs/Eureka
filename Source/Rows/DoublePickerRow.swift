@@ -32,7 +32,7 @@ open class DoublePickerCell<A, B> : _PickerCell<Tuple<A, B>> where A: Equatable,
 
     private var pickerRow: _DoublePickerRow<A, B>! { return row as? _DoublePickerRow<A, B> }
 
-    public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 

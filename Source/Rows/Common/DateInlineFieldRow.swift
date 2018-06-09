@@ -26,7 +26,7 @@ import Foundation
 
 open class DateInlineCell: Cell<Date>, CellType {
 
-    public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 

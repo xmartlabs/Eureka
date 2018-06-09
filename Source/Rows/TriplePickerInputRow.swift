@@ -12,7 +12,7 @@ open class TriplePickerInputCell<A, B, C> : _PickerInputCell<Tuple3<A, B, C>> wh
 
     private var pickerRow: _TriplePickerInputRow<A, B, C>! { return row as? _TriplePickerInputRow<A, B, C> }
 
-    public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
