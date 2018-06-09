@@ -114,7 +114,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         textView.delegate = self
         selectionStyle = .none
         if !awakeFromNibCalled {
-            imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
+            imageView?.addObserver(self, forKeyPath: "image", options: [.new, .old], context: nil)
         }
         setNeedsUpdateConstraints()
     }

@@ -56,7 +56,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { [weak self] _ in
             guard let me = self else { return }
             guard !me.observingTitleText else { return }
-            me.titleLabel?.addObserver(me, forKeyPath: "text", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
+            me.titleLabel?.addObserver(me, forKeyPath: "text", options: [.new, .old], context: nil)
             me.observingTitleText = true
         }
 

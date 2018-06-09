@@ -162,7 +162,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { [weak self] _ in
             guard let me = self else { return }
             guard !me.observingTitleText else { return }
-            me.titleLabel?.addObserver(me, forKeyPath: "text", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
+            me.titleLabel?.addObserver(me, forKeyPath: "text", options: [.new, .old], context: nil)
             me.observingTitleText = true
         }
 
@@ -199,9 +199,9 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         selectionStyle = .none
 
         if !awakeFromNibCalled {
-            titleLabel?.addObserver(self, forKeyPath: "text", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
+            titleLabel?.addObserver(self, forKeyPath: "text", options: [.new, .old], context: nil)
             observingTitleText = true
-            imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
+            imageView?.addObserver(self, forKeyPath: "image", options: [.new, .old], context: nil)
         }
         textField.addTarget(self, action: #selector(_FieldCell.textFieldDidChange(_:)), for: .editingChanged)
 

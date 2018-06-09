@@ -64,7 +64,7 @@ extension Section {
         init(section: Section) {
             self.section = section
             super.init()
-            addObserver(self, forKeyPath: "_rows", options: NSKeyValueObservingOptions.new.union(.old), context:nil)
+            addObserver(self, forKeyPath: "_rows", options: [.new, .old], context:nil)
         }
 
         deinit {
