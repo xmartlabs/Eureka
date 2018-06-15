@@ -24,7 +24,7 @@
 
 import Foundation
 
-// Temporary workaround for Xcode 10 beta
+// TODO: Temporary workaround for Xcode 10 beta
 #if swift(>=4.2)
 import UIKit.UIGeometry
 extension UIEdgeInsets {
