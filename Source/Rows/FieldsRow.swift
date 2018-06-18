@@ -26,7 +26,7 @@ import Foundation
 
 open class TextCell: _FieldCell<String>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -44,7 +44,7 @@ open class TextCell: _FieldCell<String>, CellType {
 
 open class IntCell: _FieldCell<Int>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -62,7 +62,7 @@ open class IntCell: _FieldCell<Int>, CellType {
 
 open class PhoneCell: _FieldCell<String>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -78,7 +78,7 @@ open class PhoneCell: _FieldCell<String>, CellType {
 
 open class NameCell: _FieldCell<String>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -96,7 +96,7 @@ open class NameCell: _FieldCell<String>, CellType {
 
 open class EmailCell: _FieldCell<String>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -114,7 +114,7 @@ open class EmailCell: _FieldCell<String>, CellType {
 
 open class PasswordCell: _FieldCell<String>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -133,7 +133,7 @@ open class PasswordCell: _FieldCell<String>, CellType {
 
 open class DecimalCell: _FieldCell<Double>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -150,7 +150,7 @@ open class DecimalCell: _FieldCell<Double>, CellType {
 
 open class URLCell: _FieldCell<URL>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -168,7 +168,7 @@ open class URLCell: _FieldCell<URL>, CellType {
 
 open class TwitterCell: _FieldCell<String>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -186,7 +186,7 @@ open class TwitterCell: _FieldCell<String>, CellType {
 
 open class AccountCell: _FieldCell<String>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -204,7 +204,7 @@ open class AccountCell: _FieldCell<String>, CellType {
 
 open class ZipCodeCell: _FieldCell<String>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 

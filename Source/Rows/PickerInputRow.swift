@@ -36,7 +36,7 @@ open class _PickerInputCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPi
 
     fileprivate var pickerInputRow: _PickerInputRow<T>? { return row as? _PickerInputRow<T> }
 
-    public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -115,7 +115,7 @@ open class _PickerInputCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPi
 
 open class PickerInputCell<T>: _PickerInputCell<T> where T: Equatable {
 
-    public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 

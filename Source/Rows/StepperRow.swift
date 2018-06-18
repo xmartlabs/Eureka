@@ -15,7 +15,7 @@ open class StepperCell: Cell<Double>, CellType {
     @IBOutlet public weak var stepper: UIStepper!
     @IBOutlet public weak var valueLabel: UILabel?
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         let stepper = UIStepper()
         self.stepper = stepper
         self.stepper.translatesAutoresizingMaskIntoConstraints = false
