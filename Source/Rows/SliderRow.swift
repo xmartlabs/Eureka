@@ -86,6 +86,7 @@ open class SliderCell: Cell<Float>, CellType {
               contentView.addSubview(valueLabel)
             }
             contentView.addSubview(slider)
+            setNeedsUpdateConstraints()
         }
         selectionStyle = .none
         slider.minimumValue = 0
