@@ -160,11 +160,11 @@ open class Section {
     }
     #endif
 
-    public init(_ initializer: (Section) -> Void) {
+    public init(_ initializer: @escaping (Section) -> Void) {
         initializer(self)
     }
 
-    public init(_ header: String, _ initializer: (Section) -> Void = { _ in }) {
+    public init(_ header: String, _ initializer: @escaping (Section) -> Void = { _ in }) {
         self.header = HeaderFooterView(stringLiteral: header)
         initializer(self)
     }

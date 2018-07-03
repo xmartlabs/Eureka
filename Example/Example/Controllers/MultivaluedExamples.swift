@@ -217,7 +217,7 @@ class MultivaluedOnlyDeleteController: FormViewController {
         tableView.isEditing = false
         let nameList = ["family", "male", "female", "client"]
 
-        let section = MultivaluedSection(multivaluedOptions: .Delete, footer: "you can swipe to delete when table.isEditing = false (Not Editing)")
+        let section = MultivaluedSection(multivaluedOptions: .Delete)
 
 
         for tag in nameList {

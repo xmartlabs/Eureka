@@ -47,7 +47,7 @@ open class SelectorAlertController<AlertOptionsRow: AlertOptionsProviderRow>: UI
     /// If not set will use synchronous data provider built with `row.dataProvider.arrayData`.
     //    public var optionsProvider: OptionsProvider<T>?
     public var optionsProviderRow: AlertOptionsRow {
-        return row as! AlertOptionsRow
+        return row as Any as! AlertOptionsRow
     }
 
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {

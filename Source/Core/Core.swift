@@ -475,39 +475,39 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
         animateTableView = true
         let selectedIndexPaths = tableView.indexPathsForSelectedRows ?? []
         if !selectedIndexPaths.isEmpty {
-        tableView.reloadRows(at: selectedIndexPaths, with: .none)
+            tableView.reloadRows(at: selectedIndexPaths, with: .none)
         }
         selectedIndexPaths.forEach {
-        tableView.selectRow(at: $0, animated: false, scrollPosition: .none)
+            tableView.selectRow(at: $0, animated: false, scrollPosition: .none)
         }
-    
+
         let deselectionAnimation = { [weak self] (context: UIViewControllerTransitionCoordinatorContext) in
-        selectedIndexPaths.forEach {
-        self?.tableView.deselectRow(at: $0, animated: context.isAnimated)
+            selectedIndexPaths.forEach {
+                self?.tableView.deselectRow(at: $0, animated: context.isAnimated)
+            }
         }
-        }
-    
+
         let reselection = { [weak self] (context: UIViewControllerTransitionCoordinatorContext) in
-        if context.isCancelled {
-        selectedIndexPaths.forEach {
-        self?.tableView.selectRow(at: $0, animated: false, scrollPosition: .none)
+            if context.isCancelled {
+                selectedIndexPaths.forEach {
+                    self?.tableView.selectRow(at: $0, animated: false, scrollPosition: .none)
+                }
+            }
         }
-        }
-        }
-    
+
         if let coordinator = transitionCoordinator {
-        coordinator.animate(alongsideTransition: deselectionAnimation, completion: reselection)
+            coordinator.animate(alongsideTransition: deselectionAnimation, completion: reselection)
         } else {
-        selectedIndexPaths.forEach {
-        tableView.deselectRow(at: $0, animated: false)
+            selectedIndexPaths.forEach {
+                tableView.deselectRow(at: $0, animated: false)
+            }
         }
-        }
-    
+
         NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillShow(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
-    
-        if form.containsMultivaluedSection {
-        tableView.setEditing(true, animated: false)
+
+        if form.containsMultivaluedSection && (isBeingPresented || isMovingToParentViewController) {
+            tableView.setEditing(true, animated: false)
         }
     }
     
@@ -567,7 +567,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
     public final func endEditing<T>(of cell: Cell<T>) {
         cell.row.isHighlighted = false
         cell.row.wasBlurred = true
-        RowDefaults.onCellHighlightChanged["\(type(of: self))"]?(cell, cell.row)
+        RowDefaults.onCellHighlightChanged["\(type(of: cell.row!))"]?(cell, cell.row)
         cell.row.callbackOnCellHighlightChanged?()
         if cell.row.validationOptions.contains(.validatesOnBlur) || (cell.row.wasChanged && cell.row.validationOptions.contains(.validatesOnChangeAfterBlurred)) {
             cell.row.validate()
@@ -917,7 +917,7 @@ extension FormViewController : UITableViewDelegate {
             return .none
         }
         if section.multivaluedOptions.contains(.Insert) && indexPath.row == section.count - 1 {
-            return .insert
+            return section.showInsertIconInAddButton ? .insert : .none
         }
         if section.multivaluedOptions.contains(.Delete) {
             return .delete
@@ -930,16 +930,16 @@ extension FormViewController : UITableViewDelegate {
     }
 
 	@available(iOS 11,*)
-	public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+	open func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		return form[indexPath].leadingSwipe.contextualConfiguration
 	}
 
 	@available(iOS 11,*)
-	public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+	open func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		return form[indexPath].trailingSwipe.contextualConfiguration
 	}
 
-	public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
+	open func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
         guard let actions = form[indexPath].trailingSwipe.contextualActions as? [UITableViewRowAction], !actions.isEmpty else {
             return nil
         }

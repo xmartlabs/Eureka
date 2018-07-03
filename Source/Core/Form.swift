@@ -32,7 +32,7 @@ public protocol FormDelegate : class {
     func rowsHaveBeenAdded(_ rows: [BaseRow], at: [IndexPath])
     func rowsHaveBeenRemoved(_ rows: [BaseRow], at: [IndexPath])
     func rowsHaveBeenReplaced(oldRows: [BaseRow], newRows: [BaseRow], at: [IndexPath])
-    func valueHasBeenChanged(for: BaseRow, oldValue: Any?, newValue: Any?)
+    func valueHasBeenChanged(for row: BaseRow, oldValue: Any?, newValue: Any?)
 }
 
 // MARK: Form
@@ -354,7 +354,7 @@ extension Form {
     }
 	
 	var containsMultivaluedSection: Bool {
-		return kvoWrapper.sections.contains { $0 is MultivaluedSection }
+		return kvoWrapper._allSections.contains { $0 is MultivaluedSection }
 	}
 
     func getValues(for rows: [BaseRow]) -> [String: Any?] {
@@ -386,4 +386,10 @@ extension Form {
             return res
         }
     }
+    
+    // Reset rows validation
+    public func cleanValidationErrors(){
+        allRows.forEach { $0.cleanValidationErrors() }
+    }
 }
+

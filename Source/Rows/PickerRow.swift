@@ -26,11 +26,11 @@ import Foundation
 
 // MARK: PickerCell
 
-open class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerViewDelegate where T: Equatable {
+open class _PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerViewDelegate where T: Equatable {
 
     @IBOutlet public weak var picker: UIPickerView!
 
-    private var pickerRow: _PickerRow<T>? { return row as? _PickerRow<T> }
+    fileprivate var pickerRow: _PickerRow<T>? { return row as? _PickerRow<T> }
 
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         let pickerView = UIPickerView()
@@ -57,19 +57,16 @@ open class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerVi
         picker.dataSource = self
     }
 
-    deinit {
-        picker?.delegate = nil
-        picker?.dataSource = nil
-    }
-
     open override func update() {
         super.update()
         textLabel?.text = nil
         detailTextLabel?.text = nil
         picker.reloadAllComponents()
-        if let selectedValue = pickerRow?.value, let index = pickerRow?.options.index(of: selectedValue) {
-            picker.selectRow(index, inComponent: 0, animated: true)
-        }
+    }
+
+    deinit {
+        picker?.delegate = nil
+        picker?.dataSource = nil
     }
 
     open func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -87,6 +84,25 @@ open class PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerVi
     open func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if let picker = pickerRow, !picker.options.isEmpty {
             picker.value = picker.options[row]
+        }
+    }
+
+}
+
+open class PickerCell<T> : _PickerCell<T> where T: Equatable {
+
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+
+    open override func update() {
+        super.update()
+        if let selectedValue = pickerRow?.value, let index = pickerRow?.options.index(of: selectedValue) {
+            picker.selectRow(index, inComponent: 0, animated: true)
         }
     }
 
