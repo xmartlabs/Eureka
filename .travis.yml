@@ -13,8 +13,3 @@ script:
 before_deploy:
   - carthage build --no-skip-current
   - carthage archive Eureka
-deploy:
-  file: Eureka.framework.zip
-  skip_cleanup: true
-  on:
-    tags: true
