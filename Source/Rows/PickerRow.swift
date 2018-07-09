@@ -69,7 +69,7 @@ open class _PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerV
         picker?.dataSource = nil
     }
 
-    open var pickerTextColor: UIColor?
+    open var pickerTextAttributes: [NSAttributedStringKey: Any]?
 
     open func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -90,10 +90,10 @@ open class _PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerV
     }
 
     open func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        guard let pickerTextColor = pickerTextColor, let text = self.pickerView(pickerView, titleForRow: row, forComponent: component) else {
+        guard let pickerTextAttributes = pickerTextAttributes, let text = self.pickerView(pickerView, titleForRow: row, forComponent: component) else {
             return nil
         }
-        return NSAttributedString(string: text, attributes: [.foregroundColor: pickerTextColor])
+        return NSAttributedString(string: text, attributes: pickerTextAttributes)
     }
 }
 
