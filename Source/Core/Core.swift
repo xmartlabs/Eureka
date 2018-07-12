@@ -470,11 +470,9 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
         super.viewWillAppear(animated)
         animateTableView = true
         let selectedIndexPaths = tableView.indexPathsForSelectedRows ?? []
-        if !selectedIndexPaths.isEmpty {
-            tableView.reloadRows(at: selectedIndexPaths, with: .none)
-        }
+
         selectedIndexPaths.forEach {
-            tableView.selectRow(at: $0, animated: false, scrollPosition: .none)
+            form[$0].updateCell()
         }
 
         let deselectionAnimation = { [weak self] (context: UIViewControllerTransitionCoordinatorContext) in
