@@ -840,7 +840,7 @@ extension FormViewController : UITableViewDelegate {
                 fatalError("Multivalued section multivaluedRowToInsertAt property must be set up")
             }
             let newRow = multivaluedRowToInsertAt(max(0, section.count - 1))
-            section.insert(newRow, at: section.count - 1)
+            section.insert(newRow, at: max(0, section.count - 1))
             DispatchQueue.main.async {
                 tableView.isEditing = !tableView.isEditing
                 tableView.isEditing = !tableView.isEditing
