@@ -48,6 +48,7 @@ extension PresenterRowType {
      
      - returns: this row
      */
+    @discardableResult
     public func onPresent(_ callback: ((FormViewController, PresentedControllerType) -> Void)?) -> Self {
         onPresentCallback = callback
         return self
