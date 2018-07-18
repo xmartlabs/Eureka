@@ -251,6 +251,12 @@ extension Section: MutableCollection, BidirectionalCollection {
 extension Section: RangeReplaceableCollection {
 
     // MARK: RangeReplaceableCollectionType
+    
+    public func prepend(_ formRow: BaseRow) {
+        kvoWrapper.rows.insert(formRow, at: 0)
+        kvoWrapper._allRows.insert(formRow, at: 0) //  append(formRow)
+        formRow.wasAddedTo(section: self)
+    }
 
     public func append(_ formRow: BaseRow) {
         kvoWrapper.rows.insert(formRow, at: kvoWrapper.rows.count)
