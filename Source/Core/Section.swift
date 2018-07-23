@@ -313,9 +313,10 @@ extension Section: RangeReplaceableCollection {
         }
         return kvoWrapper._allRows.count
     }
+
 }
 
-extension Section /* Condition */{
+extension Section /* Condition */ {
 
     // MARK: Hidden/Disable Engine
 
@@ -404,6 +405,24 @@ extension Section /* Condition */{
         }
         kvoWrapper.rows.insert(row, at: formIndex == NSNotFound ? 0 : formIndex + 1)
     }
+}
+
+extension Section /* Helpers */ {
+
+    /**
+     *  This method inserts a row after another row.
+     *  It is useful if you want to insert a row after a row that is currently hidden. Otherwise use `insert(at: Int)`.
+     *  It throws an error if the old row is not in this section.
+     */
+    public func insert(row newRow: BaseRow, after oldRow: BaseRow) throws {
+        guard let rowIndex = (kvoWrapper._allRows as Array<BaseRow>).index(of: oldRow) else {
+            throw EurekaError.rowNotInSection(row: oldRow)
+        }
+        kvoWrapper._allRows.insert(newRow, at: index(after: rowIndex))
+        show(row: newRow)
+        newRow.wasAddedTo(section: self)
+    }
+
 }
 
 /**
