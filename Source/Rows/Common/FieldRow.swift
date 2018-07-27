@@ -128,11 +128,37 @@ extension TextFieldCell {
     }
 }
 
-open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: Equatable, T: InputTypeInitiable {
+open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell  where T: Equatable, T: InputTypeInitiable {
 
     @IBOutlet public weak var textField: UITextField!
     @IBOutlet public weak var titleLabel: UILabel?
 
+    private var accessibilityLabelOverride: Bool = false
+    open override var accessibilityLabel: String? {
+        get {
+            return accessibilityLabelOverride
+                ? super.accessibilityLabel
+                : (titleLabel?.text ?? textField.placeholder)
+        }
+        set {
+            accessibilityLabelOverride = true
+            super.accessibilityLabel = accessibilityLabel
+        }
+    }
+    
+    private var accessibilityValueOverride: Bool = false
+    open override var accessibilityValue: String? {
+        get {
+            return accessibilityValueOverride
+                ? super.accessibilityValue
+                : textField.text
+        }
+        set {
+            accessibilityValueOverride = true
+            super.accessibilityValue = accessibilityValue
+        }
+    }
+    
     fileprivate var observingTitleText = false
     private var awakeFromNibCalled = false
 
@@ -141,15 +167,16 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
 	private var calculatedTitlePercentage: CGFloat = 0.7
 
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-
         let textField = UITextField()
         self.textField = textField
         textField.translatesAutoresizingMaskIntoConstraints = false
 
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        setupTitleLabel()
+        isAccessibilityElement = true
+        accessibilityTraits = textField.accessibilityTraits
 
+        setupTitleLabel()
         contentView.addSubview(titleLabel!)
         contentView.addSubview(textField)
 

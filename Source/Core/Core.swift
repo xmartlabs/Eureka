@@ -956,7 +956,7 @@ extension FormViewController : UITableViewDataSource {
     }
 
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    	form[indexPath].updateCell()
+        form[indexPath].updateCell()
         return form[indexPath].baseCell
     }
 

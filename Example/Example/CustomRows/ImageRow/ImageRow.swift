@@ -194,6 +194,7 @@ open class _ImageRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where C
         
         cell.accessoryType = .none
         cell.editingAccessoryView = .none
+        cell.accessibilityTraits = UIAccessibilityTraitButton
         
         if let image = self.value {
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))

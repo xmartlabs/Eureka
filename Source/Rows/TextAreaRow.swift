@@ -58,9 +58,34 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     @IBOutlet public weak var placeholderLabel: UILabel?
 
     private var awakeFromNibCalled = false
+    
+    private var accessibilityLabelOverride: Bool = false
+    open override var accessibilityLabel: String? {
+        get {
+            return accessibilityLabelOverride
+                ? super.accessibilityLabel
+                : placeholderLabel?.text
+        }
+        set {
+            accessibilityLabelOverride = true
+            super.accessibilityLabel = accessibilityLabel
+        }
+    }
+    
+    private var accessibilityValueOverride: Bool = false
+    open override var accessibilityValue: String? {
+        get {
+            return accessibilityValueOverride
+                ? super.accessibilityValue
+                : textView.text
+        }
+        set {
+            accessibilityValueOverride = true
+            super.accessibilityValue = accessibilityValue
+        }
+    }
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         let textView = UITextView()
@@ -109,6 +134,11 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
             imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
         }
         setNeedsUpdateConstraints()
+        
+        isAccessibilityElement = true
+        // using textView.accessibilityTraits results in a call to characterRangeAtPoint: 
+        // sent to the cell, what leads to a crash
+        accessibilityTraits = UITextField().accessibilityTraits
     }
 
     deinit {

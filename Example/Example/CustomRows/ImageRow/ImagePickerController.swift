@@ -40,7 +40,7 @@ open class ImagePickerController : UIImagePickerController, TypedRowControllerTy
     }
     
     open func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        (row as? ImageRow)?.imageURL = info[UIImagePickerControllerReferenceURL] as? URL
+        (row as? ImageRow)?.imageURL = info[UIImagePickerControllerPHAsset] as? URL
         row.value = info[UIImagePickerControllerOriginalImage] as? UIImage
         onDismissCallback?(self)
     }
