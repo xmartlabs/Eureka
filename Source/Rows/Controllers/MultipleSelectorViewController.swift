@@ -108,8 +108,8 @@ open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: O
     }
 
     func section(with options: [OptionsRow.OptionsProviderType.Option], header: String?, footer: String?) -> SelectableSection<Row> {
-        let section = SelectableSection<Row>(header: header ?? "", footer: footer ?? "", selectionType: .multipleSelection) { [weak self] section in
-            section.onSelectSelectableRow = { _, selectableRow in
+        let section = SelectableSection<Row>(header: header ?? "", footer: footer ?? "", selectionType: .multipleSelection) { section in
+            section.onSelectSelectableRow = {  [weak self] _, selectableRow in
                 var newValue: Set<OptionsRow.OptionsProviderType.Option> = self?.row.value ?? []
                 if let selectableValue = selectableRow.value {
                     newValue.insert(selectableValue)

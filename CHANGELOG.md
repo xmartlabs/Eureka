@@ -1,6 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [4.2.0](https://github.com/xmartlabs/Eureka/releases/tag/4.2.0)
+
+* Adding support for RowType.subtitle on FieldRow (#1468)
+* CompletionHandler for SwipeAction under iOS < 11
+* Allow setting position of the cell after scrolling (#1452)
+* Add Chinese readme (#1487)
+* Implement readOnly textAreaRow feature (#1489)
+* Update cell when tintColor changes (#1492)
+* PickerRow for 2 and 3 components (#1540)
+* And several bug fixes
+
 ### [4.1.1](https://github.com/xmartlabs/Eureka/releases/tag/4.1.1)
 
 * Bug fixes and stability improvements.

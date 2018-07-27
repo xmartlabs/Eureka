@@ -31,7 +31,7 @@ public func == <A: Equatable, B: Equatable, C: Equatable>(lhs: Tuple3<A, B, C>, 
 
 open class TriplePickerCell<A, B, C> : _PickerCell<Tuple3<A, B, C>> where A: Equatable, B: Equatable, C: Equatable {
 
-    private var pickerRow: _TriplePickerRow<A, B, C>! { return row as? _TriplePickerRow<A, B, C> }
+    private var pickerRow: _TriplePickerRow<A, B, C>? { return row as? _TriplePickerRow<A, B, C> }
 
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -43,9 +43,9 @@ open class TriplePickerCell<A, B, C> : _PickerCell<Tuple3<A, B, C>> where A: Equ
 
     open override func update() {
         super.update()
-        if let selectedValue = pickerRow.value, let indexA = pickerRow.firstOptions().index(of: selectedValue.a),
-            let indexB = pickerRow.secondOptions(selectedValue.a).index(of: selectedValue.b),
-            let indexC = pickerRow.thirdOptions(selectedValue.a, selectedValue.b).index(of: selectedValue.c) {
+        if let selectedValue = pickerRow?.value, let indexA = pickerRow?.firstOptions().index(of: selectedValue.a),
+            let indexB = pickerRow?.secondOptions(selectedValue.a).index(of: selectedValue.b),
+            let indexC = pickerRow?.thirdOptions(selectedValue.a, selectedValue.b).index(of: selectedValue.c) {
             picker.selectRow(indexA, inComponent: 0, animated: true)
             picker.selectRow(indexB, inComponent: 1, animated: true)
             picker.selectRow(indexC, inComponent: 2, animated: true)
@@ -57,6 +57,7 @@ open class TriplePickerCell<A, B, C> : _PickerCell<Tuple3<A, B, C>> where A: Equ
     }
 
     open override func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        guard let pickerRow = pickerRow else { return 0 }
         if component == 0 {
             return pickerRow.firstOptions().count
         } else if component == 1 {
@@ -67,16 +68,18 @@ open class TriplePickerCell<A, B, C> : _PickerCell<Tuple3<A, B, C>> where A: Equ
     }
 
     open override func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        guard let pickerRow = pickerRow else { return "" }
         if component == 0 {
-            return String(describing: pickerRow.firstOptions()[row])
+            return pickerRow.displayValueForFirstRow(pickerRow.firstOptions()[row])
         } else if component == 1 {
-            return String(describing: pickerRow.secondOptions(pickerRow.selectedFirst())[row])
+            return pickerRow.displayValueForSecondRow(pickerRow.secondOptions(pickerRow.selectedFirst())[row])
         } else {
-            return String(describing: pickerRow.thirdOptions(pickerRow.selectedFirst(), pickerRow.selectedSecond())[row])
+            return pickerRow.displayValueForThirdRow(pickerRow.thirdOptions(pickerRow.selectedFirst(), pickerRow.selectedSecond())[row])
         }
     }
 
     open override func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        guard let pickerRow = pickerRow else { return }
         if component == 0 {
             let a = pickerRow.firstOptions()[row]
             if let value = pickerRow.value {
@@ -140,6 +143,13 @@ open class _TriplePickerRow<A, B, C> : Row<TriplePickerCell<A, B, C>> where A: E
     public var secondOptions: ((A) -> [B]) = {_ in []}
     /// Options for third component given the selected value from the first and second components. Will be called often so should be O(1)
     public var thirdOptions: ((A, B) -> [C]) = {_, _ in []}
+    
+    /// Modify the displayed values for the first picker row.
+    public var displayValueForFirstRow: ((A) -> (String)) = { a in return String(describing: a) }
+    /// Modify the displayed values for the second picker row.
+    public var displayValueForSecondRow: ((B) -> (String)) = { b in return String(describing: b) }
+    /// Modify the displayed values for the third picker row.
+    public var displayValueForThirdRow: ((C) -> (String)) = { c in return String(describing: c) }
 
     required public init(tag: String?) {
         super.init(tag: tag)
