@@ -44,6 +44,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
   + [Multivalued sections]
   + [Validations]
   + [Swipe Actions]
+* [Custom form size]
 * [Custom rows]
   + [Basic custom rows]
   + [Custom inline rows]
@@ -631,6 +632,14 @@ let row = TextRow() {
 
 Swipe Actions need `tableView.isEditing` be set to `false`. Eureka will set this to `true` if there is a MultivaluedSection in the form (in the `viewWillAppear`).
 If you have both MultivaluedSections and swipe actions in the same form you should set `isEditing` according to your needs.
+
+## Custom form size
+
+Forms will span the entire view controller when you extend FormViewController. If you want to show your form in a subview of your view controller follow below steps:
+
+1. Add your UITableView to the view in your storyboard. Make sure the table view is styled as grouped rather than plain.
+2. Drag from the tableView circle in the Outlets panel in the Connections Inspector. This outlet is provided by Eureka's FormViewController so there is no need to override it or create a new @IBOutlet for the table view.
+3. Continue with your code as normal. The form variable now references your UITableView.
 
 ## Custom rows
 
