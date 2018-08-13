@@ -130,7 +130,7 @@ extension TextFieldCell {
 
 open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: Equatable, T: InputTypeInitiable {
 
-    @IBOutlet public weak var textField: UITextField!
+    @IBOutlet open weak var textField: UITextField!
     @IBOutlet public weak var titleLabel: UILabel?
 
     fileprivate var observingTitleText = false
