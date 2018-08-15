@@ -60,6 +60,42 @@ open class IntCell: _FieldCell<Int>, CellType {
     }
 }
 
+open class Int32Cell: _FieldCell<Int32>, CellType {
+    
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    open override func setup() {
+        super.setup()
+        textField.autocorrectionType = .default
+        textField.autocapitalizationType = .none
+        textField.keyboardType = .numberPad
+    }
+}
+
+open class Int64Cell: _FieldCell<Int64>, CellType {
+    
+    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    open override func setup() {
+        super.setup()
+        textField.autocorrectionType = .default
+        textField.autocapitalizationType = .none
+        textField.keyboardType = .numberPad
+    }
+}
+
 open class PhoneCell: _FieldCell<String>, CellType {
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -237,6 +273,28 @@ open class _IntRow: FieldRow<IntCell> {
     }
 }
 
+open class _Int32Row: FieldRow<Int32Cell> {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale.current
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.minimumFractionDigits = 0
+        formatter = numberFormatter
+    }
+}
+
+open class _Int64Row: FieldRow<Int64Cell> {
+    public required init(tag: String?) {
+        super.init(tag: tag)
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale.current
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.minimumFractionDigits = 0
+        formatter = numberFormatter
+    }
+}
+
 open class _PhoneRow: FieldRow<PhoneCell> {
     public required init(tag: String?) {
         super.init(tag: tag)
@@ -347,6 +405,20 @@ public final class ZipCodeRow: _ZipCodeRow, RowType {
 
 /// A row where the user can enter an integer number.
 public final class IntRow: _IntRow, RowType {
+    required public init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+
+/// A row where the user can enter a 32-bit integer number.
+public final class Int32Row: _IntRow, RowType {
+    required public init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+
+/// A row where the user can enter a 64-bit integer number.
+public final class Int64Row: _IntRow, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
