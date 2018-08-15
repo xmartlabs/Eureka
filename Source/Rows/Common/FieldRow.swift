@@ -35,7 +35,16 @@ public protocol FieldRowConformance : FormatterConformance {
 }
 
 extension Int: InputTypeInitiable {
-
+    public init?(string stringValue: String) {
+        self.init(stringValue, radix: 10)
+    }
+}
+extension Int32: InputTypeInitiable {
+    public init?(string stringValue: String) {
+        self.init(stringValue, radix: 10)
+    }
+}
+extension Int64: InputTypeInitiable {
     public init?(string stringValue: String) {
         self.init(stringValue, radix: 10)
     }
