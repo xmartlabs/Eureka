@@ -411,14 +411,14 @@ public final class IntRow: _IntRow, RowType {
 }
 
 /// A row where the user can enter a 32-bit integer number.
-public final class Int32Row: _IntRow, RowType {
+public final class Int32Row: _Int32Row, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
 }
 
 /// A row where the user can enter a 64-bit integer number.
-public final class Int64Row: _IntRow, RowType {
+public final class Int64Row: _Int64Row, RowType {
     required public init(tag: String?) {
         super.init(tag: tag)
     }
