@@ -1018,7 +1018,7 @@ $ git submodule add https://github.com/xmartlabs/Eureka.git
 
 **在贡献之前，请先查看[CONTRIBUTING](../CONTRIBUTING.md)文件了解更多信息。**
 
-如果你在你的项目中使用了**Eureka**，我们很像听到这个消息。可以在[twitter]给我发消息。
+如果你在你的项目中使用了**Eureka**，我们很想听到这个消息。可以在[twitter]给我发消息。
 
 ## 作者
 
