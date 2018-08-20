@@ -65,9 +65,9 @@ open class TriplePickerInputCell<A, B, C> : _PickerInputCell<Tuple3<A, B, C>> wh
 
                 let b: B = pickerRow.secondOptions(a).contains(value.b) ? value.b : pickerRow.secondOptions(a)[0]
                 let c: C = pickerRow.thirdOptions(a, b).contains(value.c) ? value.c : pickerRow.thirdOptions(a, b)[0]
+                pickerRow.value = Tuple3(a: a, b: b, c: c)
                 pickerView.reloadComponent(1)
                 pickerView.reloadComponent(2)
-                pickerRow.value = Tuple3(a: a, b: b, c: c)
                 if b != value.b {
                     pickerView.selectRow(0, inComponent: 1, animated: true)
                 }
