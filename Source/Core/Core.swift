@@ -426,6 +426,13 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
     /// Defines the behaviour of the navigation between rows
     public var navigationOptions: RowNavigationOptions?
     private var tableViewStyle: UITableViewStyle = .grouped
+    
+    
+    /// Defines default header height if no header view has been provided
+    public var defaultHeaderHeight = UITableViewAutomaticDimension
+
+    /// Defines default footer height if no footer view has been provided
+    public var defaultFooterHeight = UITableViewAutomaticDimension
 
     public init(style: UITableViewStyle) {
         super.init(nibName: nil, bundle: nil)
@@ -798,15 +805,29 @@ extension FormViewController : UITableViewDelegate {
     }
 
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return height(specifiedHeight: form[section].header?.height,
-                      sectionView: self.tableView(tableView, viewForHeaderInSection: section),
-                      sectionTitle: self.tableView(tableView, titleForHeaderInSection: section))
+        if let height = form[section].header?.height {
+            return height()
+        }
+        guard let view = form[section].header?.viewForSection(form[section], type: .header) else {
+            return defaultHeaderHeight
+        }
+        guard view.bounds.height != 0 else {
+            return defaultHeaderHeight
+        }
+        return view.bounds.height
     }
 
     open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return height(specifiedHeight: form[section].footer?.height,
-                      sectionView: self.tableView(tableView, viewForFooterInSection: section),
-                      sectionTitle: self.tableView(tableView, titleForFooterInSection: section))
+        if let height = form[section].footer?.height {
+            return height()
+        }
+        guard let view = form[section].footer?.viewForSection(form[section], type: .footer) else {
+            return defaultFooterHeight
+        }
+        guard view.bounds.height != 0 else {
+            return defaultFooterHeight
+        }
+        return view.bounds.height
     }
 
     open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
