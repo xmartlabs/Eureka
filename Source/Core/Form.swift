@@ -60,6 +60,10 @@ public final class Form {
 
     public init() {}
 
+    deinit {
+        removeAll()
+    }
+
     /**
      Returns the row at the given indexPath
      */
