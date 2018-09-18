@@ -80,7 +80,7 @@ open class _ImageRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where C
     open internal(set) var imageURL: URL?
     open var clearAction = ImageClearAction.yes(style: .destructive)
     
-    private var _sourceType: UIImagePickerController.SourceType = .camera
+    private var _sourceType = UIImagePickerController.SourceType.camera
     
     public required init(tag: String?) {
         sourceTypes = .All

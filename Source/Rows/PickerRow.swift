@@ -69,7 +69,7 @@ open class _PickerCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPickerV
         picker?.dataSource = nil
     }
 
-    open var pickerTextAttributes: [NSAttributedStringKey: Any]?
+    open var pickerTextAttributes: [NSAttributedString.Key: Any]?
 
     open func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
