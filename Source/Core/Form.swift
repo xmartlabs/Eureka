@@ -241,8 +241,8 @@ extension Form : RangeReplaceableCollection {
     private func indexForInsertion(at index: Int) -> Int {
         guard index != 0 else { return 0 }
 
-        let row = kvoWrapper.sections[index-1]
-        if let i = kvoWrapper._allSections.index(of: row as! Section) {
+        let section = kvoWrapper.sections[index-1]
+        if let i = kvoWrapper._allSections.index(of: section as! Section) {
             return i + 1
         }
         return kvoWrapper._allSections.count

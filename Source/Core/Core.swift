@@ -299,10 +299,12 @@ extension Condition : ExpressibleByStringLiteral {
 /**
 Errors thrown by Eureka
 
-- DuplicatedTag: When a section or row is inserted whose tag dows already exist
+ - duplicatedTag: When a section or row is inserted whose tag dows already exist
+ - rowNotInSection: When a row was expected to be in a Section, but is not.
 */
 public enum EurekaError: Error {
     case duplicatedTag(tag: String)
+    case rowNotInSection(row: BaseRow)
 }
 
 //Mark: FormViewController
