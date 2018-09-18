@@ -414,9 +414,9 @@ extension Section /* Helpers */ {
      *  It is useful if you want to insert a row after a row that is currently hidden. Otherwise use `insert(at: Int)`.
      *  It throws an error if the old row is not in this section.
      */
-    public func insert(row newRow: BaseRow, after oldRow: BaseRow) throws {
-        guard let rowIndex = (kvoWrapper._allRows as Array<BaseRow>).index(of: oldRow) else {
-            throw EurekaError.rowNotInSection(row: oldRow)
+    public func insert(row newRow: BaseRow, after previousRow: BaseRow) throws {
+        guard let rowIndex = (kvoWrapper._allRows as [BaseRow]).index(of: previousRow) else {
+            throw EurekaError.rowNotInSection(row: previousRow)
         }
         kvoWrapper._allRows.insert(newRow, at: index(after: rowIndex))
         show(row: newRow)
