@@ -263,7 +263,7 @@ extension Form {
         init(form: Form) {
             self.form = form
             super.init()
-            addObserver(self, forKeyPath: "_sections", options: NSKeyValueObservingOptions.new.union(.old), context:nil)
+            addObserver(self, forKeyPath: "_sections", options: [.new, .old], context:nil)
         }
 
         deinit {

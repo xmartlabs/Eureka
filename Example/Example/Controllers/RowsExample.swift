@@ -146,7 +146,7 @@ class RowsExampleViewController: FormViewController {
                 $0.value = 👦🏼
                 $0.selectorTitle = "Choose a lazy Emoji!"
                 $0.optionsProvider = .lazy({ (form, completion) in
-                    let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                    let activityView = UIActivityIndicatorView(style: .gray)
                     form.tableView.backgroundView = activityView
                     activityView.startAnimating()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
@@ -241,7 +241,7 @@ class RowsExampleViewController: FormViewController {
                 $0.title = "LazyMultipleSelectorRow"
                 $0.value = [👦🏼, 🍐, 🐗]
                 $0.optionsProvider = .lazy({ (form, completion) in
-                    let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                    let activityView = UIActivityIndicatorView(style: .gray)
                     form.tableView.backgroundView = activityView
                     activityView.startAnimating()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
