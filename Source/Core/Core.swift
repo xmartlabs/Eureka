@@ -929,11 +929,17 @@ extension FormViewController : UITableViewDelegate {
 
 	@available(iOS 11,*)
 	open func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard !form[indexPath].leadingSwipe.actions.isEmpty else {
+            return nil
+        }
 		return form[indexPath].leadingSwipe.contextualConfiguration
 	}
 
 	@available(iOS 11,*)
 	open func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard !form[indexPath].trailingSwipe.actions.isEmpty else {
+            return nil
+        }
 		return form[indexPath].trailingSwipe.contextualConfiguration
 	}
 
