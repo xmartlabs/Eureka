@@ -51,7 +51,7 @@ class RowsExampleViewController: FormViewController {
                 $0.value = 5.0
             }
             .cellSetup { cell, row in
-                cell.height = { 44 }
+                cell.imageView?.image = #imageLiteral(resourceName: "selected")
             }
 
             <<< StepperRow() {

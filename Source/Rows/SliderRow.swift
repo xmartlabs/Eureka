@@ -149,7 +149,8 @@ open class SliderCell: Cell<Float>, CellType {
         
         if let imageView = imageView, let _ = imageView.image {
             views["imageView"] = imageView
-            let hContraints = NSLayoutConstraint.constraints(withVisualFormat: "H:[imageView]-(15)-\(title)[slider]\(value)-|", options: .alignAllCenterY, metrics: metrics, views: views)
+            let hContraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-[imageView]-(15)-\(title)[slider]\(value)-|", options: .alignAllCenterY, metrics: metrics, views: views)
+            imageView.translatesAutoresizingMaskIntoConstraints = false
             dynamicConstraints.append(contentsOf: hContraints)
         } else {
             let hContraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(title)[slider]\(value)-|", options: .alignAllCenterY, metrics: metrics, views: views)
