@@ -1,4 +1,4 @@
-//  AlertRow.swift
+//  TextAreaRow.swift
 //  Eureka ( https://github.com/xmartlabs/Eureka )
 //
 //  Copyright (c) 2016 Xmartlabs SRL ( http://xmartlabs.com )
@@ -24,9 +24,22 @@
 
 import Foundation
 
+// TODO: Temporary workaround for Xcode 10 beta
+#if swift(>=4.2)
+import UIKit.UIGeometry
+extension UIEdgeInsets {
+    static let zero = UIEdgeInsets()
+}
+#endif
+
 public enum TextAreaHeight {
     case fixed(cellHeight: CGFloat)
     case dynamic(initialTextViewHeight: CGFloat)
+}
+
+public enum TextAreaMode {
+    case normal
+    case readOnly
 }
 
 protocol TextAreaConformance: FormatterConformance {
@@ -54,7 +67,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
 
     private var awakeFromNibCalled = false
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -92,7 +105,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         let textAreaRow = row as! TextAreaConformance
         switch textAreaRow.textAreaHeight {
         case .dynamic(_):
-            height = { UITableViewAutomaticDimension }
+            height = { UITableView.automaticDimension }
             textView.isScrollEnabled = false
         case .fixed(let cellHeight):
             height = { cellHeight }
@@ -101,7 +114,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         textView.delegate = self
         selectionStyle = .none
         if !awakeFromNibCalled {
-            imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
+            imageView?.addObserver(self, forKeyPath: "image", options: [.new, .old], context: nil)
         }
         setNeedsUpdateConstraints()
     }
@@ -121,9 +134,6 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         textView.textColor = row.isDisabled ? .gray : .black
         textView.text = row.displayValueFor?(row.value)
         placeholderLabel?.text = (row as? TextAreaConformance)?.placeholder
-        if !awakeFromNibCalled {
-            placeholderLabel?.sizeToFit()
-        }
         placeholderLabel?.isHidden = textView.text.count != 0
     }
 
@@ -226,6 +236,9 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     }
 
     open func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        if let textAreaRow = self.row as? _TextAreaRow, textAreaRow.textAreaMode == .readOnly {
+            return false
+        }
         return formViewController()?.textInputShouldBeginEditing(textView, cell: self) ?? true
     }
 
@@ -265,7 +278,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
 
 open class TextAreaCell: _TextAreaCell<String>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -278,7 +291,8 @@ open class AreaRow<Cell: CellType>: FormatteableRow<Cell>, TextAreaConformance w
 
     open var placeholder: String?
     open var textAreaHeight = TextAreaHeight.fixed(cellHeight: 110)
-
+    open var textAreaMode = TextAreaMode.normal
+    
     public required init(tag: String?) {
         super.init(tag: tag)
     }

@@ -78,13 +78,13 @@ class MultivaluedSectionTests: XCTestCase {
         XCTAssertFalse(formVC.tableView(formVC.tableView, canEditRowAt: IndexPath(item: 0, section: 1)))
 
         // editingStyleForRowAt
-        XCTAssertEqual(formVC.tableView(formVC.tableView, editingStyleForRowAt: IndexPath(item: 1, section: 0)), UITableViewCellEditingStyle.insert)
-        XCTAssertEqual(formVC.tableView(formVC.tableView, editingStyleForRowAt: IndexPath(item: 0, section: 0)), UITableViewCellEditingStyle.none)
-        XCTAssertEqual(formVC.tableView(formVC.tableView, editingStyleForRowAt: IndexPath(item: 0, section: 1)), UITableViewCellEditingStyle.none)
+        XCTAssertEqual(formVC.tableView(formVC.tableView, editingStyleForRowAt: IndexPath(item: 1, section: 0)), UITableViewCell.EditingStyle.insert)
+        XCTAssertEqual(formVC.tableView(formVC.tableView, editingStyleForRowAt: IndexPath(item: 0, section: 0)), UITableViewCell.EditingStyle.none)
+        XCTAssertEqual(formVC.tableView(formVC.tableView, editingStyleForRowAt: IndexPath(item: 0, section: 1)), UITableViewCell.EditingStyle.none)
 
         form +++ MultivaluedSection(multivaluedOptions: .Delete, header: "", footer: "") { _ in } <<< TextRow()
 
-        XCTAssertEqual(formVC.tableView(formVC.tableView, editingStyleForRowAt: IndexPath(item: 0, section: 2)), UITableViewCellEditingStyle.delete)
+        XCTAssertEqual(formVC.tableView(formVC.tableView, editingStyleForRowAt: IndexPath(item: 0, section: 2)), UITableViewCell.EditingStyle.delete)
 
         // shouldIndentWhileEditingRowAt
         XCTAssertFalse(formVC.tableView(formVC.tableView, shouldIndentWhileEditingRowAt: IndexPath(item: 0, section: 0)))

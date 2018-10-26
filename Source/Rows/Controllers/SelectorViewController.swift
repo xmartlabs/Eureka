@@ -111,9 +111,10 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
     public var dismissOnSelection = true
     public var dismissOnChange = true
 
+    public var selectableRowSetup: ((_ row: Row) -> Void)?
     public var selectableRowCellUpdate: ((_ cell: Row.Cell, _ row: Row) -> Void)?
     public var selectableRowCellSetup: ((_ cell: Row.Cell, _ row: Row) -> Void)?
-
+	
     /// A closure to be called when the controller disappears.
     public var onDismissCallback: ((UIViewController) -> Void)?
 
@@ -132,7 +133,7 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
         return row as! OptionsRow
     }
 
-    override public init(style: UITableViewStyle) {
+    override public init(style: UITableView.Style) {
         super.init(style: style)
     }
 
@@ -191,14 +192,14 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
     func section(with options: [Row.Cell.Value], header: String?, footer: String?) -> SelectableSection<Row> {
         let header = header ?? ""
         let footer = footer ?? ""
-        let section = SelectableSection<Row>(header: header, footer: footer, selectionType: .singleSelection(enableDeselection: enableDeselection)) { [weak self] section in
-            section.onSelectSelectableRow = { _, row in
+        let section = SelectableSection<Row>(header: header, footer: footer, selectionType: .singleSelection(enableDeselection: enableDeselection)) { section in
+            section.onSelectSelectableRow = { [weak self] _, row in
                 let changed = self?.row.value != row.value
                 self?.row.value = row.value
                 
                 if let form = row.section?.form {
                     for section in form where section !== row.section {
-                        let section = section as! SelectableSection<Row>
+                        let section = section as Any as! SelectableSection<Row>
                         if let selectedRow = section.selectedRow(), selectedRow !== row {
                             selectedRow.value = nil
                             selectedRow.updateCell()
@@ -216,6 +217,7 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
                 lrow.title = self.row.displayValueFor?(option)
                 lrow.selectableValue = option
                 lrow.value = self.row.value == option ? option : nil
+                self.selectableRowSetup?(lrow)
             }.cellSetup { [weak self] cell, row in
                 self?.selectableRowCellSetup?(cell, row)
             }.cellUpdate { [weak self] cell, row in

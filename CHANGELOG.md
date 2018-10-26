@@ -1,6 +1,48 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [4.3.0](https://github.com/xmartlabs/Eureka/releases/tag/4.3.0)
+
+* Changes for Swift 4.2, Xcode 10 and iOS 12
+* Add ability to customise the text color of UIPickerView used by PickerRow
+* Make `onPresent` result discardable
+* Add `insert(row: after:)` method on Section which allows inserting rows after a hidden row
+* Other minor fixes
+
+### [4.2.0](https://github.com/xmartlabs/Eureka/releases/tag/4.2.0)
+
+* Adding support for RowType.subtitle on FieldRow (#1468)
+* CompletionHandler for SwipeAction under iOS < 11
+* Allow setting position of the cell after scrolling (#1452)
+* Add Chinese readme (#1487)
+* Implement readOnly textAreaRow feature (#1489)
+* Update cell when tintColor changes (#1492)
+* PickerRow for 2 and 3 components (#1540)
+* And several bug fixes
+
+### [4.1.1](https://github.com/xmartlabs/Eureka/releases/tag/4.1.1)
+
+* Bug fixes and stability improvements.
+
+### [4.1.0](https://github.com/xmartlabs/Eureka/releases/tag/4.1.0)
+
+* Add compatibility for Xcode 9.3 beta 2 and Swift 4.1.
+* New functionality 🎉. https://github.com/xmartlabs/eureka#swipe-actions. Thanks [@marbetschar](https://github.com/marbetschar).
+* Add sectionIndexTitles and sectionForSectionIndexTitles to FormViewController to allow for subclasses to override.
+* Fix SliderRow layout.
+* Fix regular expression for URLs to allow query and location parameter.
+* Corrected issue in section sorting function of MultipleSelectorViewController, where all options were placed in one section, with a section title based on the first option.
+* Added missing call to super.updateConstraints in SegmentedCell.
+* Add ability to setup alert cancel title from AlertRow.
+* remove blank section headers/footers from plain tables on iOS 11. This prevents blank section headers and footers from appearing on iOS
+11 when setting the table view style to plain and there are no headers
+or footers.
+* Fix UIDatePicker bug when mode == .countDownTimer.
+* Allow non-selectable rows to exist besides selectable rows in a selectable section.
+* SliderRow - added option 'shouldHideValue' to hide value label (default to false).
+* Update cell when tintColor changes.
+* Support dynamic font size changes.
+
 ### [4.0.0](https://github.com/xmartlabs/Eureka/releases/tag/4.0.0)
 
 * Xcode 9, Swift 4 support.
