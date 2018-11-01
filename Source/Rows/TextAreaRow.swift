@@ -45,6 +45,7 @@ public enum TextAreaMode {
 protocol TextAreaConformance: FormatterConformance {
     var placeholder: String? { get set }
     var textAreaHeight: TextAreaHeight { get set }
+    var titlePercentage: CGFloat? { get set}
 }
 
 /**
@@ -65,6 +66,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     @IBOutlet public weak var textView: UITextView!
     @IBOutlet public weak var placeholderLabel: UILabel?
 
+    private var titlePercentage: CGFloat = 1
     private var awakeFromNibCalled = false
 
     required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -109,6 +111,10 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
             textView.isScrollEnabled = false
         case .fixed(let cellHeight):
             height = { cellHeight }
+        }
+
+        if let percentage = textAreaRow.titlePercentage {
+            self.titlePercentage = percentage
         }
 
         textView.delegate = self
@@ -267,6 +273,16 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
             views["imageView"] = imageView
             dynamicConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:[imageView]-(15)-[textView]-|", options: [], metrics: nil, views: views))
             dynamicConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:[imageView]-(15)-[label]-|", options: [], metrics: nil, views: views))
+        } else if titlePercentage > 0.0 {
+            textView.textAlignment = .right
+            dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:[textView]-|", options: [], metrics: nil, views: views)
+            dynamicConstraints.append(NSLayoutConstraint(item: textView,
+                                                         attribute: .width,
+                                                         relatedBy: (row as? TextAreaConformance)?.titlePercentage != nil ? .equal : .lessThanOrEqual,
+                                                         toItem: contentView,
+                                                         attribute: .width,
+                                                         multiplier: 1 - titlePercentage,
+                                                         constant: -40))
         } else {
             dynamicConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-[textView]-|", options: [], metrics: nil, views: views))
             dynamicConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-[label]-|", options: [], metrics: nil, views: views))
@@ -292,7 +308,8 @@ open class AreaRow<Cell: CellType>: FormatteableRow<Cell>, TextAreaConformance w
     open var placeholder: String?
     open var textAreaHeight = TextAreaHeight.fixed(cellHeight: 110)
     open var textAreaMode = TextAreaMode.normal
-    
+    open var titlePercentage: CGFloat?
+
     public required init(tag: String?) {
         super.init(tag: tag)
     }
