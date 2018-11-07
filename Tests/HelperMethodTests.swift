@@ -46,7 +46,7 @@ class HelperMethodTests: BaseEurekaTests {
         XCTAssertEqual(row6, form[0][6])
         XCTAssertEqual(row6, form.rowBy(tag: "IntRow_f1") as? IntRow)
 
-        let row_5_and_6: MutableSlice<Section> = form[0][Range(5...6)]
+        let row_5_and_6: Slice<Section> = form[0][Range(5...6)]
         XCTAssertEqual(row_5_and_6[5], form[0][5])
         XCTAssertEqual(row_5_and_6[6], form[0][6])
 

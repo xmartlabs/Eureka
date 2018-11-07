@@ -1,7 +1,7 @@
 language: objective-c
-osx_image: xcode9
+osx_image: xcode10
 env:
-  - DESTINATION="OS=11.0,name=iPhone 7" SCHEME="Eureka" SDK=iphonesimulator
+  - DESTINATION="OS=11.3,name=iPhone 8" SCHEME="Eureka" SDK=iphonesimulator
 before_install:
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
   - brew update

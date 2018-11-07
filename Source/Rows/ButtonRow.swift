@@ -28,7 +28,7 @@ import Foundation
 
 open class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -42,8 +42,7 @@ open class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
         accessoryType = .none
         editingAccessoryType = accessoryType
         textLabel?.textAlignment = .center
-        textLabel?.textColor = tintColor
-        textLabel?.textColor  = tintColor.withAlphaComponent(row.isDisabled ? 0.3 : 1.0)
+        textLabel?.textColor = tintColor.withAlphaComponent(row.isDisabled ? 0.3 : 1.0)
     }
 
     open override func didSelect() {

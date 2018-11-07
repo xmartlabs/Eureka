@@ -81,23 +81,24 @@ class SelectableSectionTests: XCTestCase {
         let value1 = (formVC.form[0] as! SelectableSection<ListCheckRow<String>>).selectedRow()?.baseValue
         let value2 = (formVC.form[1] as! SelectableSection<ListCheckRow<String>>).selectedRows().map {$0.baseValue}
 
-        XCTAssertEqual(value1 as? String, "Antarctica")
+        XCTAssertEqual(value1 as! String, "Antarctica")
         XCTAssertTrue(value2.count == 2)
-        XCTAssertEqual((value2[0] as? String), "Atlantic")
-        XCTAssertEqual((value2[1] as? String), "Pacific")
+        XCTAssertEqual((value2[0] as! String), "Atlantic")
+        XCTAssertEqual((value2[1] as! String), "Pacific")
 
         //Now deselect One of the multiple selection section and change the value of the first section
         formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 6, section: 0))
         formVC.tableView(formVC.tableView!, didSelectRowAt: IndexPath(row: 1, section: 1))
+
 
         let value3 = (formVC.form[0] as! SelectableSection<ListCheckRow<String>>).selectedRow()?.baseValue
         
         let selectedRows = (formVC.form[1] as! SelectableSection<ListCheckRow<String>>).selectedRows()
         let value4 = selectedRows.map { $0.baseValue }
 
-        XCTAssertEqual(value3 as? String, "South America")
+        XCTAssertEqual(value3 as! String, "South America")
         XCTAssertTrue(value4.count == 1)
-        XCTAssertEqual((value4[0] as? String), "Pacific")
+        XCTAssertEqual((value4[0] as! String), "Pacific")
     }
 
     func testDeselectionDisabled() {
@@ -175,9 +176,9 @@ class SelectableSectionTests: XCTestCase {
         XCTAssertEqual(form[1].footer?.title, "East hemisphere")
         XCTAssertEqual(form[2].footer?.title, "")
 
-        XCTAssertEqual(form[0].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Africa", "Asia", "Australia", "Europe"])
-        XCTAssertEqual(form[1].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["North America", "South America"])
-        XCTAssertEqual(form[2].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Antarctica"])
+        XCTAssertEqual(form[0].compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Africa", "Asia", "Australia", "Europe"])
+        XCTAssertEqual(form[1].compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["North America", "South America"])
+        XCTAssertEqual(form[2].compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), ["Antarctica"])
     }
 
     func testLazyOptionsProvider() {
@@ -206,7 +207,7 @@ class SelectableSectionTests: XCTestCase {
         XCTAssertEqual(row.options ?? [], options)
         XCTAssertEqual(form.count, 1)
         XCTAssertEqual(form[0].count, options.count)
-        XCTAssertEqual(form[0].flatMap({ ($0 as! ListCheckRow<String>).selectableValue }), options)
+        XCTAssertEqual(form[0].compactMap({ ($0 as! ListCheckRow<String>).selectableValue }), options)
     }
     
 }

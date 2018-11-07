@@ -39,10 +39,11 @@ open class RuleRegExp: RuleType {
     public var validationError: ValidationError
     public var allowsEmpty = true
 
-    public init(regExpr: String, allowsEmpty: Bool = true, msg: String = "Invalid field value!") {
+    public init(regExpr: String, allowsEmpty: Bool = true, msg: String = "Invalid field value!", id: String? = nil) {
         self.validationError = ValidationError(msg: msg)
         self.regExpr = regExpr
         self.allowsEmpty = allowsEmpty
+        self.id = id
     }
 
     public func isValid(value: String?) -> ValidationError? {

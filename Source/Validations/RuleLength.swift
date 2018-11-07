@@ -31,10 +31,11 @@ public struct RuleMinLength: RuleType {
     public var id: String?
     public var validationError: ValidationError
 
-    public init(minLength: UInt, msg: String? = nil) {
+    public init(minLength: UInt, msg: String? = nil, id: String? = nil) {
         let ruleMsg = msg ?? "Field value must have at least \(minLength) characters"
         min = minLength
         validationError = ValidationError(msg: ruleMsg)
+        self.id = id
     }
 
     public func isValid(value: String?) -> ValidationError? {
@@ -50,10 +51,11 @@ public struct RuleMaxLength: RuleType {
     public var id: String?
     public var validationError: ValidationError
 
-    public init(maxLength: UInt, msg: String? = nil) {
+    public init(maxLength: UInt, msg: String? = nil, id: String? = nil) {
         let ruleMsg = msg ?? "Field value must have less than \(maxLength) characters"
         max = maxLength
         validationError = ValidationError(msg: ruleMsg)
+        self.id = id
     }
 
     public func isValid(value: String?) -> ValidationError? {
@@ -68,10 +70,11 @@ public struct RuleExactLength: RuleType {
     public var id: String?
     public var validationError: ValidationError
     
-    public init(exactLength: UInt, msg: String? = nil) {
+    public init(exactLength: UInt, msg: String? = nil, id: String? = nil) {
         let ruleMsg = msg ?? "Field value must have exactly \(exactLength) characters"
         length = exactLength
         validationError = ValidationError(msg: ruleMsg)
+        self.id = id
     }
     
     public func isValid(value: String?) -> ValidationError? {

@@ -90,7 +90,7 @@ extension SelectableSectionType where Self: Section {
                         row.value = row.value == nil ? row.selectableValue : nil
                     case let .singleSelection(enableDeselection):
                         s.forEach {
-                            guard $0.baseValue != nil && $0 != row else { return }
+                            guard $0.baseValue != nil && $0 != row && $0 is SelectableRow else { return }
                             $0.baseValue = nil
                             $0.updateCell()
                         }
@@ -121,18 +121,18 @@ open class SelectableSection<Row>: Section, SelectableSectionType where Row: Sel
     /// A closure called when a row of this section is selected.
     public var onSelectSelectableRow: ((Row.Cell, Row) -> Void)?
 
-    public override init(_ initializer: (SelectableSection<Row>) -> Void) {
+    public override init(_ initializer: @escaping (SelectableSection<Row>) -> Void) {
         super.init({ _ in })
         initializer(self)
     }
 
-    public init(_ header: String, selectionType: SelectionType, _ initializer: (SelectableSection<Row>) -> Void = { _ in }) {
+    public init(_ header: String, selectionType: SelectionType, _ initializer: @escaping (SelectableSection<Row>) -> Void = { _ in }) {
         self.selectionType = selectionType
         super.init(header, { _ in })
         initializer(self)
     }
 
-    public init(header: String, footer: String, selectionType: SelectionType, _ initializer: (SelectableSection<Row>) -> Void = { _ in }) {
+    public init(header: String, footer: String, selectionType: SelectionType, _ initializer: @escaping (SelectableSection<Row>) -> Void = { _ in }) {
         self.selectionType = selectionType
         super.init(header: header, footer: footer, { _ in })
         initializer(self)
@@ -141,6 +141,12 @@ open class SelectableSection<Row>: Section, SelectableSectionType where Row: Sel
     public required init() {
         super.init()
     }
+
+    #if swift(>=4.1)
+    public required init<S>(_ elements: S) where S : Sequence, S.Element == BaseRow {
+        super.init(elements)
+    }
+    #endif
 
     open override func rowsHaveBeenAdded(_ rows: [BaseRow], at: IndexSet) {
         prepare(selectableRows: rows)

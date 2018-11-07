@@ -26,7 +26,7 @@ import Foundation
 
 open class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
@@ -46,13 +46,11 @@ open class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
 open class SelectorRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where Cell: BaseCell {
 
     
-    public typealias PresenterRow = SelectorViewController<SelectorRow<Cell>>
-    
     /// Defines how the view controller will be presented, pushed, etc.
-    open var presentationMode: PresentationMode<PresenterRow>?
+    open var presentationMode: PresentationMode<SelectorViewController<SelectorRow<Cell>>>?
 
     /// Will be called before the presentation occurs.
-    open var onPresentCallback: ((FormViewController, PresenterRow) -> Void)?
+    open var onPresentCallback: ((FormViewController, SelectorViewController<SelectorRow<Cell>>) -> Void)?
 
     required public init(tag: String?) {
         super.init(tag: tag)
@@ -79,7 +77,7 @@ open class SelectorRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where
      */
     open override func prepare(for segue: UIStoryboardSegue) {
         super.prepare(for: segue)
-        guard let rowVC = segue.destination as? PresenterRow else { return }
+        guard let rowVC = segue.destination as Any as? SelectorViewController<SelectorRow<Cell>> else { return }
         rowVC.title = selectorTitle ?? rowVC.title
         rowVC.onDismissCallback = presentationMode?.onDismissCallback ?? rowVC.onDismissCallback
         onPresentCallback?(cell.formViewController()!, rowVC)

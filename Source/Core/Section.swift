@@ -43,8 +43,8 @@ extension Section : Hidable, SectionDelegate {}
 
 extension Section {
 
-    public func reload(with rowAnimation: UITableViewRowAnimation = .none) {
-        guard let tableView = (form?.delegate as? FormViewController)?.tableView, let index = index else { return }
+    public func reload(with rowAnimation: UITableView.RowAnimation = .none) {
+        guard let tableView = (form?.delegate as? FormViewController)?.tableView, let index = index, index < tableView.numberOfSections else { return }
         tableView.reloadSections(IndexSet(integer: index), with: rowAnimation)
     }
 }
@@ -64,7 +64,7 @@ extension Section {
         init(section: Section) {
             self.section = section
             super.init()
-            addObserver(self, forKeyPath: "_rows", options: NSKeyValueObservingOptions.new.union(.old), context:nil)
+            addObserver(self, forKeyPath: "_rows", options: [.new, .old], context:nil)
         }
 
         deinit {
@@ -154,11 +154,17 @@ open class Section {
 
     public required init() {}
 
-    public init(_ initializer: (Section) -> Void) {
+    #if swift(>=4.1)
+    public required init<S>(_ elements: S) where S: Sequence, S.Element == BaseRow {
+        self.append(contentsOf: elements)
+    }
+    #endif
+
+    public init(_ initializer: @escaping (Section) -> Void) {
         initializer(self)
     }
 
-    public init(_ header: String, _ initializer: (Section) -> Void = { _ in }) {
+    public init(_ header: String, _ initializer: @escaping (Section) -> Void = { _ in }) {
         self.header = HeaderFooterView(stringLiteral: header)
         initializer(self)
     }
@@ -193,7 +199,7 @@ open class Section {
 
     // MARK: Private
     lazy var kvoWrapper: KVOWrapper = { [unowned self] in return KVOWrapper(section: self) }()
-    
+
     var headerView: UIView?
     var footerView: UIView?
     var hiddenCache = false
@@ -233,10 +239,8 @@ extension Section: MutableCollection, BidirectionalCollection {
     }
 
     public subscript (range: Range<Int>) -> ArraySlice<BaseRow> {
-        get { return kvoWrapper.rows.map({ $0 as! BaseRow })[range] }
-        set {
-            replaceSubrange(range, with: newValue)
-        }
+        get { return kvoWrapper.rows.map { $0 as! BaseRow }[range] }
+        set { replaceSubrange(range, with: newValue) }
     }
 
     public func index(after i: Int) -> Int { return i + 1 }
@@ -309,9 +313,10 @@ extension Section: RangeReplaceableCollection {
         }
         return kvoWrapper._allRows.count
     }
+
 }
 
-extension Section /* Condition */{
+extension Section /* Condition */ {
 
     // MARK: Hidden/Disable Engine
 
@@ -402,6 +407,24 @@ extension Section /* Condition */{
     }
 }
 
+extension Section /* Helpers */ {
+
+    /**
+     *  This method inserts a row after another row.
+     *  It is useful if you want to insert a row after a row that is currently hidden. Otherwise use `insert(at: Int)`.
+     *  It throws an error if the old row is not in this section.
+     */
+    public func insert(row newRow: BaseRow, after previousRow: BaseRow) throws {
+        guard let rowIndex = (kvoWrapper._allRows as [BaseRow]).index(of: previousRow) else {
+            throw EurekaError.rowNotInSection(row: previousRow)
+        }
+        kvoWrapper._allRows.insert(newRow, at: index(after: rowIndex))
+        show(row: newRow)
+        newRow.wasAddedTo(section: self)
+    }
+
+}
+
 /**
  *  Navigation options for a form view controller.
  */
@@ -452,17 +475,24 @@ open class MultivaluedSection: Section {
         self.multivaluedOptions = multivaluedOptions
         super.init(header: header, footer: footer, {section in initializer(section as! MultivaluedSection) })
         guard multivaluedOptions.contains(.Insert) else { return }
-        let addRow = addButtonProvider(self)
-        addRow.onCellSelection { cell, row in
-            guard let tableView = cell.formViewController()?.tableView, let indexPath = row.indexPath else { return }
-            cell.formViewController()?.tableView(tableView, commit: .insert, forRowAt: indexPath)
-        }
-        self <<< addRow
+        initialize()
     }
 
     public required init() {
         self.multivaluedOptions = MultivaluedOptions.Insert.union(.Delete)
         super.init()
+        initialize()
+    }
+
+    #if swift(>=4.1)
+    public required init<S>(_ elements: S) where S : Sequence, S.Element == BaseRow {
+        self.multivaluedOptions = MultivaluedOptions.Insert.union(.Delete)
+        super.init(elements)
+        initialize()
+    }
+    #endif
+
+    func initialize() {
         let addRow = addButtonProvider(self)
         addRow.onCellSelection { cell, row in
             guard let tableView = cell.formViewController()?.tableView, let indexPath = row.indexPath else { return }
@@ -470,7 +500,6 @@ open class MultivaluedSection: Section {
         }
         self <<< addRow
     }
-
     /**
      Method used to get all the values of the section.
 

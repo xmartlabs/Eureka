@@ -30,9 +30,10 @@ open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: O
     /// The row that pushed or presented this controller
     public var row: RowOf<Set<OptionsRow.OptionsProviderType.Option>>!
 
+    public var selectableRowSetup: ((_ row: Row) -> Void)?
     public var selectableRowCellSetup: ((_ cell: Row.Cell, _ row: Row) -> Void)?
     public var selectableRowCellUpdate: ((_ cell: Row.Cell, _ row: Row) -> Void)?
-
+    
     /// A closure to be called when the controller disappears.
     public var onDismissCallback: ((UIViewController) -> Void)?
 
@@ -96,7 +97,7 @@ open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: O
 
         let sections = options.reduce([:]) { (reduced, option) -> [String: [Row.Cell.Value]] in
             var reduced = reduced
-            let key = sectionKeyForValue(options.first!)
+            let key = sectionKeyForValue(option)
             var items = reduced[key] ?? []
             items.append(option)
             reduced[key] = items
@@ -107,8 +108,8 @@ open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: O
     }
 
     func section(with options: [OptionsRow.OptionsProviderType.Option], header: String?, footer: String?) -> SelectableSection<Row> {
-        let section = SelectableSection<Row>(header: header ?? "", footer: footer ?? "", selectionType: .multipleSelection) { [weak self] section in
-            section.onSelectSelectableRow = { _, selectableRow in
+        let section = SelectableSection<Row>(header: header ?? "", footer: footer ?? "", selectionType: .multipleSelection) { section in
+            section.onSelectSelectableRow = {  [weak self] _, selectableRow in
                 var newValue: Set<OptionsRow.OptionsProviderType.Option> = self?.row.value ?? []
                 if let selectableValue = selectableRow.value {
                     newValue.insert(selectableValue)
@@ -123,6 +124,7 @@ open class _MultipleSelectorViewController<Row: SelectableRowType, OptionsRow: O
                 lrow.title = String(describing: option)
                 lrow.selectableValue = option
                 lrow.value = self.row.value?.contains(option) ?? false ? option : nil
+                self.selectableRowSetup?(lrow)
             }.cellSetup { [weak self] cell, row in
                 self?.selectableRowCellSetup?(cell, row)
             }.cellUpdate { [weak self] cell, row in
