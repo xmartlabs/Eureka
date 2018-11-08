@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 /**
  *  Base protocol for view controllers presented by Eureka rows.

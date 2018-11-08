@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import Foundation
 
 open class DateInlineCell: Cell<Date>, CellType {
 
