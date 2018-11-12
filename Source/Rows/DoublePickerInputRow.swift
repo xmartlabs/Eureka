@@ -12,7 +12,7 @@ open class DoublePickerInputCell<A, B> : _PickerInputCell<Tuple<A, B>> where A: 
 
     private var pickerRow: _DoublePickerInputRow<A, B>! { return row as? _DoublePickerInputRow<A, B> }
 
-    public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 

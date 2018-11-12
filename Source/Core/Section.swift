@@ -43,7 +43,7 @@ extension Section : Hidable, SectionDelegate {}
 
 extension Section {
 
-    public func reload(with rowAnimation: UITableViewRowAnimation = .none) {
+    public func reload(with rowAnimation: UITableView.RowAnimation = .none) {
         guard let tableView = (form?.delegate as? FormViewController)?.tableView, let index = index, index < tableView.numberOfSections else { return }
         tableView.reloadSections(IndexSet(integer: index), with: rowAnimation)
     }
@@ -64,7 +64,7 @@ extension Section {
         init(section: Section) {
             self.section = section
             super.init()
-            addObserver(self, forKeyPath: "_rows", options: NSKeyValueObservingOptions.new.union(.old), context:nil)
+            addObserver(self, forKeyPath: "_rows", options: [.new, .old], context:nil)
         }
 
         deinit {
@@ -313,9 +313,10 @@ extension Section: RangeReplaceableCollection {
         }
         return kvoWrapper._allRows.count
     }
+
 }
 
-extension Section /* Condition */{
+extension Section /* Condition */ {
 
     // MARK: Hidden/Disable Engine
 
@@ -404,6 +405,24 @@ extension Section /* Condition */{
         }
         kvoWrapper.rows.insert(row, at: formIndex == NSNotFound ? 0 : formIndex + 1)
     }
+}
+
+extension Section /* Helpers */ {
+
+    /**
+     *  This method inserts a row after another row.
+     *  It is useful if you want to insert a row after a row that is currently hidden. Otherwise use `insert(at: Int)`.
+     *  It throws an error if the old row is not in this section.
+     */
+    public func insert(row newRow: BaseRow, after previousRow: BaseRow) throws {
+        guard let rowIndex = (kvoWrapper._allRows as [BaseRow]).index(of: previousRow) else {
+            throw EurekaError.rowNotInSection(row: previousRow)
+        }
+        kvoWrapper._allRows.insert(newRow, at: index(after: rowIndex))
+        show(row: newRow)
+        newRow.wasAddedTo(section: self)
+    }
+
 }
 
 /**

@@ -687,25 +687,53 @@ Just like the callbacks cellSetup and CellUpdate, the `Cell` has the setup and u
 
 ### Custom inline rows
 
-A inline row is a specific type of row that shows dynamically a row below it, normally an inline row changes between a expand and collapse mode whenever the row is tapped.
+An inline row is a specific type of row that shows dynamically a row below it, normally an inline row changes between an expanded and collapsed mode whenever the row is tapped.
 
-So to create a inline row we need 2 rows, the row that are "always" visible and the row that will expand/collapse.
+So to create an inline row we need 2 rows, the row that is "always" visible and the row that will expand/collapse.
 
-Another requirement is that the value type of these 2 rows must be the same.
+Another requirement is that the value type of these 2 rows must be the same. This means if one row holds a `String` value then the other must have a `String` value too.
 
-Once we have these 2 rows, we should make the top row type conforms to `InlineRowType` which will add some methods to the top row class type such as:
+Once we have these 2 rows, we should make the top row type conform to `InlineRowType`.
+This protocol requires you to define an `InlineRow` typealias and a `setupInlineRow` function.
+The `InlineRow` type will be the type of the row that will expand/collapse.
+Take this as an example:
+
+```swift
+class PickerInlineRow<T> : Row<PickerInlineCell<T>> where T: Equatable {
+
+    public typealias InlineRow = PickerRow<T>
+    open var options = [T]()
+
+    required public init(tag: String?) {
+        super.init(tag: tag)
+    }
+
+    public func setupInlineRow(_ inlineRow: InlineRow) {
+        inlineRow.options = self.options
+        inlineRow.displayValueFor = self.displayValueFor
+        inlineRow.cell.height = { UITableViewAutomaticDimension }
+    }
+}
+```
+
+The `InlineRowType` will also add some methods to your inline row:
 
 ```swift
 func expandInlineRow()
-func hideInlineRow()
+func collapseInlineRow()
 func toggleInlineRow()
 ```
 
-Finally we must invoke `toggleInlineRow()` when the row is selected, for example overriding the customDidSelect() row method.
+These methods should work fine but should you want to override them keep in mind that it is `toggleInlineRow` that has to call `expandInlineRow` and `collapseInlineRow`.
+
+Finally you must invoke `toggleInlineRow()` when the row is selected, for example overriding `customDidSelect`:
 
 ```swift
 public override func customDidSelect() {
-    toggleInlineRow()
+    super.customDidSelect()
+    if !isDisabled {
+        toggleInlineRow()
+    }
 }
 ```
 
@@ -1033,7 +1061,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 4.0
+github "xmartlabs/Eureka" ~> 4.3
 ```
 
 #### Manually as Embedded Framework
