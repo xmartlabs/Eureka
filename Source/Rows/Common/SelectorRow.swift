@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 open class PushSelectorCell<T: Equatable> : Cell<T>, CellType {
 

@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 public protocol InputTypeInitiable {
     init?(string stringValue: String)
