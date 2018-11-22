@@ -299,10 +299,10 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
                 }
             } else {
                 if let titleLabel = titleLabel, let text = titleLabel.text, !text.isEmpty {
-                    dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[titleLabel]-|", options: [], metrics: nil, views: views)
-                    dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[textField]-|", options: [], metrics: nil, views: views)
+                    dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[titleLabel]-|", options: [], metrics: nil, views: views)
+                    dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[textField]-|", options: [], metrics: nil, views: views)
                 } else {
-                    dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[textField]-|", options: .alignAllLeft, metrics: nil, views: views)
+                    dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[textField]-|", options: .alignAllLeft, metrics: nil, views: views)
                 }
             }
             
@@ -332,7 +332,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
                 }
             } else {
                 if let titleLabel = titleLabel, let text = titleLabel.text, !text.isEmpty {
-                    dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[titleLabel]-[textField]-|", options: [], metrics: nil, views: views)
+                    dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[titleLabel]-[textField]-|", options: [], metrics: nil, views: views)
                     dynamicConstraints.append(NSLayoutConstraint(item: titleLabel,
                                                                  attribute: .width,
                                                                  relatedBy: (row as? FieldRowConformance)?.titlePercentage != nil ? .equal : .lessThanOrEqual,
@@ -341,7 +341,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
                                                                  multiplier: calculatedTitlePercentage,
                                                                  constant: 0.0))
                 } else {
-                    dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[textField]-|", options: .alignAllLeft, metrics: nil, views: views)
+                    dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[textField]-|", options: .alignAllLeft, metrics: nil, views: views)
                 }
             }
         }
