@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 open class TextCell: _FieldCell<String>, CellType {
 

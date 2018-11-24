@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 /// A custom formatter for numbers with two digits after the decimal mark
 open class DecimalFormatter: NumberFormatter, FormatterProtocol {

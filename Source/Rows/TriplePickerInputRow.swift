@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 open class TriplePickerInputCell<A, B, C> : _PickerInputCell<Tuple3<A, B, C>> where A: Equatable, B: Equatable, C: Equatable {
 

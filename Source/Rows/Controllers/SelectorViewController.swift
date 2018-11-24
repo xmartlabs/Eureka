@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
-
+import UIKit
 
 /**
  *  Responsible for the options passed to a selector view controller

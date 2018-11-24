@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 open class AlertSelectorCell<T> : Cell<T>, CellType where T: Equatable {
 

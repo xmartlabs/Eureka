@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 public protocol NavigationAccessory {
     var doneClosure: (() -> ())? { get set }

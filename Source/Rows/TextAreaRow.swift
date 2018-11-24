@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 // TODO: Temporary workaround for Xcode 10 beta
 #if swift(>=4.2)
