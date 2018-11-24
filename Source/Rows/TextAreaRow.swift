@@ -67,7 +67,6 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     @IBOutlet public weak var placeholderLabel: UILabel?
 
     private var titlePercentage: CGFloat = 1
-    private var calculatedTitlePercentage: CGFloat = 0.7
     private var awakeFromNibCalled = false
 
     required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -293,22 +292,6 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
             dynamicConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-[label]-|", options: [], metrics: nil, views: views))
         }
         contentView.addConstraints(dynamicConstraints)
-    }
-
-    open override func layoutSubviews() {
-        super.layoutSubviews()
-
-        var targetTitleWidth = bounds.size.width * titlePercentage
-        if let imageView = imageView, let _ = imageView.image, let textView = textView {
-            var extraWidthToSubtract = textView.frame.minX - textView.frame.minX // Left-to-right interface layout
-            if #available(iOS 9.0, *) {
-                if UIView.userInterfaceLayoutDirection(for: self.semanticContentAttribute) == .rightToLeft {
-                    extraWidthToSubtract = imageView.frame.maxX - textView.frame.maxX
-                }
-            }
-            targetTitleWidth -= extraWidthToSubtract
-        }
-        calculatedTitlePercentage = targetTitleWidth / contentView.bounds.size.width
     }
 
 }
