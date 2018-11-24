@@ -67,6 +67,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     @IBOutlet public weak var placeholderLabel: UILabel?
 
     private var titlePercentage: CGFloat = 1
+    private var calculatedTitlePercentage: CGFloat = 0.7
     private var awakeFromNibCalled = false
 
     required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -117,12 +118,15 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
             self.titlePercentage = percentage
         }
 
+
         textView.delegate = self
         selectionStyle = .none
         if !awakeFromNibCalled {
             imageView?.addObserver(self, forKeyPath: "image", options: [.new, .old], context: nil)
         }
         setNeedsUpdateConstraints()
+
+
     }
 
     deinit {
@@ -276,18 +280,35 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         } else if titlePercentage > 0.0 {
             textView.textAlignment = .right
             dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:[textView]-|", options: [], metrics: nil, views: views)
+            let sideSpaces = (layoutMargins.right + layoutMargins.left)
             dynamicConstraints.append(NSLayoutConstraint(item: textView,
                                                          attribute: .width,
-                                                         relatedBy: (row as? TextAreaConformance)?.titlePercentage != nil ? .equal : .lessThanOrEqual,
+                                                         relatedBy: .equal,
                                                          toItem: contentView,
                                                          attribute: .width,
                                                          multiplier: 1 - titlePercentage,
-                                                         constant: -40))
+                                                         constant: -sideSpaces))
         } else {
             dynamicConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-[textView]-|", options: [], metrics: nil, views: views))
             dynamicConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:|-[label]-|", options: [], metrics: nil, views: views))
         }
         contentView.addConstraints(dynamicConstraints)
+    }
+
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+
+        var targetTitleWidth = bounds.size.width * titlePercentage
+        if let imageView = imageView, let _ = imageView.image, let textView = textView {
+            var extraWidthToSubtract = textView.frame.minX - textView.frame.minX // Left-to-right interface layout
+            if #available(iOS 9.0, *) {
+                if UIView.userInterfaceLayoutDirection(for: self.semanticContentAttribute) == .rightToLeft {
+                    extraWidthToSubtract = imageView.frame.maxX - textView.frame.maxX
+                }
+            }
+            targetTitleWidth -= extraWidthToSubtract
+        }
+        calculatedTitlePercentage = targetTitleWidth / contentView.bounds.size.width
     }
 
 }
@@ -308,6 +329,7 @@ open class AreaRow<Cell: CellType>: FormatteableRow<Cell>, TextAreaConformance w
     open var placeholder: String?
     open var textAreaHeight = TextAreaHeight.fixed(cellHeight: 110)
     open var textAreaMode = TextAreaMode.normal
+    /// The percentage of the cell that should be occupied by the remaining space to the left of the textArea. This is equivalent to the space occupied by a title in FieldRow, making the textArea aligned to fieldRows using the same titlePercentage. This behavior works only if the cell does not contain an image, due to its automatically set constraints in the cell.
     open var titlePercentage: CGFloat?
 
     public required init(tag: String?) {
