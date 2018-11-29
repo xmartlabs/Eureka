@@ -405,7 +405,7 @@ extension Section /* Condition */ {
         }
         kvoWrapper.rows.insert(row, at: formIndex == NSNotFound ? 0 : formIndex + 1)
     }
-
+}
 extension Section /* Helpers */ {
 
     /**
