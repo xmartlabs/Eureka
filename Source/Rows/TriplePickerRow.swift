@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public struct Tuple3<A: Equatable, B: Equatable, C: Equatable> {
     public let a: A
@@ -33,7 +34,7 @@ open class TriplePickerCell<A, B, C> : _PickerCell<Tuple3<A, B, C>> where A: Equ
 
     private var pickerRow: _TriplePickerRow<A, B, C>? { return row as? _TriplePickerRow<A, B, C> }
 
-    public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 

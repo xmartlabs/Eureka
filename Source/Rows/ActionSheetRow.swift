@@ -23,10 +23,11 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 open class AlertSelectorCell<T> : Cell<T>, CellType where T: Equatable {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 

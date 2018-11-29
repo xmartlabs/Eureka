@@ -241,8 +241,8 @@ extension Form : RangeReplaceableCollection {
     private func indexForInsertion(at index: Int) -> Int {
         guard index != 0 else { return 0 }
 
-        let row = kvoWrapper.sections[index-1]
-        if let i = kvoWrapper._allSections.index(of: row as! Section) {
+        let section = kvoWrapper.sections[index-1]
+        if let i = kvoWrapper._allSections.index(of: section as! Section) {
             return i + 1
         }
         return kvoWrapper._allSections.count
@@ -263,7 +263,7 @@ extension Form {
         init(form: Form) {
             self.form = form
             super.init()
-            addObserver(self, forKeyPath: "_sections", options: NSKeyValueObservingOptions.new.union(.old), context:nil)
+            addObserver(self, forKeyPath: "_sections", options: [.new, .old], context:nil)
         }
 
         deinit {
@@ -378,9 +378,11 @@ extension Form {
 extension Form {
 
     @discardableResult
-    public func validate(includeHidden: Bool = false) -> [ValidationError] {
-        let rowsToValidate = includeHidden ? allRows : rows
-        return rowsToValidate.reduce([ValidationError]()) { res, row in
+    public func validate(includeHidden: Bool = false, includeDisabled: Bool = true) -> [ValidationError] {
+        let rowsWithHiddenFilter = includeHidden ? allRows : rows
+        let rowsWithDisabledFilter = includeDisabled ? rowsWithHiddenFilter : rowsWithHiddenFilter.filter { $0.isDisabled != true }
+        
+        return rowsWithDisabledFilter.reduce([ValidationError]()) { res, row in
             var res = res
             res.append(contentsOf: row.validate())
             return res

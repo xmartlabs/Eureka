@@ -23,12 +23,13 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 open class DatePickerCell: Cell<Date>, CellType {
 
     @IBOutlet weak public var datePicker: UIDatePicker!
 
-    public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         let datePicker = UIDatePicker()
         self.datePicker = datePicker
         self.datePicker.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +50,7 @@ open class DatePickerCell: Cell<Date>, CellType {
         selectionStyle = .none
         accessoryType = .none
         editingAccessoryType =  .none
-        height = { UITableViewAutomaticDimension }
+        height = { UITableView.automaticDimension }
         datePicker.datePickerMode = datePickerMode()
         datePicker.addTarget(self, action: #selector(DatePickerCell.datePickerValueChanged(_:)), for: .valueChanged)
     }
@@ -83,7 +84,7 @@ open class DatePickerCell: Cell<Date>, CellType {
         
     }
 
-    private func datePickerMode() -> UIDatePickerMode {
+    private func datePickerMode() -> UIDatePicker.Mode {
         switch row {
         case is DatePickerRow:
             return .date
