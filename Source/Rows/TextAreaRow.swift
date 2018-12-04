@@ -67,7 +67,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     @IBOutlet public weak var textView: UITextView!
     @IBOutlet public weak var placeholderLabel: UILabel?
 
-    private var titlePercentage: CGFloat = 1
+    private var titlePercentage: CGFloat = 0
     private var awakeFromNibCalled = false
 
     required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
