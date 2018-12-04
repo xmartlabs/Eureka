@@ -85,4 +85,70 @@ class SetValuesTests: XCTestCase {
         form.setValues(["IntRow": intRowNilValue])
         XCTAssertNil(intRow?.value)
     }
+    
+    // Once you set the default value, the value property should be set aswell. When you change the value, it should change as usual, but the default value should be the same, since we're changing the value but not the row's default.
+    func testSetDefaultValues() {
+        let intValue: Int = 4
+        let intDefaultvalue: Int = 0
+        let stringValue = "String Value!"
+        let stringDefaultValue = "String Default Value!"
+        let floatValue: Float = 0.7
+        let floatDefaultValue: Float = 1.4
+        
+        let intRow: IntRow? = form.rowBy(tag: "IntRow")
+        XCTAssertNotNil(intRow)
+        intRow?.defaultValue = intDefaultvalue
+        XCTAssertEqual(intRow?.defaultValue, intDefaultvalue)
+        XCTAssertEqual(intRow?.value, intDefaultvalue)
+        intRow?.value = intValue
+        XCTAssertEqual(intRow?.defaultValue, intDefaultvalue)
+        XCTAssertEqual(intRow?.value, intValue)
+        intRow?.resetValue()
+        XCTAssertEqual(intRow?.value, intDefaultvalue)
+        
+        let textRow: TextRow? = form.rowBy(tag: "TextRow")
+        XCTAssertNotNil(textRow)
+        textRow?.defaultValue = stringDefaultValue
+        XCTAssertEqual(textRow?.defaultValue, stringDefaultValue)
+        XCTAssertEqual(textRow?.value, stringDefaultValue)
+        textRow?.value = stringValue
+        XCTAssertEqual(textRow?.defaultValue, stringDefaultValue)
+        XCTAssertEqual(textRow?.value, stringValue)
+        textRow?.resetValue()
+        XCTAssertEqual(textRow?.value, stringDefaultValue)
+        
+        let actionSheetRow: ActionSheetRow<String>? = form.rowBy(tag: "ActionSheetRow")
+        XCTAssertNotNil(actionSheetRow)
+        actionSheetRow?.defaultValue = stringDefaultValue
+        XCTAssertEqual(actionSheetRow?.defaultValue, stringDefaultValue)
+        XCTAssertEqual(actionSheetRow?.value, stringDefaultValue)
+        actionSheetRow?.value = stringValue
+        XCTAssertEqual(actionSheetRow?.defaultValue, stringDefaultValue)
+        XCTAssertEqual(actionSheetRow?.value, stringValue)
+        actionSheetRow?.resetValue()
+        XCTAssertEqual(actionSheetRow?.value, stringDefaultValue)
+        
+        let alertRow: AlertRow<Int>? = form.rowBy(tag: "AlertRow")
+        XCTAssertNotNil(alertRow)
+        alertRow?.defaultValue = intDefaultvalue
+        XCTAssertEqual(alertRow?.defaultValue, intDefaultvalue)
+        XCTAssertEqual(alertRow?.value, intDefaultvalue)
+        alertRow?.value = intValue
+        XCTAssertEqual(alertRow?.defaultValue, intDefaultvalue)
+        XCTAssertEqual(alertRow?.value, intValue)
+        alertRow?.resetValue()
+        XCTAssertEqual(alertRow?.value, intDefaultvalue)
+        
+        let pushRow: PushRow<Float>? = form.rowBy(tag: "PushRow")
+        XCTAssertNotNil(pushRow)
+        pushRow?.defaultValue = floatDefaultValue
+        XCTAssertEqual(pushRow?.defaultValue, floatDefaultValue)
+        XCTAssertEqual(pushRow?.value, floatDefaultValue)
+        pushRow?.value = floatValue
+        XCTAssertEqual(pushRow?.defaultValue, floatDefaultValue)
+        XCTAssertEqual(pushRow?.value, floatValue)
+        pushRow?.resetValue()
+        XCTAssertEqual(pushRow?.value, floatDefaultValue)
+        
+    }
 }

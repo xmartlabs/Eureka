@@ -63,6 +63,13 @@ open class RowOf<T>: BaseRow where T: Equatable{
             return _value
         }
     }
+    
+    /// The default value of this row. Sets the value property when setted or when the setDefaultValue is called.
+    open var defaultValue: T? {
+        didSet {
+            value = defaultValue
+        }
+    }
 
     /// The untyped value of this row.
     public override var baseValue: Any? {
@@ -89,6 +96,11 @@ open class RowOf<T>: BaseRow where T: Equatable{
         validationErrors = rules.flatMap { $0.validateFn(value) }
         #endif
         return validationErrors
+    }
+    
+    /// Resets the value of the row. Settings it's value to it's default value.
+    public func resetValue() {
+        value = defaultValue
     }
 
     /// Add a Validation rule for the Row
