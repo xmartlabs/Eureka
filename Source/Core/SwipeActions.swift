@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public typealias SwipeActionHandler = (SwipeAction, BaseRow, ((Bool) -> Void)?) -> Void
 
@@ -76,12 +77,12 @@ public class SwipeAction: ContextualAction {
             }
         }
 		
-		var tableViewRowStyle: UITableViewRowActionStyle {
+		var tableViewRowStyle: UITableViewRowAction.Style {
 			switch self {
 			case .normal:
-				return UITableViewRowActionStyle.normal
+				return UITableViewRowAction.Style.normal
 			case .destructive:
-				return UITableViewRowActionStyle.destructive
+				return UITableViewRowAction.Style.destructive
 			}
 		}
     }
@@ -122,6 +123,13 @@ protocol ContextualAction {
     var title: String? { get set }
 }
 
+extension ContextualAction {
+    var backgroundColor: UIColor? {
+        get { return nil }
+        set { }
+    }
+}
+
 extension UITableViewRowAction: ContextualAction {
     public var image: UIImage? {
         get { return nil }
@@ -133,7 +141,7 @@ extension UITableViewRowAction: ContextualAction {
 extension UIContextualAction: ContextualAction {}
 
 public protocol ContextualStyle{}
-extension UITableViewRowActionStyle: ContextualStyle {}
+extension UITableViewRowAction.Style: ContextualStyle {}
 
 @available(iOS 11.0, *)
 extension UIContextualAction.Style: ContextualStyle {}

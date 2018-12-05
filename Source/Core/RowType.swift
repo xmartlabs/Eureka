@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 protocol Disableable: Taggable {
     func evaluateDisabled()
@@ -53,7 +54,7 @@ public protocol BaseRowType: Taggable {
     var section: Section? { get }
 
     /// Parameter used when creating the cell for this row.
-    var cellStyle: UITableViewCellStyle { get set }
+    var cellStyle: UITableViewCell.CellStyle { get set }
 
     /// The title will be displayed in the textLabel of the row.
     var title: String? { get set }

@@ -152,6 +152,55 @@ class SectionInsertionTests: XCTestCase {
         replaceSectionSubranges(form: form)
     }
 
+    func testInsertingAfterRow() {
+        let form = Form()
+        form[0] = Section("section_01")
+        form[0] <<< TextRow("a")
+            <<< TextRow("b") { $0.hidden = true }
+            <<< TextRow("d") { $0.hidden = true }
+            <<< TextRow("e")
+
+        let bRow = form.rowBy(tag: "b")
+        XCTAssertNotNil(bRow)
+
+        try? form[0].insert(row: TextRow("c"), after: bRow!)
+
+        let cRow = form.rowBy(tag: "c")
+        XCTAssertNotNil(cRow)
+
+        XCTAssertEqual(form[0].count, 3) // a, c, e
+        XCTAssertEqual(form.allRows.count, 5) // a, b, c, d, e
+        XCTAssertEqual(form[0][1], cRow)
+    }
+
+    func testInsertingAfterRowAtEnd() {
+        let form = Form()
+        form[0] = Section("section_01")
+        form[0] <<< TextRow("a") { $0.hidden = true }
+
+        let aRow = form.rowBy(tag: "a")
+        XCTAssertNotNil(aRow)
+
+        try? form[0].insert(row: TextRow("b") { $0.hidden = true }, after: aRow!)
+
+        let bRow = form.rowBy(tag: "b")
+        XCTAssertNotNil(bRow)
+
+        XCTAssertEqual(form[0].count, 0)
+        XCTAssertEqual(form.allRows.count, 2) // a, b
+
+        try? form[0].insert(row: TextRow("c"), after: aRow!)
+
+        let cRow = form.rowBy(tag: "c")
+        XCTAssertNotNil(cRow)
+
+        XCTAssertEqual(form[0].count, 1) // c
+        XCTAssertEqual(form.allRows.count, 3) // a, c, b
+        XCTAssertEqual(form.allRows[0], aRow)
+        XCTAssertEqual(form.allRows[1], cRow)
+        XCTAssertEqual(form.allRows[2], bRow)
+    }
+
     private func hideAndShowSections(form: Form, expectedTitles titles: [String]) {
         // Doesn't matter how rows were added to the form (using append, +++ or subscript index)
         // next must work

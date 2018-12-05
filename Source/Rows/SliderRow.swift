@@ -35,10 +35,10 @@ open class SliderCell: Cell<Float>, CellType {
 
     open var formatter: NumberFormatter?
 
-    public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
 
-        NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil) { [weak self] _ in
+        NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification, object: nil, queue: nil) { [weak self] _ in
             guard let me = self else { return }
             if me.shouldShowTitle {
                 me.titleLabel = me.textLabel
@@ -50,7 +50,7 @@ open class SliderCell: Cell<Float>, CellType {
 
     deinit {
         guard !awakeFromNibCalled else { return }
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIContentSizeCategoryDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIContentSizeCategory.didChangeNotification, object: nil)
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -149,7 +149,8 @@ open class SliderCell: Cell<Float>, CellType {
         
         if let imageView = imageView, let _ = imageView.image {
             views["imageView"] = imageView
-            let hContraints = NSLayoutConstraint.constraints(withVisualFormat: "H:[imageView]-(15)-\(title)[slider]\(value)-|", options: .alignAllCenterY, metrics: metrics, views: views)
+            let hContraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-[imageView]-(15)-\(title)[slider]\(value)-|", options: .alignAllCenterY, metrics: metrics, views: views)
+            imageView.translatesAutoresizingMaskIntoConstraints = false
             dynamicConstraints.append(contentsOf: hContraints)
         } else {
             let hContraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(title)[slider]\(value)-|", options: .alignAllCenterY, metrics: metrics, views: views)

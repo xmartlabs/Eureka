@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [4.3.0](https://github.com/xmartlabs/Eureka/releases/tag/4.3.0)
+
+* Changes for Swift 4.2, Xcode 10 and iOS 12
+* Add ability to customise the text color of UIPickerView used by PickerRow
+* Make `onPresent` result discardable
+* Add `insert(row: after:)` method on Section which allows inserting rows after a hidden row
+* Other minor fixes
+
 ### [4.2.0](https://github.com/xmartlabs/Eureka/releases/tag/4.2.0)
 
 * Adding support for RowType.subtitle on FieldRow (#1468)

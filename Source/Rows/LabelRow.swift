@@ -23,12 +23,13 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 // MARK: LabelCell
 
 open class LabelCellOf<T: Equatable>: Cell<T>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 

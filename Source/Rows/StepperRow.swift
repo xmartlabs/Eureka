@@ -15,7 +15,7 @@ open class StepperCell: Cell<Double>, CellType {
     @IBOutlet public weak var stepper: UIStepper!
     @IBOutlet public weak var valueLabel: UILabel?
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         let stepper = UIStepper()
         self.stepper = stepper
         self.stepper.translatesAutoresizingMaskIntoConstraints = false
@@ -30,9 +30,19 @@ open class StepperCell: Cell<Double>, CellType {
         addSubview(stepper)
         addSubview(valueLabel)
 
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[v]-[s]-|", options: .alignAllCenterY, metrics: nil, views: ["s": stepper, "v": valueLabel]))
-        addConstraint(NSLayoutConstraint(item: stepper, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1.0, constant: 0))
-        addConstraint(NSLayoutConstraint(item: valueLabel, attribute: .centerY, relatedBy: .equal, toItem: stepper, attribute: .centerY, multiplier: 1.0, constant: 0))
+        guard let textLabel = self.textLabel else { return }
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+        textLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        valueLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[t]-[v]-[s]-|", options: .alignAllCenterY, metrics: nil,
+                                                      views: ["s": stepper, "v": valueLabel, "t": textLabel]))
+        addConstraint(NSLayoutConstraint(item: stepper, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY,
+                                         multiplier: 1.0, constant: 0))
+        addConstraint(NSLayoutConstraint(item: valueLabel, attribute: .centerY, relatedBy: .equal, toItem: stepper, attribute: .centerY,
+                                         multiplier: 1.0, constant: 0))
+        addConstraint(NSLayoutConstraint(item: textLabel, attribute: .centerY, relatedBy: .equal, toItem: stepper, attribute: .centerY,
+                                         multiplier: 1.0, constant: 0))
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -42,7 +52,6 @@ open class StepperCell: Cell<Double>, CellType {
     open override func setup() {
         super.setup()
         selectionStyle = .none
-
         stepper.addTarget(self, action: #selector(StepperCell.valueChanged), for: .valueChanged)
     }
 

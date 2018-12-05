@@ -23,12 +23,22 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
+
+public protocol NavigationAccessory {
+    var doneClosure: (() -> ())? { get set }
+    var nextClosure: (() -> ())? { get set }
+    var previousClosure: (() -> ())? { get set }
+
+    var previousEnabled: Bool { get set }
+    var nextEnabled: Bool { get set }
+}
 
 /// Class for the navigation accessory view used in FormViewController
-open class NavigationAccessoryView: UIToolbar {
+open class NavigationAccessoryView: UIToolbar, NavigationAccessory {
     open var previousButton: UIBarButtonItem!
     open var nextButton: UIBarButtonItem!
-    open var doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: nil)
+    open var doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDone))
     private var fixedSpace = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
     private var flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
@@ -45,7 +55,7 @@ open class NavigationAccessoryView: UIToolbar {
     }
 
     private func initializeChevrons() {
-        var bundle = Bundle(for: self.classForCoder)
+        var bundle = Bundle(for: NavigationAccessoryView.classForCoder())
         if let resourcePath = bundle.path(forResource: "Eureka", ofType: "bundle") {
             if let resourcesBundle = Bundle(path: resourcePath) {
                 bundle = resourcesBundle
@@ -60,9 +70,43 @@ open class NavigationAccessoryView: UIToolbar {
             imageRightChevron = imageRightChevron?.imageFlippedForRightToLeftLayoutDirection()
         }
 
-        previousButton = UIBarButtonItem(image: imageLeftChevron, style: .plain, target: nil, action: nil)
-        nextButton = UIBarButtonItem(image: imageRightChevron, style: .plain, target: nil, action: nil)
+        previousButton = UIBarButtonItem(image: imageLeftChevron, style: .plain, target: self, action: #selector(didTapPrevious))
+        nextButton = UIBarButtonItem(image: imageRightChevron, style: .plain, target: self, action: #selector(didTapNext))
     }
 
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {}
+
+    public var doneClosure: (() -> ())?
+    public var nextClosure: (() -> ())?
+    public var previousClosure: (() -> ())?
+
+    @objc private func didTapDone() {
+        doneClosure?()
+    }
+
+    @objc private func didTapNext() {
+        nextClosure?()
+    }
+
+    @objc private func didTapPrevious() {
+        previousClosure?()
+    }
+
+    public var previousEnabled: Bool {
+        get {
+            return previousButton.isEnabled
+        }
+        set {
+            previousButton.isEnabled = previousEnabled
+        }
+    }
+
+    public var nextEnabled: Bool {
+        get {
+            return nextButton.isEnabled
+        }
+        set {
+            nextButton.isEnabled = nextEnabled
+        }
+    }
 }

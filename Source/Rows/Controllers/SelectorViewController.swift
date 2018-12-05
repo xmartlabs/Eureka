@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
-
+import UIKit
 
 /**
  *  Responsible for the options passed to a selector view controller
@@ -133,7 +133,7 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
         return row as! OptionsRow
     }
 
-    override public init(style: UITableViewStyle) {
+    override public init(style: UITableView.Style) {
         super.init(style: style)
     }
 
