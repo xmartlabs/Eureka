@@ -842,10 +842,6 @@ extension FormViewController : UITableViewDelegate {
                 tableView.endEditing(true)
             }
             section.remove(at: indexPath.row)
-            DispatchQueue.main.async {
-                tableView.isEditing = !tableView.isEditing
-                tableView.isEditing = !tableView.isEditing
-            }
         } else if editingStyle == .insert {
             guard var section = form[indexPath.section] as? MultivaluedSection else { return }
             guard let multivaluedRowToInsertAt = section.multivaluedRowToInsertAt else {

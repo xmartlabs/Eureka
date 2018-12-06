@@ -150,8 +150,13 @@ open class Section {
         didSet { addToRowObservers() }
     }
 
-    /// Returns if the section is currently hidden or not
+    /// Returns if the section is currently hidden or not.
     public var isHidden: Bool { return hiddenCache }
+
+    /// Returns all the rows in this section, including hidden rows.
+    public var allRows: [BaseRow] {
+        return kvoWrapper._allRows
+    }
 
     public required init() {}
 
