@@ -67,7 +67,6 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
     @IBOutlet public weak var textView: UITextView!
     @IBOutlet public weak var placeholderLabel: UILabel?
 
-    private var titlePercentage: CGFloat = 0
     private var awakeFromNibCalled = false
 
     required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -114,19 +113,12 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
             height = { cellHeight }
         }
 
-        if let percentage = textAreaRow.titlePercentage {
-            self.titlePercentage = percentage
-        }
-
-
         textView.delegate = self
         selectionStyle = .none
         if !awakeFromNibCalled {
             imageView?.addObserver(self, forKeyPath: "image", options: [.new, .old], context: nil)
         }
         setNeedsUpdateConstraints()
-
-
     }
 
     deinit {
@@ -277,7 +269,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
             views["imageView"] = imageView
             dynamicConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:[imageView]-(15)-[textView]-|", options: [], metrics: nil, views: views))
             dynamicConstraints.append(contentsOf: NSLayoutConstraint.constraints(withVisualFormat: "H:[imageView]-(15)-[label]-|", options: [], metrics: nil, views: views))
-        } else if titlePercentage > 0.0 {
+        } else if let titlePercentage = (row as? TextAreaConformance)?.titlePercentage, titlePercentage > 0.0 {
             textView.textAlignment = .right
             dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:[textView]-|", options: [], metrics: nil, views: views)
             let sideSpaces = (layoutMargins.right + layoutMargins.left)
