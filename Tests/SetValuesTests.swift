@@ -86,8 +86,8 @@ class SetValuesTests: XCTestCase {
         XCTAssertNil(intRow?.value)
     }
     
-    // Once you set the default value, the value property should be set aswell. When you change the value, it should change as usual, but the default value should be the same, since we're changing the value but not the row's default.
-    func testSetDefaultValues() {
+    // The reset value stores the default value of the row. The reset value should not change along with the value property, and when you reset the row value, it should set the value property to the reset value.
+    func testSetAndResetValues() {
         let intValue: Int = 4
         let intDefaultvalue: Int = 0
         let stringValue = "String Value!"
@@ -97,57 +97,42 @@ class SetValuesTests: XCTestCase {
         
         let intRow: IntRow? = form.rowBy(tag: "IntRow")
         XCTAssertNotNil(intRow)
-        intRow?.defaultValue = intDefaultvalue
-        XCTAssertEqual(intRow?.defaultValue, intDefaultvalue)
-        XCTAssertEqual(intRow?.value, intDefaultvalue)
+        intRow?.resetValue = intDefaultvalue
+        XCTAssertEqual(intRow?.resetValue, intDefaultvalue)
         intRow?.value = intValue
-        XCTAssertEqual(intRow?.defaultValue, intDefaultvalue)
-        XCTAssertEqual(intRow?.value, intValue)
-        intRow?.resetValue()
+        intRow?.resetRowValue()
         XCTAssertEqual(intRow?.value, intDefaultvalue)
         
         let textRow: TextRow? = form.rowBy(tag: "TextRow")
         XCTAssertNotNil(textRow)
-        textRow?.defaultValue = stringDefaultValue
-        XCTAssertEqual(textRow?.defaultValue, stringDefaultValue)
-        XCTAssertEqual(textRow?.value, stringDefaultValue)
+        textRow?.resetValue = stringDefaultValue
+        XCTAssertEqual(textRow?.resetValue, stringDefaultValue)
         textRow?.value = stringValue
-        XCTAssertEqual(textRow?.defaultValue, stringDefaultValue)
-        XCTAssertEqual(textRow?.value, stringValue)
-        textRow?.resetValue()
+        textRow?.resetRowValue()
         XCTAssertEqual(textRow?.value, stringDefaultValue)
         
         let actionSheetRow: ActionSheetRow<String>? = form.rowBy(tag: "ActionSheetRow")
         XCTAssertNotNil(actionSheetRow)
-        actionSheetRow?.defaultValue = stringDefaultValue
-        XCTAssertEqual(actionSheetRow?.defaultValue, stringDefaultValue)
-        XCTAssertEqual(actionSheetRow?.value, stringDefaultValue)
+        actionSheetRow?.resetValue = stringDefaultValue
+        XCTAssertEqual(actionSheetRow?.resetValue, stringDefaultValue)
         actionSheetRow?.value = stringValue
-        XCTAssertEqual(actionSheetRow?.defaultValue, stringDefaultValue)
-        XCTAssertEqual(actionSheetRow?.value, stringValue)
-        actionSheetRow?.resetValue()
+        actionSheetRow?.resetRowValue()
         XCTAssertEqual(actionSheetRow?.value, stringDefaultValue)
         
         let alertRow: AlertRow<Int>? = form.rowBy(tag: "AlertRow")
         XCTAssertNotNil(alertRow)
-        alertRow?.defaultValue = intDefaultvalue
-        XCTAssertEqual(alertRow?.defaultValue, intDefaultvalue)
-        XCTAssertEqual(alertRow?.value, intDefaultvalue)
+        alertRow?.resetValue = intDefaultvalue
+        XCTAssertEqual(alertRow?.resetValue, intDefaultvalue)
         alertRow?.value = intValue
-        XCTAssertEqual(alertRow?.defaultValue, intDefaultvalue)
-        XCTAssertEqual(alertRow?.value, intValue)
-        alertRow?.resetValue()
+        alertRow?.resetRowValue()
         XCTAssertEqual(alertRow?.value, intDefaultvalue)
         
         let pushRow: PushRow<Float>? = form.rowBy(tag: "PushRow")
         XCTAssertNotNil(pushRow)
-        pushRow?.defaultValue = floatDefaultValue
-        XCTAssertEqual(pushRow?.defaultValue, floatDefaultValue)
-        XCTAssertEqual(pushRow?.value, floatDefaultValue)
+        pushRow?.resetValue = floatDefaultValue
+        XCTAssertEqual(pushRow?.resetValue, floatDefaultValue)
         pushRow?.value = floatValue
-        XCTAssertEqual(pushRow?.defaultValue, floatDefaultValue)
-        XCTAssertEqual(pushRow?.value, floatValue)
-        pushRow?.resetValue()
+        pushRow?.resetRowValue()
         XCTAssertEqual(pushRow?.value, floatDefaultValue)
         
     }
