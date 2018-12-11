@@ -85,4 +85,55 @@ class SetValuesTests: XCTestCase {
         form.setValues(["IntRow": intRowNilValue])
         XCTAssertNil(intRow?.value)
     }
+    
+    // The reset value stores the default value of the row. The reset value should not change along with the value property, and when you reset the row value, it should set the value property to the reset value.
+    func testSetAndResetValues() {
+        let intValue: Int = 4
+        let intDefaultvalue: Int = 0
+        let stringValue = "String Value!"
+        let stringDefaultValue = "String Default Value!"
+        let floatValue: Float = 0.7
+        let floatDefaultValue: Float = 1.4
+        
+        let intRow: IntRow? = form.rowBy(tag: "IntRow")
+        XCTAssertNotNil(intRow)
+        intRow?.resetValue = intDefaultvalue
+        XCTAssertEqual(intRow?.resetValue, intDefaultvalue)
+        intRow?.value = intValue
+        intRow?.resetRowValue()
+        XCTAssertEqual(intRow?.value, intDefaultvalue)
+        
+        let textRow: TextRow? = form.rowBy(tag: "TextRow")
+        XCTAssertNotNil(textRow)
+        textRow?.resetValue = stringDefaultValue
+        XCTAssertEqual(textRow?.resetValue, stringDefaultValue)
+        textRow?.value = stringValue
+        textRow?.resetRowValue()
+        XCTAssertEqual(textRow?.value, stringDefaultValue)
+        
+        let actionSheetRow: ActionSheetRow<String>? = form.rowBy(tag: "ActionSheetRow")
+        XCTAssertNotNil(actionSheetRow)
+        actionSheetRow?.resetValue = stringDefaultValue
+        XCTAssertEqual(actionSheetRow?.resetValue, stringDefaultValue)
+        actionSheetRow?.value = stringValue
+        actionSheetRow?.resetRowValue()
+        XCTAssertEqual(actionSheetRow?.value, stringDefaultValue)
+        
+        let alertRow: AlertRow<Int>? = form.rowBy(tag: "AlertRow")
+        XCTAssertNotNil(alertRow)
+        alertRow?.resetValue = intDefaultvalue
+        XCTAssertEqual(alertRow?.resetValue, intDefaultvalue)
+        alertRow?.value = intValue
+        alertRow?.resetRowValue()
+        XCTAssertEqual(alertRow?.value, intDefaultvalue)
+        
+        let pushRow: PushRow<Float>? = form.rowBy(tag: "PushRow")
+        XCTAssertNotNil(pushRow)
+        pushRow?.resetValue = floatDefaultValue
+        XCTAssertEqual(pushRow?.resetValue, floatDefaultValue)
+        pushRow?.value = floatValue
+        pushRow?.resetRowValue()
+        XCTAssertEqual(pushRow?.value, floatDefaultValue)
+        
+    }
 }
