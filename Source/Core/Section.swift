@@ -501,6 +501,7 @@ open class MultivaluedSection: Section {
     func initialize() {
         let addRow = addButtonProvider(self)
         addRow.onCellSelection { cell, row in
+            guard !row.isDisabled else { return }
             guard let tableView = cell.formViewController()?.tableView, let indexPath = row.indexPath else { return }
             cell.formViewController()?.tableView(tableView, commit: .insert, forRowAt: indexPath)
         }
