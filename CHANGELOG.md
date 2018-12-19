@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [4.3.1](https://github.com/xmartlabs/Eureka/releases/tag/4.3.1)
+
+* Bug fixes and stability improvements
+
+
 ### [4.3.0](https://github.com/xmartlabs/Eureka/releases/tag/4.3.0)
 
 * Changes for Swift 4.2, Xcode 10 and iOS 12
