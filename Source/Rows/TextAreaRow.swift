@@ -197,10 +197,10 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
 
         if let textAreaConformance = row as? TextAreaConformance, case .dynamic = textAreaConformance.textAreaHeight, let tableView = formViewController()?.tableView {
             let currentOffset = tableView.contentOffset
-            UIView.setAnimationsEnabled(false)
-            tableView.beginUpdates()
-            tableView.endUpdates()
-            UIView.setAnimationsEnabled(true)
+            UIView.performWithoutAnimation {
+                tableView.beginUpdates()
+                tableView.endUpdates()
+            }
             tableView.setContentOffset(currentOffset, animated: false)
         }
         placeholderLabel?.isHidden = textView.text.count != 0
