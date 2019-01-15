@@ -74,6 +74,11 @@ extension Section {
             _allRows.removeAll()
         }
 
+        func removeAllRows() {
+            _rows = []
+            _allRows.removeAll()
+        }
+
         public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
             let newRows = change![NSKeyValueChangeKey.newKey] as? [BaseRow] ?? []
             let oldRows = change![NSKeyValueChangeKey.oldKey] as? [BaseRow] ?? []
@@ -82,8 +87,19 @@ extension Section {
             guard keyPathValue == "_rows" else { return }
             switch (changeType as! NSNumber).uintValue {
             case NSKeyValueChange.setting.rawValue:
-                section?.rowsHaveBeenAdded(newRows, at: IndexSet(integer: 0))
-                delegateValue?.rowsHaveBeenAdded(newRows, at:[IndexPath(index: 0)])
+                if newRows.count == 0 {
+                    let indexSet = IndexSet(integersIn: 0..<oldRows.count)
+                    section?.rowsHaveBeenRemoved(oldRows, at: indexSet)
+                    if let _index = section?.index {
+                        delegateValue?.rowsHaveBeenRemoved(oldRows, at: (0..<oldRows.count).map { IndexPath(row: $0, section: _index) })
+                    }
+                } else {
+                    let indexSet = IndexSet(integersIn: 0..<newRows.count)
+                    section?.rowsHaveBeenAdded(newRows, at: indexSet)
+                    if let _index = section?.index {
+                        delegateValue?.rowsHaveBeenAdded(newRows, at: indexSet.map { IndexPath(row: $0, section: _index) })
+                    }
+                }
             case NSKeyValueChange.insertion.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
                 section?.rowsHaveBeenAdded(newRows, at: indexSet)
@@ -291,11 +307,13 @@ extension Section: RangeReplaceableCollection {
 
     public func removeAll(keepingCapacity keepCapacity: Bool = false) {
         // not doing anything with capacity
-        for row in kvoWrapper._allRows {
+
+        let rows = kvoWrapper._allRows
+        kvoWrapper.removeAllRows()
+
+        for row in rows {
             row.willBeRemovedFromSection()
         }
-        kvoWrapper.rows.removeAllObjects()
-        kvoWrapper._allRows.removeAll()
     }
 
     @discardableResult

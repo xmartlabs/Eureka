@@ -231,11 +231,14 @@ extension Form : RangeReplaceableCollection {
 
     public func removeAll(keepingCapacity keepCapacity: Bool = false) {
         // not doing anything with capacity
-        for section in kvoWrapper._allSections {
+
+        let sections = kvoWrapper._allSections
+        kvoWrapper.removeAllSections()
+
+        for section in sections {
             section.willBeRemovedFromForm()
         }
-        kvoWrapper.sections.removeAllObjects()
-        kvoWrapper._allSections.removeAll()
+
     }
 
     private func indexForInsertion(at index: Int) -> Int {
@@ -272,16 +275,25 @@ extension Form {
             _allSections.removeAll()
         }
 
-        public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        func removeAllSections() {
+            _sections = []
+            _allSections.removeAll()
+        }
 
+        public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
             let newSections = change?[NSKeyValueChangeKey.newKey] as? [Section] ?? []
             let oldSections = change?[NSKeyValueChangeKey.oldKey] as? [Section] ?? []
             guard let delegateValue = form?.delegate, let keyPathValue = keyPath, let changeType = change?[NSKeyValueChangeKey.kindKey] else { return }
             guard keyPathValue == "_sections" else { return }
             switch (changeType as! NSNumber).uintValue {
             case NSKeyValueChange.setting.rawValue:
-                let indexSet = change![NSKeyValueChangeKey.indexesKey] as? IndexSet ?? IndexSet(integer: 0)
-                delegateValue.sectionsHaveBeenAdded(newSections, at: indexSet)
+                if newSections.count == 0 {
+                    let indexSet = IndexSet(integersIn: 0..<oldSections.count)
+                    delegateValue.sectionsHaveBeenRemoved(oldSections, at: indexSet)
+                } else {
+                    let indexSet = change![NSKeyValueChangeKey.indexesKey] as? IndexSet ?? IndexSet(integersIn: 0..<newSections.count)
+                    delegateValue.sectionsHaveBeenAdded(newSections, at: indexSet)
+                }
             case NSKeyValueChange.insertion.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
                 delegateValue.sectionsHaveBeenAdded(newSections, at: indexSet)
