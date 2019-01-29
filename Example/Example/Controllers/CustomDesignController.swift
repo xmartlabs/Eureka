@@ -16,17 +16,20 @@ class CustomDesignController: FormViewController {
             Section()
             <<< SwitchRow() {
                 $0.cellProvider = CellProvider<SwitchCell>(nibName: "SwitchCell", bundle: Bundle.main)
-                $0.cell.height = { 67 }
+            }.cellSetup { (cell, row) in
+                cell.height = { 67 }
             }
 
             <<< DatePickerRow() {
                 $0.cellProvider = CellProvider<DatePickerCell>(nibName: "DatePickerCell", bundle: Bundle.main)
-                $0.cell.height = { 345 }
+            }.cellSetup { (cell, row) in
+                cell.height = { 345 }
             }
 
             <<< TextRow() {
                 $0.cellProvider = CellProvider<TextCell>(nibName: "TextCell", bundle: Bundle.main)
-                $0.cell.height = { 199 }
+                }.cellSetup { (cell, row) in
+                    cell.height = { 199 }
                 }
                 .onChange { row in
                     if let textView = row.cell.viewWithTag(99) as? UITextView {
