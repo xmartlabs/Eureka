@@ -115,7 +115,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     }
 
     @objc func valueChanged() {
-        row.value =  (row as! SegmentedRow<T>).options?[segmentedControl.selectedSegmentIndex]
+        row.value = (row as! SegmentedRow<T>).options?[segmentedControl.selectedSegmentIndex]
     }
 
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
