@@ -226,6 +226,10 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
                 textField.textAlignment = .left
                 textField.clearButtonMode = .whileEditing
             }
+        } else {
+            textLabel?.text = nil
+            titleLabel?.text = row.title
+            titleLabel?.textColor = row.isDisabled ? .gray : .black
         }
         textField.delegate = self
         textField.text = row.displayValueFor?(row.value)
@@ -240,7 +244,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
             }
         }
         if row.isHighlighted {
-            textLabel?.textColor = tintColor
+            titleLabel?.textColor = tintColor
         }
     }
 
