@@ -131,7 +131,7 @@ open class BaseRow: BaseRowType {
     /**
      Helps to pick destination part of the cell after scrolling
      */
-    open var destinationScrollPosition = UITableView.ScrollPosition.bottom
+    open var destinationScrollPosition: UITableView.ScrollPosition? = UITableView.ScrollPosition.bottom
 
     /**
      Returns the IndexPath where this row is in the current form.
