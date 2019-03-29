@@ -126,7 +126,7 @@ open class PickerInputCell<T>: _PickerInputCell<T> where T: Equatable {
     
     open override func update() {
         super.update()
-        if let selectedValue = pickerInputRow?.value, let index = pickerInputRow?.options.index(of: selectedValue) {
+        if let selectedValue = pickerInputRow?.value, let index = pickerInputRow?.options.firstIndex(of: selectedValue) {
             picker.selectRow(index, inComponent: 0, animated: true)
         }
     }

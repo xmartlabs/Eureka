@@ -180,7 +180,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
 
     func selectedIndex() -> Int? {
         guard let value = row.value else { return nil }
-        return (row as! SegmentedRow<T>).options?.index(of: value)
+        return (row as! SegmentedRow<T>).options?.firstIndex(of: value)
     }
 }
 

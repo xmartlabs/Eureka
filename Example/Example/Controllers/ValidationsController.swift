@@ -36,7 +36,6 @@ class ValidationsController: FormViewController {
                 $0.validationOptions = .validatesOnChange
             }
 
-
             +++ Section(header: "Email Rule, Required Rule", footer: "Options: Validates on change after blurred")
 
             <<< TextRow() {
