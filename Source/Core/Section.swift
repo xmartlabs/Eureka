@@ -129,7 +129,7 @@ extension Section {
      *  If not, it returns nil.
      */
     public func rowBy<Row: RowType>(tag: String) -> Row? {
-        guard let index = kvoWrapper._allRows.index(where: { $0.tag == tag }) else { return nil }
+        guard let index = kvoWrapper._allRows.firstIndex(where: { $0.tag == tag }) else { return nil }
         return kvoWrapper._allRows[index] as? Row
     }
 }
@@ -158,7 +158,7 @@ open class Section {
     }
 
     /// Index of this section in the form it belongs to.
-    public var index: Int? { return form?.index(of: self) }
+    public var index: Int? { return form?.firstIndex(of: self) }
 
     /// Condition that determines if the section should be hidden or not.
     public var hidden: Condition? {
@@ -247,7 +247,7 @@ extension Section: MutableCollection, BidirectionalCollection {
 
             if position < kvoWrapper.rows.count {
                 let oldRow = kvoWrapper.rows[position]
-                let oldRowIndex = kvoWrapper._allRows.index(of: oldRow as! BaseRow)!
+                let oldRowIndex = kvoWrapper._allRows.firstIndex(of: oldRow as! BaseRow)!
                 // Remove the previous row from the form
                 kvoWrapper._allRows[oldRowIndex].willBeRemovedFromSection()
                 kvoWrapper._allRows[oldRowIndex] = newValue
@@ -292,7 +292,7 @@ extension Section: RangeReplaceableCollection {
         for i in subrange.lowerBound..<subrange.upperBound {
             if let row = kvoWrapper.rows.object(at: i) as? BaseRow {
                 row.willBeRemovedFromSection()
-                kvoWrapper._allRows.remove(at: kvoWrapper._allRows.index(of: row)!)
+                kvoWrapper._allRows.remove(at: kvoWrapper._allRows.firstIndex(of: row)!)
             }
         }
 
@@ -321,7 +321,7 @@ extension Section: RangeReplaceableCollection {
         let row = kvoWrapper.rows.object(at: position) as! BaseRow
         row.willBeRemovedFromSection()
         kvoWrapper.rows.removeObject(at: position)
-        if let index = kvoWrapper._allRows.index(of: row) {
+        if let index = kvoWrapper._allRows.firstIndex(of: row) {
             kvoWrapper._allRows.remove(at: index)
         }
 
@@ -332,7 +332,7 @@ extension Section: RangeReplaceableCollection {
         guard index != 0 else { return 0 }
 
         let row = kvoWrapper.rows[index-1]
-        if let i = kvoWrapper._allRows.index(of: row as! BaseRow) {
+        if let i = kvoWrapper._allRows.firstIndex(of: row as! BaseRow) {
             return i + 1
         }
         return kvoWrapper._allRows.count
@@ -420,7 +420,7 @@ extension Section /* Condition */ {
 
     func show(row: BaseRow) {
         guard !kvoWrapper.rows.contains(row) else { return }
-        guard var index = kvoWrapper._allRows.index(of: row) else { return }
+        guard var index = kvoWrapper._allRows.firstIndex(of: row) else { return }
         var formIndex = NSNotFound
         while formIndex == NSNotFound && index > 0 {
             index = index - 1
@@ -439,7 +439,7 @@ extension Section /* Helpers */ {
      *  It throws an error if the old row is not in this section.
      */
     public func insert(row newRow: BaseRow, after previousRow: BaseRow) throws {
-        guard let rowIndex = (kvoWrapper._allRows as [BaseRow]).index(of: previousRow) else {
+        guard let rowIndex = (kvoWrapper._allRows as [BaseRow]).firstIndex(of: previousRow) else {
             throw EurekaError.rowNotInSection(row: previousRow)
         }
         kvoWrapper._allRows.insert(newRow, at: index(after: rowIndex))

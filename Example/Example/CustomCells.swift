@@ -118,7 +118,7 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
         let spacing : CGFloat = 3.0
         button.titleEdgeInsets = UIEdgeInsets(top: 0.0, left: -imageSize.width, bottom: -(imageSize.height + spacing), right: 0.0)
         guard let titleLabel = button.titleLabel, let title = titleLabel.text else { return }
-        let titleSize = title.size(withAttributes: [.font: titleLabel.font])
+        let titleSize = title.size(withAttributes: [.font: titleLabel.font!])
         button.imageEdgeInsets = UIEdgeInsets(top: -(titleSize.height + spacing), left: 0, bottom: 0, right: -titleSize.width)
     }
 }

@@ -23,8 +23,8 @@ open class DoublePickerInputCell<A, B> : _PickerInputCell<Tuple<A, B>> where A: 
 
     open override func update() {
         super.update()
-        if let selectedValue = pickerRow.value, let indexA = pickerRow.firstOptions().index(of: selectedValue.a),
-            let indexB = pickerRow.secondOptions(selectedValue.a).index(of: selectedValue.b) {
+        if let selectedValue = pickerRow.value, let indexA = pickerRow.firstOptions().firstIndex(of: selectedValue.a),
+            let indexB = pickerRow.secondOptions(selectedValue.a).firstIndex(of: selectedValue.b) {
             picker.selectRow(indexA, inComponent: 0, animated: true)
             picker.selectRow(indexB, inComponent: 1, animated: true)
         }

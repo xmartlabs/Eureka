@@ -110,7 +110,7 @@ open class PickerCell<T> : _PickerCell<T> where T: Equatable {
 
     open override func update() {
         super.update()
-        if let selectedValue = pickerRow?.value, let index = pickerRow?.options.index(of: selectedValue) {
+        if let selectedValue = pickerRow?.value, let index = pickerRow?.options.firstIndex(of: selectedValue) {
             picker.selectRow(index, inComponent: 0, animated: true)
         }
     }

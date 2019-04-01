@@ -139,7 +139,7 @@ open class SliderCell: Cell<Float>, CellType {
         contentView.removeConstraints(dynamicConstraints)
         dynamicConstraints = []
         
-        var views: [String : Any] = ["titleLabel": titleLabel, "slider": slider, "valueLabel": valueLabel]
+        var views: [String : Any] = ["titleLabel": titleLabel!, "slider": slider!, "valueLabel": valueLabel!]
         let metrics = ["spacing": 15.0]
         valueLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -156,7 +156,7 @@ open class SliderCell: Cell<Float>, CellType {
             let hContraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(title)[slider]\(value)-|", options: .alignAllCenterY, metrics: metrics, views: views)
             dynamicConstraints.append(contentsOf: hContraints)
         }
-        let vContraint = NSLayoutConstraint(item: slider, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0)
+        let vContraint = NSLayoutConstraint(item: slider!, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0)
         dynamicConstraints.append(vContraint)
         contentView.addConstraints(dynamicConstraints)
     }

@@ -273,7 +273,7 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
             textView.textAlignment = .right
             dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "H:[textView]-|", options: [], metrics: nil, views: views)
             let sideSpaces = (layoutMargins.right + layoutMargins.left)
-            dynamicConstraints.append(NSLayoutConstraint(item: textView,
+            dynamicConstraints.append(NSLayoutConstraint(item: textView!,
                                                          attribute: .width,
                                                          relatedBy: .equal,
                                                          toItem: contentView,

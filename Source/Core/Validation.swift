@@ -85,7 +85,7 @@ public struct RuleSet<T: Equatable> {
     }
 
     public mutating func remove(ruleWithIdentifier identifier: String) {
-        if let index = rules.index(where: { (validationRuleHelper) -> Bool in
+        if let index = rules.firstIndex(where: { (validationRuleHelper) -> Bool in
             return validationRuleHelper.rule.id == identifier
         }) {
             rules.remove(at: index)
