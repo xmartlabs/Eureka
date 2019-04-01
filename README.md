@@ -56,7 +56,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
 
 ## Requirements
 
-* Xcode 10.1+
+* Xcode 10.2+
 * Swift 5.0+ (for latest release)
 
 ### Example project
@@ -1059,7 +1059,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 4.3
+github "xmartlabs/Eureka" ~> 5.0
 ```
 
 #### Manually as Embedded Framework

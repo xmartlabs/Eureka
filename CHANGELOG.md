@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [5.0.0](https://github.com/xmartlabs/Eureka/releases/tag/5.0.0)
+
+* Bug fixes and stability improvements
+* iOS deployment target increased to iOS9.3
+
 ### [4.3.1](https://github.com/xmartlabs/Eureka/releases/tag/4.3.1)
 
 * Bug fixes and stability improvements
