@@ -945,11 +945,9 @@ extension FormViewController : UITableViewDelegate {
 		return form[indexPath].trailingSwipe.contextualConfiguration
 	}
 
-	open func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
-        guard let actions = form[indexPath].trailingSwipe.contextualActions as? [UITableViewRowAction], !actions.isEmpty else {
-            return nil
-        }
-        return actions
+	public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+		let actions = form[indexPath].trailingSwipe.tableViewRowActions
+		return !actions.isEmpty ? actions : nil
 	}
 }
 

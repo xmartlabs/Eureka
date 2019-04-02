@@ -26,34 +26,39 @@ public class SwipeAction: ContextualAction {
     }
 
     func contextualAction(forRow: BaseRow) -> ContextualAction {
-        var action: ContextualAction
         if #available(iOS 11, *){
-            action = UIContextualAction(style: style.contextualStyle as! UIContextualAction.Style, title: title){ [weak self] action, view, completion -> Void in
+            let action = UIContextualAction(style: style.contextualStyle as! UIContextualAction.Style, title: title){ [weak self] action, view, completion -> Void in
                 guard let strongSelf = self else{ return }
                 strongSelf.handler(strongSelf, forRow, completion)
             }
-        } else {
-            action = UITableViewRowAction(style: style.contextualStyle as! UITableViewRowAction.Style,title: title){ [weak self] (action, indexPath) -> Void in
-                guard let strongSelf = self else{ return }
-				strongSelf.handler(strongSelf, forRow) { _ in
-					DispatchQueue.main.async {
-						guard action.style == .destructive else {
-							forRow.baseCell?.formViewController()?.tableView?.setEditing(false, animated: true)
-							return
-						}
-						forRow.section?.remove(at: indexPath.row)
-					}
-				}
-            }
+			
+			action.backgroundColor = self.backgroundColor ?? action.backgroundColor
+			action.image = self.image ?? action.image
+			
+			return action
         }
-        if let color = self.backgroundColor {
-            action.backgroundColor = color
-        }
-        if let image = self.image {
-            action.image = image
-        }
-        return action
+		
+		return tableViewRowAction(forRow: forRow)
     }
+	
+	func tableViewRowAction(forRow: BaseRow) -> UITableViewRowAction {
+		let action = UITableViewRowAction(style: style.tableViewRowStyle, title: title) { [weak self] (action, indexPath) -> Void in
+			guard let strongSelf = self else { return }
+			strongSelf.handler(strongSelf, forRow) { _ in
+				DispatchQueue.main.async {
+					guard action.style == .destructive else {
+						forRow.baseCell?.formViewController()?.tableView?.setEditing(false, animated: true)
+						return
+					}
+					forRow.section?.remove(at: indexPath.row)
+				}
+			}
+		}
+		action.backgroundColor = self.backgroundColor ?? action.backgroundColor
+		action.image = self.image ?? action.image
+		
+		return action
+	}
 	
     public enum Style{
         case normal
@@ -68,14 +73,18 @@ public class SwipeAction: ContextualAction {
                     return UIContextualAction.Style.destructive
                 }
             } else {
-                switch self{
-                case .normal:
-                    return UITableViewRowAction.Style.normal
-                case .destructive:
-                    return UITableViewRowAction.Style.destructive
-                }
+				return tableViewRowStyle
             }
         }
+		
+		var tableViewRowStyle: UITableViewRowAction.Style {
+			switch self {
+			case .normal:
+				return UITableViewRowAction.Style.normal
+			case .destructive:
+				return UITableViewRowAction.Style.destructive
+			}
+		}
     }
 }
 
@@ -99,9 +108,13 @@ extension SwipeConfiguration {
         return contextualConfiguration
     }
 
-    var contextualActions: [ContextualAction]{
+    var contextualActions: [ContextualAction] {
         return self.actions.map { $0.contextualAction(forRow: self.row) }
     }
+	
+	var tableViewRowActions: [UITableViewRowAction] {
+		return self.actions.map { $0.tableViewRowAction(forRow: self.row) }
+	}
 }
 
 protocol ContextualAction {
