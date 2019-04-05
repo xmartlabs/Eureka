@@ -5,6 +5,7 @@
 <img src="https://img.shields.io/badge/platform-iOS-blue.svg?style=flat" alt="Platform iOS" />
 <a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift4-compatible-4BC51D.svg?style=flat" alt="Swift 4 compatible" /></a>
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible" /></a>
+<a href="https://github.com/JamitLabs/Accio"><img src="https://img.shields.io/badge/Accio-supported-0A7CF5.svg?style=flat" alt="Accio supported" /></a>
 <a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/cocoapods/v/Eureka.svg" alt="CocoaPods compatible" /></a>
 <a href="https://raw.githubusercontent.com/xmartlabs/Eureka/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License: MIT" /></a>
 <a href="https://codebeat.co/projects/github-com-xmartlabs-eureka"><img alt="codebeat badge" src="https://codebeat.co/badges/16f29afb-f072-4633-9497-333c6eb71263" /></a>
@@ -1061,6 +1062,29 @@ Specify Eureka into your project's `Cartfile`:
 ```ogdl
 github "xmartlabs/Eureka" ~> 4.3
 ```
+
+## Accio
+
+[Accio](https://github.com/JamitLabs/Accio) is a SwiftPM based dependency manager with improvements over Carthage.
+
+Add the following to your `Package.swift`:
+
+```swift
+.package(url: "https://github.com/xmartlabs/Eureka.git", .upToNextMajor(from: "5.0.0")),
+```
+
+Next, add `Eureka` to your App targets dependencies like so:
+
+```swift
+.target(
+    name: "App",
+    dependencies: [
+        "Eureka",
+    ]
+),
+```
+
+Then run `accio update`.
 
 #### Manually as Embedded Framework
 
