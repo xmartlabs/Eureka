@@ -52,7 +52,7 @@ class SwipeActionsController: FormViewController {
                         print("Info")
                         completionHandler?(true)
                     })
-                    infoAction.backgroundColor = .blue
+                    infoAction.actionBackgroundColor = .blue
 
                     $0.leadingSwipe.actions = [infoAction]
                     $0.leadingSwipe.performsFirstActionWithFullSwipe = true

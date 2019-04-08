@@ -619,7 +619,7 @@ let row = TextRow() {
                     //make sure you call the completionHandler once done.
                     completionHandler?(true)
                 })
-            infoAction.backgroundColor = .blue
+            infoAction.actionBackgroundColor = .blue
             infoAction.image = UIImage(named: "icon-info")
 
             $0.leadingSwipe.actions = [infoAction]
