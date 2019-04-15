@@ -393,13 +393,17 @@ extension Form {
 extension Form {
 
     @discardableResult
-    public func validate(includeHidden: Bool = false, includeDisabled: Bool = true) -> [ValidationError] {
+    public func validate(includeHidden: Bool = false, includeDisabled: Bool = true, quietly: Bool = false) -> [ValidationError] {
         let rowsWithHiddenFilter = includeHidden ? allRows : rows
         let rowsWithDisabledFilter = includeDisabled ? rowsWithHiddenFilter : rowsWithHiddenFilter.filter { $0.isDisabled != true }
         
         return rowsWithDisabledFilter.reduce([ValidationError]()) { res, row in
             var res = res
-            res.append(contentsOf: row.validate())
+            if (quietly) {
+                res.append(contentsOf: row.validate(quietly: quietly))
+            } else {
+                res.append(contentsOf: row.validate())
+            }
             return res
         }
     }
