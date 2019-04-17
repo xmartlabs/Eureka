@@ -399,11 +399,7 @@ extension Form {
         
         return rowsWithDisabledFilter.reduce([ValidationError]()) { res, row in
             var res = res
-            if (quietly) {
-                res.append(contentsOf: row.validate(quietly: quietly))
-            } else {
-                res.append(contentsOf: row.validate())
-            }
+            res.append(contentsOf: row.validate(quietly: quietly))
             return res
         }
     }
