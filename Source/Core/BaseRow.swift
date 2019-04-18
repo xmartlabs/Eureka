@@ -74,7 +74,7 @@ open class BaseRow: BaseRowType {
         get { return nil }
     }
 
-    public func validate() -> [ValidationError] {
+    public func validate(quietly: Bool = false) -> [ValidationError] {
         return []
     }
 

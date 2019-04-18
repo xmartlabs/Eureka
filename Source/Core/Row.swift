@@ -85,13 +85,17 @@ open class RowOf<T>: BaseRow where T: Equatable {
     public internal(set) var rules: [ValidationRuleHelper<T>] = []
 
     @discardableResult
-    public override func validate() -> [ValidationError] {
+    public override func validate(quietly: Bool = false) -> [ValidationError] {
+        var vErrors = [ValidationError]()
         #if swift(>=4.1)
-        validationErrors = rules.compactMap { $0.validateFn(value) }
+        vErrors = rules.compactMap { $0.validateFn(value) }
         #else
-        validationErrors = rules.flatMap { $0.validateFn(value) }
+        vErrors = rules.flatMap { $0.validateFn(value) }
         #endif
-        return validationErrors
+        if (!quietly) {
+            validationErrors = vErrors
+        }
+        return vErrors
     }
     
     /// Resets the value of the row. Setting it's value to it's reset value.
