@@ -1254,6 +1254,12 @@ You can see how the rest of custom operators are implemented [here](https://gith
 
 It's up to you to decide if you want to use Eureka custom operators or not.
 
+#### How to set up your form from a storyboard
+The form is always displayed in a `UITableView`. You can set up your view controller in a storyboard and add a UITableView where you want it to be and then connect the outlet to FormViewController's `tableView` variable. This allows you to define a custom frame (possibly with constraints) for your form.
+
+All of this can also be done by programmatically changing frame, margins, etc. of the `tableView` of your FormViewController.
+
+
 <!--- In file -->
 [Introduction]: #introduction
 [Requirements]: #requirements
