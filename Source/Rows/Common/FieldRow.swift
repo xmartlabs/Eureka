@@ -232,7 +232,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
             titleLabel?.textColor = row.isDisabled ? .gray : .black
         }
         textField.delegate = self
-        textField.text = row.displayValueFor?(row.value)
+        textField.text = displayValue(useFormatter: true)
         textField.isEnabled = !row.isDisabled
         textField.textColor = row.isDisabled ? .gray : .black
         textField.font = .preferredFont(forTextStyle: .body)
