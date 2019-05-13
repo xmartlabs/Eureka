@@ -1012,7 +1012,10 @@ extension FormViewController {
         let endFrame = keyBoardInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
 
         let keyBoardFrame = table.window!.convert(endFrame.cgRectValue, to: table.superview)
-        let newBottomInset = table.frame.origin.y + table.frame.size.height - keyBoardFrame.origin.y + rowKeyboardSpacing
+        var newBottomInset = table.frame.origin.y + table.frame.size.height - keyBoardFrame.origin.y + rowKeyboardSpacing
+        if let tabBar = tabBarController?.tabBar, tabBar.isTranslucent {
+            newBottomInset -= tabBar.frame.size.height
+        }
         var tableInsets = table.contentInset
         var scrollIndicatorInsets = table.scrollIndicatorInsets
         oldBottomInset = oldBottomInset ?? tableInsets.bottom
