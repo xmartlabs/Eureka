@@ -492,6 +492,22 @@ By default Eureka will set the tableView's `isEditing` to true only if there is 
 
 For more information on how to use multivalued sections please take a look at Eureka example project which contains several usage examples.
 
+#### Custom add button
+If you want to use an add button which is not a `ButtonRow` then you can use `GenericMultivaluedSection<AddButtonType>`, where `AddButtonType` is the type of the row you want to use as add button. This is useful if you want to use a custom row to change the UI of the button.
+
+Example:
+
+```swift
+GenericMultivaluedSection<LabelRow>(multivaluedOptions: [.Reorder, .Insert, .Delete], {
+    $0.addButtonProvider = { section in
+        return LabelRow(){
+            $0.title = "A Label row as add button"
+        }
+    }
+    // ...
+}
+```
+
 ### Validations
 
 Eureka 2.0.0 introduces the much requested built-in validations feature.
