@@ -8,18 +8,18 @@
 
 import UIKit
 
-/// The cell of the StepperRow
+// MARK: StepperCell
+
 open class StepperCell: Cell<Double>, CellType {
   
-    private var awakeFromNibCalled = false
   
-    @IBOutlet open weak var titleLabel: UILabel!
-    @IBOutlet open weak var valueLabel: UILabel!
     @IBOutlet open weak var stepper: UIStepper!
-  
-    open var formatter: NumberFormatter?
-  
-    public required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    @IBOutlet open weak var valueLabel: UILabel!
+    @IBOutlet open weak var titleLabel: UILabel!
+
+    private var awakeFromNibCalled = false
+
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
       
         NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification, object: nil, queue: nil) { [weak self] _ in
@@ -31,17 +31,12 @@ open class StepperCell: Cell<Double>, CellType {
             }
         }
     }
-  
-    deinit {
-        guard !awakeFromNibCalled else { return }
-        NotificationCenter.default.removeObserver(self, name: UIContentSizeCategory.didChangeNotification, object: nil)
-    }
-  
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         awakeFromNibCalled = true
     }
-  
+
     open override func setup() {
         super.setup()
         if !awakeFromNibCalled {
@@ -70,22 +65,21 @@ open class StepperCell: Cell<Double>, CellType {
             setNeedsUpdateConstraints()
         }
         selectionStyle = .none
-        stepper.minimumValue = 0
-        stepper.maximumValue = 10
         stepper.addTarget(self, action: #selector(StepperCell.valueChanged), for: .valueChanged)
     }
   
     open override func update() {
         super.update()
-        titleLabel.isHidden = !shouldShowTitle
-        valueLabel.text = row.displayValueFor?(row.value)
-        stepper.value = row.value ?? 0
         stepper.isEnabled = !row.isDisabled
+        
+        titleLabel.isHidden = !shouldShowTitle
+        stepper.value = row.value ?? 0
+        stepper.alpha = row.isDisabled ? 0.3 : 1.0
         valueLabel?.textColor = tintColor
         valueLabel?.alpha = row.isDisabled ? 0.3 : 1.0
-        stepper.alpha = row.isDisabled ? 0.3 : 1.0
+        valueLabel?.text = row.displayValueFor?(row.value)
     }
-  
+
     @objc func valueChanged() {
         row.value = stepper.value
         row.updateCell()
@@ -98,7 +92,13 @@ open class StepperCell: Cell<Double>, CellType {
     private var stepperRow: StepperRow {
         return row as! StepperRow
     }
-  
+    
+    deinit {
+        stepper.removeTarget(self, action: nil, for: .allEvents)
+        guard !awakeFromNibCalled else { return }
+        NotificationCenter.default.removeObserver(self, name: UIContentSizeCategory.didChangeNotification, object: nil)
+    }
+
     open override func updateConstraints() {
         customConstraints()
         super.updateConstraints()
@@ -135,12 +135,13 @@ open class StepperCell: Cell<Double>, CellType {
 }
 
 // MARK: StepperRow
+
 open class _StepperRow: Row<StepperCell> {
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = { value in
-          guard let value = value else { return nil }
-          return DecimalFormatter().string(from: NSNumber(value: value)) }
+                                guard let value = value else { return nil }
+                                return DecimalFormatter().string(from: NSNumber(value: value)) }
     }
 }
 
