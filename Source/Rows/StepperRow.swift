@@ -82,9 +82,11 @@ open class StepperCell: Cell<Double>, CellType {
     titleLabel.text = row.title
     titleLabel.isHidden = !shouldShowTitle
     valueLabel.text = row.displayValueFor?(row.value)
-    stepper.value = row.value ?? stepper.minimumValue
+    stepper.value = row.value ?? 0
     stepper.isEnabled = !row.isDisabled
-    
+    valueLabel?.textColor = tintColor
+    valueLabel?.alpha = row.isDisabled ? 0.3 : 1.0
+    stepper.alpha = row.isDisabled ? 0.3 : 1.0
   }
   
   @objc func valueChanged() {
@@ -117,7 +119,7 @@ open class StepperCell: Cell<Double>, CellType {
     valueLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     
-    let title = shouldShowTitle ? "[titleLabel]-(>=15)-" : ""
+    let title = shouldShowTitle ? "[titleLabel]-(>=15@250)-" : ""
     
     if let imageView = imageView, let _ = imageView.image {
       views["imageView"] = imageView
