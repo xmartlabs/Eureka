@@ -61,7 +61,6 @@ class ValidationsController: FormViewController {
                     }
             }
 
-
             +++ Section(header: "MinLength 8 Rule, MaxLength 13 Rule", footer: "Options: Validates on blurred")
             <<< PasswordRow() {
                 $0.title = "Password"
@@ -73,7 +72,6 @@ class ValidationsController: FormViewController {
                         cell.titleLabel?.textColor = .red
                     }
             }
-
 
             +++ Section(header: "Should be GreaterThan 2 and SmallerThan 999", footer: "Options: Validates on blurred")
 
@@ -103,7 +101,6 @@ class ValidationsController: FormViewController {
                     }
             }
 
-
             +++ Section(header: "More sophisticated validations UX using callbacks", footer: "")
 
             <<< TextRow() {
@@ -127,12 +124,11 @@ class ValidationsController: FormViewController {
                                 $0.title = validationMsg
                                 $0.cell.height = { 30 }
                             }
-                            row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                            let indexPath = row.indexPath!.row + index + 1
+                            row.section?.insert(labelRow, at: indexPath)
                         }
                     }
             }
-
-
 
             <<< EmailRow() {
                 $0.title = "Email Rule"
@@ -156,12 +152,11 @@ class ValidationsController: FormViewController {
                                 $0.title = validationMsg
                                 $0.cell.height = { 30 }
                             }
-                            row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                            let indexPath = row.indexPath!.row + index + 1
+                            row.section?.insert(labelRow, at: indexPath)
                         }
                     }
             }
-
-
 
             <<< URLRow() {
                 $0.title = "URL Rule"
@@ -184,11 +179,11 @@ class ValidationsController: FormViewController {
                                 $0.title = validationMsg
                                 $0.cell.height = { 30 }
                             }
-                            row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                            let indexPath = row.indexPath!.row + index + 1
+                            row.section?.insert(labelRow, at: indexPath)
                         }
                     }
             }
-
 
             <<< PasswordRow("password2") {
                 $0.title = "Password"
@@ -211,11 +206,11 @@ class ValidationsController: FormViewController {
                                 $0.title = validationMsg
                                 $0.cell.height = { 30 }
                             }
-                            row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                            let indexPath = row.indexPath!.row + index + 1
+                            row.section?.insert(labelRow, at: indexPath)
                         }
                     }
             }
-
 
             <<< PasswordRow() {
                 $0.title = "Confirm Password"
@@ -237,12 +232,11 @@ class ValidationsController: FormViewController {
                                 $0.title = validationMsg
                                 $0.cell.height = { 30 }
                             }
-                            row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                            let indexPath = row.indexPath!.row + index + 1
+                            row.section?.insert(labelRow, at: indexPath)
                         }
                     }
             }
-
-
 
             <<< IntRow() {
                 $0.title = "Range Rule"
@@ -265,20 +259,18 @@ class ValidationsController: FormViewController {
                                 $0.title = validationMsg
                                 $0.cell.height = { 30 }
                             }
-                            row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                            let indexPath = row.indexPath!.row + index + 1
+                            row.section?.insert(labelRow, at: indexPath)
                         }
                     }
             }
 
-
             +++ Section()
-            <<< ButtonRow() {
-                $0.title = "Tap to force form validation"
+                <<< ButtonRow() {
+                    $0.title = "Tap to force form validation"
                 }
                 .onCellSelection { cell, row in
                     row.section?.form?.validate()
-        }
-
-
+                }
     }
 }

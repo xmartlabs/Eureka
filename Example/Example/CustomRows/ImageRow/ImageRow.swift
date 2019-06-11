@@ -74,7 +74,6 @@ open class _ImageRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where C
     
     /// Will be called before the presentation occurs.
     open var onPresentCallback: ((FormViewController, PresenterRow) -> Void)?
-    
 
     open var sourceTypes: ImageRowSourceTypes
     open internal(set) var imageURL: URL?
@@ -90,7 +89,6 @@ open class _ImageRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where C
             vc.dismiss(animated: true)
             })
         self.displayValueFor = nil
-        
     }
     
     // copy over the existing logic from the SelectorRow
@@ -101,8 +99,7 @@ open class _ImageRow<Cell: CellType>: OptionsRow<Cell>, PresenterRowType where C
                 controller.sourceType = sourceType
                 onPresentCallback?(cell.formViewController()!, controller)
                 presentationMode.present(controller, row: self, presentingController: cell.formViewController()!)
-            }
-            else{
+            } else {
                 _sourceType = sourceType
                 presentationMode.present(nil, row: self, presentingController: cell.formViewController()!)
             }

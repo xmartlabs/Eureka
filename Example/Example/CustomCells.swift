@@ -523,8 +523,6 @@ public final class LocationRow: OptionsRow<PushSelectorCell<CLLocation>>, Presen
     /// Will be called before the presentation occurs.
     public var onPresentCallback: ((FormViewController, PresenterRow) -> Void)?
 
-    
-    
     public required init(tag: String?) {
         super.init(tag: tag)
         presentationMode = .show(controllerProvider: ControllerProvider.callback { return MapViewController(){ _ in } }, onDismiss: { vc in _ = vc.navigationController?.popViewController(animated: true) })
