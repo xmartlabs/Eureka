@@ -87,7 +87,11 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
         self.placeholderLabel = placeholderLabel
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         placeholderLabel.numberOfLines = 0
-        placeholderLabel.textColor = UIColor(white: 0, alpha: 0.22)
+        if #available(iOS 13.0, *) {
+            placeholderLabel.textColor = UIColor.tertiaryLabel
+        } else {
+            placeholderLabel.textColor = UIColor(white: 0, alpha: 0.22)
+        }
         placeholderLabel.font = textView.font
         contentView.addSubview(placeholderLabel)
     }
