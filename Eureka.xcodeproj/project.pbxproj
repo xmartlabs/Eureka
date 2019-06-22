@@ -84,7 +84,6 @@
 		51729DF61B9A4F5E004A00EB /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51729DEB1B9A4F5E004A00EB /* Eureka.framework */; };
 		51729E671B9A5FA5004A00EB /* Eureka.h in Headers */ = {isa = PBXBuildFile; fileRef = 51729E661B9A5FA5004A00EB /* Eureka.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		798C5ADA1EF1E35600A21F52 /* SwipeActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798C5AD91EF1E35600A21F52 /* SwipeActions.swift */; };
-		8690E4BE1CFDE062004CDB1C /* Eureka.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8690E4BD1CFDE062004CDB1C /* Eureka.bundle */; };
 		8FCCF8EF20A24085004793A0 /* DoublePickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FCCF8EE20A24085004793A0 /* DoublePickerRow.swift */; };
 		8FCCF8F120A32613004793A0 /* TriplePickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FCCF8F020A32613004793A0 /* TriplePickerRow.swift */; };
 		8FCCF92320A473E7004793A0 /* DoublePickerInputRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FCCF92220A473E7004793A0 /* DoublePickerInputRow.swift */; };
@@ -186,7 +185,6 @@
 		51729DFC1B9A4F5E004A00EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Tests/Info.plist; sourceTree = "<group>"; };
 		51729E661B9A5FA5004A00EB /* Eureka.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Eureka.h; path = Source/Eureka.h; sourceTree = SOURCE_ROOT; };
 		798C5AD91EF1E35600A21F52 /* SwipeActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActions.swift; sourceTree = "<group>"; };
-		8690E4BD1CFDE062004CDB1C /* Eureka.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Eureka.bundle; sourceTree = "<group>"; };
 		8FCCF8EE20A24085004793A0 /* DoublePickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublePickerRow.swift; sourceTree = "<group>"; };
 		8FCCF8F020A32613004793A0 /* TriplePickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriplePickerRow.swift; sourceTree = "<group>"; };
 		8FCCF92220A473E7004793A0 /* DoublePickerInputRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublePickerInputRow.swift; sourceTree = "<group>"; };
@@ -353,7 +351,6 @@
 				2859CD901C7CF1FD0002982F /* Core */,
 				2859CD971C7CF2020002982F /* Rows */,
 				287E7D7C1D62552C0065F4DE /* Validations */,
-				8690E4BC1CFDE02A004CDB1C /* Resources */,
 				51729E661B9A5FA5004A00EB /* Eureka.h */,
 				51729DF01B9A4F5E004A00EB /* Info.plist */,
 				28B12FD41BA0E83C00F27A23 /* Assets.xcassets */,
@@ -384,15 +381,6 @@
 			);
 			path = Tests;
 			sourceTree = "<group>";
-		};
-		8690E4BC1CFDE02A004CDB1C /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				8690E4BD1CFDE062004CDB1C /* Eureka.bundle */,
-			);
-			name = Resources;
-			path = Source/Resources;
-			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -490,7 +478,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8690E4BE1CFDE062004CDB1C /* Eureka.bundle in Resources */,
 				28B12FD51BA0E83C00F27A23 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
