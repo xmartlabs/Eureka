@@ -3,7 +3,7 @@
 <p align="center">
 <a href="https://travis-ci.org/xmartlabs/Eureka"><img src="https://travis-ci.org/xmartlabs/Eureka.svg?branch=master" alt="Build status" /></a>
 <img src="https://img.shields.io/badge/platform-iOS-blue.svg?style=flat" alt="Platform iOS" />
-<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift4-compatible-4BC51D.svg?style=flat" alt="Swift 4 compatible" /></a>
+<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift5-compatible-4BC51D.svg?style=flat" alt="Swift 5 compatible" /></a>
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible" /></a>
 <a href="https://cocoapods.org/pods/Eureka"><img src="https://img.shields.io/cocoapods/v/Eureka.svg" alt="CocoaPods compatible" /></a>
 <a href="https://raw.githubusercontent.com/xmartlabs/Eureka/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License: MIT" /></a>
@@ -56,8 +56,8 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
 
 ## Requirements
 
-* Xcode 9.2+
-* Swift 4+
+* Xcode 10.2+
+* Swift 5.0+ (for latest release)
 
 ### Example project
 
@@ -591,9 +591,7 @@ As expected, the Rules must use the same types as the Row object. Be extra caref
 
 ### Swipe Actions
 
-Eureka 4.1.0 introduces the swipe feature.
-
-You are now able to define multiple `leadingSwipe` and `trailingSwipe` actions per row. As swipe actions depend on iOS system features, `leadingSwipe` is available on iOS 11.0+ only.
+By using swipe actions we can define multiple `leadingSwipe` and `trailingSwipe` actions per row. As swipe actions depend on iOS system features, `leadingSwipe` is available on iOS 11.0+ only.
 
 Let's see how to define swipe actions.
 
@@ -621,7 +619,7 @@ let row = TextRow() {
                     //make sure you call the completionHandler once done.
                     completionHandler?(true)
                 })
-            infoAction.backgroundColor = .blue
+            infoAction.actionBackgroundColor = .blue
             infoAction.image = UIImage(named: "icon-info")
 
             $0.leadingSwipe.actions = [infoAction]
@@ -1061,7 +1059,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 4.3
+github "xmartlabs/Eureka" ~> 5.0
 ```
 
 #### Manually as Embedded Framework
@@ -1255,6 +1253,12 @@ public func +=<C : Collection>(inout lhs: Section, rhs: C) where C.Element == Ba
 You can see how the rest of custom operators are implemented [here](https://github.com/xmartlabs/Eureka/blob/master/Source/Core/Operators.swift).
 
 It's up to you to decide if you want to use Eureka custom operators or not.
+
+#### How to set up your form from a storyboard
+The form is always displayed in a `UITableView`. You can set up your view controller in a storyboard and add a UITableView where you want it to be and then connect the outlet to FormViewController's `tableView` variable. This allows you to define a custom frame (possibly with constraints) for your form.
+
+All of this can also be done by programmatically changing frame, margins, etc. of the `tableView` of your FormViewController.
+
 
 <!--- In file -->
 [Introduction]: #introduction

@@ -125,7 +125,7 @@ class NativeEventFormViewController : FormViewController {
 
             PushRow<RepeatInterval>("Repeat") {
                 $0.title = $0.tag
-                $0.options = RepeatInterval.allValues
+                $0.options = RepeatInterval.allCases
                 $0.value = .Never
                 }.onPresent({ (_, vc) in
                     vc.enableDeselection = false
@@ -136,7 +136,7 @@ class NativeEventFormViewController : FormViewController {
 
             PushRow<EventAlert>() {
                 $0.title = "Alert"
-                $0.options = EventAlert.allValues
+                $0.options = EventAlert.allCases
                 $0.value = .Never
                 }
                 .onChange { [weak self] row in
@@ -150,7 +150,7 @@ class NativeEventFormViewController : FormViewController {
                             let second = PushRow<EventAlert>("Another Alert") {
                                 $0.title = $0.tag
                                 $0.value = .Never
-                                $0.options = EventAlert.allValues
+                                $0.options = EventAlert.allCases
                             }
                             row.section?.insert(second, at: row.indexPath!.row + 1)
                             return
@@ -162,7 +162,7 @@ class NativeEventFormViewController : FormViewController {
 
             PushRow<EventState>("Show As") {
                 $0.title = "Show As"
-                $0.options = EventState.allValues
+                $0.options = EventState.allCases
         }
 
         form +++
@@ -182,7 +182,7 @@ class NativeEventFormViewController : FormViewController {
         (navigationController as? NativeEventNavigationController)?.onDismissCallback?(self)
     }
 
-    enum RepeatInterval : String, CustomStringConvertible {
+    enum RepeatInterval : String, CaseIterable, CustomStringConvertible {
         case Never = "Never"
         case Every_Day = "Every Day"
         case Every_Week = "Every Week"
@@ -191,11 +191,9 @@ class NativeEventFormViewController : FormViewController {
         case Every_Year = "Every Year"
 
         var description : String { return rawValue }
-
-        static let allValues = [Never, Every_Day, Every_Week, Every_2_Weeks, Every_Month, Every_Year]
     }
 
-    enum EventAlert : String, CustomStringConvertible {
+    enum EventAlert : String, CaseIterable, CustomStringConvertible {
         case Never = "None"
         case At_time_of_event = "At time of event"
         case Five_Minutes = "5 minutes before"
@@ -207,14 +205,10 @@ class NativeEventFormViewController : FormViewController {
         case Two_Days = "2 days before"
 
         var description : String { return rawValue }
-
-        static let allValues = [Never, At_time_of_event, Five_Minutes, FifTeen_Minutes, Half_Hour, One_Hour, Two_Hour, One_Day, Two_Days]
     }
 
-    enum EventState {
+    enum EventState : CaseIterable {
         case busy
         case free
-
-        static let allValues = [busy, free]
     }
 }

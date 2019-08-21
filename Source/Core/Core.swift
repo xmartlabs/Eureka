@@ -455,9 +455,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
         if tableView == nil {
             tableView = UITableView(frame: view.bounds, style: tableViewStyle)
             tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            if #available(iOS 9.0, *) {
-                tableView.cellLayoutMarginsFollowReadableWidth = false
-            }
+            tableView.cellLayoutMarginsFollowReadableWidth = false
         }
         if tableView.superview == nil {
             view.addSubview(tableView)
@@ -1031,7 +1029,12 @@ extension FormViewController {
             table.contentInset = tableInsets
             table.scrollIndicatorInsets = scrollIndicatorInsets
             if let selectedRow = table.indexPath(for: cell) {
-                table.scrollToRow(at: selectedRow, at: .none, animated: animateScroll)
+                if ProcessInfo.processInfo.operatingSystemVersion.majorVersion == 11 {
+                    let rect = table.rectForRow(at: selectedRow)
+                    table.scrollRectToVisible(rect, animated: animateScroll)
+                } else {
+                    table.scrollToRow(at: selectedRow, at: .none, animated: animateScroll)
+                }
             }
             UIView.commitAnimations()
         }
@@ -1107,7 +1110,8 @@ extension FormViewControllerProtocol {
 
     // MARK: Helpers
 
-    func makeRowVisible(_ row: BaseRow, destinationScrollPosition: UITableView.ScrollPosition) {
+    func makeRowVisible(_ row: BaseRow, destinationScrollPosition: UITableView.ScrollPosition? = .bottom) {
+	guard let destinationScrollPosition = destinationScrollPosition else { return }
         guard let cell = row.baseCell, let indexPath = row.indexPath, let tableView = tableView else { return }
         if cell.window == nil || (tableView.contentOffset.y + tableView.frame.size.height <= cell.frame.origin.y + cell.frame.size.height) {
             tableView.scrollToRow(at: indexPath, at: destinationScrollPosition, animated: true)

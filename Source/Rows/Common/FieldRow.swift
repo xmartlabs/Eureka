@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 public protocol InputTypeInitiable {
     init?(string stringValue: String)
@@ -225,6 +226,10 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
                 textField.textAlignment = .left
                 textField.clearButtonMode = .whileEditing
             }
+        } else {
+            textLabel?.text = nil
+            titleLabel?.text = row.title
+            titleLabel?.textColor = row.isDisabled ? .gray : .black
         }
         textField.delegate = self
         textField.text = row.displayValueFor?(row.value)
@@ -239,7 +244,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
             }
         }
         if row.isHighlighted {
-            textLabel?.textColor = tintColor
+            titleLabel?.textColor = tintColor
         }
     }
 
@@ -282,10 +287,10 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
                 views["titleLabel"] = titleLabel
                 dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[titleLabel]-3-[textField]", options: .alignAllLeading, metrics: nil, views: views)
                 // Here we are centering the textField with an offset of -4. This replicates the exact behavior of the default UITableViewCell with .subtitle style
-                dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: -4))
+                dynamicConstraints.append(NSLayoutConstraint(item: textField!, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: -4))
                 dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .equal, toItem: textField, attribute: .centerX, multiplier: 1, constant: 0))
             } else {
-                dynamicConstraints.append(NSLayoutConstraint(item: textField, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0))
+                dynamicConstraints.append(NSLayoutConstraint(item: textField!, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0))
             }
             
             if let imageView = imageView, let _ = imageView.image {
@@ -363,7 +368,11 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
             return
         }
         if fieldRow.useFormatterDuringInput {
-            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.allocate(capacity: 1))
+            let unsafePointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
+            defer {
+                unsafePointer.deallocate()
+            }
+            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(unsafePointer)
             let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?>? = nil
             if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
                 row.value = value.pointee as? T
@@ -375,7 +384,11 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
                 return
             }
         } else {
-            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.allocate(capacity: 1))
+            let unsafePointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
+            defer {
+                unsafePointer.deallocate()
+            }
+            let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(unsafePointer)
             let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?>? = nil
             if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
                 row.value = value.pointee as? T
@@ -455,11 +468,9 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
 		var targetTitleWidth = bounds.size.width * titlePercentage
 		if let imageView = imageView, let _ = imageView.image, let titleLabel = titleLabel {
 			var extraWidthToSubtract = titleLabel.frame.minX - imageView.frame.minX // Left-to-right interface layout
-			if #available(iOS 9.0, *) {
-				if UIView.userInterfaceLayoutDirection(for: self.semanticContentAttribute) == .rightToLeft {
-					extraWidthToSubtract = imageView.frame.maxX - titleLabel.frame.maxX
-				}
-			}
+            if UIView.userInterfaceLayoutDirection(for: self.semanticContentAttribute) == .rightToLeft {
+                extraWidthToSubtract = imageView.frame.maxX - titleLabel.frame.maxX
+            }
 			targetTitleWidth -= extraWidthToSubtract
 		}
 		calculatedTitlePercentage = targetTitleWidth / contentView.bounds.size.width

@@ -64,7 +64,7 @@ public struct ValidationOptions: OptionSet {
     public static let validatesAlways: ValidationOptions = [.validatesOnChange, .validatesOnBlur]
 }
 
-internal struct ValidationRuleHelper<T> where T: Equatable {
+public struct ValidationRuleHelper<T> where T: Equatable {
     let validateFn: ((T?) -> ValidationError?)
     let rule: BaseRuleType
 }
@@ -85,7 +85,7 @@ public struct RuleSet<T: Equatable> {
     }
 
     public mutating func remove(ruleWithIdentifier identifier: String) {
-        if let index = rules.index(where: { (validationRuleHelper) -> Bool in
+        if let index = rules.firstIndex(where: { (validationRuleHelper) -> Bool in
             return validationRuleHelper.rule.id == identifier
         }) {
             rules.remove(at: index)

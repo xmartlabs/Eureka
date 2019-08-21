@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 public protocol DatePickerRowProtocol: class {
     var minimumDate: Date? { get set }

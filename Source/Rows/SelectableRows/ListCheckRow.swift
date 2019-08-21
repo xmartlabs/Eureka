@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 open class ListCheckCell<T: Equatable> : Cell<T>, CellType {
 

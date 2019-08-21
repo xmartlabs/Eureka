@@ -57,7 +57,10 @@ class RowsExampleViewController: FormViewController {
             <<< StepperRow() {
                 $0.title = "StepperRow"
                 $0.value = 1.0
-            }
+              }.cellSetup({ (cell, row) in
+                cell.imageView?.image = #imageLiteral(resourceName: "selectedRectangle")
+              })
+          
 
             +++ Section("SegmentedRow examples")
 

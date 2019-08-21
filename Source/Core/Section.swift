@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 /// The delegate of the Eureka sections.
 public protocol SectionDelegate: class {
@@ -73,6 +74,11 @@ extension Section {
             _allRows.removeAll()
         }
 
+        func removeAllRows() {
+            _rows = []
+            _allRows.removeAll()
+        }
+
         public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
             let newRows = change![NSKeyValueChangeKey.newKey] as? [BaseRow] ?? []
             let oldRows = change![NSKeyValueChangeKey.oldKey] as? [BaseRow] ?? []
@@ -81,8 +87,19 @@ extension Section {
             guard keyPathValue == "_rows" else { return }
             switch (changeType as! NSNumber).uintValue {
             case NSKeyValueChange.setting.rawValue:
-                section?.rowsHaveBeenAdded(newRows, at: IndexSet(integer: 0))
-                delegateValue?.rowsHaveBeenAdded(newRows, at:[IndexPath(index: 0)])
+                if newRows.count == 0 {
+                    let indexSet = IndexSet(integersIn: 0..<oldRows.count)
+                    section?.rowsHaveBeenRemoved(oldRows, at: indexSet)
+                    if let _index = section?.index {
+                        delegateValue?.rowsHaveBeenRemoved(oldRows, at: (0..<oldRows.count).map { IndexPath(row: $0, section: _index) })
+                    }
+                } else {
+                    let indexSet = IndexSet(integersIn: 0..<newRows.count)
+                    section?.rowsHaveBeenAdded(newRows, at: indexSet)
+                    if let _index = section?.index {
+                        delegateValue?.rowsHaveBeenAdded(newRows, at: indexSet.map { IndexPath(row: $0, section: _index) })
+                    }
+                }
             case NSKeyValueChange.insertion.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
                 section?.rowsHaveBeenAdded(newRows, at: indexSet)
@@ -112,7 +129,7 @@ extension Section {
      *  If not, it returns nil.
      */
     public func rowBy<Row: RowType>(tag: String) -> Row? {
-        guard let index = kvoWrapper._allRows.index(where: { $0.tag == tag }) else { return nil }
+        guard let index = kvoWrapper._allRows.firstIndex(where: { $0.tag == tag }) else { return nil }
         return kvoWrapper._allRows[index] as? Row
     }
 }
@@ -141,7 +158,7 @@ open class Section {
     }
 
     /// Index of this section in the form it belongs to.
-    public var index: Int? { return form?.index(of: self) }
+    public var index: Int? { return form?.firstIndex(of: self) }
 
     /// Condition that determines if the section should be hidden or not.
     public var hidden: Condition? {
@@ -149,8 +166,13 @@ open class Section {
         didSet { addToRowObservers() }
     }
 
-    /// Returns if the section is currently hidden or not
+    /// Returns if the section is currently hidden or not.
     public var isHidden: Bool { return hiddenCache }
+
+    /// Returns all the rows in this section, including hidden rows.
+    public var allRows: [BaseRow] {
+        return kvoWrapper._allRows
+    }
 
     public required init() {}
 
@@ -225,7 +247,7 @@ extension Section: MutableCollection, BidirectionalCollection {
 
             if position < kvoWrapper.rows.count {
                 let oldRow = kvoWrapper.rows[position]
-                let oldRowIndex = kvoWrapper._allRows.index(of: oldRow as! BaseRow)!
+                let oldRowIndex = kvoWrapper._allRows.firstIndex(of: oldRow as! BaseRow)!
                 // Remove the previous row from the form
                 kvoWrapper._allRows[oldRowIndex].willBeRemovedFromSection()
                 kvoWrapper._allRows[oldRowIndex] = newValue
@@ -270,7 +292,7 @@ extension Section: RangeReplaceableCollection {
         for i in subrange.lowerBound..<subrange.upperBound {
             if let row = kvoWrapper.rows.object(at: i) as? BaseRow {
                 row.willBeRemovedFromSection()
-                kvoWrapper._allRows.remove(at: kvoWrapper._allRows.index(of: row)!)
+                kvoWrapper._allRows.remove(at: kvoWrapper._allRows.firstIndex(of: row)!)
             }
         }
 
@@ -285,11 +307,13 @@ extension Section: RangeReplaceableCollection {
 
     public func removeAll(keepingCapacity keepCapacity: Bool = false) {
         // not doing anything with capacity
-        for row in kvoWrapper._allRows {
+
+        let rows = kvoWrapper._allRows
+        kvoWrapper.removeAllRows()
+
+        for row in rows {
             row.willBeRemovedFromSection()
         }
-        kvoWrapper.rows.removeAllObjects()
-        kvoWrapper._allRows.removeAll()
     }
 
     @discardableResult
@@ -297,7 +321,7 @@ extension Section: RangeReplaceableCollection {
         let row = kvoWrapper.rows.object(at: position) as! BaseRow
         row.willBeRemovedFromSection()
         kvoWrapper.rows.removeObject(at: position)
-        if let index = kvoWrapper._allRows.index(of: row) {
+        if let index = kvoWrapper._allRows.firstIndex(of: row) {
             kvoWrapper._allRows.remove(at: index)
         }
 
@@ -308,7 +332,7 @@ extension Section: RangeReplaceableCollection {
         guard index != 0 else { return 0 }
 
         let row = kvoWrapper.rows[index-1]
-        if let i = kvoWrapper._allRows.index(of: row as! BaseRow) {
+        if let i = kvoWrapper._allRows.firstIndex(of: row as! BaseRow) {
             return i + 1
         }
         return kvoWrapper._allRows.count
@@ -396,7 +420,7 @@ extension Section /* Condition */ {
 
     func show(row: BaseRow) {
         guard !kvoWrapper.rows.contains(row) else { return }
-        guard var index = kvoWrapper._allRows.index(of: row) else { return }
+        guard var index = kvoWrapper._allRows.firstIndex(of: row) else { return }
         var formIndex = NSNotFound
         while formIndex == NSNotFound && index > 0 {
             index = index - 1
@@ -415,7 +439,7 @@ extension Section /* Helpers */ {
      *  It throws an error if the old row is not in this section.
      */
     public func insert(row newRow: BaseRow, after previousRow: BaseRow) throws {
-        guard let rowIndex = (kvoWrapper._allRows as [BaseRow]).index(of: previousRow) else {
+        guard let rowIndex = (kvoWrapper._allRows as [BaseRow]).firstIndex(of: previousRow) else {
             throw EurekaError.rowNotInSection(row: previousRow)
         }
         kvoWrapper._allRows.insert(newRow, at: index(after: rowIndex))
@@ -495,6 +519,7 @@ open class MultivaluedSection: Section {
     func initialize() {
         let addRow = addButtonProvider(self)
         addRow.onCellSelection { cell, row in
+            guard !row.isDisabled else { return }
             guard let tableView = cell.formViewController()?.tableView, let indexPath = row.indexPath else { return }
             cell.formViewController()?.tableView(tableView, commit: .insert, forRowAt: indexPath)
         }
