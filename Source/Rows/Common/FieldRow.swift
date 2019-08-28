@@ -87,7 +87,7 @@ open class FieldRow<Cell: CellType>: FormatteableRow<Cell>, FieldRowConformance,
     open var keyboardReturnType: KeyboardReturnTypeConfiguration?
 
     /// The percentage of the cell that should be occupied by the textField
-	@available (*, deprecated, message: "Use titleLabelPercentage instead")
+	@available (*, deprecated, message: "Use titlePercentage instead")
 	open var textFieldPercentage : CGFloat? {
 		get {
 			return titlePercentage.map { 1 - $0 }
