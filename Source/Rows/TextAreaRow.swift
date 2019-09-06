@@ -208,11 +208,11 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
             row.value = nil
             return
         }
-        guard let fieldRow = row as? FieldRowConformance, let formatter = fieldRow.formatter else {
+        guard let formatterRow = row as? FormatterConformance, let formatter = formatterRow.formatter else {
             row.value = textValue.isEmpty ? nil : (T.init(string: textValue) ?? row.value)
             return
         }
-        if fieldRow.useFormatterDuringInput {
+        if formatterRow.useFormatterDuringInput {
             let value: AutoreleasingUnsafeMutablePointer<AnyObject?> = AutoreleasingUnsafeMutablePointer<AnyObject?>.init(UnsafeMutablePointer<T>.allocate(capacity: 1))
             let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?>? = nil
             if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
