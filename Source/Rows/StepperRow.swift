@@ -26,7 +26,9 @@ open class StepperCell: Cell<Double>, CellType {
             guard let me = self else { return }
             if me.shouldShowTitle {
                 me.titleLabel = me.textLabel
-                me.valueLabel = me.detailTextLabel
+                if !me.awakeFromNibCalled {
+                    me.setupValueLabel()
+                }
                 me.setNeedsUpdateConstraints()
             }
         }
@@ -44,13 +46,6 @@ open class StepperCell: Cell<Double>, CellType {
             textLabel?.translatesAutoresizingMaskIntoConstraints = false
             textLabel?.setContentHuggingPriority(UILayoutPriority(rawValue: 500), for: .horizontal)
             self.titleLabel = title
-          
-            let value = detailTextLabel
-            value?.translatesAutoresizingMaskIntoConstraints = false
-            value?.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
-            value?.adjustsFontSizeToFitWidth = true
-            value?.minimumScaleFactor = 0.5
-            self.valueLabel = value
          
             let stepper = UIStepper()
             stepper.translatesAutoresizingMaskIntoConstraints = false
@@ -60,16 +55,28 @@ open class StepperCell: Cell<Double>, CellType {
             if shouldShowTitle {
                 contentView.addSubview(titleLabel)
             }
-            contentView.addSubview(valueLabel)
+
+            setupValueLabel()
             contentView.addSubview(stepper)
             setNeedsUpdateConstraints()
         }
         selectionStyle = .none
         stepper.addTarget(self, action: #selector(StepperCell.valueChanged), for: .valueChanged)
     }
+
+    open func setupValueLabel() {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.setContentHuggingPriority(UILayoutPriority(500), for: .horizontal)
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
+        self.valueLabel = label
+        contentView.addSubview(valueLabel)
+    }
   
     open override func update() {
         super.update()
+        detailTextLabel?.text = nil
         stepper.isEnabled = !row.isDisabled
         
         titleLabel.isHidden = !shouldShowTitle
