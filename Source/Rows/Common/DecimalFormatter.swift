@@ -43,8 +43,8 @@ open class DecimalFormatter: NumberFormatter, FormatterProtocol {
 
     /// Creates an NSNumber from the given String
     /// - Parameter obj: Pointer to NSNumber object to assign
-    /// - Parameter for: String with number assumed to have the configured min. fraction digits.
-    /// - Parameter range: Unused range parameter 
+    /// - Parameter string: String with number assumed to have the configured min. fraction digits.
+    /// - Parameter rangep: Unused range parameter
     override open func getObjectValue(_ obj: AutoreleasingUnsafeMutablePointer<AnyObject?>?, for string: String, range rangep: UnsafeMutablePointer<NSRange>?) throws {
         guard obj != nil else { return  }
         let str = string.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
