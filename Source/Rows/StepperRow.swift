@@ -26,9 +26,6 @@ open class StepperCell: Cell<Double>, CellType {
             guard let me = self else { return }
             if me.shouldShowTitle {
                 me.titleLabel = me.textLabel
-                if !me.awakeFromNibCalled {
-                    me.setupValueLabel()
-                }
                 me.setNeedsUpdateConstraints()
             }
         }
