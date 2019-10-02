@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [5.1.0](https://github.com/xmartlabs/Eureka/releases/tag/5.1.0)
+
+* Support for Xcode 11 and iOS 13
+* Added dark mode support
+
 ### [5.0.1](https://github.com/xmartlabs/Eureka/releases/tag/5.0.1)
 
 * Added `quietly` parameter for use with non-ui validation (#1817)
