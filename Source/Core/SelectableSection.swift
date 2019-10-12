@@ -127,13 +127,13 @@ open class SelectableSection<Row>: Section, SelectableSectionType where Row: Sel
         initializer(self)
     }
 
-    public init(_ header: String, selectionType: SelectionType, _ initializer: @escaping (SelectableSection<Row>) -> Void = { _ in }) {
+    public init(_ header: String?, selectionType: SelectionType, _ initializer: @escaping (SelectableSection<Row>) -> Void = { _ in }) {
         self.selectionType = selectionType
         super.init(header, { _ in })
         initializer(self)
     }
 
-    public init(header: String, footer: String, selectionType: SelectionType, _ initializer: @escaping (SelectableSection<Row>) -> Void = { _ in }) {
+    public init(header: String?, footer: String?, selectionType: SelectionType, _ initializer: @escaping (SelectableSection<Row>) -> Void = { _ in }) {
         self.selectionType = selectionType
         super.init(header: header, footer: footer, { _ in })
         initializer(self)
