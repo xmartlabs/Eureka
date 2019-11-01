@@ -44,6 +44,18 @@ class MultivaluedSectionTests: XCTestCase {
         super.tearDown()
     }
 
+    func testHeaders() {
+        let headerSection = MultivaluedSection(multivaluedOptions: .Insert, header: "Header Text", footer: nil) { _ in }
+        XCTAssertEqual(headerSection.header!.title, "Header Text")
+        XCTAssertNil(headerSection.footer)
+    }
+
+    func testFooters() {
+        let footerSection = MultivaluedSection(multivaluedOptions: .Insert, header: nil, footer: "Footer Text") { _ in }
+        XCTAssertEqual(footerSection.footer!.title, "Footer Text")
+        XCTAssertNil(footerSection.header)
+    }
+
     func testAddButton() {
         let section = MultivaluedSection(multivaluedOptions: .Insert, header: "", footer: "") { _ in
             // just an empty closure
