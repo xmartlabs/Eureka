@@ -186,19 +186,27 @@ open class Section {
         initializer(self)
     }
 
-    public init(_ header: String, _ initializer: @escaping (Section) -> Void = { _ in }) {
-        self.header = HeaderFooterView(stringLiteral: header)
+    public init(_ header: String?, _ initializer: @escaping (Section) -> Void = { _ in }) {
+        if let header = header {
+            self.header = HeaderFooterView(stringLiteral: header)
+        }
         initializer(self)
     }
 
-    public init(header: String, footer: String, _ initializer: (Section) -> Void = { _ in }) {
-        self.header = HeaderFooterView(stringLiteral: header)
-        self.footer = HeaderFooterView(stringLiteral: footer)
+    public init(header: String?, footer: String?, _ initializer: (Section) -> Void = { _ in }) {
+        if let header = header {
+            self.header = HeaderFooterView(stringLiteral: header)
+        }
+        if let footer = footer {
+            self.footer = HeaderFooterView(stringLiteral: footer)
+        }
         initializer(self)
     }
 
-    public init(footer: String, _ initializer: (Section) -> Void = { _ in }) {
-        self.footer = HeaderFooterView(stringLiteral: footer)
+    public init(footer: String?, _ initializer: (Section) -> Void = { _ in }) {
+        if let footer = footer {
+            self.footer = HeaderFooterView(stringLiteral: footer)
+        }
         initializer(self)
     }
 
@@ -493,8 +501,8 @@ open class MultivaluedSection: Section {
     public var multivaluedRowToInsertAt: ((Int) -> BaseRow)?
 
     public required init(multivaluedOptions: MultivaluedOptions = MultivaluedOptions.Insert.union(.Delete),
-                header: String = "",
-                footer: String = "",
+                header: String? = nil,
+                footer: String? = nil,
                 _ initializer: (MultivaluedSection) -> Void = { _ in }) {
         self.multivaluedOptions = multivaluedOptions
         super.init(header: header, footer: footer, {section in initializer(section as! MultivaluedSection) })
