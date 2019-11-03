@@ -101,10 +101,10 @@ open class BaseRow: BaseRowType {
     /// The section to which this row belongs.
     open weak var section: Section?
 	
-    public lazy var trailingSwipe = SwipeConfiguration(self)
+    public lazy var trailingSwipe = {[unowned self] in SwipeConfiguration(self)}()
 	
     //needs the accessor because if marked directly this throws "Stored properties cannot be marked potentially unavailable with '@available'"
-    private lazy var _leadingSwipe = SwipeConfiguration(self)
+    private lazy var _leadingSwipe = {[unowned self] in SwipeConfiguration(self)}()
 
     @available(iOS 11,*)
     public var leadingSwipe: SwipeConfiguration{

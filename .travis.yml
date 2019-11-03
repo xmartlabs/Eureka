@@ -1,10 +1,10 @@
 language: objective-c
-osx_image: xcode10.2
+osx_image: xcode11
 branches:
   only:
     - master
 env:
-  - DESTINATION="OS=12.2,name=iPhone XS" SCHEME="Eureka" SDK=iphonesimulator
+  - DESTINATION="OS=13.0,name=iPhone 11" SCHEME="Eureka" SDK=iphonesimulator
 before_install:
   - brew update
   - brew outdated carthage || brew upgrade carthage
