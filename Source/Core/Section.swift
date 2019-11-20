@@ -482,30 +482,19 @@ public struct MultivaluedOptions: OptionSet {
     public static let Reorder = MultivaluedOptions(.reorder)
 }
 
-/**
- *  Multivalued sections allows us to easily create insertable, deletable and reorderable sections. By using a multivalued section we can add multiple values for a certain field, such as telephone numbers in a contact.
- */
-open class MultivaluedSection: Section {
-
+/// Base class for multivalued sections. Use one of the subclasses.
+open class BaseMultivaluedSection: Section {
     public var multivaluedOptions: MultivaluedOptions
     public var showInsertIconInAddButton = true
-    public var addButtonProvider: ((MultivaluedSection) -> ButtonRow) = { _ in
-        return ButtonRow {
-            $0.title = "Add"
-            $0.cellStyle = .value1
-        }.cellUpdate { cell, _ in
-            cell.textLabel?.textAlignment = .left
-        }
-    }
 
     public var multivaluedRowToInsertAt: ((Int) -> BaseRow)?
 
     public required init(multivaluedOptions: MultivaluedOptions = MultivaluedOptions.Insert.union(.Delete),
-                header: String? = nil,
-                footer: String? = nil,
-                _ initializer: (MultivaluedSection) -> Void = { _ in }) {
+                         header: String? = nil,
+                         footer: String? = nil,
+                         _ initializer: (BaseMultivaluedSection) -> Void = { _ in }) {
         self.multivaluedOptions = multivaluedOptions
-        super.init(header: header, footer: footer, {section in initializer(section as! MultivaluedSection) })
+        super.init(header: header, footer: footer, {section in initializer(section as! BaseMultivaluedSection) })
         guard multivaluedOptions.contains(.Insert) else { return }
         initialize()
     }
@@ -525,14 +514,9 @@ open class MultivaluedSection: Section {
     #endif
 
     func initialize() {
-        let addRow = addButtonProvider(self)
-        addRow.onCellSelection { cell, row in
-            guard !row.isDisabled else { return }
-            guard let tableView = cell.formViewController()?.tableView, let indexPath = row.indexPath else { return }
-            cell.formViewController()?.tableView(tableView, commit: .insert, forRowAt: indexPath)
-        }
-        self <<< addRow
+        // Overridden by subclasses
     }
+
     /**
      Method used to get all the values of the section.
 
@@ -541,4 +525,60 @@ open class MultivaluedSection: Section {
     public func values() -> [Any?] {
         return kvoWrapper._allRows.filter({ $0.baseValue != nil }).map({ $0.baseValue })
     }
+
+}
+
+/// Generic multivalued section. Pass the type of the add button row as generic parameter.
+open class GenericMultivaluedSection<AddButtonType: RowType>: BaseMultivaluedSection where AddButtonType: BaseRow {
+
+    public var addButtonProvider: ((GenericMultivaluedSection<AddButtonType>) -> AddButtonType)!
+
+    public required init(multivaluedOptions: MultivaluedOptions = MultivaluedOptions.Insert.union(.Delete),
+                         header: String? = nil,
+                         footer: String? = nil,
+                         _ initializer: (GenericMultivaluedSection<AddButtonType>) -> Void = { _ in }) {
+        super.init(multivaluedOptions: multivaluedOptions, header: header, footer: footer, {section in initializer(section as! GenericMultivaluedSection<AddButtonType>) })
+    }
+
+    public required init() {
+        super.init()
+    }
+
+    #if swift(>=4.1)
+    public required init<S>(_ elements: S) where S : Sequence, S.Element == BaseRow {
+        super.init(elements)
+    }
+    #endif
+
+    override func initialize() {
+        let addRow = addButtonProvider(self)
+        addRow.onCellSelection { cell, row in
+            guard !row.isDisabled else { return }
+            guard let tableView = cell.formViewController()?.tableView, let indexPath = row.indexPath else { return }
+            cell.formViewController()?.tableView(tableView, commit: .insert, forRowAt: indexPath)
+        }
+        self <<< addRow
+    }
+
+}
+
+/**
+ *  Multivalued sections allows us to easily create insertable, deletable and reorderable sections. By using a multivalued section we can add multiple values for a certain field, such as telephone numbers in a contact.
+ */
+open class MultivaluedSection: GenericMultivaluedSection<ButtonRow> {
+
+    override func initialize() {
+        if addButtonProvider == nil {
+            addButtonProvider = { _ in
+                return ButtonRow {
+                    $0.title = "Add"
+                    $0.cellStyle = .value1
+                    }.cellUpdate { cell, _ in
+                        cell.textLabel?.textAlignment = .left
+                }
+            }
+        }
+        super.initialize()
+    }
+
 }

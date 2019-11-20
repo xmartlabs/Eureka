@@ -822,7 +822,7 @@ extension FormViewController : UITableViewDelegate {
         guard !row.isDisabled else { return false }
 		if row.trailingSwipe.actions.count > 0 { return true }
 		if #available(iOS 11,*), row.leadingSwipe.actions.count > 0 { return true }
-		guard let section = form[indexPath.section] as? MultivaluedSection else { return false }
+		guard let section = form[indexPath.section] as? BaseMultivaluedSection else { return false }
         guard !(indexPath.row == section.count - 1 && section.multivaluedOptions.contains(.Insert) && section.showInsertIconInAddButton) else {
             return true
         }
@@ -841,7 +841,7 @@ extension FormViewController : UITableViewDelegate {
             }
             section.remove(at: indexPath.row)
         } else if editingStyle == .insert {
-            guard var section = form[indexPath.section] as? MultivaluedSection else { return }
+            guard var section = form[indexPath.section] as? BaseMultivaluedSection else { return }
             guard let multivaluedRowToInsertAt = section.multivaluedRowToInsertAt else {
                 fatalError("Multivalued section multivaluedRowToInsertAt property must be set up")
             }
@@ -861,7 +861,7 @@ extension FormViewController : UITableViewDelegate {
     }
 
     open func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        guard let section = form[indexPath.section] as? MultivaluedSection, section.multivaluedOptions.contains(.Reorder) && section.count > 1 else {
+        guard let section = form[indexPath.section] as? BaseMultivaluedSection, section.multivaluedOptions.contains(.Reorder) && section.count > 1 else {
             return false
         }
         if section.multivaluedOptions.contains(.Insert) && (section.count <= 2 || indexPath.row == (section.count - 1)) {
@@ -874,7 +874,7 @@ extension FormViewController : UITableViewDelegate {
     }
 
     open func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
-        guard let section = form[sourceIndexPath.section] as? MultivaluedSection else { return sourceIndexPath }
+        guard let section = form[sourceIndexPath.section] as? BaseMultivaluedSection else { return sourceIndexPath }
         guard sourceIndexPath.section == proposedDestinationIndexPath.section else { return sourceIndexPath }
 
         let destRow = form[proposedDestinationIndexPath]
@@ -896,7 +896,7 @@ extension FormViewController : UITableViewDelegate {
 
     open func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
 
-        guard var section = form[sourceIndexPath.section] as? MultivaluedSection else { return }
+        guard var section = form[sourceIndexPath.section] as? BaseMultivaluedSection else { return }
         if sourceIndexPath.row < section.count && destinationIndexPath.row < section.count && sourceIndexPath.row != destinationIndexPath.row {
 
             let sourceRow = form[sourceIndexPath]
@@ -910,7 +910,7 @@ extension FormViewController : UITableViewDelegate {
     }
 
     open func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        guard let section = form[indexPath.section] as? MultivaluedSection else {
+        guard let section = form[indexPath.section] as? BaseMultivaluedSection else {
 			if form[indexPath].trailingSwipe.actions.count > 0 {
 				return .delete
 			}

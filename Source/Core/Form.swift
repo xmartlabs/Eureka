@@ -107,10 +107,10 @@ public final class Form {
     public func values(includeHidden: Bool = false) -> [String: Any?] {
         if includeHidden {
             return getValues(for: allRows.filter({ $0.tag != nil }))
-                .merging(getValues(for: allSections.filter({ $0 is MultivaluedSection && $0.tag != nil }) as? [MultivaluedSection]), uniquingKeysWith: {(_, new) in new })
+                .merging(getValues(for: allSections.filter({ $0 is BaseMultivaluedSection && $0.tag != nil }) as? [BaseMultivaluedSection]), uniquingKeysWith: {(_, new) in new })
         }
         return getValues(for: rows.filter({ $0.tag != nil }))
-            .merging(getValues(for: allSections.filter({ $0 is MultivaluedSection && $0.tag != nil }) as? [MultivaluedSection]), uniquingKeysWith: {(_, new) in new })
+            .merging(getValues(for: allSections.filter({ $0 is BaseMultivaluedSection && $0.tag != nil }) as? [BaseMultivaluedSection]), uniquingKeysWith: {(_, new) in new })
     }
 
     /**
@@ -369,7 +369,7 @@ extension Form {
     }
 	
 	var containsMultivaluedSection: Bool {
-		return kvoWrapper._allSections.contains { $0 is MultivaluedSection }
+		return kvoWrapper._allSections.contains { $0 is BaseMultivaluedSection }
 	}
 
     func getValues(for rows: [BaseRow]) -> [String: Any?] {
@@ -380,7 +380,7 @@ extension Form {
         }
     }
 
-    func getValues(for multivaluedSections: [MultivaluedSection]?) -> [String: [Any?]] {
+    func getValues(for multivaluedSections: [BaseMultivaluedSection]?) -> [String: [Any?]] {
         return multivaluedSections?.reduce([String: [Any?]]()) {
             var result = $0
             result[$1.tag!] = $1.values()
