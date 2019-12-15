@@ -36,7 +36,14 @@ public class SwipeAction: ContextualAction {
         if #available(iOS 11, *){
             action = UIContextualAction(style: style.contextualStyle as! UIContextualAction.Style, title: title){ [weak self] action, view, completion -> Void in
                 guard let strongSelf = self else{ return }
-                strongSelf.handler(strongSelf, forRow, completion)
+                strongSelf.handler(strongSelf, forRow) { shouldComplete in
+                    if #available(iOS 13, *) { // starting in iOS 13, completion handler is not removing the row automatically, so we need to remove it ourselves
+                        if shouldComplete && action.style == .destructive {
+                            forRow.section?.remove(at: forRow.indexPath!.row)
+                        }
+                    }
+                    completion(shouldComplete)
+                }
             }
         } else {
             action = UITableViewRowAction(style: style.contextualStyle as! UITableViewRowAction.Style,title: title){ [weak self] (action, indexPath) -> Void in
