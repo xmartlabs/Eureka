@@ -1013,7 +1013,7 @@ extension FormViewController {
 
         let keyBoardFrame = table.window!.convert(endFrame.cgRectValue, to: table.superview)
         var newBottomInset = table.frame.origin.y + table.frame.size.height - keyBoardFrame.origin.y + rowKeyboardSpacing
-        if #available(iOSApplicationExtension 11.0, *) {
+        if #available(iOS 11.0, *) {
             newBottomInset = newBottomInset - tableView.safeAreaInsets.bottom
         }
         var tableInsets = table.contentInset
