@@ -215,14 +215,12 @@ class MultivaluedOnlyDeleteController: FormViewController {
 
         let section = MultivaluedSection(multivaluedOptions: .Delete)
 
-
         for tag in nameList {
             section <<< TextRow {
                 $0.placeholder = "Tag Name"
                 $0.value = tag
             }
         }
-
 
         let section2 =  MultivaluedSection(multivaluedOptions: .Delete, footer: "")
         for _ in 1..<4 {

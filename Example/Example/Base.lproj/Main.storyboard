@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14854.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="6g3-M9-WkD">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="6g3-M9-WkD">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14806.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -11,25 +12,23 @@
         <scene sceneID="KUY-gm-WOC">
             <objects>
                 <viewController id="qkw-PN-ncD" customClass="NavigationAccessoryController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="stx-S9-Im4"/>
-                        <viewControllerLayoutGuide type="bottom" id="R9h-Hi-Lbz"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="aLU-ZA-CPL">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="jQG-xm-oMp">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="R9h-Hi-Lbz" firstAttribute="top" secondItem="jQG-xm-oMp" secondAttribute="bottom" id="8Hm-QB-9Pn"/>
-                            <constraint firstItem="jQG-xm-oMp" firstAttribute="leading" secondItem="aLU-ZA-CPL" secondAttribute="leading" id="EHB-bm-9xW"/>
-                            <constraint firstAttribute="trailing" secondItem="jQG-xm-oMp" secondAttribute="trailing" id="Lsb-Eh-469"/>
-                            <constraint firstItem="jQG-xm-oMp" firstAttribute="top" secondItem="stx-S9-Im4" secondAttribute="bottom" constant="-64" id="UrC-SL-ofL"/>
+                            <constraint firstItem="NtP-HB-AnI" firstAttribute="bottom" secondItem="jQG-xm-oMp" secondAttribute="bottom" id="8Hm-QB-9Pn"/>
+                            <constraint firstItem="jQG-xm-oMp" firstAttribute="leading" secondItem="NtP-HB-AnI" secondAttribute="leading" id="EHB-bm-9xW"/>
+                            <constraint firstItem="NtP-HB-AnI" firstAttribute="trailing" secondItem="jQG-xm-oMp" secondAttribute="trailing" id="Lsb-Eh-469"/>
+                            <constraint firstItem="jQG-xm-oMp" firstAttribute="top" secondItem="NtP-HB-AnI" secondAttribute="top" constant="-64" id="UrC-SL-ofL"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="NtP-HB-AnI"/>
                     </view>
                     <navigationItem key="navigationItem" id="egl-fd-Z6j"/>
                     <connections>
@@ -44,25 +43,23 @@
         <scene sceneID="8Iv-ww-ibT">
             <objects>
                 <viewController id="u8Y-1k-1VR" customClass="PlainTableViewStyleController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="A6N-NO-zxI"/>
-                        <viewControllerLayoutGuide type="bottom" id="SE1-NN-0jX"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="aCc-Ey-nD3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9b5-qK-Oul">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="9b5-qK-Oul" secondAttribute="trailing" id="I31-Ya-LHb"/>
-                            <constraint firstItem="SE1-NN-0jX" firstAttribute="top" secondItem="9b5-qK-Oul" secondAttribute="bottom" id="KES-Sz-LzE"/>
-                            <constraint firstItem="9b5-qK-Oul" firstAttribute="top" secondItem="A6N-NO-zxI" secondAttribute="bottom" constant="-64" id="NDA-ez-DqV"/>
-                            <constraint firstItem="9b5-qK-Oul" firstAttribute="leading" secondItem="aCc-Ey-nD3" secondAttribute="leading" id="Tc2-VW-AzC"/>
+                            <constraint firstItem="tqh-Qn-BG6" firstAttribute="bottom" secondItem="9b5-qK-Oul" secondAttribute="bottom" id="GT0-5p-SkJ"/>
+                            <constraint firstItem="tqh-Qn-BG6" firstAttribute="trailing" secondItem="9b5-qK-Oul" secondAttribute="trailing" id="I31-Ya-LHb"/>
+                            <constraint firstItem="9b5-qK-Oul" firstAttribute="top" secondItem="tqh-Qn-BG6" secondAttribute="top" constant="-64" id="NDA-ez-DqV"/>
+                            <constraint firstItem="9b5-qK-Oul" firstAttribute="leading" secondItem="tqh-Qn-BG6" secondAttribute="leading" id="Tc2-VW-AzC"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="tqh-Qn-BG6"/>
                     </view>
                     <navigationItem key="navigationItem" id="ZBu-dV-FRu"/>
                     <connections>
@@ -77,25 +74,23 @@
         <scene sceneID="bWN-GL-dH9">
             <objects>
                 <viewController storyboardIdentifier="RowsExampleViewController" title="Eureka! Rows Example" id="iIY-1E-c79" customClass="RowsExampleViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="pwj-zx-BiO"/>
-                        <viewControllerLayoutGuide type="bottom" id="CSL-mw-egE"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="LYQ-fV-apO">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="mHC-X5-7oy">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="788"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="mHC-X5-7oy" firstAttribute="leading" secondItem="LYQ-fV-apO" secondAttribute="leading" id="00G-df-Zlp"/>
-                            <constraint firstItem="mHC-X5-7oy" firstAttribute="top" secondItem="pwj-zx-BiO" secondAttribute="bottom" constant="-64" id="IOw-Fs-Oj6"/>
-                            <constraint firstItem="CSL-mw-egE" firstAttribute="top" secondItem="mHC-X5-7oy" secondAttribute="bottom" id="beh-j7-CaG"/>
-                            <constraint firstAttribute="trailing" secondItem="mHC-X5-7oy" secondAttribute="trailing" id="kvh-01-UU4"/>
+                            <constraint firstItem="mHC-X5-7oy" firstAttribute="leading" secondItem="WNm-Bu-325" secondAttribute="leading" id="00G-df-Zlp"/>
+                            <constraint firstItem="mHC-X5-7oy" firstAttribute="top" secondItem="WNm-Bu-325" secondAttribute="top" constant="-64" id="IOw-Fs-Oj6"/>
+                            <constraint firstAttribute="bottom" secondItem="mHC-X5-7oy" secondAttribute="bottom" id="beh-j7-CaG"/>
+                            <constraint firstItem="WNm-Bu-325" firstAttribute="trailing" secondItem="mHC-X5-7oy" secondAttribute="trailing" id="kvh-01-UU4"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="WNm-Bu-325"/>
                     </view>
                     <navigationItem key="navigationItem" id="ELF-z4-WBZ"/>
                     <connections>
@@ -110,25 +105,23 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="NativeEventFormViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="758"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="oJ1-ro-hyM">
-                                <rect key="frame" x="0.0" y="-8" width="375" height="655"/>
+                                <rect key="frame" x="0.0" y="-8" width="375" height="732"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="oJ1-ro-hyM" secondAttribute="trailing" id="XgS-22-Aoo"/>
-                            <constraint firstItem="oJ1-ro-hyM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-64" id="YSr-Wh-Xyz"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="oJ1-ro-hyM" secondAttribute="bottom" id="eQ4-u8-vGU"/>
-                            <constraint firstItem="oJ1-ro-hyM" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="uhl-H3-Rce"/>
+                            <constraint firstItem="U5c-nj-u8e" firstAttribute="trailing" secondItem="oJ1-ro-hyM" secondAttribute="trailing" id="XgS-22-Aoo"/>
+                            <constraint firstItem="oJ1-ro-hyM" firstAttribute="top" secondItem="U5c-nj-u8e" secondAttribute="top" constant="-64" id="YSr-Wh-Xyz"/>
+                            <constraint firstItem="U5c-nj-u8e" firstAttribute="bottom" secondItem="oJ1-ro-hyM" secondAttribute="bottom" id="eQ4-u8-vGU"/>
+                            <constraint firstItem="oJ1-ro-hyM" firstAttribute="leading" secondItem="U5c-nj-u8e" secondAttribute="leading" id="uhl-H3-Rce"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="U5c-nj-u8e"/>
                     </view>
                     <navigationItem key="navigationItem" title="Add Event" id="h7i-CH-mmM">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="qON-hm-SNY"/>
@@ -147,7 +140,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6g3-M9-WkD" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="37i-zo-mrN">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -163,26 +156,23 @@
         <scene sceneID="qdG-dP-VzI">
             <objects>
                 <viewController id="Q34-kO-jVh" customClass="HomeViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="I9L-Pn-6xn"/>
-                        <viewControllerLayoutGuide type="bottom" id="1Nh-3I-sxR"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ux2-HS-1aH">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="pl1-EZ-WGm">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="pl1-EZ-WGm" secondAttribute="trailing" id="7nV-zY-JKN"/>
-                            <constraint firstItem="pl1-EZ-WGm" firstAttribute="leading" secondItem="Ux2-HS-1aH" secondAttribute="leading" id="VVN-CR-lUf"/>
-                            <constraint firstItem="pl1-EZ-WGm" firstAttribute="top" secondItem="I9L-Pn-6xn" secondAttribute="bottom" constant="-64" id="WAd-Vi-yKW"/>
-                            <constraint firstItem="1Nh-3I-sxR" firstAttribute="top" secondItem="pl1-EZ-WGm" secondAttribute="bottom" id="nxj-De-NLD"/>
+                            <constraint firstItem="cto-dc-jaT" firstAttribute="trailing" secondItem="pl1-EZ-WGm" secondAttribute="trailing" id="7nV-zY-JKN"/>
+                            <constraint firstItem="pl1-EZ-WGm" firstAttribute="leading" secondItem="cto-dc-jaT" secondAttribute="leading" id="VVN-CR-lUf"/>
+                            <constraint firstItem="pl1-EZ-WGm" firstAttribute="top" secondItem="cto-dc-jaT" secondAttribute="top" constant="-64" id="WAd-Vi-yKW"/>
+                            <constraint firstItem="cto-dc-jaT" firstAttribute="bottom" secondItem="pl1-EZ-WGm" secondAttribute="bottom" id="nxj-De-NLD"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="cto-dc-jaT"/>
                     </view>
                     <navigationItem key="navigationItem" title="Examples" id="FWz-Cv-Kdv"/>
                     <connections>
@@ -212,25 +202,23 @@
         <scene sceneID="W6I-ft-vXN">
             <objects>
                 <viewController id="fCj-HP-5F1" customClass="FieldRowCustomizationController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="lLm-Ba-fCZ"/>
-                        <viewControllerLayoutGuide type="bottom" id="WZb-BY-Qc1"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zCX-U4-qfa">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Pne-fE-n6D">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="WZb-BY-Qc1" firstAttribute="top" secondItem="Pne-fE-n6D" secondAttribute="bottom" id="41M-Jl-IKE"/>
-                            <constraint firstItem="Pne-fE-n6D" firstAttribute="top" secondItem="lLm-Ba-fCZ" secondAttribute="bottom" constant="-64" id="BD4-qa-mHe"/>
-                            <constraint firstAttribute="trailing" secondItem="Pne-fE-n6D" secondAttribute="trailing" id="KUw-yd-say"/>
-                            <constraint firstItem="Pne-fE-n6D" firstAttribute="leading" secondItem="zCX-U4-qfa" secondAttribute="leading" id="Osr-md-5i1"/>
+                            <constraint firstItem="Cuq-3C-FAE" firstAttribute="bottom" secondItem="Pne-fE-n6D" secondAttribute="bottom" id="41M-Jl-IKE"/>
+                            <constraint firstItem="Pne-fE-n6D" firstAttribute="top" secondItem="Cuq-3C-FAE" secondAttribute="top" constant="-64" id="BD4-qa-mHe"/>
+                            <constraint firstItem="Cuq-3C-FAE" firstAttribute="trailing" secondItem="Pne-fE-n6D" secondAttribute="trailing" id="KUw-yd-say"/>
+                            <constraint firstItem="Pne-fE-n6D" firstAttribute="leading" secondItem="Cuq-3C-FAE" secondAttribute="leading" id="Osr-md-5i1"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="Cuq-3C-FAE"/>
                     </view>
                     <navigationItem key="navigationItem" id="9Gs-k4-MI9"/>
                     <connections>
@@ -263,25 +251,23 @@
         <scene sceneID="ABy-XO-E3c">
             <objects>
                 <viewController id="WZQ-di-uNi" customClass="DisabledRowsExample" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="uhT-km-wF7"/>
-                        <viewControllerLayoutGuide type="bottom" id="VEs-Tz-NHx"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Sc4-2O-AXJ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Oyg-dY-W55">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Oyg-dY-W55" secondAttribute="trailing" id="7gn-0e-cZf"/>
-                            <constraint firstItem="Oyg-dY-W55" firstAttribute="top" secondItem="uhT-km-wF7" secondAttribute="bottom" constant="-64" id="Gn4-I4-rBc"/>
-                            <constraint firstItem="Oyg-dY-W55" firstAttribute="leading" secondItem="Sc4-2O-AXJ" secondAttribute="leading" id="Hro-1Y-ulj"/>
-                            <constraint firstItem="VEs-Tz-NHx" firstAttribute="top" secondItem="Oyg-dY-W55" secondAttribute="bottom" id="c4g-Ey-qFj"/>
+                            <constraint firstItem="XkN-zT-NEc" firstAttribute="trailing" secondItem="Oyg-dY-W55" secondAttribute="trailing" id="7gn-0e-cZf"/>
+                            <constraint firstItem="Oyg-dY-W55" firstAttribute="top" secondItem="XkN-zT-NEc" secondAttribute="top" constant="-64" id="Gn4-I4-rBc"/>
+                            <constraint firstItem="Oyg-dY-W55" firstAttribute="leading" secondItem="XkN-zT-NEc" secondAttribute="leading" id="Hro-1Y-ulj"/>
+                            <constraint firstItem="XkN-zT-NEc" firstAttribute="bottom" secondItem="Oyg-dY-W55" secondAttribute="bottom" id="c4g-Ey-qFj"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="XkN-zT-NEc"/>
                     </view>
                     <navigationItem key="navigationItem" id="4bl-6M-I9c"/>
                     <connections>
@@ -296,14 +282,11 @@
         <scene sceneID="h0m-5n-GTL">
             <objects>
                 <viewController title="SwipeActions Example" id="fc5-sQ-cEm" customClass="SwipeActionsController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ImV-ow-JvS"/>
-                        <viewControllerLayoutGuide type="bottom" id="3OX-ei-O2d"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="BDe-QW-0vU">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="pZd-Qt-DdU"/>
                     </view>
                     <navigationItem key="navigationItem" id="KY1-r2-ar2"/>
                 </viewController>
@@ -315,14 +298,11 @@
         <scene sceneID="zbo-bQ-HRw">
             <objects>
                 <viewController id="qIY-1j-dNf" customClass="MultivaluedSectionsController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="RFg-Ek-KHn"/>
-                        <viewControllerLayoutGuide type="bottom" id="fNa-eQ-cJg"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="pDt-5Z-yLs">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="0u0-ut-SRL"/>
                     </view>
                     <navigationItem key="navigationItem" title="Multivalued Sections Example" id="AEF-L0-dOV"/>
                     <connections>
@@ -340,14 +320,11 @@
         <scene sceneID="YgN-2q-WXn">
             <objects>
                 <viewController id="1Eh-Nv-AVS" customClass="CustomDesignController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="aWQ-Aw-naX"/>
-                        <viewControllerLayoutGuide type="bottom" id="T0f-zI-EvT"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="4er-sy-2OI">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="eSn-2T-5HY"/>
                     </view>
                     <navigationItem key="navigationItem" id="jsk-QK-ZNA"/>
                 </viewController>
@@ -359,25 +336,23 @@
         <scene sceneID="q1j-mm-Aje">
             <objects>
                 <viewController id="3E8-i9-e3P" customClass="MultivaluedController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="lny-ei-v2f"/>
-                        <viewControllerLayoutGuide type="bottom" id="P95-eE-cnb"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ObQ-WF-NaQ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="QYB-0m-3TS">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="QYB-0m-3TS" secondAttribute="trailing" id="WNq-53-tdD"/>
-                            <constraint firstItem="QYB-0m-3TS" firstAttribute="leading" secondItem="ObQ-WF-NaQ" secondAttribute="leading" id="g7B-dV-Rka"/>
-                            <constraint firstItem="QYB-0m-3TS" firstAttribute="top" secondItem="lny-ei-v2f" secondAttribute="bottom" constant="-64" id="hOF-AE-8dp"/>
-                            <constraint firstItem="P95-eE-cnb" firstAttribute="top" secondItem="QYB-0m-3TS" secondAttribute="bottom" id="iIx-JY-TTE"/>
+                            <constraint firstItem="0fE-6j-NXZ" firstAttribute="trailing" secondItem="QYB-0m-3TS" secondAttribute="trailing" id="WNq-53-tdD"/>
+                            <constraint firstItem="QYB-0m-3TS" firstAttribute="leading" secondItem="0fE-6j-NXZ" secondAttribute="leading" id="g7B-dV-Rka"/>
+                            <constraint firstItem="QYB-0m-3TS" firstAttribute="top" secondItem="0fE-6j-NXZ" secondAttribute="top" constant="-64" id="hOF-AE-8dp"/>
+                            <constraint firstItem="0fE-6j-NXZ" firstAttribute="bottom" secondItem="QYB-0m-3TS" secondAttribute="bottom" id="iIx-JY-TTE"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="0fE-6j-NXZ"/>
                     </view>
                     <navigationItem key="navigationItem" id="JnB-RD-R8g">
                         <barButtonItem key="rightBarButtonItem" title="Item" id="2jn-dM-TgZ">
@@ -398,25 +373,23 @@
         <scene sceneID="iCj-Rb-n4P">
             <objects>
                 <viewController id="fcN-W7-dk3" customClass="MultivaluedOnlyReorderController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ZhU-x5-LEM"/>
-                        <viewControllerLayoutGuide type="bottom" id="dwC-UZ-shB"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="tot-tU-1EY">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="nfL-xs-nks">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="nfL-xs-nks" secondAttribute="trailing" id="Q8c-Dl-5N7"/>
-                            <constraint firstItem="nfL-xs-nks" firstAttribute="top" secondItem="ZhU-x5-LEM" secondAttribute="bottom" constant="-64" id="X4r-kb-Teo"/>
-                            <constraint firstItem="nfL-xs-nks" firstAttribute="leading" secondItem="tot-tU-1EY" secondAttribute="leading" id="joz-Cm-Ydf"/>
-                            <constraint firstItem="dwC-UZ-shB" firstAttribute="top" secondItem="nfL-xs-nks" secondAttribute="bottom" id="kKC-5p-SHy"/>
+                            <constraint firstItem="5A2-39-vLN" firstAttribute="trailing" secondItem="nfL-xs-nks" secondAttribute="trailing" id="Q8c-Dl-5N7"/>
+                            <constraint firstItem="nfL-xs-nks" firstAttribute="top" secondItem="5A2-39-vLN" secondAttribute="top" constant="-64" id="X4r-kb-Teo"/>
+                            <constraint firstItem="nfL-xs-nks" firstAttribute="leading" secondItem="5A2-39-vLN" secondAttribute="leading" id="joz-Cm-Ydf"/>
+                            <constraint firstItem="5A2-39-vLN" firstAttribute="bottom" secondItem="nfL-xs-nks" secondAttribute="bottom" id="kKC-5p-SHy"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="5A2-39-vLN"/>
                     </view>
                     <navigationItem key="navigationItem" id="oxA-95-cU0"/>
                     <connections>
@@ -431,25 +404,23 @@
         <scene sceneID="q8U-ZK-3v7">
             <objects>
                 <viewController id="X0Z-sB-j66" customClass="MultivaluedOnlyInsertController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Th0-Zz-TQw"/>
-                        <viewControllerLayoutGuide type="bottom" id="fcX-ti-nfy"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="NZ2-Ab-KeD">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="9zy-nc-7Mc">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="9zy-nc-7Mc" secondAttribute="trailing" id="5VJ-Q8-2V3"/>
-                            <constraint firstItem="fcX-ti-nfy" firstAttribute="top" secondItem="9zy-nc-7Mc" secondAttribute="bottom" id="Tdf-8H-0aa"/>
-                            <constraint firstItem="9zy-nc-7Mc" firstAttribute="top" secondItem="Th0-Zz-TQw" secondAttribute="bottom" constant="-64" id="UTa-RU-N26"/>
-                            <constraint firstItem="9zy-nc-7Mc" firstAttribute="leading" secondItem="NZ2-Ab-KeD" secondAttribute="leading" id="ocp-Oa-Mno"/>
+                            <constraint firstItem="k5N-q9-Egl" firstAttribute="trailing" secondItem="9zy-nc-7Mc" secondAttribute="trailing" id="5VJ-Q8-2V3"/>
+                            <constraint firstItem="k5N-q9-Egl" firstAttribute="bottom" secondItem="9zy-nc-7Mc" secondAttribute="bottom" id="Tdf-8H-0aa"/>
+                            <constraint firstItem="9zy-nc-7Mc" firstAttribute="top" secondItem="k5N-q9-Egl" secondAttribute="top" constant="-64" id="UTa-RU-N26"/>
+                            <constraint firstItem="9zy-nc-7Mc" firstAttribute="leading" secondItem="k5N-q9-Egl" secondAttribute="leading" id="ocp-Oa-Mno"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="k5N-q9-Egl"/>
                     </view>
                     <navigationItem key="navigationItem" id="SZ8-Zk-XSU"/>
                     <connections>
@@ -464,25 +435,23 @@
         <scene sceneID="cKy-CR-RFW">
             <objects>
                 <viewController id="duw-cd-ZoW" customClass="MultivaluedOnlyDeleteController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="GzZ-mn-4xV"/>
-                        <viewControllerLayoutGuide type="bottom" id="rj5-Bs-GxW"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="qXS-6w-zrz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="zaC-nI-UNK">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="rj5-Bs-GxW" firstAttribute="top" secondItem="zaC-nI-UNK" secondAttribute="bottom" id="R1V-hB-AaB"/>
-                            <constraint firstItem="zaC-nI-UNK" firstAttribute="leading" secondItem="qXS-6w-zrz" secondAttribute="leading" id="hqn-yy-qFx"/>
-                            <constraint firstItem="zaC-nI-UNK" firstAttribute="top" secondItem="GzZ-mn-4xV" secondAttribute="bottom" constant="-64" id="owB-uD-Hwq"/>
-                            <constraint firstAttribute="trailing" secondItem="zaC-nI-UNK" secondAttribute="trailing" id="z8c-hO-WPO"/>
+                            <constraint firstItem="IJ3-lb-fgF" firstAttribute="bottom" secondItem="zaC-nI-UNK" secondAttribute="bottom" id="R1V-hB-AaB"/>
+                            <constraint firstItem="zaC-nI-UNK" firstAttribute="leading" secondItem="IJ3-lb-fgF" secondAttribute="leading" id="hqn-yy-qFx"/>
+                            <constraint firstItem="zaC-nI-UNK" firstAttribute="top" secondItem="IJ3-lb-fgF" secondAttribute="top" constant="-64" id="owB-uD-Hwq"/>
+                            <constraint firstItem="IJ3-lb-fgF" firstAttribute="trailing" secondItem="zaC-nI-UNK" secondAttribute="trailing" id="z8c-hO-WPO"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="IJ3-lb-fgF"/>
                     </view>
                     <navigationItem key="navigationItem" id="ZyI-L0-gTH">
                         <barButtonItem key="rightBarButtonItem" title="Edit" id="TAS-3q-2T6"/>
@@ -500,25 +469,23 @@
         <scene sceneID="Fcd-u5-DZ7">
             <objects>
                 <viewController id="tER-SL-iRc" customClass="CustomCellsController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="HT6-ES-M1S"/>
-                        <viewControllerLayoutGuide type="bottom" id="UQn-Mf-VSX"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="KoB-Rh-gVx">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="i3R-XH-1m6">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="UQn-Mf-VSX" firstAttribute="top" secondItem="i3R-XH-1m6" secondAttribute="bottom" id="CUg-Uq-jW1"/>
-                            <constraint firstAttribute="trailing" secondItem="i3R-XH-1m6" secondAttribute="trailing" id="Sbm-ur-EcB"/>
-                            <constraint firstItem="i3R-XH-1m6" firstAttribute="leading" secondItem="KoB-Rh-gVx" secondAttribute="leading" id="U6D-ZR-Vpe"/>
-                            <constraint firstItem="i3R-XH-1m6" firstAttribute="top" secondItem="HT6-ES-M1S" secondAttribute="bottom" constant="-64" id="sLh-Mo-LAM"/>
+                            <constraint firstItem="1qt-sR-yUs" firstAttribute="bottom" secondItem="i3R-XH-1m6" secondAttribute="bottom" id="CUg-Uq-jW1"/>
+                            <constraint firstItem="1qt-sR-yUs" firstAttribute="trailing" secondItem="i3R-XH-1m6" secondAttribute="trailing" id="Sbm-ur-EcB"/>
+                            <constraint firstItem="i3R-XH-1m6" firstAttribute="leading" secondItem="1qt-sR-yUs" secondAttribute="leading" id="U6D-ZR-Vpe"/>
+                            <constraint firstItem="i3R-XH-1m6" firstAttribute="top" secondItem="1qt-sR-yUs" secondAttribute="top" constant="-64" id="sLh-Mo-LAM"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="1qt-sR-yUs"/>
                     </view>
                     <navigationItem key="navigationItem" id="BBM-Xs-bLZ"/>
                     <connections>
@@ -533,25 +500,23 @@
         <scene sceneID="1aj-zH-uva">
             <objects>
                 <viewController id="dNv-jC-9dj" customClass="HiddenRowsExample" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="b04-Hi-aUO"/>
-                        <viewControllerLayoutGuide type="bottom" id="WCi-54-Nw8"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="cM0-7f-7CG">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="UtE-Tw-uxw">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="WCi-54-Nw8" firstAttribute="top" secondItem="UtE-Tw-uxw" secondAttribute="bottom" id="fi4-wD-75b"/>
-                            <constraint firstItem="UtE-Tw-uxw" firstAttribute="leading" secondItem="cM0-7f-7CG" secondAttribute="leading" id="kuc-E7-BZs"/>
-                            <constraint firstItem="UtE-Tw-uxw" firstAttribute="top" secondItem="b04-Hi-aUO" secondAttribute="bottom" constant="-64" id="o9C-W6-R3d"/>
-                            <constraint firstAttribute="trailing" secondItem="UtE-Tw-uxw" secondAttribute="trailing" id="sUg-aS-lAq"/>
+                            <constraint firstItem="Nf2-0o-Oa5" firstAttribute="bottom" secondItem="UtE-Tw-uxw" secondAttribute="bottom" id="fi4-wD-75b"/>
+                            <constraint firstItem="UtE-Tw-uxw" firstAttribute="leading" secondItem="Nf2-0o-Oa5" secondAttribute="leading" id="kuc-E7-BZs"/>
+                            <constraint firstItem="UtE-Tw-uxw" firstAttribute="top" secondItem="Nf2-0o-Oa5" secondAttribute="top" constant="-64" id="o9C-W6-R3d"/>
+                            <constraint firstItem="Nf2-0o-Oa5" firstAttribute="trailing" secondItem="UtE-Tw-uxw" secondAttribute="trailing" id="sUg-aS-lAq"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="Nf2-0o-Oa5"/>
                     </view>
                     <navigationItem key="navigationItem" id="DrF-1q-MXF"/>
                     <connections>
@@ -566,25 +531,23 @@
         <scene sceneID="zYf-TU-WuI">
             <objects>
                 <viewController id="pxw-b6-Gas" customClass="FormatterExample" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="5Os-0c-FqE"/>
-                        <viewControllerLayoutGuide type="bottom" id="fwg-fe-HIV"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="IaL-iT-GN5">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="hQM-hF-1JF">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="fwg-fe-HIV" firstAttribute="top" secondItem="hQM-hF-1JF" secondAttribute="bottom" id="CiY-Vk-KTM"/>
-                            <constraint firstItem="hQM-hF-1JF" firstAttribute="leading" secondItem="IaL-iT-GN5" secondAttribute="leading" id="NMz-p3-Mfn"/>
-                            <constraint firstAttribute="trailing" secondItem="hQM-hF-1JF" secondAttribute="trailing" id="ZrD-qf-f5G"/>
-                            <constraint firstItem="hQM-hF-1JF" firstAttribute="top" secondItem="5Os-0c-FqE" secondAttribute="bottom" constant="-64" id="dQK-aC-HtE"/>
+                            <constraint firstItem="JVC-GM-Jex" firstAttribute="bottom" secondItem="hQM-hF-1JF" secondAttribute="bottom" id="CiY-Vk-KTM"/>
+                            <constraint firstItem="hQM-hF-1JF" firstAttribute="leading" secondItem="JVC-GM-Jex" secondAttribute="leading" id="NMz-p3-Mfn"/>
+                            <constraint firstItem="JVC-GM-Jex" firstAttribute="trailing" secondItem="hQM-hF-1JF" secondAttribute="trailing" id="ZrD-qf-f5G"/>
+                            <constraint firstItem="hQM-hF-1JF" firstAttribute="top" secondItem="JVC-GM-Jex" secondAttribute="top" constant="-64" id="dQK-aC-HtE"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="JVC-GM-Jex"/>
                     </view>
                     <navigationItem key="navigationItem" id="KgD-DU-iTM"/>
                     <connections>
@@ -599,25 +562,23 @@
         <scene sceneID="8X6-E2-OcV">
             <objects>
                 <viewController id="42E-0V-OKN" customClass="InlineRowsController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="SRV-pK-PEN"/>
-                        <viewControllerLayoutGuide type="bottom" id="m0W-vb-AEG"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fsw-zF-lOT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="dbo-b8-KHY">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="m0W-vb-AEG" firstAttribute="top" secondItem="dbo-b8-KHY" secondAttribute="bottom" id="7la-3W-uNs"/>
-                            <constraint firstAttribute="trailing" secondItem="dbo-b8-KHY" secondAttribute="trailing" id="BdD-5b-xpl"/>
-                            <constraint firstItem="dbo-b8-KHY" firstAttribute="top" secondItem="SRV-pK-PEN" secondAttribute="bottom" constant="-64" id="MuD-QK-LWW"/>
-                            <constraint firstItem="dbo-b8-KHY" firstAttribute="leading" secondItem="fsw-zF-lOT" secondAttribute="leading" id="TXh-mt-vGc"/>
+                            <constraint firstItem="3Se-gK-opy" firstAttribute="bottom" secondItem="dbo-b8-KHY" secondAttribute="bottom" id="7la-3W-uNs"/>
+                            <constraint firstItem="3Se-gK-opy" firstAttribute="trailing" secondItem="dbo-b8-KHY" secondAttribute="trailing" id="BdD-5b-xpl"/>
+                            <constraint firstItem="dbo-b8-KHY" firstAttribute="top" secondItem="3Se-gK-opy" secondAttribute="top" constant="-64" id="MuD-QK-LWW"/>
+                            <constraint firstItem="dbo-b8-KHY" firstAttribute="leading" secondItem="3Se-gK-opy" secondAttribute="leading" id="TXh-mt-vGc"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="3Se-gK-opy"/>
                     </view>
                     <navigationItem key="navigationItem" id="v8s-ob-kpd"/>
                     <connections>
@@ -632,25 +593,23 @@
         <scene sceneID="edZ-7n-SWy">
             <objects>
                 <viewController id="3b9-rf-NW3" customClass="ListSectionsController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="WvL-kK-HAE"/>
-                        <viewControllerLayoutGuide type="bottom" id="uNL-kv-ZJg"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Fhk-b0-B56">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ug4-ix-2ET">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ug4-ix-2ET" firstAttribute="leading" secondItem="Fhk-b0-B56" secondAttribute="leading" id="2RW-Bg-06M"/>
-                            <constraint firstAttribute="trailing" secondItem="ug4-ix-2ET" secondAttribute="trailing" id="BeU-yc-cPu"/>
-                            <constraint firstItem="ug4-ix-2ET" firstAttribute="top" secondItem="WvL-kK-HAE" secondAttribute="bottom" constant="-64" id="Hyd-zf-GVj"/>
-                            <constraint firstItem="uNL-kv-ZJg" firstAttribute="top" secondItem="ug4-ix-2ET" secondAttribute="bottom" id="w4y-59-zuO"/>
+                            <constraint firstItem="ug4-ix-2ET" firstAttribute="leading" secondItem="nQw-1f-jR6" secondAttribute="leading" id="2RW-Bg-06M"/>
+                            <constraint firstItem="nQw-1f-jR6" firstAttribute="trailing" secondItem="ug4-ix-2ET" secondAttribute="trailing" id="BeU-yc-cPu"/>
+                            <constraint firstItem="ug4-ix-2ET" firstAttribute="top" secondItem="nQw-1f-jR6" secondAttribute="top" constant="-64" id="Hyd-zf-GVj"/>
+                            <constraint firstItem="nQw-1f-jR6" firstAttribute="bottom" secondItem="ug4-ix-2ET" secondAttribute="bottom" id="w4y-59-zuO"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="nQw-1f-jR6"/>
                     </view>
                     <navigationItem key="navigationItem" id="02U-AH-Fg4"/>
                     <connections>
@@ -665,25 +624,23 @@
         <scene sceneID="7OI-m7-xaG">
             <objects>
                 <viewController id="1By-iT-GXN" customClass="ValidationsController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ubK-8C-p6G"/>
-                        <viewControllerLayoutGuide type="bottom" id="GLx-m7-kHC"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="bOr-53-hGx">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Sbj-p4-BRo">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="24" width="375" height="754"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Sbj-p4-BRo" secondAttribute="trailing" id="8Mu-6X-XGE"/>
-                            <constraint firstItem="GLx-m7-kHC" firstAttribute="top" secondItem="Sbj-p4-BRo" secondAttribute="bottom" id="Lvu-PG-w11"/>
-                            <constraint firstItem="Sbj-p4-BRo" firstAttribute="top" secondItem="ubK-8C-p6G" secondAttribute="bottom" constant="-64" id="Njp-iN-LXg"/>
-                            <constraint firstItem="Sbj-p4-BRo" firstAttribute="leading" secondItem="bOr-53-hGx" secondAttribute="leading" id="ZaJ-hJ-M3n"/>
+                            <constraint firstItem="jw6-Ll-9B5" firstAttribute="trailing" secondItem="Sbj-p4-BRo" secondAttribute="trailing" id="8Mu-6X-XGE"/>
+                            <constraint firstItem="jw6-Ll-9B5" firstAttribute="bottom" secondItem="Sbj-p4-BRo" secondAttribute="bottom" id="Lvu-PG-w11"/>
+                            <constraint firstItem="Sbj-p4-BRo" firstAttribute="top" secondItem="jw6-Ll-9B5" secondAttribute="top" constant="-64" id="Njp-iN-LXg"/>
+                            <constraint firstItem="Sbj-p4-BRo" firstAttribute="leading" secondItem="jw6-Ll-9B5" secondAttribute="leading" id="ZaJ-hJ-M3n"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="jw6-Ll-9B5"/>
                     </view>
                     <navigationItem key="navigationItem" id="Tcp-rc-Ewq"/>
                     <connections>
