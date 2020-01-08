@@ -190,8 +190,6 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
     }
 
     func section(with options: [Row.Cell.Value], header: String?, footer: String?) -> SelectableSection<Row> {
-        let header = header ?? ""
-        let footer = footer ?? ""
         let section = SelectableSection<Row>(header: header, footer: footer, selectionType: .singleSelection(enableDeselection: enableDeselection)) { section in
             section.onSelectSelectableRow = { [weak self] _, row in
                 let changed = self?.row.value != row.value
