@@ -474,6 +474,18 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         animateTableView = true
+
+        NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+
+        if form.containsMultivaluedSection && (isBeingPresented || isMovingToParent) {
+            tableView.setEditing(true, animated: false)
+        }
+    }
+
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
         let selectedIndexPaths = tableView.indexPathsForSelectedRows ?? []
         if !selectedIndexPaths.isEmpty {
             tableView.reloadRows(at: selectedIndexPaths, with: .none)
@@ -503,18 +515,11 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
                 tableView.deselectRow(at: $0, animated: false)
             }
         }
-
-        NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(FormViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-
-        if form.containsMultivaluedSection && (isBeingPresented || isMovingToParent) {
-            tableView.setEditing(true, animated: false)
-        }
     }
 
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
@@ -1001,12 +1006,12 @@ extension FormViewController : UIScrollViewDelegate {
 
 extension FormViewController {
 
-    // MARK: KeyBoard Notifications
+    // MARK: Keyboard Notifications
 
     /**
      Called when the keyboard will appear. Adjusts insets of the tableView and scrolls it if necessary.
      */
-    @objc open func keyboardWillShow(_ notification: Notification) {
+    @objc open func keyboardDidShow(_ notification: Notification) {
         guard let table = tableView, let cell = table.findFirstResponder()?.formCell() else { return }
         let keyBoardInfo = notification.userInfo!
         let endFrame = keyBoardInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
