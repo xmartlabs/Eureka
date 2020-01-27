@@ -1,6 +1,18 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [5.2.0](https://github.com/xmartlabs/Eureka/releases/tag/5.2.0)
+
+* *Support for Swift Package Manager* (#1976)
+* Add GenericMultivaluedSection to allow changing add button (#1843)
+* Remove InputTypeInitiable constraint for PickerInputRow (#1975)
+* Fix: avoid reloading rows in viewWillAppear when tableView is not added to window (#1971)
+* Fix optional header and footer in SelectorViewController. (#1962)
+* Fix table view contentInset adjustment with safe area when keyboard shows (#1960)
+* Fix for iOS 13 that was not removing the row automatically anymore even after calling the completion handler in a destructive swipe action (#1944)
+* Fixed reference cycle (#1930)
+* Allows a section's header and footer to be `nil` (#1927)
+
 ### [5.1.0](https://github.com/xmartlabs/Eureka/releases/tag/5.1.0)
 
 * Support for Xcode 11 and iOS 13
