@@ -46,6 +46,11 @@ open class RowOf<T>: BaseRow where T: Equatable {
                     (rowObserver as? Disableable)?.evaluateDisabled()
                 }
             }
+            if let rowObservers = form.rowObservers[t]?[.needsUpdate] {
+                for rowObserver in rowObservers {
+                    (rowObserver as? Updatable)?.updateAfterEnvironmentChange()
+                }
+            }
         }
     }
 
