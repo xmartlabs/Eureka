@@ -24,20 +24,14 @@
 
 import Foundation
 
-public struct RuleClosure<T: Equatable>: RuleType {
+public struct Closure<RowValue: Equatable>: RowRule {
+    public var closure: (RowValue?, Form) -> Bool
 
-    public var id: String?
-    public var validationError: ValidationError
-
-    public var closure: (T?) -> ValidationError?
-
-    public func isValid(value: T?) -> ValidationError? {
-        return closure(value)
+    public init(_ closure: @escaping (RowValue?, Form) -> Bool) {
+        self.closure = closure
     }
 
-    public init(validationError: ValidationError = ValidationError(msg: "Field validation fails.."), id: String? = nil, closure: @escaping ((T?) -> ValidationError?)) {
-        self.validationError = validationError
-        self.closure = closure
-        self.id = id
+    public func allows(_ value: RowValue?, in form: Form) -> Bool {
+        return closure(value, form)
     }
 }

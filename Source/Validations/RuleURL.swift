@@ -25,30 +25,21 @@
 import Foundation
 import UIKit
 
-public struct RuleURL: RuleType {
+public struct ValidURL: RowRule {
+    public var allowsEmpty: Bool
+    public var requiresProtocol: Bool
 
-    public init(allowsEmpty: Bool = true, requiresProtocol: Bool = false, msg: String = "Field value must be an URL!", id: String? = nil) {
-        validationError = ValidationError(msg: msg)
+    public init(allowsEmpty: Bool = true, requiresProtocol: Bool = false) {
         self.allowsEmpty = allowsEmpty
         self.requiresProtocol = requiresProtocol
-        self.id = id
     }
 
-    public var id: String?
-    public var allowsEmpty = true
-    public var requiresProtocol = false
-    public var validationError: ValidationError
-
-    public func isValid(value: URL?) -> ValidationError? {
-        if let value = value, value.absoluteString.isEmpty == false {
+    public func allows(_ url: URL?, in _: Form) -> Bool {
+        if let url = url, !url.absoluteString.isEmpty {
             let predicate = NSPredicate(format:"SELF MATCHES %@", RegExprPattern.URL.rawValue)
-            guard predicate.evaluate(with: value.absoluteString) else {
-                return validationError
-            }
-            return nil
-        } else if !allowsEmpty {
-            return validationError
+            return predicate.evaluate(with: url.absoluteString)
+        } else {
+            return allowsEmpty
         }
-        return nil
     }
 }
