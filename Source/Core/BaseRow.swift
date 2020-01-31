@@ -245,6 +245,7 @@ extension BaseRow {
     final func addToRowObservers() {
         addToHiddenRowObservers()
         addToDisabledRowObservers()
+        addToNeedingUpdateRowObservers()
     }
 
     final func willBeRemovedFromForm() {
