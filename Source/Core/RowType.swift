@@ -37,6 +37,10 @@ protocol Hidable: Taggable {
     var isHidden: Bool { get }
 }
 
+protocol Updatable: Taggable {
+    func updateAfterEnvironmentChange()
+}
+
 public protocol KeyboardReturnHandler: BaseRowType {
     var keyboardReturnType: KeyboardReturnTypeConfiguration? { get set }
 }
