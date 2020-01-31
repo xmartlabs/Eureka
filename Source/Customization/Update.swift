@@ -7,9 +7,9 @@
 
 public final class Update {
     public let tags: [String]
-    public let updateBlock: (Form) -> Void
+    public let updateBlock: (Form, BaseRow) -> Void
 
-    public init(on tags: [String], by updateBlock: @escaping (Form) -> Void) {
+    public init(on tags: [String], by updateBlock: @escaping (Form, BaseRow) -> Void) {
         self.tags = tags
         self.updateBlock = updateBlock
     }

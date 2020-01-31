@@ -201,7 +201,7 @@ extension BaseRow {
 
     func updateAfterEnvironmentChange() {
         guard let n = needsUpdate, let form = section?.form else { return }
-        n.updateBlock(form)
+        n.updateBlock(form, self)
         updateCell()
     }
 
