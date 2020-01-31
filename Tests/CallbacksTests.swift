@@ -165,7 +165,7 @@ class CallbacksTests: XCTestCase {
     func onRowValidationTests<Row, Value>(row:Row, value:Value) where Row: BaseRow, Row: RowType, Value == Row.Cell.Value {
         var invoked = false
         row.validationOptions = ValidationOptions.validatesOnChange
-        row.add(rule: RuleClosure { _ in return ValidationError(msg: "Validation Error") })
+        row.add(Closure { _, _ in false }, "Validation Error")
         row.onRowValidationChanged { _, _ in
             invoked = true
         }
