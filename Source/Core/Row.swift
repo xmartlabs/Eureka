@@ -136,6 +136,11 @@ open class RowOf<T>: BaseRow where T: Equatable {
 /// Generic class that represents an Eureka row.
 open class Row<Cell: CellType>: RowOf<Cell.Value>, TypedRowType where Cell: BaseCell {
 
+    /// In a need to customize initialization of a cell, this is the method that should be overridden. By default it returns a cell from `cellProvider`
+    open func newCell() -> Cell {
+        return cellProvider.makeCell(style: self.cellStyle)
+    }
+
     /// Responsible for creating the cell for this row.
     public var cellProvider = CellProvider<Cell>()
 
@@ -152,7 +157,7 @@ open class Row<Cell: CellType>: RowOf<Cell.Value>, TypedRowType where Cell: Base
     /// The cell associated to this row.
     public var cell: Cell! {
         return _cell ?? {
-            let result = cellProvider.makeCell(style: self.cellStyle)
+            let result = newCell()
             result.row = self
             result.setup()
             _cell = result
