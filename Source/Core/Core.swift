@@ -475,7 +475,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
         super.viewWillAppear(animated)
         animateTableView = true
         let selectedIndexPaths = tableView.indexPathsForSelectedRows ?? []
-        if !selectedIndexPaths.isEmpty {
+        if !selectedIndexPaths.isEmpty, tableView.window != nil {
             tableView.reloadRows(at: selectedIndexPaths, with: .none)
         }
         selectedIndexPaths.forEach {
@@ -1012,7 +1012,10 @@ extension FormViewController {
         let endFrame = keyBoardInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
 
         let keyBoardFrame = table.window!.convert(endFrame.cgRectValue, to: table.superview)
-        let newBottomInset = table.frame.origin.y + table.frame.size.height - keyBoardFrame.origin.y + rowKeyboardSpacing
+        var newBottomInset = table.frame.origin.y + table.frame.size.height - keyBoardFrame.origin.y + rowKeyboardSpacing
+        if #available(iOS 11.0, *) {
+            newBottomInset = newBottomInset - tableView.safeAreaInsets.bottom
+        }
         var tableInsets = table.contentInset
         var scrollIndicatorInsets = table.scrollIndicatorInsets
         oldBottomInset = oldBottomInset ?? tableInsets.bottom

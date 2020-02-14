@@ -208,7 +208,7 @@ class RowsExampleViewController: FormViewController {
         section
             <<< LocationRow(){
                 $0.title = "LocationRow"
-                $0.value = CLLocation(latitude: -34.91, longitude: -56.1646)
+                $0.value = CLLocation(latitude: -34.9124, longitude: -56.1594)
             }
 
             <<< ImageRow(){
@@ -348,6 +348,7 @@ class RowsExampleViewController: FormViewController {
                 $0.title = "ZipCodeRow"
                 $0.placeholder = "90210"
         }
+
     }
 
     @objc func multipleSelectorDone(_ item:UIBarButtonItem) {

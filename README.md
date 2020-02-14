@@ -1068,6 +1068,17 @@ Then run the following command:
 $ pod install
 ```
 
+#### Swift Package Manager
+
+[Swift Package Manager](https://swift.org/package-manager/) is a tool for managing the distribution of Swift code.
+
+After you set up your `Package.swift` manifest file, you can add Eureka as a dependency by adding it to the dependencies value of your `Package.swift`.
+
+dependencies: [
+    .package(url: "https://github.com/xmartlabs/Eureka.git", from: "5.2.0")
+]
+
+
 #### Carthage
 
 [Carthage](https://github.com/Carthage/Carthage) is a simple, decentralized dependency manager for Cocoa.
@@ -1075,7 +1086,7 @@ $ pod install
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 5.0
+github "xmartlabs/Eureka" ~> 5.2
 ```
 
 #### Manually as Embedded Framework
