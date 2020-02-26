@@ -54,10 +54,10 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
 
 **For more information look at [our blog post] that introduces *Eureka*.**
 
-## Requirements
+## Requirements (for latest release)
 
-* Xcode 10.2+
-* Swift 5.0+ (for latest release)
+* Xcode 11+
+* Swift 5.0+ 
 
 ### Example project
 
