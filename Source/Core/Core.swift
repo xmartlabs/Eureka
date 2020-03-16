@@ -1080,7 +1080,7 @@ extension FormViewController {
 
     public func navigateTo(direction: Direction) {
         guard let currentCell = tableView?.findFirstResponder()?.formCell() else { return }
-        guard let currentIndexPath = tableView?.indexPath(for: currentCell) else { assertionFailure(); return }
+        guard let currentIndexPath = tableView?.indexPath(for: currentCell) else { return }
         guard let nextRow = nextRow(for: form[currentIndexPath], withDirection: direction) else { return }
         if nextRow.baseCell.cellCanBecomeFirstResponder() {
             tableView?.scrollToRow(at: nextRow.indexPath!, at: .none, animated: animateScroll)
