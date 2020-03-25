@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [5.2.1](https://github.com/xmartlabs/Eureka/releases/tag/5.2.1)
+
+* Mark `tableView:editActionsForRowAt` as deprecated (#2000)
+* Removes unwanted assertionFailure Core.swift Navigation (#1998)
+* Fix for crash in iOS 13.4 with Xcode 11.4 (#2008)
+
 ### [5.2.0](https://github.com/xmartlabs/Eureka/releases/tag/5.2.0)
 
 * *Support for Swift Package Manager* (#1976)
