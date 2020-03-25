@@ -945,6 +945,7 @@ extension FormViewController : UITableViewDelegate {
 		return form[indexPath].trailingSwipe.contextualConfiguration
 	}
 
+    @available(iOS, deprecated: 13, message: "UITableViewRowAction is deprecated, use leading/trailingSwipe actions instead")
 	open func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
         guard let actions = form[indexPath].trailingSwipe.contextualActions as? [UITableViewRowAction], !actions.isEmpty else {
             return nil
@@ -1079,7 +1080,7 @@ extension FormViewController {
 
     public func navigateTo(direction: Direction) {
         guard let currentCell = tableView?.findFirstResponder()?.formCell() else { return }
-        guard let currentIndexPath = tableView?.indexPath(for: currentCell) else { assertionFailure(); return }
+        guard let currentIndexPath = tableView?.indexPath(for: currentCell) else { return }
         guard let nextRow = nextRow(for: form[currentIndexPath], withDirection: direction) else { return }
         if nextRow.baseCell.cellCanBecomeFirstResponder() {
             tableView?.scrollToRow(at: nextRow.indexPath!, at: .none, animated: animateScroll)
