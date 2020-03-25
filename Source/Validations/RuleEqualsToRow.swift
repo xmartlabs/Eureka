@@ -24,32 +24,15 @@
 
 import Foundation
 
-public struct RuleEqualsToRow<T: Equatable>: RuleType {
+public struct EqualsToRow<RowValue: Equatable>: RowRule {
+    public var originalRowTag: String
 
-    public init(form: Form, tag: String, msg: String = "Fields don't match!", id: String? = nil) {
-        self.validationError = ValidationError(msg: msg)
-        self.form = form
-        self.tag = tag
-        self.row = nil
-        self.id = id
+    public init(_ originalRowTag: String) {
+        self.originalRowTag = originalRowTag
     }
 
-    public init(row: RowOf<T>, msg: String = "Fields don't match!", id: String? = nil) {
-        self.validationError = ValidationError(msg: msg)
-        self.form = nil
-        self.tag = nil
-        self.row = row
-        self.id = id
-    }
-
-    public var id: String?
-    public var validationError: ValidationError
-    public weak var form: Form?
-    public var tag: String?
-    public weak var row: RowOf<T>?
-
-    public func isValid(value: T?) -> ValidationError? {
-        let rowAux: RowOf<T> = row ?? form!.rowBy(tag: tag!)!
-        return rowAux.value == value ? nil : validationError
+    public func allows(_ value: RowValue?, in form: Form) -> Bool {
+        guard let originalRowValue = (form.rowBy(tag: originalRowTag) as? RowOf<RowValue>)?.value else { return false }
+        return originalRowValue == value
     }
 }

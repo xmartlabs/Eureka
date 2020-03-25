@@ -92,6 +92,11 @@ open class BaseRow: BaseRowType {
         didSet { addToHiddenRowObservers() }
     }
 
+    public var needsUpdate: Update? {
+        willSet { removeFromNeedingUpdateRowObservers() }
+        didSet { addToNeedingUpdateRowObservers() }
+    }
+
     /// Returns if this row is currently disabled or not
     public var isDisabled: Bool { return disabledCache }
 
@@ -192,6 +197,14 @@ extension BaseRow {
         updateCell()
     }
 
+    // TODO: There will be evaluateNeedsUpdate()
+
+    func updateAfterEnvironmentChange() {
+        guard let n = needsUpdate, let form = section?.form else { return }
+        n.updateBlock(form, self)
+        updateCell()
+    }
+
     final func wasAddedTo(section: Section) {
         self.section = section
         if let t = tag {
@@ -224,9 +237,15 @@ extension BaseRow {
         }
     }
 
+    final func addToNeedingUpdateRowObservers() {
+        guard let n = needsUpdate else { return }
+        section?.form?.addRowObservers(to: self, rowTags: n.tags, type: .needsUpdate)
+    }
+
     final func addToRowObservers() {
         addToHiddenRowObservers()
         addToDisabledRowObservers()
+        addToNeedingUpdateRowObservers()
     }
 
     final func willBeRemovedFromForm() {
@@ -263,13 +282,19 @@ extension BaseRow {
         }
     }
 
+    final func removeFromNeedingUpdateRowObservers() {
+        guard let n = needsUpdate else { return }
+        section?.form?.removeRowObservers(from: self, rowTags: n.tags, type: .needsUpdate)
+    }
+
     final func removeFromRowObservers() {
         removeFromHiddenRowObservers()
         removeFromDisabledRowObservers()
+        removeFromNeedingUpdateRowObservers()
     }
 }
 
-extension BaseRow: Equatable, Hidable, Disableable {}
+extension BaseRow: Equatable, Hidable, Disableable, Updatable {}
 
 extension BaseRow {
 

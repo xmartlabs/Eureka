@@ -37,15 +37,14 @@ public func == (lhs: ValidationError, rhs: ValidationError) -> Bool {
     return lhs.msg == rhs.msg
 }
 
-public protocol BaseRuleType {
-    var id: String? { get set }
-    var validationError: ValidationError { get set }
-}
+/// Type representing any rule that row can contain
+public protocol RowRule {
+    associatedtype RowValue
 
-public protocol RuleType: BaseRuleType {
-    associatedtype RowValueType
-
-    func isValid(value: RowValueType?) -> ValidationError?
+    /// Returns `true` if a value fits this row describes, otherwise the result is `false`
+    /// - Parameter value: Value that needs to be validated
+    /// - Parameter form: Form where rule's owner is placed
+    func allows(_ value: RowValue?, in form: Form) -> Bool
 }
 
 public struct ValidationOptions: OptionSet {
@@ -64,36 +63,8 @@ public struct ValidationOptions: OptionSet {
     public static let validatesAlways: ValidationOptions = [.validatesOnChange, .validatesOnBlur]
 }
 
-public struct ValidationRuleHelper<T> where T: Equatable {
-    let validateFn: ((T?) -> ValidationError?)
-    let rule: BaseRuleType
-}
-
-public struct RuleSet<T: Equatable> {
-
-    internal var rules: [ValidationRuleHelper<T>] = []
-
-    public init() {}
-
-    /// Add a validation Rule to a Row
-    /// - Parameter rule: RuleType object typed to the same type of the Row.value
-    public mutating func add<Rule: RuleType>(rule: Rule) where T == Rule.RowValueType {
-        let validFn: ((T?) -> ValidationError?) = { (val: T?) in
-            return rule.isValid(value: val)
-        }
-        rules.append(ValidationRuleHelper(validateFn: validFn, rule: rule))
-    }
-
-    public mutating func remove(ruleWithIdentifier identifier: String) {
-        if let index = rules.firstIndex(where: { (validationRuleHelper) -> Bool in
-            return validationRuleHelper.rule.id == identifier
-        }) {
-            rules.remove(at: index)
-        }
-    }
-
-    public mutating func removeAllRules() {
-        rules.removeAll()
-    }
-
+public struct RowRuleWrapping<T: Equatable> {
+    let closure: (T?, Form) -> ValidationError?
+    let linkedError: ValidationError
+    let id: String?
 }

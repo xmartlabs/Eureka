@@ -24,61 +24,85 @@
 
 import Foundation
 
-public struct RuleMinLength: RuleType {
+private enum Comparator<Unit: Comparable>: CustomStringConvertible {
+    case equal(to: Unit)
+    case greater(than: Unit)
+    case less(than: Unit)
+    case `in`(ClosedRange<Unit>)
 
-    let min: UInt
-
-    public var id: String?
-    public var validationError: ValidationError
-
-    public init(minLength: UInt, msg: String? = nil, id: String? = nil) {
-        let ruleMsg = msg ?? "Field value must have at least \(minLength) characters"
-        min = minLength
-        validationError = ValidationError(msg: ruleMsg)
-        self.id = id
+    var description: String {
+        switch self {
+        case let .equal(to: number):
+            return "must be \(number)"
+        case let .greater(than: minimum):
+            return "must greater than \(minimum)"
+        case let .less(than: maximum):
+            return "must less than \(maximum)"
+        case let .in(range):
+            return "must be in \(range.lowerBound)...\(range.upperBound) range"
+        }
     }
 
-    public func isValid(value: String?) -> ValidationError? {
-        guard let value = value, !value.isEmpty else { return nil }
-        return value.count < Int(min) ? validationError : nil
-    }
-}
-
-public struct RuleMaxLength: RuleType {
-
-    let max: UInt
-
-    public var id: String?
-    public var validationError: ValidationError
-
-    public init(maxLength: UInt, msg: String? = nil, id: String? = nil) {
-        let ruleMsg = msg ?? "Field value must have less than \(maxLength) characters"
-        max = maxLength
-        validationError = ValidationError(msg: ruleMsg)
-        self.id = id
-    }
-
-    public func isValid(value: String?) -> ValidationError? {
-        guard let value = value, !value.isEmpty else { return nil }
-        return value.count > Int(max) ? validationError : nil
+    func contains(_ value: Unit) -> Bool {
+        switch self {
+        case let .equal(to: exactValue):
+            return value == exactValue
+        case let .greater(than: minimum):
+            return value > minimum
+        case let .less(than: maximum):
+            return value < maximum
+        case let .in(range):
+            return range.contains(value)
+        }
     }
 }
 
-public struct RuleExactLength: RuleType {
-    let length: UInt
-    
-    public var id: String?
-    public var validationError: ValidationError
-    
-    public init(exactLength: UInt, msg: String? = nil, id: String? = nil) {
-        let ruleMsg = msg ?? "Field value must have exactly \(exactLength) characters"
-        length = exactLength
-        validationError = ValidationError(msg: ruleMsg)
-        self.id = id
+public struct Length: RowRule, CustomStringConvertible {
+    private let condition: Comparator<Int>
+
+    public init(longerThan minimumLength: UInt) {
+        condition = .greater(than: Int(minimumLength))
     }
-    
-    public func isValid(value: String?) -> ValidationError? {
-        guard let value = value, !value.isEmpty else { return nil }
-        return value.count != Int(length) ? validationError : nil
+
+    public init(shorterThan maximumLength: UInt) {
+        condition = .less(than: Int(maximumLength))
+    }
+
+    public init(exactly length: UInt) {
+        condition = .equal(to: Int(length))
+    }
+
+    public init(in validRange: ClosedRange<Int>) {
+        condition = .in(validRange)
+    }
+
+    public func allows(_ value: String?, in _: Form) -> Bool {
+        guard let value = value, !value.isEmpty else { return true }
+        return condition.contains(value.count)
+    }
+
+    public var description: String {
+        return "Length \(condition.description)"
+    }
+}
+
+public struct Value<RowValue: Comparable>: RowRule {
+    private let condition: Comparator<RowValue>
+
+    public init(exactly exactValue: RowValue) {
+        condition = .equal(to: exactValue)
+    }
+
+    public init(greaterThan minimum: RowValue) {
+        condition = .greater(than: minimum)
+    }
+
+    public init(lessThan maximum: RowValue) {
+        condition = .less(than: maximum)
+    }
+
+    public func allows(_ value: RowValue?, in form: Form) -> Bool {
+        guard let value = value else { return true }
+        return condition.contains(value)
     }
 }

@@ -24,20 +24,26 @@
 
 import Foundation
 
-public struct RuleRequired<T: Equatable>: RuleType {
+public struct Required<RowValue: Equatable>: RowRule {
+    public init() {}
 
-    public init(msg: String = "Field required!", id: String? = nil) {
-        self.validationError = ValidationError(msg: msg)
-        self.id = id
+    public func allows(_ value: RowValue?, in form: Form) -> Bool {
+        if let string = value as? String {
+            return !string.isEmpty
+        } else {
+            return value != nil
+        }
+    }
+}
+
+public struct Not<WrappedRule: RowRule>: RowRule {
+    public var wrappedRule: WrappedRule
+
+    init(_ wrappedRule: WrappedRule) {
+        self.wrappedRule = wrappedRule
     }
 
-    public var id: String?
-    public var validationError: ValidationError
-
-    public func isValid(value: T?) -> ValidationError? {
-        if let str = value as? String {
-            return str.isEmpty ? validationError : nil
-        }
-        return value != nil ? nil : validationError
+    public func allows(_ value: WrappedRule.RowValue?, in form: Form) -> Bool {
+        return !wrappedRule.allows(value, in: form)
     }
 }

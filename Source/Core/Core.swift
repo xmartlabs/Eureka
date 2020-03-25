@@ -230,7 +230,7 @@ public protocol FormatterProtocol {
 // MARK: Predicate Machine
 
 enum ConditionType {
-    case hidden, disabled
+    case hidden, disabled, needsUpdate
 }
 
 /**
