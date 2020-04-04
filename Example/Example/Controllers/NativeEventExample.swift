@@ -152,7 +152,8 @@ class NativeEventFormViewController : FormViewController {
                                 $0.value = .Never
                                 $0.options = EventAlert.allCases
                             }
-                            row.section?.insert(second, at: row.indexPath!.row + 1)
+                            let secondIndex = row.indexPath!.row + 1
+                            row.section?.insert(second, at: secondIndex)
                             return
                         }
                     }
