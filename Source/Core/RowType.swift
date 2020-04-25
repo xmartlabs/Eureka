@@ -202,7 +202,12 @@ extension RowType where Self: BaseRow {
      */
     @discardableResult
     public func onChange(_ callback: @escaping (Self) -> Void) -> Self {
-        callbackOnChange = { [weak self] in callback(self!) }
+        callbackOnChange = { [weak self] in
+            guard let self = self else {
+                return
+            }
+            callback(self)
+        }
         return self
     }
 
@@ -213,7 +218,12 @@ extension RowType where Self: BaseRow {
      */
     @discardableResult
     public func cellUpdate(_ callback: @escaping ((_ cell: Cell, _ row: Self) -> Void)) -> Self {
-        callbackCellUpdate = { [weak self] in  callback(self!.cell, self!) }
+        callbackCellUpdate = { [weak self] in
+            guard let self = self else {
+                return
+            }
+            callback(self.cell, self)
+        }
         return self
     }
 
@@ -224,7 +234,12 @@ extension RowType where Self: BaseRow {
      */
     @discardableResult
     public func cellSetup(_ callback: @escaping ((_ cell: Cell, _ row: Self) -> Void)) -> Self {
-        callbackCellSetup = { [weak self] (cell: Cell) in  callback(cell, self!) }
+        callbackCellSetup = { [weak self] (cell: Cell) in
+            guard let self = self else {
+                return
+            }
+            callback(cell, self)
+        }
         return self
     }
 
@@ -235,7 +250,12 @@ extension RowType where Self: BaseRow {
      */
     @discardableResult
     public func onCellSelection(_ callback: @escaping ((_ cell: Cell, _ row: Self) -> Void)) -> Self {
-        callbackCellOnSelection = { [weak self] in  callback(self!.cell, self!) }
+        callbackCellOnSelection = { [weak self] in
+            guard let self = self else {
+                return
+            }
+            callback(self.cell, self)
+        }
         return self
     }
 
@@ -246,13 +266,23 @@ extension RowType where Self: BaseRow {
      */
     @discardableResult
     public func onCellHighlightChanged(_ callback: @escaping (_ cell: Cell, _ row: Self) -> Void) -> Self {
-        callbackOnCellHighlightChanged = { [weak self] in callback(self!.cell, self!) }
+        callbackOnCellHighlightChanged = { [weak self] in
+            guard let self = self else {
+                return
+            }
+            callback(self.cell, self)
+        }
         return self
     }
 
     @discardableResult
     public func onRowValidationChanged(_ callback: @escaping (_ cell: Cell, _ row: Self) -> Void) -> Self {
-        callbackOnRowValidationChanged = { [weak self] in  callback(self!.cell, self!) }
+        callbackOnRowValidationChanged = { [weak self] in
+            guard let self = self else {
+                return
+            }
+            callback(self.cell, self)
+        }
         return self
     }
 }
