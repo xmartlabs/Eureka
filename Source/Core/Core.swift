@@ -475,8 +475,14 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
         super.viewWillAppear(animated)
         animateTableView = true
         let selectedIndexPaths = tableView.indexPathsForSelectedRows ?? []
-        if !selectedIndexPaths.isEmpty, tableView.window != nil {
-            tableView.reloadRows(at: selectedIndexPaths, with: .none)
+        if !selectedIndexPaths.isEmpty {
+            if #available(iOS 13.0, *) {
+                if tableView.window != nil {
+                    tableView.reloadRows(at: selectedIndexPaths, with: .none)
+                }
+            } else {
+                tableView.reloadRows(at: selectedIndexPaths, with: .none)
+            }
         }
         selectedIndexPaths.forEach {
             tableView.selectRow(at: $0, animated: false, scrollPosition: .none)
