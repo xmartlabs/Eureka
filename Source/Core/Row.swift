@@ -85,7 +85,7 @@ open class RowOf<T>: BaseRow where T: Equatable {
     public internal(set) var rules: [ValidationRuleHelper<T>] = []
 
     @discardableResult
-    public override func validate(quietly: Bool = false) -> [ValidationError] {
+    open override func validate(quietly: Bool = false) -> [ValidationError] {
         var vErrors = [ValidationError]()
         #if swift(>=4.1)
         vErrors = rules.compactMap { $0.validateFn(value) }
