@@ -78,6 +78,11 @@ open class BaseRow: BaseRowType {
         return []
     }
 
+    // Reset validation
+    open func cleanValidationErrors() {
+        validationErrors = []
+    }
+
     public static var estimatedRowHeight: CGFloat = 44.0
 
     /// Condition that determines if the row should be disabled or not.
@@ -148,13 +153,6 @@ open class BaseRow: BaseRowType {
                 baseCell.cellResignFirstResponder()
             }
         }
-    }
-}
-
-extension BaseRow {
-    // Reset validation
-    public func cleanValidationErrors(){
-        validationErrors = []
     }
 }
 
