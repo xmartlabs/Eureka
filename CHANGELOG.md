@@ -1,6 +1,36 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [5.2.1](https://github.com/xmartlabs/Eureka/releases/tag/5.2.1)
+
+* Mark `tableView:editActionsForRowAt` as deprecated (#2000)
+* Removes unwanted assertionFailure Core.swift Navigation (#1998)
+* Fix for crash in iOS 13.4 with Xcode 11.4 (#2008)
+
+### [5.2.0](https://github.com/xmartlabs/Eureka/releases/tag/5.2.0)
+
+* *Support for Swift Package Manager* (#1976)
+* Add GenericMultivaluedSection to allow changing add button (#1843)
+* Remove InputTypeInitiable constraint for PickerInputRow (#1975)
+* Fix: avoid reloading rows in viewWillAppear when tableView is not added to window (#1971)
+* Fix optional header and footer in SelectorViewController. (#1962)
+* Fix table view contentInset adjustment with safe area when keyboard shows (#1960)
+* Fix for iOS 13 that was not removing the row automatically anymore even after calling the completion handler in a destructive swipe action (#1944)
+* Fixed reference cycle (#1930)
+* Allows a section's header and footer to be `nil` (#1927)
+
+### [5.1.0](https://github.com/xmartlabs/Eureka/releases/tag/5.1.0)
+
+* Support for Xcode 11 and iOS 13
+* Added dark mode support
+
+### [5.0.1](https://github.com/xmartlabs/Eureka/releases/tag/5.0.1)
+
+* Added `quietly` parameter for use with non-ui validation (#1817)
+* RuleMinLength (and others) now pass for nil and empty strings. 
+* iOS deployment target back on iOS 9.0
+* Several other fixes
+
 ### [5.0.0](https://github.com/xmartlabs/Eureka/releases/tag/5.0.0)
 
 * Bug fixes and stability improvements

@@ -69,7 +69,11 @@ open class _PickerInputCell<T> : Cell<T>, CellType, UIPickerViewDataSource, UIPi
             detailTextLabel?.text = nil
         }
 
-        textLabel?.textColor = row.isDisabled ? .gray : .black
+        if #available(iOS 13.0, *) {
+            textLabel?.textColor = row.isDisabled ? .tertiaryLabel : .label
+        } else {
+            textLabel?.textColor = row.isDisabled ? .gray : .black
+        }
         if row.isHighlighted {
             textLabel?.textColor = tintColor
         }
@@ -147,7 +151,7 @@ open class _PickerInputRow<T> : Row<PickerInputCell<T>>, NoValueDisplayTextConfo
 }
 
 /// A generic row where the user can pick an option from a picker view displayed in the keyboard area
-public final class PickerInputRow<T>: _PickerInputRow<T>, RowType where T: Equatable, T: InputTypeInitiable {
+public final class PickerInputRow<T>: _PickerInputRow<T>, RowType where T: Equatable {
 
     required public init(tag: String?) {
         super.init(tag: tag)

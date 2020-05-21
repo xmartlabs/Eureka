@@ -54,20 +54,58 @@ open class NavigationAccessoryView: UIToolbar, NavigationAccessory {
         super.init(coder: aDecoder)
     }
 
-    private func initializeChevrons() {
-        var bundle = Bundle(for: NavigationAccessoryView.classForCoder())
-        if let resourcePath = bundle.path(forResource: "Eureka", ofType: "bundle") {
-            if let resourcesBundle = Bundle(path: resourcePath) {
-                bundle = resourcesBundle
-            }
+    private func drawChevron(pointingRight: Bool) -> UIImage? {
+        // Hardcoded chevron size
+        let width = 12
+        let height = 20
+
+        // Begin the image context, with which we are going to draw a chevron
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0.0)
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        defer {
+            UIGraphicsEndImageContext()
         }
 
-        var imageLeftChevron = UIImage(named: "back-chevron", in: bundle, compatibleWith: nil)
-        var imageRightChevron = UIImage(named: "forward-chevron", in: bundle, compatibleWith: nil)
+        // The chevron looks like > or <. This can be drawn with 3 points; the Y coordinates of the points
+        // are independant of whether it is to be pointing left or right; the X coordinates will depend, as follows.
+        // The 1s are to ensure that the point of the chevron does not sit exactly on the edge of the frame, which
+        // would slightly truncate the point.
+        let chevronPointXCoordinate, chevronTailsXCoordinate: Int
+        if pointingRight {
+            chevronPointXCoordinate = width - 1
+            chevronTailsXCoordinate = 1
+        } else {
+            chevronPointXCoordinate = 1
+            chevronTailsXCoordinate = width - 1
+        }
+
+        // Draw the lines and return the image
+        context.setLineWidth(1.5)
+        context.setLineCap(.square)
+        context.strokeLineSegments(between: [
+            CGPoint(x: chevronTailsXCoordinate, y: 0),
+            CGPoint(x: chevronPointXCoordinate, y: height / 2),
+            CGPoint(x: chevronPointXCoordinate, y: height / 2),
+            CGPoint(x: chevronTailsXCoordinate, y: height)
+        ])
+
+        return UIGraphicsGetImageFromCurrentImageContext()
+    }
+    
+    private func initializeChevrons() {
+        var imageLeftChevron, imageRightChevron: UIImage?
+        if #available(iOS 13.0, *) {
+            // If we have access to SFSymbols, use the system chevron images, rather than faffing around with our own
+            imageLeftChevron = UIImage(systemName: "chevron.left")
+            imageRightChevron = UIImage(systemName: "chevron.right")
+        } else {
+            imageLeftChevron = drawChevron(pointingRight: false)
+            imageRightChevron = drawChevron(pointingRight: true)
+        }
+        
         // RTL language support
         imageLeftChevron = imageLeftChevron?.imageFlippedForRightToLeftLayoutDirection()
         imageRightChevron = imageRightChevron?.imageFlippedForRightToLeftLayoutDirection()
-        
 
         previousButton = UIBarButtonItem(image: imageLeftChevron, style: .plain, target: self, action: #selector(didTapPrevious))
         nextButton = UIBarButtonItem(image: imageRightChevron, style: .plain, target: self, action: #selector(didTapNext))
@@ -96,7 +134,7 @@ open class NavigationAccessoryView: UIToolbar, NavigationAccessory {
             return previousButton.isEnabled
         }
         set {
-            previousButton.isEnabled = previousEnabled
+            previousButton.isEnabled = newValue
         }
     }
 
@@ -105,7 +143,7 @@ open class NavigationAccessoryView: UIToolbar, NavigationAccessory {
             return nextButton.isEnabled
         }
         set {
-            nextButton.isEnabled = nextEnabled
+            nextButton.isEnabled = newValue
         }
     }
 }

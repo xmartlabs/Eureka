@@ -87,7 +87,7 @@ open class FieldRow<Cell: CellType>: FormatteableRow<Cell>, FieldRowConformance,
     open var keyboardReturnType: KeyboardReturnTypeConfiguration?
 
     /// The percentage of the cell that should be occupied by the textField
-	@available (*, deprecated, message: "Use titleLabelPercentage instead")
+	@available (*, deprecated, message: "Use titlePercentage instead")
 	open var textFieldPercentage : CGFloat? {
 		get {
 			return titlePercentage.map { 1 - $0 }
@@ -229,12 +229,20 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         } else {
             textLabel?.text = nil
             titleLabel?.text = row.title
-            titleLabel?.textColor = row.isDisabled ? .gray : .black
+            if #available(iOS 13.0, *) {
+                titleLabel?.textColor = row.isDisabled ? .tertiaryLabel : .label
+            } else {
+                titleLabel?.textColor = row.isDisabled ? .gray : .black
+            }
         }
         textField.delegate = self
         textField.text = row.displayValueFor?(row.value)
         textField.isEnabled = !row.isDisabled
-        textField.textColor = row.isDisabled ? .gray : .black
+        if #available(iOS 13.0, *) {
+            textField.textColor = row.isDisabled ? .tertiaryLabel : .label
+        } else {
+            textField.textColor = row.isDisabled ? .gray : .black
+        }
         textField.font = .preferredFont(forTextStyle: .body)
         if let placeholder = (row as? FieldRowConformance)?.placeholder {
             if let color = (row as? FieldRowConformance)?.placeholderColor {

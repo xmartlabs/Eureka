@@ -83,8 +83,7 @@ class MultivaluedController: FormViewController {
             +++
 
             MultivaluedSection(multivaluedOptions: [.Insert, .Delete, .Reorder],
-                               header: "Multivalued Push Selector example",
-                               footer: "") {
+                               header: "Multivalued Push Selector example") {
                                 $0.tag = "push"
                                 $0.multivaluedRowToInsertAt = { index in
                                     return PushRow<String>{
@@ -117,8 +116,7 @@ class MultivaluedOnlyReorderController: FormViewController {
         form +++
 
             MultivaluedSection(multivaluedOptions: .Reorder,
-                               header: "Reordering Selectors",
-                               footer: "") {
+                               header: "Reordering Selectors") {
                                 $0 <<< PushRow<String> {
                                     $0.title = "Tap to select ;).."
                                     $0.options = ["Option 1", "Option 2", "Option 3"]
@@ -141,8 +139,7 @@ class MultivaluedOnlyReorderController: FormViewController {
             +++
             // Multivalued Section with inline rows - section set up to support only reordering
             MultivaluedSection(multivaluedOptions: .Reorder,
-                               header: "Reordering Inline Rows",
-                               footer: "") { section in
+                               header: "Reordering Inline Rows") { section in
                                 list.enumerated().forEach({ offset, string in
                                     let dateInlineRow = DateInlineRow(){
                                         $0.value = Date(timeInterval: Double(-secondsPerDay) * Double(offset), since: Date())
@@ -155,8 +152,7 @@ class MultivaluedOnlyReorderController: FormViewController {
             +++
 
             MultivaluedSection(multivaluedOptions: .Reorder,
-                               header: "Reordering Field Rows",
-                               footer: "")
+                               header: "Reordering Field Rows")
             <<< NameRow {
                 $0.value = "Martin"
             }
@@ -219,14 +215,12 @@ class MultivaluedOnlyDeleteController: FormViewController {
 
         let section = MultivaluedSection(multivaluedOptions: .Delete)
 
-
         for tag in nameList {
             section <<< TextRow {
                 $0.placeholder = "Tag Name"
                 $0.value = tag
             }
         }
-
 
         let section2 =  MultivaluedSection(multivaluedOptions: .Delete, footer: "")
         for _ in 1..<4 {
