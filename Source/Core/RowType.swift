@@ -239,8 +239,11 @@ extension RowType where Self: BaseRow {
      - returns: this row
      */
     @discardableResult
-    public func cellSetup(_ callback: @escaping ((_ cell: Cell, _ row: Self) -> Void)) -> Self {
-        callbackCellSetup = { [weak self] (cell: Cell) in  callback(cell, self!) }
+    public func cellSetup(_ callback: @escaping ((Cell, Self) -> Void)) -> Self {
+        callbackCellSetup = { [weak self] (cell: Cell) in
+            guard let self = self else { fatalError() }
+            callback(cell, self)
+        }
         return self
     }
 
