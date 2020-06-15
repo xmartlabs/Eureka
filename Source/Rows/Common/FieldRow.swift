@@ -206,6 +206,11 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         }
         textField.addTarget(self, action: #selector(_FieldCell.textFieldDidChange(_:)), for: .editingChanged)
 
+        if let titleLabel = titleLabel {
+            // Make sure the title takes over most of the empty space so that the text field starts editing at the back.
+            let priority = UILayoutPriority(rawValue: titleLabel.contentHuggingPriority(for: .horizontal).rawValue + 1)
+            textField.setContentHuggingPriority(priority, for: .horizontal)
+        }
     }
 
     open override func update() {
@@ -261,11 +266,11 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
     }
 
     open override func cellBecomeFirstResponder(withDirection: Direction) -> Bool {
-        return textField?.becomeFirstResponder() ?? false
+        return textField.becomeFirstResponder()
     }
 
     open override func cellResignFirstResponder() -> Bool {
-        return textField?.resignFirstResponder() ?? true
+        return textField.resignFirstResponder()
     }
 
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
