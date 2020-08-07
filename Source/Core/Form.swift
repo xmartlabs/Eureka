@@ -163,7 +163,18 @@ extension Form: MutableCollection {
     // MARK: MutableCollectionType
 
     public subscript (_ position: Int) -> Section {
-        get { return kvoWrapper.sections[position] as! Section }
+        get {
+            if position >= kvoWrapper.sections.count {
+                let offsetPosition = position - kvoWrapper.sections.count
+                let deletedSections = kvoWrapper.deletedSections()
+                if offsetPosition >= deletedSections.count {
+                    assertionFailure("Form section index of out bounds")
+                }
+                return deletedSections[offsetPosition]
+            }
+            return kvoWrapper.sections[position] as! Section
+        }
+
         set {
             if position > kvoWrapper.sections.count {
                 assertionFailure("Form: Index out of bounds")
@@ -259,6 +270,7 @@ extension Form {
 
     class KVOWrapper: NSObject {
         @objc dynamic private var _sections = NSMutableArray()
+        @objc dynamic private var _deletedSections = NSMutableArray()
         var sections: NSMutableArray { return mutableArrayValue(forKey: "_sections") }
         var _allSections = [Section]()
         private weak var form: Form?
@@ -273,6 +285,7 @@ extension Form {
             removeObserver(self, forKeyPath: "_sections")
             _sections.removeAllObjects()
             _allSections.removeAll()
+            _deletedSections.removeAllObjects()
         }
 
         func removeAllSections() {
@@ -298,8 +311,10 @@ extension Form {
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
                 delegateValue.sectionsHaveBeenAdded(newSections, at: indexSet)
             case NSKeyValueChange.removal.rawValue:
+                _deletedSections.addObjects(from: oldSections)
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
                 delegateValue.sectionsHaveBeenRemoved(oldSections, at: indexSet)
+                _deletedSections.removeAllObjects()
             case NSKeyValueChange.replacement.rawValue:
                 let indexSet = change![NSKeyValueChangeKey.indexesKey] as! IndexSet
                 delegateValue.sectionsHaveBeenReplaced(oldSections: oldSections, newSections: newSections, at: indexSet)
@@ -307,6 +322,10 @@ extension Form {
                 assertionFailure()
             }
         }
+        
+        public func deletedSections() -> [Section] {
+            return _deletedSections as! [Section]
+        }    
     }
 
     func dictionaryValuesToEvaluatePredicate() -> [String: Any] {
