@@ -34,7 +34,7 @@ open class RowOf<T>: BaseRow where T: Equatable {
                 delegate.valueHasBeenChanged(for: self, oldValue: oldValue, newValue: value)
                 callbackOnChange?()
             }
-            self.forceTriggerDidChangeValue()
+            self.forceTriggerDidUpdateValue()
         }
     }
     
