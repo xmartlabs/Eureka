@@ -29,7 +29,12 @@ open class RowOf<T>: BaseRow where T: Equatable {
     private var _value: T? {
         didSet {
             guard _value != oldValue else { return }
-            guard let form = section?.form else { return }
+            forceTriggerDidChangeValue(value: _value)
+        }
+    }
+    
+    public func forceTriggerDidUpdateValue(value: T?) {
+        guard let form = section?.form else { return }
             if let delegate = form.delegate {
                 delegate.valueHasBeenChanged(for: self, oldValue: oldValue, newValue: value)
                 callbackOnChange?()
@@ -51,7 +56,6 @@ open class RowOf<T>: BaseRow where T: Equatable {
                     (rowObserver as? Updatable)?.updateAfterEnvironmentChange()
                 }
             }
-        }
     }
 
     /// The typed value of this row.
