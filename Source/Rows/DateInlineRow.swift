@@ -118,7 +118,7 @@ open class _CountDownInlineRow: _DateInlineFieldRow {
 public final class DateInlineRow_<T>: _DateInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
-        onExpandInlineRow { cell, row, inlineRow in
+        onExpandInlineRow { cell, row, _ in
             let color = cell.detailTextLabel?.textColor
             row.onCollapseInlineRow { cell, _, _ in
                 cell.detailTextLabel?.textColor = color
@@ -141,7 +141,7 @@ public typealias DateInlineRow = DateInlineRow_<Date>
 public final class DateTimeInlineRow_<T>: _DateTimeInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
-        onExpandInlineRow { cell, row, inlineRow in
+        onExpandInlineRow { cell, row, _ in
             let color = cell.detailTextLabel?.textColor
             row.onCollapseInlineRow { cell, _, _ in
                 cell.detailTextLabel?.textColor = color
@@ -164,7 +164,7 @@ public typealias DateTimeInlineRow = DateTimeInlineRow_<Date>
 public final class TimeInlineRow_<T>: _TimeInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
-        onExpandInlineRow { cell, row, inlineRow in
+        onExpandInlineRow { cell, row, _ in
             let color = cell.detailTextLabel?.textColor
             row.onCollapseInlineRow { cell, _, _ in
                 cell.detailTextLabel?.textColor = color
