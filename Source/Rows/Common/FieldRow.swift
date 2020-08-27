@@ -298,9 +298,10 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
             
             if let titleLabel = titleLabel, let text = titleLabel.text, !text.isEmpty {
                 views["titleLabel"] = titleLabel
-                dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[titleLabel]-3-[textField]", options: .alignAllLeading, metrics: nil, views: views)
-                // Here we are centering the textField with an offset of -4. This replicates the exact behavior of the default UITableViewCell with .subtitle style
-                dynamicConstraints.append(NSLayoutConstraint(item: textField!, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: -4))
+                dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-11-[titleLabel]-3-[textField]-11-|",
+                                                                     options: .alignAllLeading, metrics: nil, views: views)
+                titleLabel.setContentHuggingPriority(
+                    UILayoutPriority(textField.contentHuggingPriority(for: .vertical).rawValue + 1), for: .vertical)
                 dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .equal, toItem: textField, attribute: .centerX, multiplier: 1, constant: 0))
             } else {
                 dynamicConstraints.append(NSLayoutConstraint(item: textField!, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0))
