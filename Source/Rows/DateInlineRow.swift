@@ -32,6 +32,16 @@ extension DatePickerRowProtocol {
         inlineRow.maximumDate = maximumDate
         inlineRow.minuteInterval = minuteInterval
     }
+    
+    func configurePickerStyle(_ inlineRow: _DatePickerRow, _ mode: UIDatePicker.Mode = .dateAndTime) {
+        inlineRow.cell.datePicker.datePickerMode = mode
+        if #available(iOS 14.0, *) {
+            inlineRow.cell.datePicker.preferredDatePickerStyle = .inline
+        }
+        else if #available(iOS 13.4, *) {
+            inlineRow.cell.datePicker.preferredDatePickerStyle = .wheels
+        }
+    }
 
 }
 
@@ -47,6 +57,7 @@ open class _DateInlineRow: _DateInlineFieldRow {
 
     open func setupInlineRow(_ inlineRow: DatePickerRow) {
         configureInlineRow(inlineRow)
+        configurePickerStyle(inlineRow, .date)
     }
 }
 
@@ -62,6 +73,7 @@ open class _TimeInlineRow: _DateInlineFieldRow {
 
     open func setupInlineRow(_ inlineRow: TimePickerRow) {
         configureInlineRow(inlineRow)
+        configurePickerStyle(inlineRow, .time)
     }
 }
 
@@ -77,6 +89,7 @@ open class _DateTimeInlineRow: _DateInlineFieldRow {
 
     open func setupInlineRow(_ inlineRow: DateTimePickerRow) {
         configureInlineRow(inlineRow)
+        configurePickerStyle(inlineRow)
     }
 }
 
@@ -106,15 +119,6 @@ public final class DateInlineRow_<T>: _DateInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
         onExpandInlineRow { cell, row, inlineRow in
-            inlineRow.cellUpdate() { cell, row in
-                cell.datePicker.datePickerMode = .date
-                if #available(iOS 14.0, *) {
-                    cell.datePicker.preferredDatePickerStyle = .inline
-                }
-                else if #available(iOS 13.4, *) {
-                    cell.datePicker.preferredDatePickerStyle = .wheels
-                }
-            }
             let color = cell.detailTextLabel?.textColor
             row.onCollapseInlineRow { cell, _, _ in
                 cell.detailTextLabel?.textColor = color
@@ -138,15 +142,6 @@ public final class DateTimeInlineRow_<T>: _DateTimeInlineRow, RowType, InlineRow
     required public init(tag: String?) {
         super.init(tag: tag)
         onExpandInlineRow { cell, row, inlineRow in
-            inlineRow.cellUpdate() { cell, row in
-                cell.datePicker.datePickerMode = .dateAndTime
-                if #available(iOS 14.0, *) {
-                    cell.datePicker.preferredDatePickerStyle = .inline
-                }
-                else if #available(iOS 13.4, *) {
-                    cell.datePicker.preferredDatePickerStyle = .wheels
-                }
-            }
             let color = cell.detailTextLabel?.textColor
             row.onCollapseInlineRow { cell, _, _ in
                 cell.detailTextLabel?.textColor = color
@@ -170,15 +165,6 @@ public final class TimeInlineRow_<T>: _TimeInlineRow, RowType, InlineRowType {
     required public init(tag: String?) {
         super.init(tag: tag)
         onExpandInlineRow { cell, row, inlineRow in
-            inlineRow.cellUpdate() { cell, row in
-                cell.datePicker.datePickerMode = .time
-                if #available(iOS 14.0, *) {
-                    cell.datePicker.preferredDatePickerStyle = .inline
-                }
-                else if #available(iOS 13.4, *) {
-                    cell.datePicker.preferredDatePickerStyle = .wheels
-                }
-            }
             let color = cell.detailTextLabel?.textColor
             row.onCollapseInlineRow { cell, _, _ in
                 cell.detailTextLabel?.textColor = color
