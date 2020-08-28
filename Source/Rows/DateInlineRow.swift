@@ -33,13 +33,13 @@ extension DatePickerRowProtocol {
         inlineRow.minuteInterval = minuteInterval
     }
     
-    func configurePickerStyle(_ inlineRow: _DatePickerRow, _ mode: UIDatePicker.Mode = .dateAndTime) {
-        inlineRow.cell.datePicker.datePickerMode = mode
+    func configurePickerStyle(_ cell: DatePickerCell, _ mode: UIDatePicker.Mode = .dateAndTime) {
+        cell.datePicker.datePickerMode = mode
         if #available(iOS 14.0, *) {
-            inlineRow.cell.datePicker.preferredDatePickerStyle = .inline
+            cell.datePicker.preferredDatePickerStyle = .inline
         }
         else if #available(iOS 13.4, *) {
-            inlineRow.cell.datePicker.preferredDatePickerStyle = .wheels
+            cell.datePicker.preferredDatePickerStyle = .wheels
         }
     }
 
@@ -57,7 +57,7 @@ open class _DateInlineRow: _DateInlineFieldRow {
 
     open func setupInlineRow(_ inlineRow: DatePickerRow) {
         configureInlineRow(inlineRow)
-        configurePickerStyle(inlineRow, .date)
+        configurePickerStyle(inlineRow.cell, .date)
     }
 }
 
@@ -73,7 +73,7 @@ open class _TimeInlineRow: _DateInlineFieldRow {
 
     open func setupInlineRow(_ inlineRow: TimePickerRow) {
         configureInlineRow(inlineRow)
-        configurePickerStyle(inlineRow, .time)
+        configurePickerStyle(inlineRow.cell, .time)
     }
 }
 
@@ -89,7 +89,7 @@ open class _DateTimeInlineRow: _DateInlineFieldRow {
 
     open func setupInlineRow(_ inlineRow: DateTimePickerRow) {
         configureInlineRow(inlineRow)
-        configurePickerStyle(inlineRow)
+        configurePickerStyle(inlineRow.cell)
     }
 }
 
