@@ -196,7 +196,7 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
                 self?.row.value = row.value
                 
                 if let form = row.section?.form {
-                    for section in form where section !== row.section {
+                    for section in form where section !== row.section && section is SelectableSection<Row> {
                         let section = section as Any as! SelectableSection<Row>
                         if let selectedRow = section.selectedRow(), selectedRow !== row {
                             selectedRow.value = nil
