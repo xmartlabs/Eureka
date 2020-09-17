@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 * Update SelectorViewController.swift (#2062)
 * Fix subtitle field row constraints (#2069)
 * Create a workaround for Swift crash (#2057, #2061)
-* Fix date row style/rendering issues for iOS14 (#2067)
+* Fix date row style/rendering issues for iOS 14 (#2067)
 
 ### [5.2.1](https://github.com/xmartlabs/Eureka/releases/tag/5.2.1)
 

@@ -35,16 +35,19 @@ extension DatePickerRowProtocol {
     
     func configurePickerStyle(_ cell: DatePickerCell, _ mode: UIDatePicker.Mode = .dateAndTime) {
         cell.datePicker.datePickerMode = mode
-        if #available(iOS 14.0, *) {
-            #if swift(>=5.3)
-            cell.datePicker.preferredDatePickerStyle = .inline
-            #else
-            cell.datePicker.preferredDatePickerStyle = .wheels
-            #endif
-        }
-        else if #available(iOS 13.4, *) {
-            cell.datePicker.preferredDatePickerStyle = .wheels
-        }
+        // For Xcode 11.4 and above
+        #if swift(>=5.2)
+            if #available(iOS 14.0, *) {
+                #if swift(>=5.3) && !(os(OSX) || (os(iOS) && targetEnvironment(macCatalyst)))
+                    cell.datePicker.preferredDatePickerStyle = .inline
+                #else
+                    cell.datePicker.preferredDatePickerStyle = .wheels
+                #endif
+            }
+            else if #available(iOS 13.4, *) {
+                cell.datePicker.preferredDatePickerStyle = .wheels
+            }
+        #endif
     }
 
 }
