@@ -206,6 +206,11 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         }
         textField.addTarget(self, action: #selector(_FieldCell.textFieldDidChange(_:)), for: .editingChanged)
 
+        if let titleLabel = titleLabel {
+            // Make sure the title takes over most of the empty space so that the text field starts editing at the back.
+            let priority = UILayoutPriority(rawValue: titleLabel.contentHuggingPriority(for: .horizontal).rawValue + 1)
+            textField.setContentHuggingPriority(priority, for: .horizontal)
+        }
     }
 
     open override func update() {
@@ -261,11 +266,11 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
     }
 
     open override func cellBecomeFirstResponder(withDirection: Direction) -> Bool {
-        return textField?.becomeFirstResponder() ?? false
+        return textField.becomeFirstResponder()
     }
 
     open override func cellResignFirstResponder() -> Bool {
-        return textField?.resignFirstResponder() ?? true
+        return textField.resignFirstResponder()
     }
 
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -293,9 +298,10 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
             
             if let titleLabel = titleLabel, let text = titleLabel.text, !text.isEmpty {
                 views["titleLabel"] = titleLabel
-                dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[titleLabel]-3-[textField]", options: .alignAllLeading, metrics: nil, views: views)
-                // Here we are centering the textField with an offset of -4. This replicates the exact behavior of the default UITableViewCell with .subtitle style
-                dynamicConstraints.append(NSLayoutConstraint(item: textField!, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: -4))
+                dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[titleLabel]-3-[textField]-|",
+                                                                     options: .alignAllLeading, metrics: nil, views: views)
+                titleLabel.setContentHuggingPriority(
+                    UILayoutPriority(textField.contentHuggingPriority(for: .vertical).rawValue + 1), for: .vertical)
                 dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .equal, toItem: textField, attribute: .centerX, multiplier: 1, constant: 0))
             } else {
                 dynamicConstraints.append(NSLayoutConstraint(item: textField!, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0))
@@ -320,11 +326,11 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
             
         default:
             var views: [String: AnyObject] =  ["textField": textField]
-            dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-11-[textField]-11-|", options: .alignAllLastBaseline, metrics: nil, views: views)
+            dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[textField]-|", options: .alignAllLastBaseline, metrics: nil, views: views)
             
             if let titleLabel = titleLabel, let text = titleLabel.text, !text.isEmpty {
                 views["titleLabel"] = titleLabel
-                dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-11-[titleLabel]-11-|", options: .alignAllLastBaseline, metrics: nil, views: views)
+                dynamicConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[titleLabel]-|", options: .alignAllLastBaseline, metrics: nil, views: views)
                 dynamicConstraints.append(NSLayoutConstraint(item: titleLabel, attribute: .centerY, relatedBy: .equal, toItem: textField, attribute: .centerY, multiplier: 1, constant: 0))
             }
             

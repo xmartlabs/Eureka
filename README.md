@@ -57,7 +57,7 @@ Made with ❤️ by [XMARTLABS](http://xmartlabs.com). This is the re-creation o
 ## Requirements (for latest release)
 
 * Xcode 11+
-* Swift 5.0+ 
+* Swift 5.0+
 
 ### Example project
 
@@ -1075,7 +1075,7 @@ $ pod install
 After you set up your `Package.swift` manifest file, you can add Eureka as a dependency by adding it to the dependencies value of your `Package.swift`.
 
 dependencies: [
-    .package(url: "https://github.com/xmartlabs/Eureka.git", from: "5.2.1")
+    .package(url: "https://github.com/xmartlabs/Eureka.git", from: "5.3.0")
 ]
 
 
@@ -1086,7 +1086,7 @@ dependencies: [
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 5.2
+github "xmartlabs/Eureka" ~> 5.3
 ```
 
 #### Manually as Embedded Framework

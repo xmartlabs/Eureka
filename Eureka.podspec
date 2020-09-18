@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Eureka'
-  s.version = '5.2.1'
+  s.version = '5.3.0'
   s.license = 'MIT'
   s.summary = 'Elegant iOS Forms in pure Swift'
   s.homepage = 'https://github.com/xmartlabs/Eureka'
