@@ -138,6 +138,7 @@ open class PasswordCell: _FieldCell<String>, CellType {
         textField.autocapitalizationType = .none
         textField.keyboardType = .asciiCapable
         textField.isSecureTextEntry = true
+        textField.adjustsFontSizeToFitWidth = true
         if #available(iOS 11,*) {
             textField.textContentType = .password
         }
