@@ -67,4 +67,10 @@ public struct RowRuleWrapping<T: Equatable> {
     let closure: (T?, Form) -> ValidationError?
     let linkedError: ValidationError
     let id: String?
+    
+    public init(closure: (T?, Form) -> ValidationError?, linkedError: ValidationError, id: String? = nil) {
+        self.closure = closure
+        self.linkedError = linkedError
+        self.id = id
+    }
 }
