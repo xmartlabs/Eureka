@@ -92,7 +92,7 @@ open class RowOf<T>: BaseRow where T: Equatable {
         super.init(tag: tag)
     }
 
-    public internal(set) var rules: [RowRuleWrapping<T>] = []
+    public var rules: [RowRuleWrapping<T>] = []
 
     @discardableResult
     public override func validate(quietly: Bool = false) -> [ValidationError] {
