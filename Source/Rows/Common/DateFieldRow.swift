@@ -51,6 +51,12 @@ open class DateCell: Cell<Date>, CellType {
         editingAccessoryType =  .none
         datePicker.datePickerMode = datePickerMode()
         datePicker.addTarget(self, action: #selector(DateCell.datePickerValueChanged(_:)), for: .valueChanged)
+
+        #if swift(>=5.2)
+            if #available(iOS 13.4, *) {
+                datePicker.preferredDatePickerStyle = .wheels
+            }
+        #endif
     }
 
     deinit {
