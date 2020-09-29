@@ -1,8 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [5.3.1](https://github.com/xmartlabs/Eureka/releases/tag/5.3.1)
+
+* Fix building for Mac Catalyst on Xcode 12 (#2078)
+* Fix datePickerStyle for DateFieldRow and DatePickerCell (#2077)
+* Adjust font size of PasswordRow to avoid dots (#2080)
 
 ### [5.3.0](https://github.com/xmartlabs/Eureka/releases/tag/5.3.0)
+
 * Reload rows on viewWillAppear for iOS 12 and below. (#2029)
 * Change validation functions access level to open (#2049)
 * Start editing field rows at the end when tapping blank space in row (#2046)
