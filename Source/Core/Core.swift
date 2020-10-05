@@ -432,7 +432,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
 
     /// Defines the behaviour of the navigation between rows
     public var navigationOptions: RowNavigationOptions?
-    private var tableViewStyle: UITableView.Style = .grouped
+    public var tableViewStyle: UITableView.Style = .grouped
 
     public init(style: UITableView.Style) {
         super.init(nibName: nil, bundle: nil)
