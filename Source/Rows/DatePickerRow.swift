@@ -54,17 +54,19 @@ open class DatePickerCell: Cell<Date>, CellType {
         datePicker.datePickerMode = datePickerMode()
         datePicker.addTarget(self, action: #selector(DatePickerCell.datePickerValueChanged(_:)), for: .valueChanged)
 
-        #if swift(>=5.2)
-            if #available(iOS 14.0, *) {
-                #if swift(>=5.3) && !(os(OSX) || (os(iOS) && targetEnvironment(macCatalyst)))
-                    datePicker.preferredDatePickerStyle = .inline
-                #else
+        if datePicker.datePickerMode != .countDownTimer {
+            #if swift(>=5.2)
+                if #available(iOS 14.0, *) {
+                    #if swift(>=5.3) && !(os(OSX) || (os(iOS) && targetEnvironment(macCatalyst)))
+                        datePicker.preferredDatePickerStyle = .inline
+                    #else
+                        datePicker.preferredDatePickerStyle = .wheels
+                    #endif
+                } else if #available(iOS 13.4, *) {
                     datePicker.preferredDatePickerStyle = .wheels
-                #endif
-            } else if #available(iOS 13.4, *) {
-                datePicker.preferredDatePickerStyle = .wheels
-            }
-         #endif
+                }
+             #endif
+        }
     }
 
     deinit {
