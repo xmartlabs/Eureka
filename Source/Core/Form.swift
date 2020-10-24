@@ -238,23 +238,37 @@ extension Form : RangeReplaceableCollection {
         _ subRange: Range<Int>,
         with newElements: C
     ) where C.Iterator.Element == Section {
-        let newVisibleElements = newElements.filter { !$0.isHidden }
+        // Keep a reference to all removed sections in order to create a subrange for the visible section replacement
+        var removedSections = [Section]()
 
         // Remove subrange in all sections
         for i in subRange.reversed() where kvoWrapper._allSections.count > i {
             let removed = kvoWrapper._allSections.remove(at: i)
             removed.willBeRemovedFromForm()
+            removedSections.insert(removed, at: 0)
         }
 
-        // Replace subrange in visible sections using a new subrange
-        let visibleLength = Swift.min(subRange.upperBound, kvoWrapper.sections.count) - subRange.lowerBound
-        let visibleSubrange = NSRange(location: subRange.lowerBound, length: visibleLength)
-        kvoWrapper.sections.replaceObjects(in: visibleSubrange, withObjectsFrom: newVisibleElements)
+        let removedVisibleSections = removedSections.filter { !$0.isHidden }
 
-        // Insert all new elements into all sections
+        // Get indices of first and last section which is not hidden...
+        let firstVisible = kvoWrapper.sections.contains(removedVisibleSections.first) ? kvoWrapper.sections.index(of: removedVisibleSections.first) : 0
+        let lastVisible = kvoWrapper.sections.contains(removedVisibleSections.last) ? kvoWrapper.sections.index(of: removedVisibleSections.last) : 0
+
+        // ...and create a range from those indices
+        let range = firstVisible...lastVisible
+
+        let newVisibleSections = newElements.filter { !$0.isHidden }
+
+        // Replace visible form sections
+        kvoWrapper.sections.replaceObjects(
+            // Create a new NSRange using location and length because interop between `ClosedRange` and `NSRange` is bad
+            in: NSRange(location: range.lowerBound, length: Swift.min(kvoWrapper.sections.count, range.count)),
+            withObjectsFrom: newVisibleSections
+        )
+
         kvoWrapper._allSections.insert(contentsOf: newElements, at: indexForInsertion(at: subRange.lowerBound))
 
-        for section in newVisibleElements {
+        for section in newVisibleSections {
             section.wasAddedTo(form: self)
         }
     }
