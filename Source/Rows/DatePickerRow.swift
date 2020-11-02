@@ -58,7 +58,13 @@ open class DatePickerCell: Cell<Date>, CellType {
             #if swift(>=5.2)
                 if #available(iOS 14.0, *) {
                     #if swift(>=5.3) && !(os(OSX) || (os(iOS) && targetEnvironment(macCatalyst)))
+                    // UIDatePickerMode .countDownTimer is unsupported when using style .inline.
+                    if datePicker.datePickerMode == .countDownTimer {
+                        datePicker.preferredDatePickerStyle = .wheels
+                    }
+                    else {
                         datePicker.preferredDatePickerStyle = .inline
+                    }
                     #else
                         datePicker.preferredDatePickerStyle = .wheels
                     #endif
