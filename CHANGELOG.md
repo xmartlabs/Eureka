@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [5.3.2](https://github.com/xmartlabs/Eureka/releases/tag/5.3.2)
+
+* Make tableViewStyle public (#2092)
+* Fix CountDown rows crash (#2095)
+* Make ValidationRuleHelper's rule property public. (#2101)
+* Fix for building with Carthage and Xcode 12 (#2104)
+
 ### [5.3.1](https://github.com/xmartlabs/Eureka/releases/tag/5.3.1)
 
 * Fix building for Mac Catalyst on Xcode 12 (#2078)
