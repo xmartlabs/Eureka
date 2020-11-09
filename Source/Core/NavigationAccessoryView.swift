@@ -35,6 +35,7 @@ public protocol NavigationAccessory {
 }
 
 /// Class for the navigation accessory view used in FormViewController
+@objc(EurekaNavigationAccessoryView)
 open class NavigationAccessoryView: UIToolbar, NavigationAccessory {
     open var previousButton: UIBarButtonItem!
     open var nextButton: UIBarButtonItem!
