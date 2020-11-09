@@ -421,6 +421,9 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
 
     /// Enables animated scrolling on row navigation
     open var animateScroll = false
+    
+    /// The default scroll position on the focussed cell when keyboard appears
+    open var defaultScrollPosition = UITableView.ScrollPosition.none
 
     /// Accessory view that is responsible for the navigation between rows
     private var navigationAccessoryView: (UIView & NavigationAccessory)!
@@ -1039,7 +1042,7 @@ extension FormViewController {
                     let rect = table.rectForRow(at: selectedRow)
                     table.scrollRectToVisible(rect, animated: animateScroll)
                 } else {
-                    table.scrollToRow(at: selectedRow, at: .none, animated: animateScroll)
+                    table.scrollToRow(at: selectedRow, at: defaultScrollPosition, animated: animateScroll)
                 }
             }
             UIView.commitAnimations()
