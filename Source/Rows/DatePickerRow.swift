@@ -87,7 +87,7 @@ open class DatePickerCell: Cell<Date>, CellType {
         }
     }
 
-    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
+    @objc(pickerDateChanged:) func datePickerValueChanged(_ sender: UIDatePicker) {
         row?.value = sender.date
         
         // workaround for UIDatePicker bug when it doesn't trigger "value changed" event after trying to pick 00:00 value

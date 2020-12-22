@@ -89,7 +89,7 @@ open class DateCell: Cell<Date>, CellType {
         return datePicker
     }
 
-    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
+    @objc(pickerDateChanged:) func datePickerValueChanged(_ sender: UIDatePicker) {
         row.value = sender.date
         detailTextLabel?.text = row.displayValueFor?(row.value)
     }
