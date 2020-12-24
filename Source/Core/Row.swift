@@ -132,6 +132,10 @@ open class RowOf<T>: BaseRow where T: Equatable {
         validationErrors.removeAll()
         rules.removeAll()
     }
+    
+    public func getMessageRuleBy(id: String) -> String? {
+        rules.first(where: { $0.id == id })?.linkedError.msg
+    }
 
 }
 
