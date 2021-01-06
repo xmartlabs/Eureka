@@ -138,7 +138,9 @@ open class PasswordCell: _FieldCell<String>, CellType {
         textField.autocapitalizationType = .none
         textField.keyboardType = .asciiCapable
         textField.isSecureTextEntry = true
-        textField.adjustsFontSizeToFitWidth = true
+        if let textLabel = textLabel {
+            textField.setContentHuggingPriority(textLabel.contentHuggingPriority(for: .horizontal) - 1, for: .horizontal)
+        }
         if #available(iOS 11,*) {
             textField.textContentType = .password
         }
