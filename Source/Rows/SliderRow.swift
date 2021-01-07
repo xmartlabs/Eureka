@@ -105,7 +105,7 @@ open class SliderCell: Cell<Float>, CellType {
         
     }
 
-    @objc func valueChanged() {
+    @objc (valueDidChange) func valueChanged() {
         let roundedValue: Float
         let steps = Float(sliderRow.steps)
         if steps > 0 {
