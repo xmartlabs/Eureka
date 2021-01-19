@@ -583,42 +583,42 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
      Returns the animation for the insertion of the given rows.
      */
     open func insertAnimation(forRows rows: [BaseRow]) -> UITableView.RowAnimation {
-        return .fade
+        return .none
     }
 
     /**
      Returns the animation for the deletion of the given rows.
      */
     open func deleteAnimation(forRows rows: [BaseRow]) -> UITableView.RowAnimation {
-        return .fade
+        return .none
     }
 
     /**
      Returns the animation for the reloading of the given rows.
      */
     open func reloadAnimation(oldRows: [BaseRow], newRows: [BaseRow]) -> UITableView.RowAnimation {
-        return .automatic
+        return .none
     }
 
     /**
      Returns the animation for the insertion of the given sections.
      */
     open func insertAnimation(forSections sections: [Section]) -> UITableView.RowAnimation {
-        return .automatic
+        return .none
     }
 
     /**
      Returns the animation for the deletion of the given sections.
      */
     open func deleteAnimation(forSections sections: [Section]) -> UITableView.RowAnimation {
-        return .automatic
+        return .none
     }
 
     /**
      Returns the animation for the reloading of the given sections.
      */
     open func reloadAnimation(oldSections: [Section], newSections: [Section]) -> UITableView.RowAnimation {
-        return .automatic
+        return .none
     }
 
     // MARK: TextField and TextView Delegate
