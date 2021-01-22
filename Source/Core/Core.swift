@@ -392,6 +392,7 @@ public struct InlineRowHideOptions: OptionSet {
 }
 
 /// View controller that shows a form.
+@objc(EurekaFormViewController)
 open class FormViewController: UIViewController, FormViewControllerProtocol, FormDelegate {
 
     @IBOutlet public var tableView: UITableView!
@@ -421,6 +422,9 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
 
     /// Enables animated scrolling on row navigation
     open var animateScroll = false
+    
+    /// The default scroll position on the focussed cell when keyboard appears
+    open var defaultScrollPosition = UITableView.ScrollPosition.none
 
     /// Accessory view that is responsible for the navigation between rows
     private var navigationAccessoryView: (UIView & NavigationAccessory)!
@@ -432,7 +436,7 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
 
     /// Defines the behaviour of the navigation between rows
     public var navigationOptions: RowNavigationOptions?
-    private var tableViewStyle: UITableView.Style = .grouped
+    public var tableViewStyle: UITableView.Style = .grouped
 
     public init(style: UITableView.Style) {
         super.init(nibName: nil, bundle: nil)
@@ -1043,7 +1047,7 @@ extension FormViewController {
                     let rect = table.rectForRow(at: selectedRow)
                     table.scrollRectToVisible(rect, animated: animateScroll)
                 } else {
-                    table.scrollToRow(at: selectedRow, at: .none, animated: animateScroll)
+                    table.scrollToRow(at: selectedRow, at: defaultScrollPosition, animated: animateScroll)
                 }
             }
             UIView.commitAnimations()

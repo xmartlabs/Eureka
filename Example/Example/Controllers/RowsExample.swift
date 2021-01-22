@@ -36,6 +36,8 @@ class RowsExampleViewController: FormViewController {
 
             <<< DateRow() { $0.value = Date(); $0.title = "DateRow" }
 
+            <<< CountDownInlineRow() { $0.value = Date(); $0.title = "CountDownInlineRow" }
+            
             <<< CheckRow() {
                 $0.title = "CheckRow"
                 $0.value = true
