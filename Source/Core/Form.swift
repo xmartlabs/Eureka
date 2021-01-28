@@ -301,8 +301,10 @@ extension Form {
             switch (changeType as! NSNumber).uintValue {
             case NSKeyValueChange.setting.rawValue:
                 if newSections.count == 0 {
+                    _deletedSections.addObjects(from: oldSections)
                     let indexSet = IndexSet(integersIn: 0..<oldSections.count)
                     delegateValue.sectionsHaveBeenRemoved(oldSections, at: indexSet)
+                    _deletedSections.removeAllObjects()
                 } else {
                     let indexSet = change![NSKeyValueChangeKey.indexesKey] as? IndexSet ?? IndexSet(integersIn: 0..<newSections.count)
                     delegateValue.sectionsHaveBeenAdded(newSections, at: indexSet)
