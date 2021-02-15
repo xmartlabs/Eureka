@@ -172,7 +172,7 @@ open class _SelectorViewController<Row: SelectableRowType, OptionsRow: OptionsPr
                                  footer: sectionFooterTitleForKey?(sectionKey))
             }
         } else {
-            form +++ section(with: options, header: row.title, footer: nil)
+            form +++ section(with: options, header: nil, footer: nil)
         }
     }
     
