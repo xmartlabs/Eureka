@@ -201,6 +201,21 @@ class SectionInsertionTests: XCTestCase {
         XCTAssertEqual(form.allRows[2], bRow)
     }
 
+    func testDeletingRows() {
+        let form = Form()
+        let section = Section("section_01")
+        form.append(section)
+
+        section.append(NameRow(tag: "row_01"))
+        section.append(NameRow(tag: "row_2"))
+        section.append(NameRow("row_03") { $0.hidden = true })
+        section.append(NameRow("row_04") { $0.hidden = true })
+
+        section.removeAll(where: { row in row.tag?.hasPrefix("row_0") ?? false })
+        XCTAssertNotNil(form.rowBy(tag: "row_2"))
+        XCTAssertEqual(form.allRows.count, 1)
+    }
+
     private func hideAndShowSections(form: Form, expectedTitles titles: [String]) {
         // Doesn't matter how rows were added to the form (using append, +++ or subscript index)
         // next must work

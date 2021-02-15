@@ -324,6 +324,21 @@ extension Section: RangeReplaceableCollection {
         }
     }
 
+    public func removeAll(where shouldBeRemoved: (BaseRow) throws -> Bool) rethrows {
+        let indices = try kvoWrapper._allRows.enumerated().filter { (element) -> Bool in
+            return try shouldBeRemoved(element.element)
+        }.map { $0.offset }
+        var removedRows: [BaseRow] = []
+        for index in indices.reversed() {
+            removedRows.append(kvoWrapper._allRows.remove(at: index))
+        }
+        kvoWrapper.rows.removeObjects(in: removedRows)
+
+        for row in removedRows {
+            row.willBeRemovedFromSection()
+        }
+    }
+
     @discardableResult
     public func remove(at position: Int) -> BaseRow {
         let row = kvoWrapper.rows.object(at: position) as! BaseRow
