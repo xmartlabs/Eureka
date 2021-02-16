@@ -227,6 +227,23 @@ class SectionInsertionTests: XCTestCase {
         XCTAssertEqual(form.allSections.count, 2)        
     }
 
+    func testReplaceAllSection() {
+        let form = Form() +++ Section("section1") {
+            $0.hidden = true
+        }
+            +++ Section("section2")
+            +++ Section("section3")
+
+        form.replaceSubrangeInAllSections(Range<Int>(uncheckedBounds: (lower: 0, upper: 2)), with: [Section("section0") { $0.hidden = true }])
+
+        XCTAssertEqual(form.allSections.count, 2)
+        XCTAssertEqual(form.count, 1)
+        XCTAssertEqual(form[0].header?.title, "section3")
+        XCTAssertEqual(form.allSections[0].header?.title, "section0")
+        XCTAssertEqual(form.allSections[1].header?.title, "section3")
+    }
+
+
     private func hideAndShowSections(form: Form, expectedTitles titles: [String]) {
         // Doesn't matter how rows were added to the form (using append, +++ or subscript index)
         // next must work
