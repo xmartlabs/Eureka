@@ -213,16 +213,44 @@ extension Form : RangeReplaceableCollection {
         }
     }
 
-    public func replaceSubrange<C: Collection>(_ subRange: Range<Int>, with newElements: C) where C.Iterator.Element == Section {
+    public func replaceSubrange<C: Collection>(
+        _ subRange: Range<Int>,
+        with newElements: C
+    ) where C.Iterator.Element == Section {
         for i in subRange.lowerBound..<subRange.upperBound {
             if let section = kvoWrapper.sections.object(at: i) as? Section {
                 section.willBeRemovedFromForm()
                 kvoWrapper._allSections.remove(at: kvoWrapper._allSections.firstIndex(of: section)!)
             }
         }
-        kvoWrapper.sections.replaceObjects(in: NSRange(location: subRange.lowerBound, length: subRange.upperBound - subRange.lowerBound),
-                                           withObjectsFrom: newElements.map { $0 })
+        kvoWrapper.sections.replaceObjects(
+            in: NSRange(location: subRange.lowerBound, length: subRange.upperBound - subRange.lowerBound),
+            withObjectsFrom: newElements.map { $0 }
+        )
         kvoWrapper._allSections.insert(contentsOf: newElements, at: indexForInsertion(at: subRange.lowerBound))
+
+        for section in newElements {
+            section.wasAddedTo(form: self)
+        }
+    }
+
+    public func replaceSubrangeInAllSections<C: Collection>(
+        _ subRange: Range<Int>,
+        with newElements: C
+    ) where C.Iterator.Element == Section {
+        // Remove subrange in all sections
+        for i in subRange.reversed() where kvoWrapper._allSections.count > i {
+            let removed = kvoWrapper._allSections.remove(at: i)
+            removed.willBeRemovedFromForm()
+        }
+
+        kvoWrapper._allSections.insert(contentsOf: newElements, at: indexForInsertion(at: subRange.lowerBound))
+
+        // Replace all visible sections by `kvoWrapper._allSections`, as hidden ones are being removed later anyway
+        kvoWrapper.sections.replaceObjects(
+            in: NSRange(location: 0, length: kvoWrapper.sections.count),
+            withObjectsFrom: kvoWrapper._allSections
+        )
 
         for section in newElements {
             section.wasAddedTo(form: self)
