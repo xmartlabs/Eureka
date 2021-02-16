@@ -334,9 +334,7 @@ extension Section: RangeReplaceableCollection {
         }
         kvoWrapper.rows.removeObjects(in: removedRows)
 
-        for row in removedRows {
-            row.willBeRemovedFromSection()
-        }
+        removedRows.forEach { $0.willBeRemovedFromSection() }
     }
 
     @discardableResult

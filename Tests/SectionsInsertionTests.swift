@@ -216,6 +216,17 @@ class SectionInsertionTests: XCTestCase {
         XCTAssertEqual(form.allRows.count, 1)
     }
 
+    func testDeletingSections() {
+        let form = Form()
+        form +++ Section("section_0")
+            +++ Section("section_1") { $0.hidden = true }
+            +++ Section("section_22")
+            +++ Section("section_32")
+
+        form.removeAll(where: { section in section.header?.title?.hasSuffix("2") ?? false })
+        XCTAssertEqual(form.allSections.count, 2)        
+    }
+
     private func hideAndShowSections(form: Form, expectedTitles titles: [String]) {
         // Doesn't matter how rows were added to the form (using append, +++ or subscript index)
         // next must work
