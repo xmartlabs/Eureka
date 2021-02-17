@@ -325,10 +325,11 @@ extension Section: RangeReplaceableCollection {
     }
 
     public func removeAll(where shouldBeRemoved: (BaseRow) throws -> Bool) rethrows {
-        let indices = try kvoWrapper._allRows.enumerated().filter { (element) -> Bool in
-            return try shouldBeRemoved(element.element)
-        }.map { $0.offset }
-        var removedRows: [BaseRow] = []
+        let indices = try kvoWrapper._allRows.enumerated()
+            .filter { try shouldBeRemoved($0.element)}
+            .map { $0.offset }
+        
+        var removedRows = [BaseRow]()
         for index in indices.reversed() {
             removedRows.append(kvoWrapper._allRows.remove(at: index))
         }
