@@ -201,6 +201,49 @@ class SectionInsertionTests: XCTestCase {
         XCTAssertEqual(form.allRows[2], bRow)
     }
 
+    func testDeletingRows() {
+        let form = Form()
+        let section = Section("section_01")
+        form.append(section)
+
+        section.append(NameRow(tag: "row_01"))
+        section.append(NameRow(tag: "row_2"))
+        section.append(NameRow("row_03") { $0.hidden = true })
+        section.append(NameRow("row_04") { $0.hidden = true })
+
+        section.removeAll(where: { row in row.tag?.hasPrefix("row_0") ?? false })
+        XCTAssertNotNil(form.rowBy(tag: "row_2"))
+        XCTAssertEqual(form.allRows.count, 1)
+    }
+
+    func testDeletingSections() {
+        let form = Form()
+        form +++ Section("section_0")
+            +++ Section("section_1") { $0.hidden = true }
+            +++ Section("section_22")
+            +++ Section("section_32")
+
+        form.removeAll(where: { section in section.header?.title?.hasSuffix("2") ?? false })
+        XCTAssertEqual(form.allSections.count, 2)        
+    }
+
+    func testReplaceAllSection() {
+        let form = Form() +++ Section("section1") {
+            $0.hidden = true
+        }
+            +++ Section("section2")
+            +++ Section("section3")
+
+        form.replaceSubrangeInAllSections(Range<Int>(uncheckedBounds: (lower: 0, upper: 2)), with: [Section("section0") { $0.hidden = true }])
+
+        XCTAssertEqual(form.allSections.count, 2)
+        XCTAssertEqual(form.count, 1)
+        XCTAssertEqual(form[0].header?.title, "section3")
+        XCTAssertEqual(form.allSections[0].header?.title, "section0")
+        XCTAssertEqual(form.allSections[1].header?.title, "section3")
+    }
+
+
     private func hideAndShowSections(form: Form, expectedTitles titles: [String]) {
         // Doesn't matter how rows were added to the form (using append, +++ or subscript index)
         // next must work

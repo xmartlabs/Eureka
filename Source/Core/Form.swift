@@ -266,7 +266,20 @@ extension Form : RangeReplaceableCollection {
         for section in sections {
             section.willBeRemovedFromForm()
         }
+    }
 
+    public func removeAll(where shouldBeRemoved: (Section) throws -> Bool) rethrows {
+        let indices = try kvoWrapper._allSections.enumerated()
+            .filter { try shouldBeRemoved($0.element)}
+            .map { $0.offset }
+
+        var removedSections = [Section]()
+        for index in indices.reversed() {
+            removedSections.append(kvoWrapper._allSections.remove(at: index))
+        }
+        kvoWrapper.sections.removeObjects(in: removedSections)
+
+        removedSections.forEach { $0.willBeRemovedFromForm() }
     }
 
     private func indexForInsertion(at index: Int) -> Int {
