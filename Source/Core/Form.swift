@@ -41,7 +41,7 @@ public protocol FormDelegate : class {
 public final class Form {
 
     /// Defines the default options of the navigation accessory view.
-    public static var defaultNavigationOptions = RowNavigationOptions.Enabled.union(.SkipCanNotBecomeFirstResponderRow)
+    public static var defaultNavigationOptions = RowNavigationOptions.Enabled.union(.Disabled)
 
     /// The default options that define when an inline row will be hidden. Applies only when `inlineRowHideOptions` is nil.
     public static var defaultInlineRowHideOptions = InlineRowHideOptions.FirstResponderChanges.union(.AnotherInlineRowIsShown)
