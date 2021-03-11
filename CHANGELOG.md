@@ -1,6 +1,18 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [5.3.3](https://github.com/xmartlabs/Eureka/releases/tag/5.3.3)
+
+* Add option for different ScrollPosition behavior on keyboard appearance (#2112)
+* Prefix Eureka to certain class names to avoid clashes with other pods (#2113)
+* Remove the default header title of section (#2128)
+* Modify hugging priority for PasswordRow (#2129)
+* Add replace method for all sections (#2105)
+* Fix: Non-public API usage (valueChanged, datePickerValueChanged) (#2130)
+* Fix: remove EXCLUDED_ARCHS build setting to support M1 mac iphone simulator (#2137)
+* Fix: removeAll method in sections (#2141)
+
+
 ### [5.3.2](https://github.com/xmartlabs/Eureka/releases/tag/5.3.2)
 
 * Make tableViewStyle public (#2092)
