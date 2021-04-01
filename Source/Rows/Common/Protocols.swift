@@ -24,12 +24,12 @@
 
 import Foundation
 
-public protocol FormatterConformance: class {
+public protocol FormatterConformance: AnyObject {
     var formatter: Formatter? { get set }
     var useFormatterDuringInput: Bool { get set }
     var useFormatterOnDidBeginEditing: Bool? { get set }
 }
 
-public protocol NoValueDisplayTextConformance: class {
+public protocol NoValueDisplayTextConformance: AnyObject {
     var noValueDisplayText: String? { get set }
 }

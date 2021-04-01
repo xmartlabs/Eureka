@@ -26,7 +26,7 @@ import Foundation
 import UIKit
 
 /// The delegate of the Eureka sections.
-public protocol SectionDelegate: class {
+public protocol SectionDelegate: AnyObject {
     func rowsHaveBeenAdded(_ rows: [BaseRow], at: IndexSet)
     func rowsHaveBeenRemoved(_ rows: [BaseRow], at: IndexSet)
     func rowsHaveBeenReplaced(oldRows: [BaseRow], newRows: [BaseRow], at: IndexSet)
