@@ -372,6 +372,8 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
     }
 
     @objc open func textFieldDidChange(_ textField: UITextField) {
+        
+        guard textField.markedTextRange == nil else { return }
 
         guard let textValue = textField.text else {
             row.value = nil
