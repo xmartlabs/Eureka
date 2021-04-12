@@ -27,7 +27,7 @@ import UIKit
 
 // MARK: Cell Protocols
 
-public protocol BaseCellType : class {
+public protocol BaseCellType : AnyObject {
 
     /// Method that will return the height of the cell
     var height : (() -> CGFloat)? { get }

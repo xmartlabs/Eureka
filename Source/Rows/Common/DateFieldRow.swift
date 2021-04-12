@@ -25,7 +25,7 @@
 import Foundation
 import UIKit
 
-public protocol DatePickerRowProtocol: class {
+public protocol DatePickerRowProtocol: AnyObject {
     var minimumDate: Date? { get set }
     var maximumDate: Date? { get set }
     var minuteInterval: Int? { get set }
