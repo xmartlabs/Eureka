@@ -116,10 +116,28 @@ class ValidationsTests: XCTestCase {
         XCTAssertNil(emailRule.isValid(value: nil))
         XCTAssertNil(emailRule.isValid(value: ""))
         XCTAssertNil(emailRule.isValid(value: "a@b.com"))
-
+        XCTAssertNil(emailRule.isValid(value: "a!omalley@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a?omalley@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a#omalley@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a$omalley@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a%omalley@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a'omalley@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a`omalley@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a*omalley@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a/omally@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a=omally@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a~omally@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a^omally@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a/omally@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a{omally@b.com"))
+        XCTAssertNil(emailRule.isValid(value: "a}omally@b.com"))
+        
         XCTAssertNotNil(emailRule.isValid(value: "abc"))
         XCTAssertNotNil(emailRule.isValid(value: "abc.com"))
         XCTAssertNotNil(emailRule.isValid(value: "abc@assa"))
+        XCTAssertNotNil(emailRule.isValid(value: "a&b@b.com"))
+        XCTAssertNotNil(emailRule.isValid(value: "a[omalley@b.com"))
+        XCTAssertNotNil(emailRule.isValid(value: "a]omalley@b.com"))
     }
 
     func testMaxLengthRule() {
