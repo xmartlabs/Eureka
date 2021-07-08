@@ -5,7 +5,7 @@ This document provides general guidelines about how to contribute to the project
 
 ### Asking Questions
 
-We do not use github issues for general library support. We think this questions should be posted on stack overflow using [eureka-forms](http://http://stackoverflow.com/questions/tagged/eureka-forms) tag.
+We do not use github issues for general library support. We think this questions should be posted on stack overflow using [eureka-forms](http://stackoverflow.com/questions/tagged/eureka-forms) tag.
 
 ### Reporting issues
 
