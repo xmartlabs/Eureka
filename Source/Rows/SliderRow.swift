@@ -98,11 +98,10 @@ open class SliderCell: Cell<Float>, CellType {
         super.update()
         titleLabel.text = row.title
         titleLabel.isHidden = !shouldShowTitle
-        valueLabel.text = row.displayValueFor?(row.value)
+        valueLabel.text = row.displayValueFor?(row.value ?? slider.minimumValue)
         valueLabel.isHidden = sliderRow.shouldHideValue
         slider.value = row.value ?? slider.minimumValue
         slider.isEnabled = !row.isDisabled
-        
     }
 
     @objc (valueDidChange) func valueChanged() {
