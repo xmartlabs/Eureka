@@ -797,6 +797,7 @@ extension FormViewController : UITableViewDelegate {
 
     open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard tableView == self.tableView else { return tableView.rowHeight }
+        guard indexPath.row < form[indexPath.section].count else { return tableView.rowHeight }
         let row = form[indexPath.section][indexPath.row]
         return row.baseCell.height?() ?? tableView.rowHeight
     }
