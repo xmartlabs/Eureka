@@ -42,6 +42,13 @@ class RowsExampleViewController: FormViewController {
                 $0.title = "DateTimeRow"
                 //Force 24 time input
                 $0.locale = Locale(identifier: "en_GB")
+                $0.timeZone = TimeZone(identifier: "UTC")
+                let formatter = DateFormatter()
+                formatter.timeZone = TimeZone(identifier: "UTC")
+                formatter.locale = Locale(identifier: "en_GB")
+                formatter.timeStyle = .full
+                formatter.dateStyle = .short
+                $0.dateFormatter = formatter
             }
 
             <<< CountDownInlineRow() { $0.value = Date(); $0.title = "CountDownInlineRow" }

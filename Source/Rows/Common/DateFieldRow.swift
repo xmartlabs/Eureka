@@ -29,6 +29,7 @@ public protocol DatePickerRowProtocol: AnyObject {
     var minimumDate: Date? { get set }
     var maximumDate: Date? { get set }
     var minuteInterval: Int? { get set }
+    var timeZone:TimeZone? { get set }
     var locale:Locale? { get set }
 }
 
@@ -70,6 +71,7 @@ open class DateCell: Cell<Date>, CellType {
         datePicker.setDate(row.value ?? Date(), animated: row is CountDownPickerRow)
         datePicker.minimumDate = (row as? DatePickerRowProtocol)?.minimumDate
         datePicker.maximumDate = (row as? DatePickerRowProtocol)?.maximumDate
+        datePicker.timeZone = (row as? DatePickerRowProtocol)?.timeZone
         datePicker.locale = (row as? DatePickerRowProtocol)?.locale
         if let minuteIntervalValue = (row as? DatePickerRowProtocol)?.minuteInterval {
             datePicker.minuteInterval = minuteIntervalValue
@@ -137,7 +139,10 @@ open class _DateFieldRow: Row<DateCell>, DatePickerRowProtocol, NoValueDisplayTe
     
     /// The locale for this row's UIDatePicker
     open var locale: Locale?
-
+    
+    /// The TimeZone  for this row's UIDatePicker
+    open var timeZone: TimeZone?
+    
     open var noValueDisplayText: String? = nil
 
     required public init(tag: String?) {

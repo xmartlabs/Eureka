@@ -69,6 +69,9 @@ open class _DateInlineFieldRow: Row<DateInlineCell>, DatePickerRowProtocol, NoVa
     /// The locale for this row's UIDatePicker
     open var locale: Locale?
     
+    /// The TimeZone  for this row's UIDatePicker
+    open var timeZone: TimeZone?
+    
     open var noValueDisplayText: String?
 
     required public init(tag: String?) {
