@@ -120,7 +120,8 @@ open class _DatePickerRow: Row<DatePickerCell>, DatePickerRowProtocol {
     open var minimumDate: Date?
     open var maximumDate: Date?
     open var minuteInterval: Int?
-
+    open var locale: Locale?
+    
     required public init(tag: String?) {
         super.init(tag: tag)
         displayValueFor = nil

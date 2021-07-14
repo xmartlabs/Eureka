@@ -20,6 +20,7 @@ class RowsExampleViewController: FormViewController {
         LabelRow.defaultCellUpdate = { cell, row in cell.detailTextLabel?.textColor = .systemOrange  }
         CheckRow.defaultCellSetup = { cell, row in cell.tintColor = .systemOrange }
         DateRow.defaultRowInitializer = { row in row.minimumDate = Date() }
+        DateTimeRow.defaultRowInitializer = { row in row.minimumDate = Date() }
 
         form +++
 
@@ -35,6 +36,13 @@ class RowsExampleViewController: FormViewController {
             }
 
             <<< DateRow() { $0.value = Date(); $0.title = "DateRow" }
+            
+            <<< DateTimeRow() {
+                $0.value = Date()
+                $0.title = "DateTimeRow"
+                //Force 24 time input
+                $0.locale = Locale(identifier: "en_GB")
+            }
 
             <<< CountDownInlineRow() { $0.value = Date(); $0.title = "CountDownInlineRow" }
             

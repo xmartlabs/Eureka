@@ -66,6 +66,9 @@ open class _DateInlineFieldRow: Row<DateInlineCell>, DatePickerRowProtocol, NoVa
     /// The formatter for the date picked by the user
     open var dateFormatter: DateFormatter?
 
+    /// The locale for this row's UIDatePicker
+    open var locale: Locale?
+    
     open var noValueDisplayText: String?
 
     required public init(tag: String?) {
