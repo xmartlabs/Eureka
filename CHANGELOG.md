@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+
+### [5.3.4](https://github.com/xmartlabs/Eureka/releases/tag/5.3.4)
+
+* Resolve class protocol inheritance warnings (#2151)
+* Fix Chinese input issue (#2150) …
+* Specific special characters are allowed in the username of an email address (#2160)
+* Fix SliderRow not rendering properly (#2166)
+
 ### [5.3.3](https://github.com/xmartlabs/Eureka/releases/tag/5.3.3)
 
 * Add option for different ScrollPosition behavior on keyboard appearance (#2112)
