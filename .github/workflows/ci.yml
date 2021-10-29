@@ -1,0 +1,22 @@
+name: Eureka CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  iOS:
+    runs-on: macOS-latest
+    strategy:
+      matrix:
+        destination: ['platform=iOS Simulator,OS=14.0,name=iPhone 11', 'platform=iOS Simulator,OS=15.0,name=iPhone 12']
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '13.1'
+    - name: Build and test
+      run: xcodebuild -project Eureka.xcodeproj -scheme 'Eureka' -sdk 'iphonesimulator' -destination "${destination}" -configuration Debug test | xcpretty
