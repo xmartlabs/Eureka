@@ -11,11 +11,9 @@ jobs:
     runs-on: macOS-latest
     strategy:
       matrix:
-        destination: ['platform=iOS Simulator,OS=14.0,name=iPhone 11', 'platform=iOS Simulator,OS=15.0,name=iPhone 12']
+        destination: ['platform=iOS Simulator,OS=14.0,name=iPhone 11']
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up pipefail
-      run: set -o pipefail
     - name: Build and test
-      run: xcodebuild -project Eureka.xcodeproj -scheme 'Eureka' -sdk 'iphonesimulator' -destination "${{ matrix.destination }}" -configuration Debug test | xcpretty
+      run: xcodebuild -project Eureka.xcodeproj -scheme 'Eureka' -sdk 'iphonesimulator' -destination "${{ matrix.destination }}" -configuration Debug test
