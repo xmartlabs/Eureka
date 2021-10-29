@@ -1,0 +1,19 @@
+name: Eureka CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  iOS:
+    runs-on: macOS-latest
+    strategy:
+      matrix:
+        destination: ['platform=iOS Simulator,OS=14.4,name=iPhone 11']
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build and test
+      run: set -o pipefail && xcodebuild -project Eureka.xcodeproj -scheme 'Eureka' -sdk 'iphonesimulator' -destination "${{ matrix.destination }}" -configuration Debug test | xcpretty
