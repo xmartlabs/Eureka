@@ -15,5 +15,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Set up pipefail
+      run: set -o pipefail
     - name: Build and test
-      run: xcodebuild -project Eureka.xcodeproj -scheme 'Eureka' -sdk 'iphonesimulator' -destination "${destination}" -configuration Debug test | xcpretty
+      run: xcodebuild -project Eureka.xcodeproj -scheme 'Eureka' -sdk 'iphonesimulator' -destination "${{ matrix.destination }}" -configuration Debug test | xcpretty
