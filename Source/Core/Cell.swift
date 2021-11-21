@@ -52,7 +52,7 @@ open class BaseCell: UITableViewCell, BaseCellType {
             if let formVC = responder as? FormViewController {
               return formVC
             }
-            responder = responder?.next
+            responder = (responder as? UIResponder)?.next
         }
         return nil
     }
