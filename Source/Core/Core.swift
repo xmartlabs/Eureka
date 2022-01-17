@@ -1088,6 +1088,27 @@ extension FormViewController {
         navigateTo(direction: .down)
     }
 
+    open override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        var didHandleEvent = false
+        for press in presses {
+            guard let key = press.key else { continue }
+            if key.keyCode == .keyboardTab,
+                !key.modifierFlags.contains(.command) {
+                if key.modifierFlags.contains(.shift) {
+                    navigateTo(direction: .up)
+                } else {
+                    navigateTo(direction: .down)
+                }
+                didHandleEvent = true
+            }
+        }
+
+        if !didHandleEvent {
+            // Didn't handle this key press, so pass the event to the next responder.
+            super.pressesBegan(presses, with: event)
+        }
+    }
+
     public func navigateTo(direction: Direction) {
         guard let currentCell = tableView?.findFirstResponder()?.formCell() else { return }
         guard let currentIndexPath = tableView?.indexPath(for: currentCell) else { return }
