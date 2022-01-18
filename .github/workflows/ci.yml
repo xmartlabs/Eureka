@@ -11,9 +11,12 @@ jobs:
     runs-on: macOS-latest
     strategy:
       matrix:
-        destination: ['platform=iOS Simulator,OS=14.4,name=iPhone 11']
+        destination: ['platform=iOS Simulator,OS=15.2,name=iPhone 11']
 
     steps:
     - uses: actions/checkout@v2
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '13.2.1'
     - name: Build and test
       run: set -o pipefail && xcodebuild -project Eureka.xcodeproj -scheme 'Eureka' -sdk 'iphonesimulator' -destination "${{ matrix.destination }}" -configuration Debug test | xcpretty
