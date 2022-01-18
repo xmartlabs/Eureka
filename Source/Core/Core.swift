@@ -1091,16 +1091,15 @@ extension FormViewController {
     open override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         var didHandleEvent = false
         for press in presses {
-            guard let key = press.key else { continue }
-            if key.keyCode == .keyboardTab,
-                !key.modifierFlags.contains(.command) {
-                if key.modifierFlags.contains(.shift) {
-                    navigateTo(direction: .up)
-                } else {
-                    navigateTo(direction: .down)
-                }
-                didHandleEvent = true
+            guard let key = press.key,
+                key.keyCode == .keyboardTab,
+                !key.modifierFlags.contains(.command) else { continue }
+            if key.modifierFlags.contains(.shift) {
+                navigateTo(direction: .up)
+            } else {
+                navigateTo(direction: .down)
             }
+            didHandleEvent = true
         }
 
         if !didHandleEvent {
