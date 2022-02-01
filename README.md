@@ -389,6 +389,9 @@ as `Condition` conforms to `ExpressibleByBooleanLiteral`.
 
 Not setting the `hidden` variable will leave the row always visible.
 
+If you manually set the hidden (or disabled) condition after the form has been displayed you may have to call `row.evaluateHidden()` to force Eureka to reevaluate the new condition.
+See [this FAQ section](https://github.com/xmartlabs/Eureka#row-does-not-update-after-changing-hidden-or-disabled-condition) for more info.
+
 ##### Sections
 For sections this works just the same. That means we can set up section `hidden` property to show/hide it dynamically.
 
