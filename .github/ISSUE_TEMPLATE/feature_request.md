@@ -7,6 +7,9 @@ assignees: ''
 
 ---
 
+**Before submitting...**
+Please check whether such a feature has already been requested.
+
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
