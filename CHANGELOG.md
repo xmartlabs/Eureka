@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+### [5.3.5](https://github.com/xmartlabs/Eureka/releases/tag/5.3.5)
+
+* Fix a compiler error in Xcode 13 (#2162)
+* Change CI to GitHub Actions and remove Travis (#2185)
+* Fix crash when user taps tab key on external keyboard (#2205)
+* Other minor fixes (#2191, #2206, #2183)
 
 ### [5.3.4](https://github.com/xmartlabs/Eureka/releases/tag/5.3.4)
 
