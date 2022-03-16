@@ -39,7 +39,7 @@ public protocol NavigationAccessory {
 open class NavigationAccessoryView: UIToolbar, NavigationAccessory {
     open var previousButton: UIBarButtonItem!
     open var nextButton: UIBarButtonItem!
-    open var doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDone))
+    open var doneButton: UIBarButtonItem!
     private var fixedSpace = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
     private var flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
@@ -48,6 +48,7 @@ open class NavigationAccessoryView: UIToolbar, NavigationAccessory {
         autoresizingMask = .flexibleWidth
         fixedSpace.width = 22.0
         initializeChevrons()
+        initializeDoneButton()
         setItems([previousButton, fixedSpace, nextButton, flexibleSpace, doneButton], animated: false)
     }
 
@@ -110,6 +111,10 @@ open class NavigationAccessoryView: UIToolbar, NavigationAccessory {
 
         previousButton = UIBarButtonItem(image: imageLeftChevron, style: .plain, target: self, action: #selector(didTapPrevious))
         nextButton = UIBarButtonItem(image: imageRightChevron, style: .plain, target: self, action: #selector(didTapNext))
+    }
+    
+    private func initializeDoneButton() {
+        doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDone))
     }
 
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {}
