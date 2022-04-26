@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+
+### [5.3.6](https://github.com/xmartlabs/Eureka/releases/tag/5.3.6)
+
+* Fixed done button issue in keyboard (#2213)
+
 ### [5.3.5](https://github.com/xmartlabs/Eureka/releases/tag/5.3.5)
 
 * Fix a compiler error in Xcode 13 (#2162)
