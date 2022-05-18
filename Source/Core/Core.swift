@@ -955,6 +955,7 @@ extension FormViewController : UITableViewDelegate {
 		return form[indexPath].trailingSwipe.contextualConfiguration
 	}
 
+    @available(macCatalyst, deprecated: 13.1, message: "UITableViewRowAction is deprecated, use leading/trailingSwipe actions instead")
     @available(iOS, deprecated: 13, message: "UITableViewRowAction is deprecated, use leading/trailingSwipe actions instead")
 	open func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
         guard let actions = form[indexPath].trailingSwipe.contextualActions as? [UITableViewRowAction], !actions.isEmpty else {
