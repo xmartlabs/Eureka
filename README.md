@@ -233,7 +233,7 @@ let row  = SwitchRow("SwitchRow") { row in      // initializer
 
 * **onCellSelection()**
 
-	Called each time the user taps on the row and it gets selected.
+	Called each time the user taps on the row and it gets selected. Note that this will also get called for disabled rows so you should start your code inside this callback with something like `guard !row.isDisabled else { return }`
 
 * **cellSetup()**
 
