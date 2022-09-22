@@ -50,7 +50,7 @@ open class DateCell: Cell<Date>, CellType {
         accessoryType = .none
         editingAccessoryType =  .none
         datePicker.datePickerMode = datePickerMode()
-        datePicker.addTarget(self, action: #selector(DateCell.datePickerValueChanged(_:)), for: .valueChanged)
+        datePicker.addTarget(self, action: #selector(DateCell.datePickerValueWasChanged(_:)), for: .valueChanged)
 
         #if swift(>=5.2)
             if #available(iOS 13.4, *) {
@@ -89,7 +89,7 @@ open class DateCell: Cell<Date>, CellType {
         return datePicker
     }
 
-    @objc(pickerDateChanged:) func datePickerValueChanged(_ sender: UIDatePicker) {
+    @objc(datePickerValueWasChanged:) func datePickerValueWasChanged(_ sender: UIDatePicker) {
         row.value = sender.date
         detailTextLabel?.text = row.displayValueFor?(row.value)
     }
