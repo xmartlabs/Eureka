@@ -104,7 +104,7 @@ open class SliderCell: Cell<Float>, CellType {
         slider.isEnabled = !row.isDisabled
     }
 
-    @objc (valueDidChange) func valueChanged() {
+    @objc (sliderValueDidChange) func valueChanged() {
         let roundedValue: Float
         let steps = Float(sliderRow.steps)
         if steps > 0 {

@@ -114,7 +114,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         segmentedControl.isEnabled = !row.isDisabled
     }
 
-    @objc (valueDidChange) func valueChanged() {
+    @objc (segmentedValueDidChange) func valueChanged() {
         row.value = (row as! OptionsRow<Self>).options?[segmentedControl.selectedSegmentIndex]
     }
 
