@@ -84,7 +84,7 @@ open class StepperCell: Cell<Double>, CellType {
         valueLabel?.text = row.displayValueFor?(row.value)
     }
 
-    @objc(theValueDidChange) func valueChanged() {
+    @objc(stepperValueDidChange) func valueChanged() {
         row.value = stepper.value
         row.updateCell()
     }
