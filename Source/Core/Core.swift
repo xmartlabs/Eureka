@@ -955,6 +955,7 @@ extension FormViewController : UITableViewDelegate {
 		return form[indexPath].trailingSwipe.contextualConfiguration
 	}
 
+    @available(macCatalyst, deprecated: 13.1, message: "UITableViewRowAction is deprecated, use leading/trailingSwipe actions instead")
     @available(iOS, deprecated: 13, message: "UITableViewRowAction is deprecated, use leading/trailingSwipe actions instead")
 	open func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
         guard let actions = form[indexPath].trailingSwipe.contextualActions as? [UITableViewRowAction], !actions.isEmpty else {
@@ -1086,6 +1087,26 @@ extension FormViewController {
 
     @objc func navigationNext() {
         navigateTo(direction: .down)
+    }
+
+    open override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        var didHandleEvent = false
+        for press in presses {
+            guard let key = press.key,
+                key.keyCode == .keyboardTab,
+                !key.modifierFlags.contains(.command) else { continue }
+            if key.modifierFlags.contains(.shift) {
+                navigateTo(direction: .up)
+            } else {
+                navigateTo(direction: .down)
+            }
+            didHandleEvent = true
+        }
+
+        if !didHandleEvent {
+            // Didn't handle this key press, so pass the event to the next responder.
+            super.pressesBegan(presses, with: event)
+        }
     }
 
     public func navigateTo(direction: Direction) {

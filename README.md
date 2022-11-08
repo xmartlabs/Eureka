@@ -233,7 +233,7 @@ let row  = SwitchRow("SwitchRow") { row in      // initializer
 
 * **onCellSelection()**
 
-	Called each time the user taps on the row and it gets selected.
+	Called each time the user taps on the row and it gets selected. Note that this will also get called for disabled rows so you should start your code inside this callback with something like `guard !row.isDisabled else { return }`
 
 * **cellSetup()**
 
@@ -388,6 +388,9 @@ $0.hidden = true
 as `Condition` conforms to `ExpressibleByBooleanLiteral`.
 
 Not setting the `hidden` variable will leave the row always visible.
+
+If you manually set the hidden (or disabled) condition after the form has been displayed you may have to call `row.evaluateHidden()` to force Eureka to reevaluate the new condition.
+See [this FAQ section](https://github.com/xmartlabs/Eureka#row-does-not-update-after-changing-hidden-or-disabled-condition) for more info.
 
 ##### Sections
 For sections this works just the same. That means we can set up section `hidden` property to show/hide it dynamically.
@@ -1075,7 +1078,7 @@ $ pod install
 After you set up your `Package.swift` manifest file, you can add Eureka as a dependency by adding it to the dependencies value of your `Package.swift`.
 
 dependencies: [
-    .package(url: "https://github.com/xmartlabs/Eureka.git", from: "5.3.4")
+    .package(url: "https://github.com/xmartlabs/Eureka.git", from: "5.4.0")
 ]
 
 
@@ -1086,7 +1089,7 @@ dependencies: [
 Specify Eureka into your project's `Cartfile`:
 
 ```ogdl
-github "xmartlabs/Eureka" ~> 5.3
+github "xmartlabs/Eureka" ~> 5.4
 ```
 
 #### Manually as Embedded Framework
