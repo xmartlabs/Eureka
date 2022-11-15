@@ -29,7 +29,6 @@ class ResultBuildersTests: BaseEurekaTests {
     #if swift(>=5.4)
     @SectionBuilder
     var section1: Section {
-        "TextRow_f1"
         NameRow("NameRow_f1") { $0.title = "Name" }
         if true {
             IntRow("IntRow_f1") { $0.title = "Int" }
@@ -52,7 +51,6 @@ class ResultBuildersTests: BaseEurekaTests {
         })
         checkBuildEither = true
         manySectionsForm +++ {
-            "EmailRow_f1"
             if checkBuildEither {
                 PhoneRow("PhoneRow_f1") { $0.title = "Phone" }
             } else {
@@ -61,7 +59,6 @@ class ResultBuildersTests: BaseEurekaTests {
             PasswordRow("PasswordRow_f1") { $0.title = "Password" }
         }
         
-        XCTAssertNotNil(manySectionsForm.rowBy(tag: "TextRow_f1"))
         XCTAssertNotNil(manySectionsForm.rowBy(tag: "NameRow_f1"))
         XCTAssertNotNil(manySectionsForm.rowBy(tag: "IntRow_f1"))
         XCTAssertNotNil(manySectionsForm.rowBy(tag: "DecimalRow_f1"))
@@ -69,7 +66,6 @@ class ResultBuildersTests: BaseEurekaTests {
         XCTAssertNotNil(manySectionsForm.rowBy(tag: "TwitterRow_f1"))
         XCTAssertNil(manySectionsForm.rowBy(tag: "TwitterRow_f2"))
         XCTAssertNotNil(manySectionsForm.rowBy(tag: "AccountRow_f1"))
-        XCTAssertNotNil(manySectionsForm.rowBy(tag: "EmailRow_f1"))
         XCTAssertNotNil(manySectionsForm.rowBy(tag: "PhoneRow_f1"))
         XCTAssertNil(manySectionsForm.rowBy(tag: "PhoneRow_f2"))
         XCTAssertNotNil(manySectionsForm.rowBy(tag: "PasswordRow_f1"))

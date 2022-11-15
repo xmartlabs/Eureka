@@ -57,10 +57,6 @@ public struct SectionBuilder {
         components?.flatMap { $0.rows } ?? []
     }
     
-    public static func buildExpression(_ expression: String?) -> [BaseRow] {
-        [.init(tag: expression)]
-    }
-    
     public static func buildExpression(_ expression: BaseRow?) -> [BaseRow] {
         expression.flatMap { [$0] } ?? []
     }
