@@ -53,6 +53,21 @@ public func +++ (left: Form, right: Section) -> Form {
 }
 
 /**
+ Appends a section to a form
+ 
+ - parameter left:  the form
+ - parameter right: the section to be appended
+ 
+ - returns: the updated form
+ */
+#if swift(>=5.4)
+@discardableResult
+public func +++ (left: Form, @SectionBuilder right: () -> Section) -> Form {
+    left +++ right()
+}
+#endif
+
+/**
  Appends a row to the last section of a form
  
  - parameter left:  the form
@@ -79,6 +94,21 @@ public func +++ (left: Section, right: Section) -> Form {
     let _ =  form +++ left +++ right
     return form
 }
+
+/**
+ Creates a form with two sections
+ 
+ - parameter left:  the first section
+ - parameter right: the second section
+ 
+ - returns: the created form
+ */
+#if swift(>=5.4)
+@discardableResult
+public func +++ (left: Section, @SectionBuilder right: () -> Section) -> Form {
+    left +++ right()
+}
+#endif
 
 /**
  Appends the row wrapped in a new section
