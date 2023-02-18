@@ -228,6 +228,24 @@ form +++ {
 }
 ```
 
+#### @FormBuilder
+```swift
+@FormBuilder
+var form: Form {
+    nil as Section?
+    Section("Section A") { section in
+        section.tag = "Section_A"
+    }
+    if true {
+        Section("Section B") { section in
+            section.tag = "Section_B"
+        }
+    }
+    nil as TextRow?
+    NameRow("NameRow_f1") { $0.title = "Name" }
+}
+```
+
 ### Using the callbacks
 
 Eureka includes callbacks to change the appearance and behavior of a row.
