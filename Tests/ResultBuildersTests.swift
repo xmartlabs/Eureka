@@ -38,7 +38,7 @@ class ResultBuildersTests: BaseEurekaTests {
 
     @FormBuilder
     var form: Form {
-        nil as Section?
+        nil
         Section("Section A") { section in
             section.tag = "Section_A"
         }
@@ -47,7 +47,7 @@ class ResultBuildersTests: BaseEurekaTests {
                 section.tag = "Section_B"
             }
         }
-        nil as TextRow?
+        nil
         NameRow("NameRow_f1") { $0.title = "Name" }
     }
     #endif
