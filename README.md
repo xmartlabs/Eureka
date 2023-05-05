@@ -232,7 +232,7 @@ form +++ {
 ```swift
 @FormBuilder
 var form: Form {
-    nil as Section?
+    nil
     Section("Section A") { section in
         section.tag = "Section_A"
     }
@@ -241,7 +241,7 @@ var form: Form {
             section.tag = "Section_B"
         }
     }
-    nil as TextRow?
+    nil
     NameRow("NameRow_f1") { $0.title = "Name" }
 }
 ```
