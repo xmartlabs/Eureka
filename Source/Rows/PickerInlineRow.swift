@@ -102,6 +102,12 @@ open class _DoublePickerInlineRow<A, B> : Row<PickerInlineCell<Tuple<A, B>>>, No
 
     /// Options for second component given the selected value from the first component. Will be called often so should be O(1)
     public var secondOptions: ((A) -> [B]) = { _ in [] }
+
+    /// Modify the displayed values for the first picker row.
+    public var displayValueForFirstRow: ((A) -> (String)) = { a in return String(describing: a) }
+
+    /// Modify the displayed values for the second picker row.
+    public var displayValueForSecondRow: ((B) -> (String)) = { b in return String(describing: b) }
     
     public var noValueDisplayText: String?
 
@@ -140,6 +146,8 @@ public final class DoublePickerInlineRow<A, B> : _DoublePickerInlineRow<A, B>, R
     public func setupInlineRow(_ inlineRow: InlineRow) {
         inlineRow.firstOptions = firstOptions
         inlineRow.secondOptions = secondOptions
+        inlineRow.displayValueForFirstRow = displayValueForFirstRow
+        inlineRow.displayValueForSecondRow = displayValueForSecondRow
         inlineRow.displayValueFor = self.displayValueFor
         inlineRow.cell.height = { UITableView.automaticDimension }
     }
