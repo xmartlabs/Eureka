@@ -73,7 +73,12 @@ open class _TextAreaCell<T> : Cell<T>, UITextViewDelegate, AreaCell where T: Equ
 
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        let textView = UITextView()
+        let textView: UITextView
+        if #available(iOS 16, *) {
+            textView = UITextView(usingTextLayoutManager: false)
+        } else {
+            textView = UITextView()
+        }
         self.textView = textView
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.keyboardType = .default

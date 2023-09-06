@@ -1,4 +1,4 @@
-![Eureka: Elegant form builder in Swift](Eureka.jpg)
+![Eureka: Elegant form builder in Swift](Eureka.png)
 
 <p align="center">
 <a href="https://travis-ci.org/xmartlabs/Eureka"><img src="https://travis-ci.org/xmartlabs/Eureka.svg?branch=master" alt="Build status" /></a>
