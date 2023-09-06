@@ -208,9 +208,6 @@ Eureka includes result builders to make form creation easy:
 ```swift
 // Section + Section
 form = (Section("A") +++ {
-    if true {
-        nil
-    }
     URLRow("UrlRow_f1") { $0.title = "Url" }
     if something {
         TwitterRow("TwitterRow_f2") { $0.title = "Twitter" }
@@ -242,9 +239,6 @@ var form: Form {
         Section("Section B") { section in
             section.tag = "Section_B"
         }
-    }
-    if true {
-        nil
     }
     NameRow("NameRow_f1") { $0.title = "Name" }
 }

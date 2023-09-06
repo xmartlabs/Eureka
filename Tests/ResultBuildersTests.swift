@@ -29,9 +29,6 @@ class ResultBuildersTests: BaseEurekaTests {
     #if swift(>=5.4)
     @SectionBuilder
     var section1: Section {
-        if true {
-            nil
-        }
         NameRow("NameRow_f1") { $0.title = "Name" }
         if true {
             IntRow("IntRow_f1") { $0.title = "Int" }
@@ -48,9 +45,6 @@ class ResultBuildersTests: BaseEurekaTests {
             Section("Section B") { section in
                 section.tag = "Section_B"
             }
-        }
-        if true {
-            nil
         }
         NameRow("NameRow_f1") { $0.title = "Name" }
     }
