@@ -35,11 +35,47 @@ class ResultBuildersTests: BaseEurekaTests {
         }
         DecimalRow("DecimalRow_f1") { $0.title = "Decimal" }
     }
+
+    @FormBuilder
+    var form: Form {
+        Section("Section A") { section in
+            section.tag = "Section_A"
+        }
+        if true {
+            Section("Section B") { section in
+                section.tag = "Section_B"
+            }
+        }
+        NameRow("NameRow_f1") { $0.title = "Name" }
+    }
     #endif
+
+    private var checkBuildEither = false
+    private var checkBuildExpressionBaseRowOptional = false
 
     func testSectionBuilder() {
         #if swift(>=5.4)
-        var checkBuildEither = false
+        setupManySectionsForm()
+        addMoreItemsToManySectionsForm()
+
+        XCTAssertNotNil(manySectionsForm.rowBy(tag: "NameRow_f1"))
+        XCTAssertNotNil(manySectionsForm.rowBy(tag: "IntRow_f1"))
+        XCTAssertNotNil(manySectionsForm.rowBy(tag: "DecimalRow_f1"))
+        XCTAssertNotNil(manySectionsForm.rowBy(tag: "UrlRow_f1"))
+        XCTAssertNotNil(manySectionsForm.rowBy(tag: "TwitterRow_f1"))
+        XCTAssertNil(manySectionsForm.rowBy(tag: "TwitterRow_f2"))
+        XCTAssertNil(manySectionsForm.rowBy(tag: "EmailRow_f1"))
+        XCTAssertNotNil(manySectionsForm.rowBy(tag: "AccountRow_f1"))
+        XCTAssertNotNil(manySectionsForm.rowBy(tag: "PhoneRow_f1"))
+        XCTAssertNil(manySectionsForm.rowBy(tag: "PhoneRow_f2"))
+        XCTAssertNotNil(manySectionsForm.rowBy(tag: "ZipCodeRow_f1"))
+        XCTAssertNotNil(manySectionsForm.rowBy(tag: "PasswordRow_f1"))
+        #endif
+    }
+
+    private func setupManySectionsForm() {
+        checkBuildEither = false
+        checkBuildExpressionBaseRowOptional = true
         manySectionsForm = (section1 +++ {
             URLRow("UrlRow_f1") { $0.title = "Url" }
             if checkBuildEither {
@@ -47,28 +83,39 @@ class ResultBuildersTests: BaseEurekaTests {
             } else {
                 TwitterRow("TwitterRow_f1") { $0.title = "Twitter" }
             }
+            if checkBuildExpressionBaseRowOptional {
+                nil
+            } else {
+                EmailRow("EmailRow_f1") { $0.title = "Email" }
+            }
             AccountRow("AccountRow_f1") { $0.title = "Account" }
         })
-        checkBuildEither = true
+    }
+
+    private func addMoreItemsToManySectionsForm() {
+        checkBuildEither.toggle()
+        checkBuildExpressionBaseRowOptional.toggle()
         manySectionsForm +++ {
             if checkBuildEither {
                 PhoneRow("PhoneRow_f1") { $0.title = "Phone" }
             } else {
                 PhoneRow("PhoneRow_f2") { $0.title = "Phone" }
             }
+            if checkBuildExpressionBaseRowOptional {
+                nil
+            } else {
+                ZipCodeRow("ZipCodeRow_f1") { $0.title = "Zip Code" }
+            }
             PasswordRow("PasswordRow_f1") { $0.title = "Password" }
         }
-        
+    }
+
+    func testFormBuilder() {
+        #if swift(>=5.4)
+        manySectionsForm = form
+        XCTAssertNotNil(manySectionsForm.sectionBy(tag: "Section_A"))
+        XCTAssertNotNil(manySectionsForm.sectionBy(tag: "Section_B"))
         XCTAssertNotNil(manySectionsForm.rowBy(tag: "NameRow_f1"))
-        XCTAssertNotNil(manySectionsForm.rowBy(tag: "IntRow_f1"))
-        XCTAssertNotNil(manySectionsForm.rowBy(tag: "DecimalRow_f1"))
-        XCTAssertNotNil(manySectionsForm.rowBy(tag: "UrlRow_f1"))
-        XCTAssertNotNil(manySectionsForm.rowBy(tag: "TwitterRow_f1"))
-        XCTAssertNil(manySectionsForm.rowBy(tag: "TwitterRow_f2"))
-        XCTAssertNotNil(manySectionsForm.rowBy(tag: "AccountRow_f1"))
-        XCTAssertNotNil(manySectionsForm.rowBy(tag: "PhoneRow_f1"))
-        XCTAssertNil(manySectionsForm.rowBy(tag: "PhoneRow_f2"))
-        XCTAssertNotNil(manySectionsForm.rowBy(tag: "PasswordRow_f1"))
         #endif
     }
 }
