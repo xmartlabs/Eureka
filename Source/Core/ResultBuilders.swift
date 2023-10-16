@@ -35,6 +35,22 @@ extension Array: RowsProvider where Element == BaseRow {
     public var rows: [BaseRow] { self }
 }
 
+public protocol SectionsProvider {
+    var sections: [Section] { get }
+}
+
+extension Section: SectionsProvider {
+    public var sections: [Section] { [self] }
+}
+
+extension Array: SectionsProvider where Element == Section {
+    public var sections: [Section] { self }
+}
+
+extension BaseRow: SectionsProvider {
+    public var sections: [Section] { [.init([self])] }
+}
+
 @resultBuilder
 public struct SectionBuilder {
     public static func buildBlock(_ components: RowsProvider...) -> [BaseRow] {
@@ -57,8 +73,35 @@ public struct SectionBuilder {
         components?.flatMap { $0.rows } ?? []
     }
     
-    public static func buildExpression(_ expression: BaseRow?) -> [BaseRow] {
-        expression.flatMap { [$0] } ?? []
+    public static func buildExpression(_ expression: RowsProvider?) -> [BaseRow] {
+        expression.flatMap { $0.rows } ?? []
+    }
+}
+
+@resultBuilder
+public struct FormBuilder {
+    public static func buildBlock(_ components: SectionsProvider...) -> [Section] {
+        components.flatMap { $0.sections }
+    }
+    
+    public static func buildFinalResult(_ components: [Section]) -> Form {
+        .init(components)
+    }
+    
+    public static func buildEither(first components: [SectionsProvider]) -> [Section] {
+        components.flatMap { $0.sections }
+    }
+    
+    public static func buildEither(second components: [SectionsProvider]) -> [Section] {
+        components.flatMap { $0.sections }
+    }
+    
+    public static func buildOptional(_ components: [SectionsProvider]?) -> [Section] {
+        components?.flatMap { $0.sections } ?? []
+    }
+    
+    public static func buildExpression(_ expression: SectionsProvider?) -> [Section] {
+        expression.flatMap { $0.sections } ?? []
     }
 }
 #endif
