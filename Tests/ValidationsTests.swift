@@ -167,9 +167,14 @@ class ValidationsTests: XCTestCase {
         XCTAssertNil(urlRule.isValid(value: nil))
         XCTAssertNil(urlRule.isValid(value: URL(string: "")))
         XCTAssertNil(urlRule.isValid(value: URL(string: "http://example.com")))
+        XCTAssertNil(urlRule.isValid(value: URL(string: "http://to.co")))
         XCTAssertNil(urlRule.isValid(value: URL(string: "https://example.com/path/to/file.ext?key=value#location")))
-        
+        XCTAssertNil(urlRule.isValid(value: URL(string: "https://example.com:8080/path/to/file.ext?key=value#location")))
+        XCTAssertNil(urlRule.isValid(value: URL(string: "https://localhost")))
+        XCTAssertNil(urlRule.isValid(value: URL(string: "https://localhost:8080")))
+
         XCTAssertNotNil(urlRule.isValid(value: URL(string: "example.com")))
+        XCTAssertNotNil(urlRule.isValid(value: URL(string: "www.example.com")))
         XCTAssertNotNil(urlRule.isValid(value: URL(string: "http://")))
     }
 }
