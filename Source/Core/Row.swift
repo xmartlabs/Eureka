@@ -172,10 +172,13 @@ open class Row<Cell: CellType>: RowOf<Cell.Value>, TypedRowType where Cell: Base
      */
     override open func updateCell() {
         super.updateCell()
-        cell.update()
-        customUpdateCell()
-        RowDefaults.cellUpdate["\(type(of: self))"]?(cell, self)
-        callbackCellUpdate?()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.cell.update()
+            self.customUpdateCell()
+            RowDefaults.cellUpdate["\(type(of: self))"]?(self.cell, self)
+            self.callbackCellUpdate?()
+        }
     }
 
     /**
