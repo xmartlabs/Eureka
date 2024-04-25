@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 
+### [5.5.0](https://github.com/xmartlabs/Eureka/releases/tag/5.5.0)
+
+* Created PrivacyInfo file
+
 ### [5.4.0](https://github.com/xmartlabs/Eureka/releases/tag/5.4.0)
 
 * Renamed several methods that clashed with private Obj-C methods and triggered warnings when uploading to App Store (#2231)
