@@ -146,7 +146,7 @@ open class BaseRow: BaseRowType {
         return IndexPath(row: rowIndex, section: sectionIndex)
     }
 
-	var hiddenCache = false {
+    var hiddenCache = false {
         didSet {
             guard let t = tag,
                   let form = section?.form else { return }
