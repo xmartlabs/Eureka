@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ### [5.5.0](https://github.com/xmartlabs/Eureka/releases/tag/5.5.0)
 
-* Created PrivacyInfo file
+* Created PrivacyInfo file (#2255)
 
 ### [5.4.0](https://github.com/xmartlabs/Eureka/releases/tag/5.4.0)
 
