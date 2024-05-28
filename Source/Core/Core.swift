@@ -528,6 +528,11 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
+    open override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        form.removeAll()
+    }
+    
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         let baseRow = sender as? BaseRow
