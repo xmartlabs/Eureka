@@ -456,14 +456,22 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
         navigationAccessoryView = customNavigationAccessoryView ?? NavigationAccessoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
         navigationAccessoryView.autoresizingMask = .flexibleWidth
 
+        var shouldSetupConstraints = false
         if tableView == nil {
             tableView = UITableView(frame: view.bounds, style: tableViewStyle)
-            tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             tableView.cellLayoutMarginsFollowReadableWidth = false
+            shouldSetupConstraints = true
         }
         if tableView.superview == nil {
             view.addSubview(tableView)
         }
+        if shouldSetupConstraints {
+            setupTableViewConstraintsIfPresented()
+        }
+        // Always set up a mask. If the UITableView uses constraints, `translatesAutoresizingMaskIntoConstraints` will
+        // be set to false, and so the autoresizing mask will be ignored.
+        tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
         if tableView.delegate == nil {
             tableView.delegate = self
         }
@@ -737,6 +745,28 @@ open class FormViewController: UIViewController, FormViewControllerProtocol, For
         tableView?.beginUpdates()
         tableView?.reloadRows(at: indexes, with: reloadAnimation(oldRows: oldRows, newRows: newRows))
         tableView?.endUpdates()
+    }
+
+    /**
+     * Fix for #1952: `UITableView.scrollRectToVisible(, animated:)` and `UITableView.scrollToRow()` don't work properly
+     * in `keyboardWillShow()` due to, what seems to be, a bug in iOS when autoresizing mask is used for a `UIViewController` that is
+     * presented modally as `.formSheet/.pageSheet` within a `UINavigationController`.
+     * The check below preserves the existing behavior of using autoresizing masks in other cases.
+     */
+    open func setupTableViewConstraintsIfPresented() {
+        if #available(iOS 13, *) {
+            if presentingViewController != nil && navigationController != nil {
+                // Need to set the background color as otherwise black shows underneath the translucent navigation bar.
+                view.backgroundColor = .systemBackground
+                tableView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    tableView.topAnchor.constraint(equalTo: tableView.superview!.safeAreaLayoutGuide.topAnchor),
+                    tableView.bottomAnchor.constraint(equalTo: tableView.superview!.safeAreaLayoutGuide.bottomAnchor),
+                    tableView.leadingAnchor.constraint(equalTo: tableView.superview!.safeAreaLayoutGuide.leadingAnchor),
+                    tableView.trailingAnchor.constraint(equalTo: tableView.superview!.safeAreaLayoutGuide.trailingAnchor)
+                ])
+            }
+        }
     }
 
     // MARK: Private
