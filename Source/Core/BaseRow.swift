@@ -273,7 +273,14 @@ extension BaseRow {
 
     public func reload(with rowAnimation: UITableView.RowAnimation = .none) {
         guard let tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView, let indexPath = indexPath else { return }
-        tableView.reloadRows(at: [indexPath], with: rowAnimation)
+        
+        if (rowAnimation == .none) {
+            UIView.performWithoutAnimation {
+                tableView.reloadRows(at: [indexPath], with: rowAnimation)
+            }
+        } else {
+            tableView.reloadRows(at: [indexPath], with: rowAnimation)
+        }
     }
 
     public func deselect(animated: Bool = true) {
