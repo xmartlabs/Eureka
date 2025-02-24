@@ -25,7 +25,7 @@
 import XCTest
 @testable import Eureka
 
-private enum RowTag: String {
+private enum RowTag: String, CaseIterable {
     case first
     case second
     case third
@@ -136,12 +136,31 @@ class HelperMethodTests: BaseEurekaTests {
 
     func testRemoveForTag() {
         let row = LabelRow(tag: RowTag.first.rawValue)
-        manySectionsForm[0] <<< LabelRow(tag: RowTag.first.rawValue)
+        manySectionsForm[0] <<< row
         XCTAssertEqual(manySectionsForm[0].rowBy(tag: RowTag.first.rawValue), row)
+        
         manySectionsForm[0].remove(tag: RowTag.first)
+        let rowAfterRemove: LabelRow? = manySectionsForm[0].rowBy(tag: RowTag.first.rawValue)
+        XCTAssertNil(rowAfterRemove)
     }
 
     func testRemoveAllRowsWithIterableTags() {
-    
+        RowTag.allCases.forEach { tag in
+            manySectionsForm[0] <<< LabelRow(tag: tag.rawValue)
+        }
+        let someOtherRowTag = "someOtherRow"
+        let someOtherRow = LabelRow(tag: someOtherRowTag)
+        manySectionsForm[0] <<< someOtherRow
+        RowTag.allCases.forEach { tag in
+            let label: LabelRow? = manySectionsForm[0].rowBy(tag: tag.rawValue)
+            XCTAssertNotNil(label)
+        }
+        XCTAssertEqual(manySectionsForm[0].rowBy(tag: someOtherRowTag), someOtherRow)
+        manySectionsForm[0].removeAllRowsWithIterableTags(type: RowTag.self)
+        RowTag.allCases.forEach { tag in
+            let label: LabelRow? = manySectionsForm[0].rowBy(tag: tag.rawValue)
+            XCTAssertNil(label)
+        }
+        XCTAssertEqual(manySectionsForm[0].rowBy(tag: someOtherRowTag), someOtherRow)
     }
 }
