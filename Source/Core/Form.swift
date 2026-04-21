@@ -374,7 +374,7 @@ extension Form {
             guard let arr = rowObservers[rowTag]?[type], let index = arr.firstIndex(where: { $0 === taggable }) else { continue }
             rowObservers[rowTag]?[type]?.remove(at: index)
             if rowObservers[rowTag]?[type]?.isEmpty == true {
-                rowObservers[rowTag] = nil
+                rowObservers[rowTag]?[type] = nil
             }
         }
     }
